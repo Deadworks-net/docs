@@ -40,13 +40,14 @@ const config: Config = {
   themeConfig: {
     colorMode: {
       defaultMode: 'dark',
-      respectPrefersColorScheme: true,
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
     },
     navbar: {
-      title: 'Deadworks API',
+      title: '',
       logo: {
         alt: 'Deadworks Logo',
-        src: 'img/logo.svg',
+        src: 'https://deadworks.net/assets/deadworks-logo.png',
       },
       items: [
         {
@@ -66,9 +67,22 @@ const config: Config = {
           position: 'left',
         },
         {
-          href: 'https://store.steampowered.com/app/1422450/Deadlock/',
-          label: 'Deadlock on Steam',
+          href: 'https://deadworks.net/database',
+          label: 'Database',
           position: 'right',
+          className: 'navbar-icon-database',
+        },
+        {
+          href: 'https://github.com/Deadworks-net/deadworks',
+          label: 'GitHub',
+          position: 'right',
+          className: 'navbar-icon-github',
+        },
+        {
+          href: 'https://discord.gg/d3JHnVGA26',
+          label: 'Discord',
+          position: 'right',
+          className: 'navbar-icon-discord',
         },
       ],
     },
@@ -105,8 +119,8 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} Deadworks. Built with Docusaurus.`,
     },
     prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      theme: prismThemes.vsDark,
+      darkTheme: prismThemes.vsDark,
       additionalLanguages: ['csharp', 'json', 'bash', 'markup'],
     },
   } satisfies Preset.ThemeConfig,
