@@ -1,0 +1,175 @@
+---
+title: "Chat & HUD Messaging"
+sidebar_label: "Chat & HUD"
+---
+
+# Chat & HUD Messaging Guide
+
+This guide covers sending messages to players through chat, HUD announcements, console output, and world text.
+
+## HUD Announcements
+
+Large on-screen announcements visible to targeted players:
+
+```csharp
+var msg = new CCitadelUserMsg_HudGameAnnouncement
+{
+    TitleLocstring = "ANNOUNCEMENT TITLE",
+    DescriptionLocstring = "Description text here"
+};
+
+// Send to all players
+NetMessages.Send(msg, RecipientFilter.All);
+
+// Send to one player
+NetMessages.Send(msg, RecipientFilter.Single(playerSlot));
+```
+
+## Console Messages
+
+Print to a specific player's console:
+
+```csharp
+controller.PrintToConsole("Hello, player!");
+```
+
+Print to all players' consoles:
+
+```csharp
+CCitadelPlayerController.PrintToConsoleAll("Server message for everyone");
+```
+
+Or use `Server.ClientCommand`:
+
+```csharp
+Server.ClientCommand(playerSlot, "echo Hello from server!");
+```
+
+## Chat Messages
+
+### Intercepting Chat
+
+Override `OnChatMessage` to intercept all chat:
+
+```csharp
+public override HookResult OnChatMessage(ChatMessage msg)
+{
+    Console.WriteLine($"[Chat] Slot {msg.SenderSlot}: {msg.Text}");
+    return HookResult.Handled;
+}
+```
+
+### Rebroadcasting Chat
+
+Hook outgoing chat messages for custom formatting:
+
+```csharp
+[NetMessageHandler]
+public HookResult OnChatMsgOutgoing(OutgoingMessageContext<CCitadelUserMsg_ChatMsg> ctx)
+{
+    var sender = Players.FromSlot(ctx.Message.SenderSlot);
+    if (sender == null) return HookResult.Handled;
+
+    // Send personalized chat to each recipient
+    foreach (var controller in Players.GetAll())
+    {
+        var personalMsg = new CCitadelUserMsg_ChatMsg
+        {
+            // Customize per-recipient
+            Text = $"[{sender.Name}]: {ctx.Message.Text}"
+        };
+        NetMessages.Send(personalMsg, RecipientFilter.Single(controller.EntityIndex));
+    }
+
+    // Block the original message
+    return HookResult.Stop;
+}
+```
+
+## Sounds
+
+Play sound effects on entities:
+
+```csharp
+// Basic sound
+pawn.EmitSound("Mystical.Piano.AOE.Warning");
+
+// With parameters
+pawn.EmitSound("Damage.Send.Crit", pitch: 100, volume: 0.1f, soundLevel: 75f);
+```
+
+### Delayed Sound
+
+```csharp
+Timer.Once(1.Seconds(), () =>
+{
+    pawn.EmitSound("Mystical.Piano.AOE.Explode");
+});
+```
+
+## World Text
+
+3D text panels in the world:
+
+```csharp
+var text = CPointWorldText.Create(
+    "GAME OVER",
+    position: new Vector3(0, 0, 500),
+    fontSize: 200f,
+    r: 255, g: 0, b: 0, a: 255  // Red text
+);
+
+// Update later
+text.SetMessage("ROUND 2");
+
+// Clean up
+text.Remove();
+```
+
+See [World Text API](../api-reference/world-text).
+
+## Targeting Players
+
+### All Players
+
+```csharp
+NetMessages.Send(msg, RecipientFilter.All);
+```
+
+### Single Player
+
+```csharp
+NetMessages.Send(msg, RecipientFilter.Single(slot));
+```
+
+### Custom Selection
+
+```csharp
+var filter = new RecipientFilter();
+foreach (var controller in Players.GetAll())
+{
+    if (IsEligible(controller))
+        filter.Add(controller.EntityIndex);
+}
+NetMessages.Send(msg, filter);
+```
+
+### By Team
+
+```csharp
+var filter = new RecipientFilter();
+foreach (var controller in Players.GetAll())
+{
+    var pawn = controller.GetHeroPawn();
+    if (pawn?.TeamNum == 2)  // Team 0
+        filter.Add(controller.EntityIndex);
+}
+NetMessages.Send(msg, filter);
+```
+
+## See Also
+
+- [Networking API](../api-reference/networking) — Full message sending reference
+- [World Text API](../api-reference/world-text) — 3D text panels
+- [Players API](../api-reference/players) — Player enumeration
+- [Deathmatch Example](../examples/deathmatch) — Chat rebroadcasting

@@ -1,0 +1,240 @@
+---
+title: "Modifiers"
+sidebar_label: "Modifiers"
+---
+
+# Modifiers
+
+> **Namespace:** `DeadworksManaged.Api`
+
+Modifiers are buffs/debuffs applied to entities. They can alter gameplay states, apply visual effects, and control movement.
+
+## Adding Modifiers
+
+Use `CBaseEntity.AddModifier()` with a VData name and `KeyValues3` parameters:
+
+```csharp
+using var kv = new KeyValues3();
+kv.SetFloat("duration", 3.0f);
+pawn.AddModifier("modifier_citadel_knockdown", kv);
+```
+
+### AddModifier Parameters
+
+```csharp
+entity.AddModifier(
+    string vdataName,       // Modifier VData name (e.g. "modifier_citadel_knockdown")
+    KeyValues3 kv,          // Parameters (duration, etc.)
+    CBaseEntity? caster,    // Entity that applied the modifier (optional)
+    CBaseEntity? ability,   // Ability that caused the modifier (optional)
+    int stackCount          // Number of stacks (optional)
+);
+```
+
+## KeyValues3
+
+Wraps a native KeyValues3 handle. Create, set typed members, pass to `AddModifier`, then dispose.
+
+### Important: Always Dispose
+
+```csharp
+// Using statement ensures proper cleanup
+using var kv = new KeyValues3();
+kv.SetFloat("duration", 5.0f);
+kv.SetString("effect", "burning");
+pawn.AddModifier("my_modifier", kv);
+// kv is automatically disposed here
+```
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `IsValid` | `bool` | `true` if underlying native handle is alive |
+
+### Setter Methods
+
+| Method | Description |
+|--------|-------------|
+| `SetString(string key, string value)` | Set a string value |
+| `SetBool(string key, bool value)` | Set a boolean value |
+| `SetInt(string key, int value)` | Set a signed 32-bit integer |
+| `SetUInt(string key, uint value)` | Set an unsigned 32-bit integer |
+| `SetInt64(string key, long value)` | Set a signed 64-bit integer |
+| `SetUInt64(string key, ulong value)` | Set an unsigned 64-bit integer |
+| `SetFloat(string key, float value)` | Set a single-precision float |
+| `SetDouble(string key, double value)` | Set a double-precision float |
+| `SetVector(string key, Vector3 value)` | Set a 3D vector |
+
+## CModifierProperty
+
+Manages modifier state bits on an entity. Access via `pawn.ModifierProp`.
+
+```csharp
+// Enable unlimited air jumps
+pawn.ModifierProp.SetModifierState(EModifierState.UnlimitedAirJumps, true);
+pawn.ModifierProp.SetModifierState(EModifierState.UnlimitedAirDashes, true);
+
+// Check a state
+bool hasState = pawn.ModifierProp.HasModifierState(EModifierState.UnlimitedAirJumps);
+
+// Disable
+pawn.ModifierProp.SetModifierState(EModifierState.UnlimitedAirJumps, false);
+```
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `SetModifierState(EModifierState, bool)` | `void` | Sets or clears a modifier state bit |
+| `HasModifierState(EModifierState)` | `bool` | Returns `true` if state bit is set |
+
+## EModifierState
+
+Enum containing all modifier state flags (302 values). Key examples:
+
+| Value | Description |
+|-------|-------------|
+| `UnlimitedAirJumps` | Allow unlimited air jumps |
+| `UnlimitedAirDashes` | Allow unlimited air dashes |
+| *(many more)* | Covers movement, visibility, combat, hero-specific states |
+
+## CBaseModifier
+
+Wraps a native CBaseModifier instance — a buff/debuff applied to an entity. Returned by `AddModifier`.
+
+## EKnockDownTypes
+
+Knockdown animation type applied to a hero.
+
+## Common Modifier Patterns
+
+### Knockdown with Duration
+
+```csharp
+using var kv = new KeyValues3();
+kv.SetFloat("duration", 3.0f);
+pawn.AddModifier("modifier_citadel_knockdown", kv);
+```
+
+### Toggling Movement States
+
+```csharp
+// Enable
+var mp = pawn.ModifierProp;
+mp.SetModifierState(EModifierState.UnlimitedAirJumps, true);
+mp.SetModifierState(EModifierState.UnlimitedAirDashes, true);
+
+// After duration, disable
+Timer.Once(20.Seconds(), () =>
+{
+    mp.SetModifierState(EModifierState.UnlimitedAirJumps, false);
+    mp.SetModifierState(EModifierState.UnlimitedAirDashes, false);
+});
+```
+
+### AddAbility + AddModifier Pattern
+
+Many game modifiers read properties from their parent ability (e.g., `ModelScaleGrowth`, `ActiveMoveSpeedPenalty`). To apply these modifiers with full functionality, you must first add the ability, then pass the returned ability entity as the 4th parameter to `AddModifier`:
+
+```csharp
+// 1. Add the item ability — returns the ability entity
+var ability = pawn.AddAbility("upgrade_shrink_ray", 0);
+if (ability == null) return;
+
+// 2. Apply modifier, passing the ability so it can read VData properties
+using var kv = new KeyValues3();
+kv.SetFloat("duration", 30.0f);
+pawn.AddModifier("modifier_shrink_ray", kv, pawn, ability);
+
+// 3. Remove the ability after the modifier is applied
+pawn.RemoveAbility("upgrade_shrink_ray");
+```
+
+**Important constraints:**
+
+- **Only item abilities work:** `AddAbility` only succeeds for `EAbilityType_Item` (type=3) abilities like `upgrade_shrink_ray`, `upgrade_colossus`, `upgrade_metal_skin`, `upgrade_unstable_concoction`. Hero signature/ultimate abilities (type=1) like `ability_sleep_dagger`, `ability_smoke_bomb`, `drifter_darkness` return `null`.
+- **Ability removal timing varies:** Some modifiers only read ability properties once during `OnCreated` (e.g., `modifier_shrink_ray`, `modifier_colossus_active`, `modifier_citadel_metal_skin`) — the ability can be removed immediately after `AddModifier`. Others reference the ability throughout their duration (e.g., `modifier_unstable_concoction`) — removing the ability too early causes a crash. When unsure, delay removal until after the modifier duration.
+
+```csharp
+// Safe: immediate removal (modifier reads ability once)
+pawn.AddModifier("modifier_shrink_ray", kv, pawn, ability);
+pawn.RemoveAbility("upgrade_shrink_ray");
+
+// Required: delayed removal (modifier references ability during lifetime)
+pawn.AddModifier("modifier_unstable_concoction", kv, pawn, ability);
+Timer.Once(5.Seconds(), () => {
+    if (pawn.IsValid)
+        pawn.RemoveAbility("upgrade_unstable_concoction");
+});
+```
+
+## Modifier VData Lookup
+
+When calling `AddModifier(name, ...)`, the name is looked up as follows:
+
+- **Standalone modifiers** (defined at top level in `modifiers.vdata`): Use the VData key name. Example: `"modifier_citadel_knockdown"`, `"modifier_speed_boost"`.
+- **Inline modifiers** (defined within abilities in `abilities.vdata`): Use the **C++ class name** (`_class` field), not the `_my_subclass_name`. The C++ class applies the core mechanic, but inline VData properties (custom particles, model overrides) may not be available.
+
+| Modifier | Source | Name for AddModifier | Notes |
+|----------|--------|---------------------|-------|
+| `modifier_citadel_knockdown` | Standalone | `"modifier_citadel_knockdown"` | Stun/knockdown, gravity 2.0 |
+| `modifier_speed_boost` | Standalone | `"modifier_speed_boost"` | +70 move speed with sprint particle |
+| `modifier_citadel_cheater_curse` | Standalone | `"modifier_citadel_cheater_curse"` | Frog transformation |
+| `modifier_shrink_ray` | Inline (item) | `"modifier_shrink_ray"` | Requires ability for `ModelScaleGrowth` |
+| `modifier_colossus_active` | Inline (item) | `"modifier_colossus_active"` | Requires ability for `ModelScaleGrowth` |
+| `modifier_citadel_metal_skin` | Inline (item) | `"modifier_citadel_metal_skin"` | Requires ability for resist values |
+| `modifier_unstable_concoction` | Inline (item) | `"modifier_unstable_concoction"` | Requires ability alive during duration |
+| `modifier_doorman_hotel_victim` | Inline | `"modifier_doorman_hotel_victim"` | Hotel victim effect |
+
+:::caution Inline Hero Modifiers Don't Work Standalone
+The following inline hero modifiers have been tested and **do not work** when applied via `AddModifier` standalone — they require their parent hero ability's C++ code to function:
+- `modifier_synth_affliction_debuff` — DoT affliction (inline in Synth ability)
+- `modifier_drifter_darkness_target` — Blindness (inline in Drifter ability)
+- `modifier_glitch_debuff` via `upgrade_glitch` — Glitch debuff (tried immediate + delayed removal)
+:::
+
+## EModifierState Reference
+
+**Confirmed working** via `SetModifierState`:
+
+| Raw Value | Name | Description |
+|-----------|------|-------------|
+| 11 | `Immobilized` | Prevents all movement |
+| 38 | `AdditionalAirMoves` | Extra air moves |
+| 39 | `UnlimitedAirDashes` | Allow unlimited air dashes |
+| 40 | `UnlimitedAirJumps` | Allow unlimited air jumps |
+| 69 | `InfiniteClip` | Infinite ammo, no reload needed |
+| 118 | `FriendlyFireEnabled` | Enable friendly fire |
+
+**Confirmed NOT working** (no visible effect):
+
+| Raw Value | Name | Notes |
+|-----------|------|-------|
+| 12 | `Disarmed` | No effect |
+| 13 | `Muted` | No effect |
+| 15 | `Silenced` | No effect |
+| 19 | `Invulnerable` | No effect |
+| 36 | `Unkillable` | No effect |
+| 68 | `VisibleToEnemy` | No effect |
+| 76 | `GlowThroughWallsToEnemy` | No effect |
+| 103 | `RespawnCredit` | No effect |
+| 104 | `RespawnCreditPersonal` | No effect |
+| 119 | `Flying` | No effect |
+| 193 | `Frozen` | No effect |
+
+:::tip
+You can cast raw integer values to `EModifierState` for states not in the managed enum:
+```csharp
+pawn.ModifierProp?.SetModifierState((EModifierState)69, true); // InfiniteClip
+```
+:::
+
+:::note
+EModifierState has 302 values total. The raw values follow the `MODIFIER_STATE_` prefix pattern from VData (e.g., `MODIFIER_STATE_INFINITE_CLIP` = 69). Many states only work when set by internal C++ modifier code, not via `SetModifierState` alone.
+:::
+
+## See Also
+
+- [Entities](entities) — `AddModifier` on `CBaseEntity`
+- [Players](players) — `ModifierProp` on `CCitadelPlayerPawn`
+- [Timers](timers) — Timed modifier application
+- [Roll The Dice Example](../examples/roll-the-dice) — Modifier effects in practice
