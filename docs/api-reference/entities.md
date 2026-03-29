@@ -19,12 +19,15 @@ Base managed wrapper for all Source 2 entities. Provides common operations: heal
 |--------|---------|-------------|
 | `CreateByName(string className)` | `CBaseEntity?` | Creates a new entity by class name (e.g. `"info_particle_system"`) |
 | `FromHandle(uint entityHandle)` | `CBaseEntity?` | Gets entity by its entity handle |
+| `FromHandle<T>(uint entityHandle)` | `T?` | Gets typed entity by handle (avoids manual cast) |
 | `FromIndex(int index)` | `CBaseEntity?` | Gets entity by its global entity index |
+| `FromIndex<T>(int index)` | `T?` | Gets typed entity by index |
 
 ### Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
+| `Name` | `string` | Entity targetname (set in Hammer or code) |
 | `DesignerName` | `string` | The designer/map name (e.g. `"npc_boss_tier3"`, `"player"`) |
 | `Classname` | `string` | The C++ DLL class name (e.g. `"CCitadelPlayerPawn"`) |
 | `EntityHandle` | `uint` | The entity handle (CEntityHandle as uint32) |
@@ -107,8 +110,8 @@ Vector3 absVel = _vecAbsVelocity.Get(entity.Handle);
 `RenderFx` and `RenderMode` schema fields (`m_nRenderFX`, `m_nRenderMode`) have **no visible effect** when set on players server-side. These are likely client-only rendering properties.
 :::
 
-:::caution Model Swapping is Impossible
-There is no working method to change a player's model server-side. `AcceptInput("SetModel")` crashes the server. `modifier_citadel_animalcurse` applies C++ effects but no model change. `modifier_citadel_cheater_curse` turns the player into a frog but the model never reverts — use with caution.
+:::caution Model Swapping on Players
+`AcceptInput("SetModel")` crashes the server. The `SetModel(string)` method exists on `CBaseEntity` but has not been verified safe on player pawns. `modifier_citadel_animalcurse` applies C++ effects but no model change. `modifier_citadel_cheater_curse` turns the player into a frog but the model never reverts — use with caution.
 :::
 
 ### Parenting
@@ -129,10 +132,20 @@ entity.AcceptInput("Start", activator, caller, "value");
 Add modifiers (buffs/debuffs) to entities. See [Modifiers](modifiers) for full details.
 
 ```csharp
+// Simple overload
 using var kv = new KeyValues3();
 kv.SetFloat("duration", 5.0f);
 entity.AddModifier("modifier_citadel_knockdown", kv);
+
+// Overload with ability values (used for modifiers that read VData ability values)
+var abilityValues = new Dictionary<string, float> { { "TechDamage", 50f } };
+entity.AddModifier("modifier_my_custom", abilityValues, kv, caster: attacker);
 ```
+
+| Overload | Description |
+|----------|-------------|
+| `AddModifier(string name, KeyValues3? kv, CBaseEntity? caster, CBaseEntity? ability, int team)` | Simple modifier |
+| `AddModifier(string name, Dictionary<string, float> abilityValues, KeyValues3? kv, CBaseEntity? caster, CBaseEntity? ability, int team)` | With ability value overrides |
 
 ### Audio
 
@@ -145,7 +158,7 @@ entity.EmitSound("Damage.Send.Crit", pitch: 100, volume: 0.5f, soundLevel: 75f);
 
 ```csharp
 // Simple damage
-entity.Hurt(100f, attacker, inflictor, ability, flags: 0);
+entity.Hurt(100f, attacker, inflictor, ability, damageType: 0);
 
 // Full control via CTakeDamageInfo — see Damage docs
 entity.TakeDamage(damageInfo);
@@ -271,7 +284,11 @@ _timers.Remove(entity);
 |--------|-------------|
 | `this[entity]` | Set value for entity |
 | `TryGet(entity, out T)` | Try to get value, returns `true` if found |
+| `GetOrAdd(entity, defaultValue)` | Get existing or insert default, returns value |
+| `GetOrAdd(entity, factory)` | Get existing or create via factory func, returns value |
+| `Has(entity)` | Returns `true` if entity has an entry |
 | `Remove(entity)` | Remove entry for entity |
+| `Clear()` | Remove all entries |
 
 ## Schema Accessors
 

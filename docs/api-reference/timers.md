@@ -102,6 +102,7 @@ Handle to a scheduled timer for cancellation and status checking.
 | Member | Type | Description |
 |--------|------|-------------|
 | `Cancel()` | `void` | Cancel this timer. No-op if already finished |
+| `CancelOnMapChange()` | `void` | Auto-cancel this timer when the map changes |
 | `IsFinished` | `bool` | Whether this timer has completed or been cancelled |
 
 ## IStep

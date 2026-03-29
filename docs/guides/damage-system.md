@@ -52,7 +52,7 @@ public override HookResult OnTakeDamage(TakeDamageEvent ev)
 The easiest way to damage an entity:
 
 ```csharp
-entity.Hurt(100f, attacker, inflictor, ability, flags: 0);
+entity.Hurt(100f, attacker, inflictor, ability, damageType: 0);
 ```
 
 :::caution Hurt() Cannot Kill
@@ -86,7 +86,7 @@ using var info = new CTakeDamageInfo(
     attacker: attackerEntity,
     inflictor: inflictorEntity,
     ability: null,
-    flags: 0
+    damageType: 0
 );
 targetEntity.TakeDamage(info);
 ```
@@ -151,7 +151,7 @@ public override HookResult OnModifyCurrency(ModifyCurrencyEvent ev)
 public override HookResult OnModifyCurrency(ModifyCurrencyEvent ev)
 {
     // Only allow starting gold, block everything else
-    if (ev.Source == ECurrencySource.StartingGold)
+    if (ev.Source == ECurrencySource.EStartingAmount)
         return HookResult.Handled;
 
     return HookResult.Stop;
@@ -170,8 +170,8 @@ public HookResult OnHeroChanged(GameEvent ev)
     if (pawn == null) return HookResult.Handled;
 
     // Give custom starting currency
-    pawn.ModifyCurrency(ECurrencyType.Gold, 15000, ECurrencySource.FlagCapture, false, false, false);
-    pawn.ModifyCurrency(ECurrencyType.AbilityPoints, 17, ECurrencySource.FlagCapture, false, false, false);
+    pawn.ModifyCurrency(ECurrencyType.EGold, 15000, ECurrencySource.ECheats, false, false, false);
+    pawn.ModifyCurrency(ECurrencyType.EAbilityPoints, 17, ECurrencySource.ECheats, false, false, false);
 
     return HookResult.Handled;
 }

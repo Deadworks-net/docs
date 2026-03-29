@@ -34,6 +34,7 @@ public class MyPlugin : DeadworksPluginBase
 | `OnPrecacheResources()` | Called during map load. Use [`Precache.AddResource()`](precaching) here |
 | `OnStartupServer()` | Called when the server starts (new map load) |
 | `OnGameFrame(bool simulating, bool firstTick, bool lastTick)` | Called every server frame. `simulating` is true during active gameplay |
+| `OnConfigReloaded()` | Called when plugin config is reloaded at runtime |
 
 ### Server Event Hooks
 
@@ -43,6 +44,9 @@ public class MyPlugin : DeadworksPluginBase
 | `OnModifyCurrency(ModifyCurrencyEvent)` | Player currency modified. Return `Stop` to block. See [Players](players) |
 | `OnChatMessage(ChatMessage)` | Player sends chat message. Return `Stop` to block |
 | `OnClientConCommand(ClientConCommandEvent)` | Client sends console command. Return `Stop` to block |
+| `OnAddModifier(AddModifierEvent)` | Modifier about to be added. Return `Stop` to block |
+| `OnAbilityAttempt(AbilityAttemptEvent)` | Ability execution attempted |
+| `OnProcessUsercmds(ProcessUsercmdsEvent)` | User commands processed (every tick per player) |
 
 ### Client Lifecycle Hooks
 
@@ -66,10 +70,11 @@ public class MyPlugin : DeadworksPluginBase
 
 Return values for hooks and event handlers:
 
-| Value | Description |
-|-------|-------------|
-| `HookResult.Handled` | Event was consumed, but allow other plugins to process |
-| `HookResult.Stop` | Block the event entirely — no further processing |
+| Value | Raw | Description |
+|-------|-----|-------------|
+| `HookResult.Continue` | 0 | Event not consumed — allow default behavior and other plugins |
+| `HookResult.Stop` | 1 | Block the event entirely — no further processing |
+| `HookResult.Handled` | 2 | Event was consumed, but allow other plugins to process |
 
 ## IDeadworksPlugin
 

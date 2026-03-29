@@ -21,7 +21,7 @@ public HookResult OnHeroChanged(GameEvent ev)
     if (pawn != null)
     {
         // Hero was changed — reset ability points
-        pawn.ModifyCurrency(ECurrencyType.AbilityPoints, 17, ECurrencySource.FlagCapture, false, false, false);
+        pawn.ModifyCurrency(ECurrencyType.EAbilityPoints, 17, ECurrencySource.ECheats, false, false, false);
     }
     return HookResult.Handled;
 }
@@ -113,9 +113,15 @@ if (ev != null)
 }
 ```
 
-| Method | Description |
-|--------|-------------|
-| `Fire(bool dontBroadcast)` | Fires the event. After firing, owned by engine — must not be used |
+### Methods
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `SetString(string key, string value)` | `GameEventWriter` | Set string field (chainable) |
+| `SetInt(string key, int value)` | `GameEventWriter` | Set int field (chainable) |
+| `SetFloat(string key, float value)` | `GameEventWriter` | Set float field (chainable) |
+| `SetBool(string key, bool value)` | `GameEventWriter` | Set bool field (chainable) |
+| `Fire(bool dontBroadcast)` | `bool` | Fires the event. Returns success. After firing, owned by engine — must not be used |
 
 ## Common Game Events
 

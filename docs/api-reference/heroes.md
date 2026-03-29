@@ -24,6 +24,7 @@ Extension methods for the `Heroes` enum.
 | Method | Returns | Description |
 |--------|---------|-------------|
 | `ToHeroName(Heroes)` | `string` | Converts to internal name (e.g. `"hero_inferno"`) |
+| `ToDisplayName(Heroes)` | `string` | Converts to localized display name (e.g. `"Grey Talon"` for `Orion`) |
 | `TryParse(string, out Heroes)` | `bool` | Parses name string back to enum |
 | `GetHeroData(Heroes)` | `CitadelHeroData?` | Gets native VData for the hero |
 
@@ -46,6 +47,19 @@ var heroData = Heroes.Inferno.GetHeroData();
 ## CitadelHeroData
 
 Wrapper around native `CitadelHeroData_t` (VData). Obtain via `Heroes.GetHeroData()`.
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `IsValid` | `bool` | Whether the hero data pointer is valid |
+| `HeroID` | `int` | Internal hero ID |
+| `Disabled` | `bool` | Whether hero is disabled |
+| `PlayerSelectable` | `bool` | Whether players can select this hero |
+| `InDevelopment` | `bool` | Whether hero is still in development |
+| `Complexity` | `int` | Hero complexity rating |
+| `NewPlayerRecommended` | `bool` | Recommended for new players |
+| `AvailableInGame` | `bool` | Computed — true if selectable, not disabled, not development-only |
 
 ### Methods
 
@@ -80,8 +94,8 @@ public override void OnPrecacheResources()
     Precache.AddHero(Heroes.Inferno);
     Precache.AddHero("hero_wraith");
 
-    // Or precache all heroes (for plugins that swap heroes dynamically)
-    Precache.AddAllHeroes();
+    // Precache additional heroes as needed
+    Precache.AddHero("hero_astro");
 }
 ```
 

@@ -281,4 +281,4 @@ private void RecalcTimescale() {
 | `ConVar.Find` | Server ConVars |
 | `Precache.AddResource` | [Precaching](../api-reference/precaching) |
 | `OnClientConCommand` | [Console Commands — Blocking](../api-reference/console-commands#blocking-client-commands) |
-| `m_MoveType` SchemaAccessor | [Entities — MoveType](../api-reference/entities#movetype-freeze-players) |
+| `m_MoveType` SchemaAccessor | [Entities — MoveType](../api-reference/entities#movetype) |

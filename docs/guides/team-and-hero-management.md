@@ -86,7 +86,9 @@ When swapping heroes at runtime, precache them first:
 ```csharp
 public override void OnPrecacheResources()
 {
-    Precache.AddAllHeroes();  // Required for dynamic hero selection
+    // Precache each hero you plan to use at runtime
+    Precache.AddHero(Heroes.Inferno);
+    Precache.AddHero(Heroes.Wraith);
 }
 ```
 
@@ -108,8 +110,8 @@ public HookResult OnHeroChanged(GameEvent ev)
     if (pawn == null) return HookResult.Handled;
 
     // Give starting resources
-    pawn.ModifyCurrency(ECurrencyType.Gold, 15000, ECurrencySource.FlagCapture, false, false, false);
-    pawn.ModifyCurrency(ECurrencyType.AbilityPoints, 17, ECurrencySource.FlagCapture, false, false, false);
+    pawn.ModifyCurrency(ECurrencyType.EGold, 15000, ECurrencySource.ECheats, false, false, false);
+    pawn.ModifyCurrency(ECurrencyType.EAbilityPoints, 17, ECurrencySource.ECheats, false, false, false);
 
     return HookResult.Handled;
 }

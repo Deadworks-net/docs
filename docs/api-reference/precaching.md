@@ -29,9 +29,8 @@ public override void OnPrecacheResources()
 | Method | Description |
 |--------|-------------|
 | `AddResource(string path)` | Precache a resource by path (particles, models, etc.) |
-| `AddHero(string name)` | Precache a hero by internal name (e.g. `"hero_inferno"`) |
-| `AddHero(Heroes hero)` | Precache a hero by enum value |
-| `AddAllHeroes()` | Precache all heroes (for runtime hero/ability swapping) |
+| `AddHero(string heroName)` | Precache a hero by internal name (e.g. `"hero_inferno"`) |
+| `AddHero(Heroes hero)` | Precache a hero by enum value (calls `hero.ToHeroName()` internally) |
 
 ## Resource Paths
 
@@ -57,8 +56,8 @@ public override void OnPrecacheResources()
     Precache.AddHero(Heroes.Inferno);
     Precache.AddHero(Heroes.Wraith);
 
-    // Or precache ALL heroes (recommended for dynamic hero selection)
-    Precache.AddAllHeroes();
+    // Precache additional heroes as needed
+    Precache.AddHero("hero_astro");  // by string name
 }
 ```
 

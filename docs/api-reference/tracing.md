@@ -57,16 +57,16 @@ if (trace.DidHit)
 Convenience method that builds the filter and ray from parameters:
 
 ```csharp
-CGameTrace trace;
+var trace = CGameTrace.Create();
 Trace.SimpleTrace(
     start, end,
     RayType_t.Line,
     RnQueryObjectSet.All,
-    interactMask, solidMask, triggerMask,
-    CollisionGroup.Default,
-    out trace,
-    ignoreEntity1: pawn,
-    ignoreEntity2: null
+    interactWith: MaskTrace.Solid, interactExclude: MaskTrace.Empty, interactAs: MaskTrace.Empty,
+    CollisionGroup.Always,
+    ref trace,
+    filterEntity: pawn,
+    filterSecondEntity: null
 );
 ```
 
@@ -75,17 +75,17 @@ Trace.SimpleTrace(
 Like `SimpleTrace` but uses pitch/yaw angles instead of an end point:
 
 ```csharp
-CGameTrace trace;
+var trace = CGameTrace.Create();
 Trace.SimpleTraceAngles(
     origin, angles,
     RayType_t.Line,
     RnQueryObjectSet.All,
-    interactMask, solidMask, triggerMask,
-    CollisionGroup.Default,
-    out trace,
-    ignoreEntity1: pawn,
-    ignoreEntity2: null,
-    maxDistance: 5000f
+    interactWith: MaskTrace.Solid, interactExclude: MaskTrace.Empty, interactAs: MaskTrace.Empty,
+    CollisionGroup.Always,
+    ref trace,
+    filterEntity: pawn,
+    filterSecondEntity: null,
+    maxDistance: 8192f  // default
 );
 ```
 
@@ -93,10 +93,10 @@ Trace.SimpleTraceAngles(
 
 | Method | Description |
 |--------|-------------|
-| `Ray(Vector3 start, Vector3 end, MaskTrace mask, CBaseEntity? ignore)` | Simple line ray, returns `TraceResult` |
-| `TraceShape(Vector3, Vector3, Ray_t, CTraceFilter, out CGameTrace)` | Full shape trace with custom ray and filter |
-| `SimpleTrace(...)` | Convenience with individual parameters |
-| `SimpleTraceAngles(...)` | Like SimpleTrace but with angles and max distance |
+| `Ray(Vector3 start, Vector3 end, MaskTrace mask = Solid\|Hitbox, CBaseEntity? ignore = null)` | Simple line ray, returns `TraceResult` |
+| `TraceShape(Vector3, Vector3, Ray_t, CTraceFilter, ref CGameTrace)` | Full shape trace with custom ray and filter |
+| `SimpleTrace(start, end, rayKind, objectQuery, interactWith, interactExclude, interactAs, collision, ref trace, filterEntity?, filterSecondEntity?)` | Convenience with individual parameters |
+| `SimpleTraceAngles(start, angles, rayKind, objectQuery, interactWith, interactExclude, interactAs, collision, ref trace, filterEntity?, filterSecondEntity?, maxDistance = 8192f)` | Like SimpleTrace but with angles and max distance |
 
 ## TraceResult
 

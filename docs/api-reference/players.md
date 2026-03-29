@@ -41,7 +41,8 @@ Deadlock-specific player controller. Extends `CBasePlayerController`.
 | `ChangeTeam(int team)` | `void` | Moves player to specified team |
 | `SelectHero(Heroes hero)` | `void` | Forces player to select specified hero |
 | `PrintToConsole(string msg)` | `void` | Sends message to this player's console |
-| `PrintToConsoleAll(string msg)` | `void` | Sends message to all connected players' consoles |
+| `PrintToConsoleAll(string msg)` | `void` | *Static* — Sends message to all connected players' consoles |
+| `ServerCommand(string command)` | `void` | Executes command server-side as this player (bypasses FCVAR checks) |
 
 ### Properties
 
@@ -69,9 +70,10 @@ var pawn = controller.GetHeroPawn();
 
 Base player controller entity. Manages the link between a player slot and their pawn.
 
-| Method | Description |
-|--------|-------------|
-| `SetPawn(CBasePlayerPawn, bool, bool, bool, bool)` | Assigns a new pawn, optionally transferring team and movement state |
+| Member | Type | Description |
+|--------|------|-------------|
+| `PlayerName` | `string` | Player display name (get/set, char[128] inline buffer) |
+| `SetPawn(pawn, retainOldPawnTeam, copyMovementState, allowTeamMismatch, preserveMovementState)` | `void` | Assigns a new pawn, optionally transferring team and movement state |
 
 ## CCitadelPlayerPawn
 
@@ -105,19 +107,30 @@ The in-game physical representation of a player (the hero). Extends `CBasePlayer
 
 | Method | Returns | Description |
 |--------|---------|-------------|
-| `ModifyCurrency(ECurrencyType, int, ECurrencySource, bool, bool, bool)` | `void` | Add/remove currency (gold, ability points). Negative to spend |
-| `ResetHero(bool)` | `void` | Full reset: clears loadout, removes items, re-adds starting abilities |
-| `RemoveAbility(string name)` | `bool` | Removes ability by internal name. Returns `true` on success |
-| `AddAbility(string name, uint slot)` | `CBaseEntity?` | Adds ability to given slot. Returns the new ability entity |
+| `ModifyCurrency(ECurrencyType type, int amount, ECurrencySource source, bool silent, bool forceGain, bool spendOnly)` | `void` | Add/remove currency (gold, ability points). Negative to spend |
+| `ResetHero(bool resetAbilities = true)` | `void` | Full reset: clears loadout, removes items, re-adds starting abilities |
+| `RemoveAbility(string abilityName)` | `bool` | Removes ability by internal name. Returns `true` on success |
+| `AddAbility(string abilityName, ushort slot)` | `CBaseEntity?` | Adds ability to given slot. Returns the new ability entity |
+| `AddItem(string itemName, int upgradeTier = -1)` | `CBaseEntity?` | Gives an item. `upgradeTier` -1 for base version |
+| `RemoveItem(string itemName)` | `bool` | Removes item directly (no refund). Calls RemoveAbility internally |
+| `SellItem(string itemName, bool fullRefund, bool forceSellPrice)` | `bool` | Sells item with gold refund |
+| `GetCurrency(ECurrencyType type)` | `int` | Get current currency amount |
+| `SetCurrency(ECurrencyType type, int value)` | `void` | Set currency directly |
+| `Level` | `int` | Hero level (get/set) |
+| `InRegenerationZone` | `bool` | Whether pawn is in base regen zone (read-only) |
+| `ExecuteAbilityBySlot(EAbilitySlot, bool altCast, byte flags)` | `int` | Execute ability in slot (0 = success) |
+| `ExecuteAbilityByID(int abilityID, bool altCast, byte flags)` | `int` | Execute ability by runtime ID |
+| `GetAbilityBySlot(EAbilitySlot slot)` | `CBaseEntity?` | Get ability entity in slot |
+| `ToggleActivate(CBaseEntity ability, bool activate)` | `void` | Activate/deactivate an ability |
 
 ### Currency Example
 
 ```csharp
 // Give 15000 gold
-pawn.ModifyCurrency(ECurrencyType.Gold, 15000, ECurrencySource.FlagCapture, false, false, false);
+pawn.ModifyCurrency(ECurrencyType.EGold, 15000, ECurrencySource.ECheats, false, false, false);
 
 // Give 17 ability points
-pawn.ModifyCurrency(ECurrencyType.AbilityPoints, 17, ECurrencySource.FlagCapture, false, false, false);
+pawn.ModifyCurrency(ECurrencyType.EAbilityPoints, 17, ECurrencySource.ECheats, false, false, false);
 ```
 
 ### Ability Management
@@ -301,9 +314,10 @@ The API provides limited ability to detect what players are doing. This affects 
 - Currency changes (via `OnModifyCurrency` hook)
 - Chat messages and console commands
 
+**Can partially detect:**
+- Ability attempts (via `OnAbilityAttempt` hook — fires when ability execution is attempted)
+
 **Cannot detect:**
-- Ability use (no ability-cast event or hook)
-- Ultimate activation
 - Item activation
 - Reload
 - Melee attack / parry
@@ -320,28 +334,31 @@ For jump/dash detection, poll `AbilityComponent.ResourceStamina.CurrentValue` ev
 
 | Value | Raw | Description |
 |-------|-----|-------------|
-| `Invalid` | -1 | Invalid |
-| `Gold` | 0 | In-game gold (souls) |
-| `AbilityPoints` | 1 | Ability upgrade points |
-| `AbilityUnlocks` | 2 | Ability unlock tokens |
-| `DeathPenaltyGold` | 3 | Gold lost on death |
-| `ItemDraftRerolls` | 4 | Item draft reroll tokens |
-| `ItemEnhancements` | 5 | Item enhancement tokens |
+| `ECurrencyInvalid` | -1 | Invalid |
+| `EGold` | 0 | In-game gold (souls) |
+| `EAbilityPoints` | 1 | Ability upgrade points |
+| `EAbilityUnlocks` | 2 | Ability unlock tokens |
+| `EDeathPenaltyGold` | 3 | Gold lost on death |
+| `EItemDraftRerolls` | 4 | Item draft reroll tokens |
+| `EItemEnhancements` | 5 | Item enhancement tokens |
 
 ### ECurrencySource
 
 | Value | Raw | Description |
 |-------|-----|-------------|
 | `EItemPurchase` | 0 | Item purchased |
+| `EItemUpgrade` | 1 | Item upgraded |
 | `EItemSale` | 2 | Item sold |
+| `EStartingAmount` | 5 | Starting currency |
+| `ELevelUp` | 6 | Level up reward |
 | `ECheats` | 7 | Cheat/debug |
 | `EPlayerKill` | 11 | Player kill reward |
 | `EPlayerKillAssist` | 12 | Assist reward |
 | `EBossKill` | 13 | Boss kill reward |
 | `ELaneTrooperKill` | 14 | Lane trooper kill |
 | `ENeutralTrooperKill` | 15 | Neutral camp kill |
-| `EOrbPlayer` | 23 | Soul orb from player |
-| `EOrbLaneTrooper` | 25 | Soul orb from lane trooper |
+| `EOrbPlayer` | 22 | Soul orb from player |
+| `EOrbLaneTrooper` | 24 | Soul orb from lane trooper |
 
 :::note
 ECurrencySource has 45 values total. Only the most commonly used are listed above.

@@ -11,6 +11,12 @@ sidebar_label: "Console Commands"
 
 Marks a method as a console command handler. The method must have signature `void Handler(ConCommandContext ctx)`.
 
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `Name` | `string` | — | The command name (required) |
+| `Description` | `string` | `""` | Help text shown in console |
+| `ServerOnly` | `bool` | `false` | If true, only callable from server console |
+
 ```csharp
 [ConCommand("dw_killme")]
 public void OnKillMe(ConCommandContext ctx)
@@ -39,6 +45,12 @@ Context passed to `[ConCommand]` handlers.
 
 Marks a property as a console variable. Supports `int`, `float`, `bool`, and `string` types.
 
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `Name` | `string` | — | The cvar name (required) |
+| `Description` | `string` | `""` | Help text shown in console |
+| `ServerOnly` | `bool` | `false` | If true, hidden from clients |
+
 Typing the name in console prints the current value; typing with an argument sets it.
 
 ```csharp
@@ -58,7 +70,7 @@ Programmatic access to Source 2 console variables.
 | Method | Returns | Description |
 |--------|---------|-------------|
 | `Find(string name)` | `ConVar?` | Looks up an existing ConVar by name. **Verified working** |
-| `Create(string name, string defaultValue, string description, bool notify)` | `ConVar?` | Creates and registers a new ConVar. **Currently returns null — use `[ConVar]` attribute instead** |
+| `Create(string name, string defaultValue, string description = "", bool serverOnly = false)` | `ConVar?` | Creates and registers a new ConVar |
 
 ### Instance Methods
 

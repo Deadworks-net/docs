@@ -94,6 +94,9 @@ Incoming chat message from a player. Also passed to `OnChatMessage()` on the [pl
 | Property | Type | Description |
 |----------|------|-------------|
 | `SenderSlot` | `int` | Player slot index of the sender |
+| `ChatText` | `string` | The raw chat text that was sent |
+| `AllChat` | `bool` | Whether this was an all-chat message (vs team chat) |
+| `LaneColor` | `LaneColor` | Lane color of the sender |
 
 ## Return Values
 

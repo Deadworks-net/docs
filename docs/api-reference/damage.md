@@ -50,7 +50,7 @@ entity.Hurt(
     attacker,       // attacking entity
     inflictor,      // entity that caused damage (weapon, projectile)
     ability,        // ability entity (optional, can be null)
-    flags: 0        // TakeDamageFlags
+    damageType: 0   // DamageTypes_t bits (int)
 );
 ```
 
@@ -68,7 +68,7 @@ using var damageInfo = new CTakeDamageInfo(
     attacker: attackerEntity,
     inflictor: inflictorEntity,
     ability: abilityEntity,
-    flags: (int)TakeDamageFlags.None
+    damageType: 0
 );
 
 targetEntity.TakeDamage(damageInfo);
@@ -79,8 +79,8 @@ targetEntity.TakeDamage(damageInfo);
 
 | Method/Constructor | Description |
 |-------------------|-------------|
-| `new CTakeDamageInfo(float, CBaseEntity, CBaseEntity, CBaseEntity, int)` | Create new (must dispose) |
-| `FromExisting(IntPtr)` | Wrap existing pointer (non-owning, e.g. from hook) |
+| `new CTakeDamageInfo(float damage, CBaseEntity? attacker, CBaseEntity? inflictor, CBaseEntity? ability, int damageType)` | Create new (must dispose) |
+| `FromExisting(nint)` | Wrap existing pointer (non-owning, e.g. from hook) — *internal* |
 
 **Important:** When creating via constructor, always use `using` or call `Dispose()`.
 
@@ -149,12 +149,12 @@ Intercept currency changes (gold, ability points):
 public override HookResult OnModifyCurrency(ModifyCurrencyEvent ev)
 {
     // ev.Pawn — the player pawn
-    // ev.CurrencyType — ECurrencyType (Gold, AbilityPoints)
+    // ev.CurrencyType — ECurrencyType (EGold, EAbilityPoints)
     // ev.Amount — the amount being added/removed
-    // ev.Source — ECurrencySource (kill, orb, purchase, etc.)
+    // ev.Source — ECurrencySource (EPlayerKill, EOrbPlayer, EItemPurchase, etc.)
 
     // Block all currency gain except starting gold
-    if (ev.Source != ECurrencySource.StartingGold)
+    if (ev.Source != ECurrencySource.EStartingAmount)
         return HookResult.Stop;
 
     return HookResult.Handled;

@@ -20,25 +20,45 @@ var text = CPointWorldText.Create(
     message: "Hello World",
     position: new Vector3(100, 200, 300),
     fontSize: 100f,
+    worldUnitsPerPx: null,     // null = auto-calculated from fontSize
+    fontName: null,            // null = default font
     r: 255, g: 255, b: 255, a: 255,  // RGBA color
-    worldUnitsPerPx: 0
+    reorientMode: 0            // 0 = no reorientation
 );
 ```
 
 ### Parameters
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `message` | `string` | Text to display |
-| `position` | `Vector3` | World-space position |
-| `fontSize` | `float` | Font size in pixels |
-| `r, g, b, a` | `byte` | RGBA color components |
-| `worldUnitsPerPx` | `int` | World units per pixel (0 = default) |
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `message` | `string` | — | Text to display |
+| `position` | `Vector3` | — | World-space position |
+| `fontSize` | `float` | `100f` | Font size in pixels |
+| `worldUnitsPerPx` | `float?` | `null` | World units per pixel (`null` = auto-calculated as `0.25 / 1050 * fontSize`) |
+| `fontName` | `string?` | `null` | Font name (`null` = default, max 63 bytes UTF-8) |
+| `r, g, b, a` | `byte` | `255` | RGBA color components |
+| `reorientMode` | `int` | `0` | Reorientation mode (0 = none) |
+
+### Instance Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `Enabled` | `bool` | Enable/disable the text entity |
+| `Fullbright` | `bool` | Whether text is fullbright (ignores lighting) |
+| `FontSize` | `float` | Font size in pixels |
+| `WorldUnitsPerPx` | `float` | World units per pixel |
+| `DepthOffset` | `float` | Depth offset for rendering |
+| `FontName` | `string` | Font name (max 63 bytes UTF-8) |
+| `ColorABGR` | `uint` | Color as ABGR uint32 |
+| `JustifyHorizontal` | `HorizontalJustify` | Horizontal text justification |
+| `JustifyVertical` | `VerticalJustify` | Vertical text justification |
 
 ### Updating Text
 
 ```csharp
 text.SetMessage("Updated text!");
+text.SetColor(255, 0, 0);           // RGB (alpha defaults to 255)
+text.SetColor(255, 0, 0, 128);      // RGBA
 ```
 
 ### Cleanup
@@ -47,9 +67,9 @@ text.SetMessage("Updated text!");
 text.Remove();  // Inherited from CBaseEntity
 ```
 
-## ScreenText
+## Screen-Anchored Text (Pattern)
 
-Displays world text anchored to a player's camera (screen-space). Internally uses a `CPointWorldText` entity parented to the player.
+There is no dedicated `ScreenText` class. To display text anchored to a player's camera, create a `CPointWorldText` and parent it to the player pawn using `SetParent()`.
 
 :::tip Camera Offset
 Deadlock uses a right-shoulder third-person camera, positioned ~35 units to the right of the player's eye position. ScreenText positions are relative to the model eye, not the actual camera — so screen-center coordinates are **not** `(0.5, 0.5)`.
