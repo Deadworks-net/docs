@@ -15,33 +15,7 @@ This guide walks through installing Deadworks and setting up a Visual Studio pro
 
 ## 1. Install Deadworks
 
-### Extract Core Files
-
-Extract the Deadworks archive into your Deadlock installation:
-
-```
-Deadlock/game/bin/win64/
-```
-
-This places the Deadworks runtime and the `managed/` folder (containing `DeadworksManaged.Api.dll`) in the correct location.
-
-### Add Configuration File
-
-Place `deadworks_mem.jsonc` into:
-
-```
-Deadlock/game/citadel/cfg/deadworks_mem.jsonc
-```
-
-### Enable IntelliSense (Optional)
-
-Place `DeadworksManaged.Api.xml` in the `managed/` folder alongside the DLL:
-
-```
-Deadlock/game/bin/win64/managed/DeadworksManaged.Api.xml
-```
-
-This gives you full XML documentation and IntelliSense in Visual Studio when referencing the API.
+Download the latest release from [https://github.com/Deadworks-net/deadworks/releases](https://github.com/Deadworks-net/deadworks/releases) and extract it into your Deadlock folder (`C:\Program Files (x86)\Steam\steamapps\common\Deadlock`).
 
 ### Verify Installation
 
