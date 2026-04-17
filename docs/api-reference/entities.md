@@ -17,11 +17,14 @@ Base managed wrapper for all Source 2 entities. Provides common operations: heal
 
 | Method | Returns | Description |
 |--------|---------|-------------|
-| `CreateByName(string className)` | `CBaseEntity?` | Creates a new entity by class name (e.g. `"info_particle_system"`) |
+| `CreateByName(string className)` | `CBaseEntity?` | Creates a new entity by its **C++ class name** (e.g. `"info_particle_system"`, `"prop_dynamic"`) |
+| `CreateByDesignerName(string designerName)` | `CBaseEntity?` | Creates by **designer name** — resolves the base class, then writes `m_nSubclassID` + `m_pSubclassVData` so VData is available before `Spawn()`. Prefer this for subclassed designer-named entities (`npc_boss_tier2`, `citadel_breakable_prop`, `point_worldtext`, etc.) — these frequently crash when created via `CreateByName` alone. |
 | `FromHandle(uint entityHandle)` | `CBaseEntity?` | Gets entity by its entity handle |
 | `FromHandle<T>(uint entityHandle)` | `T?` | Gets typed entity by handle (avoids manual cast) |
 | `FromIndex(int index)` | `CBaseEntity?` | Gets entity by its global entity index |
 | `FromIndex<T>(int index)` | `T?` | Gets typed entity by index |
+
+> **Rule of thumb:** use `CreateByDesignerName` unless you have a specific reason not to. It works for plain C++ class names too (it falls back to `CreateByName` when no subclass mapping exists).
 
 ### Properties
 
@@ -72,6 +75,57 @@ Calling `Remove()` immediately after `CreateByName()` on certain entity types (e
 Timer.Once(1.Ticks(), () => entity.Remove());
 ```
 :::
+
+### Spawning Props With a Model
+
+`prop_dynamic` and `prop_physics_override` need the model supplied via a `CEntityKeyValues` bag before `Spawn()`. Calling `SetModel()` on a plain `CreateByName("prop_dynamic")` before spawn produces the purple-checkerboard error model.
+
+```csharp
+public override void OnPrecacheResources()
+{
+    Precache.AddResource("models/hideout/hideout_sandbox_ball.vmdl");
+}
+
+[ChatCommand("ball")]
+public HookResult CmdBall(ChatCommandContext ctx)
+{
+    var pos = ctx.Controller?.GetHeroPawn()?.Position ?? Vector3.Zero;
+
+    var prop = CBaseEntity.CreateByDesignerName("prop_dynamic");
+    if (prop == null) return HookResult.Handled;
+
+    var ekv = new CEntityKeyValues();
+    ekv.SetString("model", "models/hideout/hideout_sandbox_ball.vmdl");
+    ekv.SetVector("origin", pos + new Vector3(0, 0, 128));
+    prop.Spawn(ekv);
+
+    return HookResult.Handled;
+}
+```
+
+**Model path gotchas:**
+
+- Use the `.vmdl` path, **not** `.vmdl_c`. The compiled-asset suffix (`_c`) will crash the server on spawn.
+- The model must be precached in `OnPrecacheResources` — runtime precache after map load isn't reliable.
+- Browse available models at [s2v.app](https://s2v.app/).
+
+For a rigid, frozen prop you can stand on:
+
+```csharp
+var prop = CBaseEntity.CreateByDesignerName("prop_physics_override");
+var ekv = new CEntityKeyValues();
+ekv.SetString("model", "models/abilities/viscous_cube.vmdl");
+ekv.SetBool("massless", true);
+ekv.SetVector("origin", pos);
+prop.Spawn(ekv);
+prop.AcceptInput("DisableMotion"); // freeze in place
+```
+
+**Disabling collision:** setting `"solid" = 0` in the EKV does **not** reliably disable collision on `prop_dynamic`. Fire the input after spawn instead:
+
+```csharp
+prop.AcceptInput("DisableCollision");
+```
 
 ### Transform
 
@@ -358,6 +412,20 @@ Base class for all managed wrappers around native C++ entity/object pointers.
 |----------|------|-------------|
 | `Handle` | `IntPtr` | Raw pointer to the native object |
 | `IsValid` | `bool` | `true` if the pointer is non-null |
+
+:::warning `IsValid` is a null-check, not a liveness-check
+`IsValid` only tells you whether the managed wrapper has a non-null pointer. It returns `true` even after the underlying entity has been `Remove()`d or the player has disconnected. To check whether an entity still actually exists, round-trip through the entity handle table:
+
+```csharp
+bool IsAlive(CBaseEntity? e) =>
+    e != null && CBaseEntity.FromHandle(e.EntityHandle) != null;
+
+// or for a typed check
+bool Exists(CBaseEntity? e) => e?.As<CBaseEntity>() != null;
+```
+
+The `FromHandle` round-trip consults the engine's entity table, so it returns `null` once the entity is gone. Use this whenever you're holding an entity reference across ticks (in a timer, cached field, or collection).
+:::
 
 ## CEntitySubclassVDataBase
 
