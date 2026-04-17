@@ -33,7 +33,7 @@ public class MyPlugin : DeadworksPluginBase
 | `OnUnload()` | Called when plugin is unloaded. Clean up hooks and timers here |
 | `OnPrecacheResources()` | Called during map load. Use [`Precache.AddResource()`](precaching) here |
 | `OnStartupServer()` | Called when the server starts (new map load) |
-| `OnGameFrame(bool simulating, bool firstTick, bool lastTick)` | Called every server frame. `simulating` is true during active gameplay |
+| `OnGameFrame(bool simulating, bool firstTick, bool lastTick)` | Called every server frame (~64 Hz). `simulating` is true during active gameplay; the other flags tag the first/last frame of a contiguous simulation window. Prefer this over `Timer.Every(1.Ticks(), …)` when you need per-tick logic. |
 | `OnConfigReloaded()` | Called when plugin config is reloaded at runtime |
 
 ### Server Event Hooks
@@ -50,11 +50,14 @@ public class MyPlugin : DeadworksPluginBase
 
 ### Client Lifecycle Hooks
 
-| Method | Description |
-|--------|-------------|
-| `OnClientPutInServer(ClientPutInServerEvent)` | Client initially connected to server |
-| `OnClientFullConnect(ClientFullConnectEvent)` | Client fully connected and in-game |
-| `OnClientDisconnect(ClientDisconnectedEvent)` | Client disconnected |
+| Method | Return | Description |
+|--------|--------|-------------|
+| `OnClientConnect(ClientConnectEvent)` | `bool` | Fires before `OnClientPutInServer`. Return `false` to **reject** the connection. Event exposes `Slot`, `Name`, `SteamId`, `IpAddress`. |
+| `OnClientPutInServer(ClientPutInServerEvent)` | `void` | Client has entered the server |
+| `OnClientFullConnect(ClientFullConnectEvent)` | `void` | Client fully connected and in-game |
+| `OnClientDisconnect(ClientDisconnectedEvent)` | `void` | Client disconnected |
+| `OnSignonState(ref string addons)` | `void` | Fires during signon handshake. Mutate `addons` to inject addon metadata sent to the client. |
+| `OnCheckTransmit(CheckTransmitEvent)` | `void` | Fires per-player every tick. Call `args.Hide(entity)` to prevent an entity from being networked to that specific player (e.g. show UI worldtext only to its owner). Must be called every tick the entity should stay hidden. |
 
 ### Entity Lifecycle Hooks
 
@@ -72,9 +75,11 @@ Return values for hooks and event handlers:
 
 | Value | Raw | Description |
 |-------|-----|-------------|
-| `HookResult.Continue` | 0 | Event not consumed — allow default behavior and other plugins |
+| `HookResult.Continue` | 0 | Default — event proceeds normally. Return this from passive observer hooks like `OnTakeDamage` when you don't want to change behavior. |
 | `HookResult.Stop` | 1 | Block the event entirely — no further processing |
-| `HookResult.Handled` | 2 | Event was consumed, but allow other plugins to process |
+| `HookResult.Handled` | 2 | Event consumed — same effect as `Stop` for framework purposes. Conventionally used in chat-command handlers to signal "I handled this command, don't also display the user's message in chat." |
+
+> **Practical tip:** for **observer** hooks (`OnTakeDamage`, `OnAddModifier`, `OnChatMessage`, `OnClientConCommand`), return `Continue` unless you explicitly want to block. For **chat-command** handlers and similar "I answered this" methods, return `Handled`. `Stop` and `Handled` currently behave identically at the framework layer — the distinction is semantic for readers of your code.
 
 ## IDeadworksPlugin
 

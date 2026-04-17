@@ -18,21 +18,29 @@ Server Start
     │
     ├── OnStartupServer()         ← Server map loaded, set convars here
     │
-    │   ┌─────────────────────────────────────────┐
-    │   │           SERVER RUNNING                │
-    │   │                                         │
-    │   │  OnClientPutInServer()  ← Client joins  │
-    │   │  OnClientFullConnect()  ← Client ready  │
-    │   │  OnGameFrame()          ← Every tick     │
-    │   │  OnEntityCreated()      ← Entity born    │
-    │   │  OnEntitySpawned()      ← Entity ready   │
-    │   │  OnEntityDeleted()      ← Entity dying   │
-    │   │  OnTakeDamage()         ← Damage event   │
-    │   │  OnModifyCurrency()     ← Currency event  │
-    │   │  OnChatMessage()        ← Chat message    │
-    │   │  OnClientConCommand()   ← Console cmd     │
-    │   │  OnClientDisconnect()   ← Client leaves   │
-    │   └─────────────────────────────────────────┘
+    │   ┌─────────────────────────────────────────────┐
+    │   │           SERVER RUNNING                    │
+    │   │                                             │
+    │   │  OnClientConnect()      ← Filter (bool)     │
+    │   │  OnClientPutInServer()  ← Client joins      │
+    │   │  OnClientFullConnect()  ← Client ready      │
+    │   │  OnGameFrame()          ← Every server tick │
+    │   │  OnCheckTransmit()      ← Per-player, tick  │
+    │   │  OnEntityCreated()      ← Entity born       │
+    │   │  OnEntitySpawned()      ← Entity ready      │
+    │   │  OnEntityDeleted()      ← Entity dying      │
+    │   │  OnEntityStartTouch()   ← Touch begin       │
+    │   │  OnEntityEndTouch()     ← Touch end         │
+    │   │  OnTakeDamage()         ← Damage event      │
+    │   │  OnModifyCurrency()     ← Currency event    │
+    │   │  OnAddModifier()        ← Modifier applied  │
+    │   │  OnAbilityAttempt()     ← Ability input     │
+    │   │  OnProcessUsercmds()    ← User input tick   │
+    │   │  OnChatMessage()        ← Chat message      │
+    │   │  OnClientConCommand()   ← Console cmd       │
+    │   │  OnClientDisconnect()   ← Client leaves     │
+    │   │  OnConfigReloaded()     ← Config hot-reload │
+    │   └─────────────────────────────────────────────┘
     │
     ├── OnUnload()                ← Plugin unloaded
     │
@@ -146,23 +154,67 @@ Player connects
 ```csharp
 private readonly HashSet<int> _activePlayers = new();
 
-public override HookResult OnClientFullConnect(ClientFullConnectEvent ev)
+public override void OnClientFullConnect(ClientFullConnectEvent args)
 {
-    _activePlayers.Add(ev.Slot);
-    Console.WriteLine($"Player connected: slot {ev.Slot}");
-    return HookResult.Handled;
+    _activePlayers.Add(args.Slot);
+    Console.WriteLine($"Player connected: slot {args.Slot}");
 }
 
-public override HookResult OnClientDisconnect(ClientDisconnectedEvent ev)
+public override void OnClientDisconnect(ClientDisconnectedEvent args)
 {
-    _activePlayers.Remove(ev.Slot);
-    Console.WriteLine($"Player disconnected: slot {ev.Slot}");
-    return HookResult.Handled;
+    _activePlayers.Remove(args.Slot);
+    Console.WriteLine($"Player disconnected: slot {args.Slot}");
 }
 ```
+
+> `OnClientFullConnect` and `OnClientDisconnect` return `void` — they're notification hooks, not filter hooks. Use `OnClientConnect` (returns `bool`) if you need to reject a connection before the client joins.
+
+## Async Work — Get Back On the Game Thread
+
+After `await`, C# may resume on a thread-pool thread. Touching any game object off the main thread will corrupt memory or crash. **Always** wrap game-touching code in `Timer.NextTick(...)` after an `await`:
+
+```csharp
+public override void OnLoad(bool isReload)
+{
+    // OnLoad is not async — kick off the work and don't await
+    _ = FetchAndAnnounceAsync();
+}
+
+private async Task FetchAndAnnounceAsync()
+{
+    using var client = new HttpClient();
+    var response = await client.GetStringAsync("https://api.example.com/message");
+
+    // At this point we may be on a non-game thread.
+    Timer.NextTick(() =>
+    {
+        // Safe to interact with the game here.
+        var msg = new CCitadelUserMsg_HudGameAnnouncement {
+            TitleLocstring = "API",
+            DescriptionLocstring = response
+        };
+        NetMessages.Send(msg, RecipientFilter.All);
+    });
+}
+```
+
+The same rule applies to `Task.Delay`, `Task.Run`, file I/O, anything that yields. If you're not sure whether the continuation is on the game thread, route it through `Timer.NextTick`.
+
+## Hot-Reload Gotchas
+
+Hot-reload replaces the plugin assembly while the server keeps running. This is very useful during development, but there are some pitfalls:
+
+- **Cancel long-running work in `OnUnload`.** Per-plugin timers and `EntityData<T>` entries are cleaned up automatically. Anything else — `CancellationTokenSource`, `FileSystemWatcher`, sockets, `Timer.Sequence` handles you want to stop — has to be cancelled or disposed manually.
+- **Static state persists.** Types in a new load context have fresh statics, but if you've cached anything in a host assembly (shared `DeadworksManaged.Api` types, for example), it will still be there after a reload. Use `isReload` to decide whether to re-initialize.
+- **`Console.WriteLine` during `OnLoad` may vanish on first boot.** The console buffer can swallow the first batch of log lines before idling; a reload (hot-reload the plugin, or edit the DLL while the server runs) will make the logs appear. If you need reliable output from first boot, log through a file instead.
+
+## Console Output on Windows
+
+If you launch `deadworks.exe` from Windows Terminal or PowerShell and the console window keeps overwriting its own top line (showing only `N/31 on map dl_midtown` no matter how far up you scroll), that's a terminal compatibility issue with Deadlock's progress reporting. Launch from `cmd.exe` (the classic console host) instead and the problem goes away.
 
 ## See Also
 
 - [Plugin Base](../api-reference/plugin-base) — All lifecycle hooks
 - [Precaching](../api-reference/precaching) — Resource precaching
 - [Console Commands](../api-reference/console-commands) — ConVar setup in OnStartupServer
+- [Server Hosting](server-hosting) — Running a dedicated server
