@@ -68,7 +68,7 @@ pawn.AddModifier("my_modifier", kv);
 
 ## CModifierProperty
 
-Manages modifier state bits on an entity. Access via `pawn.ModifierProp`.
+Manages modifier state bits and active modifier instances on an entity. Access via `entity.ModifierProp`.
 
 ```csharp
 // Enable unlimited air jumps
@@ -80,12 +80,34 @@ bool hasState = pawn.ModifierProp.HasModifierState(EModifierState.UnlimitedAirJu
 
 // Disable
 pawn.ModifierProp.SetModifierState(EModifierState.UnlimitedAirJumps, false);
+
+// Enumerate active modifiers
+foreach (var mod in pawn.ModifierProp.Modifiers)
+    Console.WriteLine(mod.SubclassVData?.Name);
+
+// Check by name
+if (pawn.ModifierProp.HasModifier("modifier_citadel_knockdown")) { /* ... */ }
 ```
 
-| Method | Returns | Description |
+| Method / Property | Returns | Description |
 |--------|---------|-------------|
 | `SetModifierState(EModifierState, bool)` | `void` | Sets or clears a modifier state bit |
 | `HasModifierState(EModifierState)` | `bool` | Returns `true` if state bit is set |
+| `HasModifier(string name)` | `bool` | Returns `true` if the entity has an active modifier with the given subclass VData name |
+| `Modifiers` | `IReadOnlyList<CBaseModifier>` | All active modifier instances on the entity |
+
+### Removing a modifier
+
+Remove is a method on the entity itself, not on `ModifierProp`:
+
+```csharp
+// By name — removes the first instance matching that VData name
+pawn.RemoveModifier("modifier_citadel_knockdown");
+
+// By instance — use when you held on to a CBaseModifier from AddModifier
+var mod = pawn.AddModifier("modifier_...", kv);
+pawn.RemoveModifier(mod);
+```
 
 ## EModifierState
 
@@ -194,6 +216,8 @@ The following inline hero modifiers have been tested and **do not work** when ap
 
 ## EModifierState Reference
 
+State behavior is inconsistent — some flags are honored by the client, others are only meaningful when set by internal C++ modifier code. When in doubt, try setting the flag every tick (from `OnGameFrame` or a 1-tick timer): several states that "don't work" when set once do work when sustained.
+
 **Confirmed working** via `SetModifierState`:
 
 | Raw Value | Name | Description |
@@ -202,35 +226,68 @@ The following inline hero modifiers have been tested and **do not work** when ap
 | 38 | `AdditionalAirMoves` | Extra air moves |
 | 39 | `UnlimitedAirDashes` | Allow unlimited air dashes |
 | 40 | `UnlimitedAirJumps` | Allow unlimited air jumps |
+| 68 | `VisibleToEnemy` | Reveal on the minimap to the enemy team. **Must be set every tick** to stay reliable for human players (bots work with a single call). |
 | 69 | `InfiniteClip` | Infinite ammo, no reload needed |
-| 118 | `FriendlyFireEnabled` | Enable friendly fire |
+| 115 | `UnitStatusHealthHidden` | Hides the healthbar above the hero. Set every tick. |
+| 116 | `UnitStatusHidden` | Hides the whole unit status / nameplate panel. Set every tick. |
+| 118 | `FriendlyFireEnabled` | Enables friendly-fire **for bullet damage only**. Abilities and melee still ignore teammates; see the FFA recipe in [team-and-hero-management](../guides/team-and-hero-management). |
 
-**Confirmed NOT working** (no visible effect):
+**Observed not working standalone** (effect is either client-gated or requires the owning ability/modifier):
 
 | Raw Value | Name | Notes |
 |-----------|------|-------|
-| 12 | `Disarmed` | No effect |
-| 13 | `Muted` | No effect |
-| 15 | `Silenced` | No effect |
-| 19 | `Invulnerable` | No effect |
-| 36 | `Unkillable` | No effect |
-| 68 | `VisibleToEnemy` | No effect |
-| 76 | `GlowThroughWallsToEnemy` | No effect |
-| 103 | `RespawnCredit` | No effect |
-| 104 | `RespawnCreditPersonal` | No effect |
-| 119 | `Flying` | No effect |
-| 193 | `Frozen` | No effect |
+| 12 | `Disarmed` | No observed effect |
+| 13 | `Muted` | No observed effect |
+| 15 | `Silenced` | No observed effect |
+| 19 | `Invulnerable` | No observed effect — use a damage hook to block instead |
+| 36 | `Unkillable` | No observed effect |
+| 76 | `GlowThroughWallsToEnemy` | No observed effect |
+| 103 | `RespawnCredit` | No observed effect |
+| 104 | `RespawnCreditPersonal` | No observed effect |
+| 119 | `Flying` | No observed effect — use MoveType instead |
+| 193 | `Frozen` | No observed effect — use a movement modifier or MoveType |
 
-:::tip
-You can cast raw integer values to `EModifierState` for states not in the managed enum:
+:::tip Try setting every tick before giving up
+The Discord dump has several cases of "doesn't work" turning into "works when set every tick." Before writing off a state, try:
+
+```csharp
+public override void OnGameFrame(bool simulating, bool firstTick, bool lastTick)
+{
+    if (!simulating) return;
+    foreach (var pawn in Players.GetAllPawns())
+        pawn.ModifierProp?.SetModifierState(EModifierState.VisibleToEnemy, true);
+}
+```
+
+You can also cast raw integer values to `EModifierState` for states not in the managed enum:
+
 ```csharp
 pawn.ModifierProp?.SetModifierState((EModifierState)69, true); // InfiniteClip
 ```
 :::
 
 :::note
-EModifierState has 302 values total. The raw values follow the `MODIFIER_STATE_` prefix pattern from VData (e.g., `MODIFIER_STATE_INFINITE_CLIP` = 69). Many states only work when set by internal C++ modifier code, not via `SetModifierState` alone.
+`EModifierState` has 302 values total. The raw values follow the `MODIFIER_STATE_` prefix pattern from VData (e.g., `MODIFIER_STATE_INFINITE_CLIP` = 69).
 :::
+
+## KeyValues3 Parameters Are Mostly Ignored
+
+When you pass `KeyValues3` parameters to `AddModifier`, **only `duration` is reliably honored** across most modifiers. The rest of the VData is compiled into the modifier definition; runtime overrides rarely take effect. If you need a variant of an existing modifier with different parameters, you'll usually need to:
+
+- Add the parent ability first and pass it as the `ability` argument (see [AddAbility + AddModifier Pattern](#addability--addmodifier-pattern) above), or
+- Author a custom modifier in your own VData, or
+- Apply the effect via a different mechanism (damage hooks, `SetModifierState`, etc.).
+
+## Discovering Modifier Names
+
+The server has thousands of modifiers. Useful sources:
+
+- **`modifier_dump_list`** in the server console — lists currently-known modifiers. Results can vary between invocations; if it looks short, run it again after a map fully loads.
+- **[Deadlock modding modifier list](https://deadlockmodding.pages.dev/modifier-list)** — community-maintained dump.
+- **`scripts/modifiers.vdata`** (extracted from `pak01_dir.vpk`) — the authoritative standalone modifier definitions.
+- **`scripts/abilities.vdata`** — abilities contain inline modifier subclasses under `Modifiers` blocks. These are referenced as `upgrade_<item>/modifier_<name>` in VData but you call `AddModifier` with just the bare modifier name.
+
+Tools for browsing the VDATA: [source2viewer-cli](https://github.com/ValveResourceFormat/ValveResourceFormat) (decompile and grep), and [s2v.app](https://s2v.app/) (web browser for game files).
 
 ## See Also
 
