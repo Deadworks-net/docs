@@ -29,6 +29,7 @@ const sidebars: SidebarsConfig = {
         'api-reference/players',
         'api-reference/networking',
         'api-reference/particles',
+        'api-reference/sound',
         'api-reference/modifiers',
         'api-reference/damage',
         'api-reference/game-events',
