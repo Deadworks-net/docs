@@ -61,8 +61,44 @@ public override void OnPrecacheResources()
 }
 ```
 
+## What Happens If You Skip Precaching
+
+If a resource isn't precached before you try to use it, the symptoms are:
+
+- **Models** — the entity spawns with the purple-checkerboard error model
+- **Particles** — nothing renders, or silent fallback to a generic particle
+- **Heroes** — `SelectHero` / `SetModel` crashes or renders the error model
+- **Soundevents** — often still play (they lazy-load), but not reliably
+
+If you see error models after adding a prop spawn, the first thing to check is whether you listed the model in `OnPrecacheResources`.
+
+## File Path Format
+
+Use the uncompiled path (`.vmdl`, `.vpcf`, `.vmat`), **not** the compiled variant (`.vmdl_c`, `.vpcf_c`). The engine resolves precache requests by the source path; passing `_c` suffixes silently fails or crashes on spawn.
+
+```csharp
+// Correct
+Precache.AddResource("models/abilities/viscous_cube.vmdl");
+
+// Wrong — will not precache, may crash on use
+Precache.AddResource("models/abilities/viscous_cube.vmdl_c");
+```
+
+## Custom Content For Clients
+
+Deadworks runs on the server, but the **client still has to own the files** — models, sounds, custom maps. Deadlock's client has no built-in "download from server" path, unlike Source 1 games. This means:
+
+- If you want a custom map, **every player must install it** (typically via a distribution tool like Deadlock Mod Manager or a direct VPK download)
+- Custom skins, fonts in `.vmat`, and custom sounds all require client-side installation
+- `point_worldtext` fonts come from the player's **operating system** font library — you can't ship a font via the server. Stick to common Windows fonts (Arial, Segoe UI, Comic Sans MS, Consolas…)
+
+## Fonts
+
+The community maintains a list of reliably-installed font families at <https://assets.deadlock-api.com/v1/fonts>. These are the names that make sense to pass as `font_name` on `point_worldtext`.
+
 ## See Also
 
 - [Plugin Base](plugin-base) — `OnPrecacheResources()` lifecycle hook
 - [Particles](particles) — Particle effects require precaching
+- [World Text](world-text) — Fonts are resolved from the client's OS
 - [Heroes](heroes) — Hero precaching for dynamic selection

@@ -57,7 +57,8 @@ Called during map load. **Must** precache all resources (particles, models, hero
 public override void OnPrecacheResources()
 {
     Precache.AddResource("particles/upgrades/mystical_piano_hit.vpcf");
-    Precache.AddAllHeroes();
+    Precache.AddHero(Heroes.Inferno);
+    Precache.AddHero(Heroes.Wraith);
 }
 ```
 
