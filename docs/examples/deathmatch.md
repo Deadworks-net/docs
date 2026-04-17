@@ -199,22 +199,34 @@ public HookResult CmdFriendlyFire(ChatCommandContext ctx)
 
 Full trace implementation from player eye position — see [Tracing](../api-reference/tracing).
 
-### Screen Text Toggle
+### World Text Toggle
 
 ```csharp
+private CPointWorldText? _worldText;
+
 [ChatCommand("worldtext")]
 public HookResult CmdWorldText(ChatCommandContext ctx)
 {
-    if (_screenText is { IsValid: true })
+    if (_worldText is { IsValid: true })
     {
-        _screenText.Destroy();
-        _screenText = null;
+        _worldText.Remove();
+        _worldText = null;
         return HookResult.Handled;
     }
-    _screenText = ScreenText.Create(ctx.Controller, "HELLO WORLD", posX: 0.5f, posY: 0.5f, fontSize: 200);
+    var pawn = ctx.Controller?.GetHeroPawn();
+    if (pawn == null) return HookResult.Handled;
+
+    _worldText = CPointWorldText.Create(
+        "HELLO WORLD",
+        pawn.EyePosition,
+        fontSize: 200f,
+        r: 255, g: 255, b: 255, a: 255);
+    _worldText?.SetParent(pawn);
     return HookResult.Handled;
 }
 ```
+
+> There is no `ScreenText` class — the Deadlock camera is not networked, so plugins can only place text in world space. See [World Text — Attaching to the Camera](../api-reference/world-text#attaching-to-the-camera).
 
 ## API Features Used
 
@@ -231,6 +243,6 @@ public HookResult CmdWorldText(ChatCommandContext ctx)
 | `EModifierState`, `ModifierProp` | [Modifiers](../api-reference/modifiers) |
 | `[GameEventHandler]` | [Game Events](../api-reference/game-events) |
 | `Heroes`, `GetHeroData`, `SelectHero` | [Heroes](../api-reference/heroes) |
-| `ScreenText`, `CPointWorldText` | [World Text](../api-reference/world-text) |
+| `CPointWorldText` | [World Text](../api-reference/world-text) |
 | `Trace.TraceShape`, `CGameTrace` | [Tracing](../api-reference/tracing) |
 | `CBaseEntity.CreateByName` | [Entities](../api-reference/entities) |

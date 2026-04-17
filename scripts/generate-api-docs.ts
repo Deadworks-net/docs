@@ -27,7 +27,7 @@ const PAGE_GROUPS: PageGroup[] = [
   { slug: 'CCitadelPlayerPawn', title: 'CCitadelPlayerPawn', types: ['CCitadelPlayerPawn', 'CBasePlayerPawn', 'CCitadelAbilityComponent', 'AbilityResource', 'CCitadel_Ability_Jump', 'CCitadel_Ability_Dash'], guide: '../players', position: 7 },
   { slug: 'Modifiers', title: 'Modifiers', types: ['CModifierProperty', 'EModifierState', 'CBaseModifier', 'EKnockDownTypes'], guide: '../modifiers', position: 8 },
   { slug: 'CParticleSystem', title: 'CParticleSystem', types: ['CParticleSystem'], guide: '../particles', position: 9 },
-  { slug: 'WorldText', title: 'World Text', types: ['CPointWorldText', 'ScreenText'], guide: '../world-text', position: 10 },
+  { slug: 'WorldText', title: 'World Text', types: ['CPointWorldText'], guide: '../world-text', position: 10 },
   { slug: 'ConVar', title: 'ConVar', types: ['ConVar'], guide: '../console-commands', position: 11 },
   { slug: 'EntityIO', title: 'Entity I/O', types: ['EntityIO', 'EntityOutputEvent', 'EntityInputEvent'], guide: '../entity-io', position: 12 },
   { slug: 'GameEvents', title: 'Game Events', types: ['GameEvents', 'GameEvent', 'GameEventWriter', 'GameEventHandler', 'GameEventHandlerAttribute'], guide: '../game-events', position: 13 },
