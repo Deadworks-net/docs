@@ -209,6 +209,8 @@ Query attributes for shape traces:
 
 :::caution Trace.Ray hits trigger volumes
 `Trace.Ray` with `MaskTrace.Solid` will hit trigger volumes like `CPostProcessingVolume`, returning `DidHit=True` with `Fraction=0.000` if the ray starts inside one. For line-of-sight checks, use `TraceShape` with a `CTraceFilter` configured with `CollisionGroup.CitadelBullet` and `HitSolid = true` (without `HitTrigger`).
+
+Symptoms of hitting this: LOS fraction is always `0.000`, `HitPosition` equals the start point. If you're seeing that, switch to the `TraceShape` + `CTraceFilter` recipe below.
 :::
 
 ## Example: Line-of-Sight Check
@@ -243,6 +245,30 @@ bool hasLos = !trace.DidHit;
 `EntityIdsToIgnore` is a fixed-size buffer — accessing it requires `unsafe` code and `<AllowUnsafeBlocks>true</AllowUnsafeBlocks>` in your `.csproj`.
 :::
 
+## Computing a Forward Vector
+
+Deadworks doesn't ship a built-in angles-to-vector helper. Use this conversion — it matches the Source engine convention where pitch is negated because positive Z is up:
+
+```csharp
+static Vector3 ForwardFromAngles(Vector3 angles)
+{
+    float pitch = angles.X * MathF.PI / 180f;
+    float yaw   = angles.Y * MathF.PI / 180f;
+    return new Vector3(
+        MathF.Cos(pitch) * MathF.Cos(yaw),
+        MathF.Cos(pitch) * MathF.Sin(yaw),
+        -MathF.Sin(pitch));
+}
+```
+
+If your trace lands "a little off" the crosshair, the third-person camera's right-shoulder offset is the culprit. The camera sits ~30 units to the right of the pawn's eye. When aiming *from* the camera, apply the offset to your ray origin:
+
+```csharp
+float yawRad = pawn.EyeAngles.Y * MathF.PI / 180f;
+var rightOffset = new Vector3(MathF.Sin(yawRad), -MathF.Cos(yawRad), 0) * 30f;
+var camOrigin = pawn.EyePosition + rightOffset;
+```
+
 ## Example: Player Eye Trace
 
 From the Deathmatch plugin:
@@ -270,6 +296,18 @@ public HookResult OnTrace(ChatCommandContext ctx)
     return HookResult.Handled;
 }
 ```
+
+## Projectile Velocity Is Weird
+
+Projectile entities (for example `CCitadel_Projectile_Viscous_GooGrenade`) don't expose their velocity on any of the obvious fields:
+
+- `m_vecVelocity` on `CBaseEntity` reads `0,0,0`
+- `m_vLastAbsVelocity` and `m_vInitialVelocity` on the projectile class read the initial launch velocity and don't update as the projectile bounces
+- `m_flProjectileSpeed` reports the correct speed but setting it has no effect
+
+However **`entity.Teleport(velocity: …)` does change projectile velocity** — the engine routes the write through its physics path even though the schema field reads zero. If you need to redirect a projectile mid-flight, use `Teleport`.
+
+Similarly `m_flMaxLifetime` on projectiles is **read-only in practice**: setting it doesn't extend the lifetime. If you need longer-lived projectiles you have to re-emit them, not prolong them.
 
 ## See Also
 
