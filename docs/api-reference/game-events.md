@@ -125,16 +125,92 @@ if (ev != null)
 
 ## Common Game Events
 
-| Event Name | Description | Verified |
-|------------|-------------|----------|
-| `player_death` | Player died. Fields: `userid`, `attacker` | Yes |
-| `player_hero_changed` | Player changed their hero | - |
-| `player_spawn` | Player spawned | - |
+| Event Name | Typical fields | Notes |
+|------------|----------------|-------|
+| `player_death` | `userid`, `attacker` | Fires on hero death |
+| `player_spawn` | `userid` | See warning below — fires **before** the pawn is fully materialized on the first spawn |
+| `player_hero_changed` | `userid` | More reliable than `player_spawn` for post-hero-select logic |
+| `player_used_ability` | `userid`, `abilityname`, `Annotation` | Fires for every ability activation including shots (`citadel_weapon_*`) and melee (`ability_melee_*`) |
+| `ability_added` | `userid`, `abilityname` | Fires when an ability/item is granted — use this to detect item purchases |
+| `game_state_changed` | — | Fires at major match transitions, including end-of-match |
+
+The full list of Source 2 events shipped by Deadlock is available at [SteamTracking-Deadlock/resource/core.gameevents](https://github.com/SteamTracking/GameTracking-Deadlock/blob/master/game/core/pak01_dir/resource/core.gameevents) and [game.gameevents](https://github.com/SteamTracking/GameTracking-Deadlock/blob/master/game/citadel/pak01_dir/resource/game.gameevents). These files list every event name and its field schema.
+
+## Common Patterns
+
+### Detecting a melee attack
+
+```csharp
+[GameEventHandler("player_used_ability")]
+public HookResult OnAbility(GameEvent ev)
+{
+    var name = ev.GetString("abilityname", "");
+    if (!name.StartsWith("ability_melee")) return HookResult.Continue;
+
+    // Annotation tells heavy vs light melee
+    var kind = ev.GetString("Annotation", ""); // "heavy_melee" or "light_melee"
+    Console.WriteLine($"Melee attack: {kind}");
+    return HookResult.Continue;
+}
+```
+
+You could also use `OnAbilityAttempt` with `InputButton.Weapon1`, but `player_used_ability` fires only on successful activation and gives you the heavy/light distinction for free.
+
+### Detecting a weapon shot
+
+Same event, different prefix check:
+
+```csharp
+if (name.StartsWith("citadel_weapon_")) { /* shot fired */ }
+```
+
+### Detecting an item purchase
+
+```csharp
+[GameEventHandler("ability_added")]
+public HookResult OnAbilityAdded(GameEvent ev)
+{
+    var pawn = ev.GetPlayerPawn("userid")?.As<CCitadelPlayerPawn>();
+    if (pawn == null) return HookResult.Continue;
+
+    // ability_added fires both for ability unlocks and for item purchases.
+    // Walk the pawn's abilities on the next tick to see what's actually there.
+    Timer.Once(1.Seconds(), () =>
+    {
+        foreach (var ab in pawn.AbilityComponent.Abilities)
+            if (ab.IsItem && ab.AbilityName == "upgrade_unstoppable")
+                Console.WriteLine("Bought Unstoppable!");
+    });
+    return HookResult.Continue;
+}
+```
+
+> The delay is important — without it, the swap/decision happens while the player is still in the shop UI and the result visibly snaps. One second matches what the shipped `UnstoppableSwapPlugin` example does.
+
+### Detecting match end
+
+The cleanest signal is `game_state_changed`. If you need something more specific, the final patron entity being killed (visible in `OnEntityDeleted`) is also reliable.
+
+## player_spawn Is Racy on First Spawn
+
+The `player_spawn` event fires before the pawn is fully populated the first time a player connects. Subsequent spawns are fine. If your handler dereferences hero data (`GetHeroPawn`, `AbilityComponent`, etc.), either:
+
+- Subscribe to `player_hero_changed` instead — it fires after hero data is ready, and
+- Use `Timer.NextTick` or a short delay to re-check the pawn before touching it.
+
+```csharp
+[GameEventHandler("player_hero_changed")]
+public HookResult OnHeroChanged(GameEvent ev)
+{
+    var pawn = ev.GetPlayerPawn("userid")?.As<CCitadelPlayerPawn>();
+    if (pawn == null) return HookResult.Continue;
+    // safe to inspect pawn's hero-specific state here
+    return HookResult.Continue;
+}
+```
 
 :::tip
 `GameEvents.AddListener` is confirmed working for dynamic event listeners. The returned `IHandle` can be cancelled to stop listening. The `[GameEventHandler]` attribute also works for auto-registered handlers.
-
-The engine has 100+ game event types including `ability_added`, `ability_cast_succeeded`, `ability_cooldown_end_changed`, `item_purchase`, `break_breakable`, `citadel_pause_event`, and many more — see the decompiled API for the full list in `GameEventFactory`.
 :::
 
 ## See Also
