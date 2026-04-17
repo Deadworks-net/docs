@@ -42,20 +42,35 @@ The property is `Info`, **not** `DamageInfo`. Use `ev.Info.Attacker`, `ev.Info.D
 
 ### Simple: Hurt()
 
-Convenience wrapper for applying damage:
+Convenience wrapper for applying damage. All parameters except `damage` are optional:
 
 ```csharp
+// Minimal — damage is self-inflicted with no attacker credit
+pawn.Hurt(50f);
+
+// Attacker credited — shows in the kill feed
+target.Hurt(100f, attacker: shooter);
+
+// Full control
 entity.Hurt(
     100f,           // damage amount
-    attacker,       // attacking entity
+    attacker,       // attacking entity (defaults to the victim if omitted)
     inflictor,      // entity that caused damage (weapon, projectile)
-    ability,        // ability entity (optional, can be null)
+    ability,        // ability entity
     damageType: 0   // DamageTypes_t bits (int)
 );
 ```
 
+> If `attacker` is null, the framework treats it as self-damage (attacker = victim). Earlier builds would crash instead — if you're on an older Deadworks version and see an `AccessViolationException` in `Hurt`, update or pass `attacker: pawn`.
+
 :::caution Hurt() Cannot Kill
-`Hurt()` caps damage at 1 HP — even `Hurt(99999f, ...)` leaves the target alive at 1 HP. To guarantee a kill, use `CTakeDamageInfo` with `TakeDamageFlags.ForceDeath | TakeDamageFlags.AllowSuicide` instead.
+`Hurt()` caps damage at 1 HP — even `Hurt(99999f, ...)` leaves the target alive at 1 HP. To guarantee a kill, use `CTakeDamageInfo` with `TakeDamageFlags.ForceDeath | TakeDamageFlags.AllowSuicide` (the `AllowSuicide` flag is required when victim == attacker):
+
+```csharp
+using var info = new CTakeDamageInfo(damage: 10000f, attacker: pawn);
+info.DamageFlags |= TakeDamageFlags.AllowSuicide | TakeDamageFlags.ForceDeath;
+pawn.TakeDamage(info);
+```
 :::
 
 ### Advanced: CTakeDamageInfo
