@@ -7,6 +7,24 @@ sidebar_label: "Chat & HUD"
 
 This guide covers sending messages to players through chat, HUD announcements, console output, and world text.
 
+## What You *Can't* Do From the Server
+
+Before diving in, the ceiling is worth knowing — it's asked about often:
+
+- **No custom HUD panels.** Panorama (the Deadlock UI system) is locked down server-side. You can't inject new UI elements, listen for game events from Panorama, or mutate the chrome.
+- **No worldtext that follows the camera.** The camera is not a networked entity. You can only parent to the pawn.
+- **No per-recipient rendering.** `OnCheckTransmit` lets you hide an entity from specific players, but you can't give the *same* entity different text/color per viewer.
+- **No colored minimap lines.** `CCitadelUserMsg_MapLine` renders green only.
+
+What you *can* do:
+
+- **HUD announcements** (`CCitadelUserMsg_HudGameAnnouncement`) — a single title/description popup per-player
+- **Chat messages** (`CCitadelUserMsg_ChatMsg`) — supports per-recipient text by sending one message per player
+- **Console output** (`PrintToConsole`)
+- **World text** (`point_worldtext`) — 3D panels parented to entities
+- **Minimap lines** (`CCitadelUserMsg_MapLine`) — short-lived green strokes
+- **A Panorama-side client mod** can scan chat text (which is plain text in Panorama) and render whatever it wants. This requires every player to install the client mod.
+
 ## HUD Announcements
 
 Large on-screen announcements visible to targeted players:
