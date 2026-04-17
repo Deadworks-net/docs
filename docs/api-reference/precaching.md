@@ -94,7 +94,7 @@ Deadworks runs on the server, but the **client still has to own the files** — 
 
 ## Fonts
 
-The community maintains a list of reliably-installed font families at <https://assets.deadlock-api.com/v1/fonts>. These are the names that make sense to pass as `font_name` on `point_worldtext`.
+The community maintains a list of reliably-installed font families at [assets.deadlock-api.com/v1/fonts](https://assets.deadlock-api.com/v1/fonts). These are the names that make sense to pass as `font_name` on `point_worldtext`.
 
 ## See Also
 
