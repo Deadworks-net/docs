@@ -93,12 +93,35 @@ public override void OnStartupServer()
 }
 ```
 
+:::danger Don't set these to 0
+- `citadel_trooper_squad_size 0` — divide-by-zero, server crashes immediately
+:::
+
+### Finding ConVar Names
+
+The `cvarlist` and `cmdlist` commands in the server console dump what's registered at runtime. Many game convars are hidden (`FCVAR_HIDDEN` / `FCVAR_CHEAT` / `FCVAR_DEVELOPMENTONLY`) and won't show up there — use the [community convar dump](https://deadlockmodding.pages.dev/convars) for a fuller list.
+
+## Server.ExecuteCommand
+
+Execute a console command on the server as if it were typed in the server console:
+
+```csharp
+Server.ExecuteCommand("changelevel dl_midtown");
+Server.ExecuteCommand("citadel_toggle_server_pause");
+Server.ExecuteCommand("sv_cheats 1");
+```
+
+Use this when you need to invoke a command that has no managed equivalent (`changelevel`, `citadel_toggle_server_pause`, cheats-gated commands, etc.). For setting a convar value, prefer the typed `ConVar.Find(...).SetInt/SetFloat` methods.
+
+> **What happened to `controller.ServerCommand`?** The current build does not expose a method for "run a server command *as if this player typed it*". Arbitrary client-initiated commands are gated by `FCVAR_SERVER_CAN_EXECUTE` and there's no built-in bypass. Use `Server.ExecuteCommand` to run globally, or build the effect another way (hooks, schema writes, modifiers).
+
 ## Server.ClientCommand
 
-Send a console command to a specific client:
+Send a console command to a specific client (the client will execute it as if they typed it themselves — subject to whatever FCVAR flags protect that command on the client):
 
 ```csharp
 Server.ClientCommand(playerSlot, "echo Hello from the server!");
+Server.ClientCommand(playerSlot, "spec_player 3");
 ```
 
 | Parameter | Type | Description |
