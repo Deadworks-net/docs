@@ -69,7 +69,6 @@ const sidebars: SidebarsConfig = {
       items: [
         'examples/roll-the-dice',
         'examples/item-rotation',
-        'examples/deathmatch',
         'examples/scourge',
       ],
     },

@@ -51,7 +51,6 @@ Full annotated breakdowns of real plugins:
 
 - [Roll The Dice](examples/roll-the-dice) — Random effects via chat command (particles, modifiers, timers)
 - [Item Rotation](examples/item-rotation) — Timed item set rotation with JSON config
-- [Deathmatch](examples/deathmatch) — Full game mode: spawn control, team balancing, custom commands
 - [Scourge](examples/scourge) — Damage-over-time effect using `OnTakeDamage` + timer sequences
 
 ## Architecture

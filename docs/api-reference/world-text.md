@@ -94,8 +94,6 @@ Use the full block character `"█"` for pixel-art style displays. The `"."` cha
 
 ### Example: Toggle Screen Overlay
 
-From the Deathmatch plugin:
-
 ```csharp
 private CPointWorldText? _screenText;
 

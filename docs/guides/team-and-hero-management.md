@@ -218,4 +218,3 @@ public override void OnStartupServer()
 - [Players API](../api-reference/players) — Controller and pawn reference
 - [Heroes API](../api-reference/heroes) — Hero enum and data
 - [Console Commands](../api-reference/console-commands) — ConVar manipulation
-- [Deathmatch Example](../examples/deathmatch) — Full game mode implementation

@@ -271,8 +271,6 @@ var camOrigin = pawn.EyePosition + rightOffset;
 
 ## Example: Player Eye Trace
 
-From the Deathmatch plugin:
-
 ```csharp
 [ChatCommand("trace")]
 public HookResult OnTrace(ChatCommandContext ctx)
@@ -313,4 +311,3 @@ Similarly `m_flMaxLifetime` on projectiles is **read-only in practice**: setting
 
 - [Entities](entities) — Entity references in trace results
 - [Players](players) — `EyePosition`, `EyeAngles`, `ViewAngles`
-- [Deathmatch Example](../examples/deathmatch) — Trace system in practice

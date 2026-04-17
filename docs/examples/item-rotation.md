@@ -3,164 +3,142 @@ title: "Item Rotation"
 sidebar_label: "Item Rotation"
 ---
 
-# Example: Item Rotation Plugin
+# Example: Item Rotation
 
-**Source:** `ItemRotation.cs`
+A minimal plugin that swaps every player's loadout to a new item set on a timer. Demonstrates:
 
-A config-driven plugin that rotates item sets between players on a timer.
+- Rotating set assignments on an interval
+- Removing old items and giving new ones via `pawn.RemoveItem` / `pawn.AddItem`
+- Playing a sound as feedback
+- Showing a HUD announcement
 
-## Overview
+## What It Does
 
-- **Commands:** `/ir_start`, `/ir_swap`, `/ir_reset`, `/ir_sets`
-- **Features:** JSON config, sequential/random modes, duplicate prevention, HUD announcements
-- **Concepts demonstrated:** Configuration system, player tracking, timed game logic, chat messaging
+- `/ir_start` — begins rotation. Every player gets a starting set.
+- Every 10 seconds, each player advances to the next set: items from the previous set are removed, items from the new set are given, a warning sound plays, and a HUD announcement names the new set.
+- `/ir_reset` — stops rotation and clears any items that were given.
 
-## Architecture
+Extend the `_sets` array to add more loadouts.
 
-```
-/ir_start
-    │
-    ├── Validate players & item sets
-    ├── Assign initial sets (sequential or random)
-    ├── Apply items to all players
-    └── Start swap timer
-        │
-        └── Every N seconds:
-            ├── Rotate set assignments
-            ├── Remove old items
-            ├── Give new items
-            ├── Play sound
-            └── Show announcement
-```
+## Key Pieces
 
-## Configuration
+| Concept | Where |
+|---|---|
+| Recurring work | `Timer.Every(10.Seconds(), …)` — save the handle so `/ir_reset` can cancel it |
+| Per-player state | `Dictionary<int, int>` mapping player slot to current set index |
+| Item swap | `pawn.RemoveItem(oldItem)` then `pawn.AddItem(newItem)` |
+| Sound feedback | `pawn.EmitSound("Mystical.Piano.AOE.Warning")` |
+| HUD announcement | `CCitadelUserMsg_HudGameAnnouncement` via `NetMessages.Send(..., RecipientFilter.Single(slot))` |
 
-Uses `IPluginConfig<T>` with `BasePluginConfig` for JSON-serialized settings:
+## Full Source
 
 ```csharp
-public class ItemRotationConfig : BasePluginConfig
-{
-    [JsonPropertyName("SwapIntervalSeconds")]
-    public int SwapIntervalSeconds { get; set; } = 10;
+using DeadworksManaged.Api;
 
-    [JsonPropertyName("SelectionMode")]
-    public string SelectionMode { get; set; } = "sequential";
+namespace ItemRotationPlugin;
 
-    [JsonPropertyName("AllowDuplicateSets")]
-    public bool AllowDuplicateSets { get; set; } = true;
+public class ItemRotationPlugin : DeadworksPluginBase {
+    public override string Name => "Item Rotation";
 
-    [JsonPropertyName("ItemSets")]
-    public List<ItemSet> ItemSets { get; set; } = new()
-    {
-        new() { Name = "Speed Demons", Items = new() { "upgrade_sprint_booster", "upgrade_kinetic_sash" } },
-        new() { Name = "Cardio Kings", Items = new() { "upgrade_fleetfoot_boots", "upgrade_cardio_calibrator" } },
-        // ...more sets
+    public override void OnLoad(bool isReload) { }
+    public override void OnUnload() => Stop();
+
+    private record ItemSet(string Name, string[] Items);
+
+    private static readonly ItemSet[] _sets = {
+        new("Speed Demons", new[] { "upgrade_sprint_booster", "upgrade_kinetic_sash" }),
+        new("Cardio Kings", new[] { "upgrade_fleetfoot_boots", "upgrade_cardio_calibrator" }),
+        new("Warp Zone",    new[] { "upgrade_warp_stone",     "upgrade_sprint_booster" }),
     };
+
+    private readonly Dictionary<int, int> _playerSet = new(); // slot -> set index
+    private IHandle? _timer;
+
+    [ChatCommand("ir_start")]
+    public HookResult CmdStart(ChatCommandContext ctx) {
+        if (_timer != null) return HookResult.Handled;
+
+        // Initial assignment — each player starts on a different set
+        int i = 0;
+        foreach (var controller in Players.GetAll()) {
+            var pawn = controller.GetHeroPawn();
+            if (pawn == null) continue;
+
+            int setIndex = i % _sets.Length;
+            _playerSet[controller.EntityIndex] = setIndex;
+            GiveSet(pawn, _sets[setIndex], controller.EntityIndex, announce: false);
+            i++;
+        }
+
+        _timer = Timer.Every(10.Seconds(), Rotate);
+        return HookResult.Handled;
+    }
+
+    [ChatCommand("ir_reset")]
+    public HookResult CmdReset(ChatCommandContext ctx) {
+        Stop();
+        return HookResult.Handled;
+    }
+
+    private void Rotate() {
+        foreach (var controller in Players.GetAll()) {
+            var pawn = controller.GetHeroPawn();
+            if (pawn == null) continue;
+            int slot = controller.EntityIndex;
+
+            // Remove the old set
+            if (_playerSet.TryGetValue(slot, out int oldIndex)) {
+                foreach (var item in _sets[oldIndex].Items)
+                    pawn.RemoveItem(item);
+            }
+
+            // Advance and give the new set
+            int newIndex = _playerSet.TryGetValue(slot, out int current)
+                ? (current + 1) % _sets.Length
+                : 0;
+            _playerSet[slot] = newIndex;
+            GiveSet(pawn, _sets[newIndex], slot, announce: true);
+        }
+    }
+
+    private static void GiveSet(CCitadelPlayerPawn pawn, ItemSet set, int slot, bool announce) {
+        foreach (var item in set.Items)
+            pawn.AddItem(item);
+
+        if (!announce) return;
+
+        pawn.EmitSound("Mystical.Piano.AOE.Warning");
+
+        var msg = new CCitadelUserMsg_HudGameAnnouncement {
+            TitleLocstring = "ITEMS ROTATED",
+            DescriptionLocstring = set.Name,
+        };
+        NetMessages.Send(msg, RecipientFilter.Single(slot));
+    }
+
+    private void Stop() {
+        _timer?.Cancel();
+        _timer = null;
+
+        // Clean up any items we gave out
+        foreach (var (slot, setIndex) in _playerSet) {
+            var pawn = Players.FromSlot(slot)?.GetHeroPawn();
+            if (pawn == null) continue;
+            foreach (var item in _sets[setIndex].Items)
+                pawn.RemoveItem(item);
+        }
+        _playerSet.Clear();
+    }
+
+    public override void OnClientDisconnect(ClientDisconnectedEvent args) {
+        _playerSet.Remove(args.Slot);
+    }
 }
 ```
 
-### Config Validation
+## See Also
 
-```csharp
-public void OnConfigParsed(ItemRotationConfig config)
-{
-    if (config.SwapIntervalSeconds < 1) config.SwapIntervalSeconds = 1;
-    Config = config;
-}
-```
-
-## Player Tracking
-
-Tracks active players by slot index:
-
-```csharp
-private readonly Dictionary<int, int> _playerSetIndex = new(); // slot -> set index
-private readonly HashSet<int> _activePlayers = new();
-
-// On disconnect, clean up
-public override void OnClientDisconnect(ClientDisconnectedEvent args)
-{
-    _activePlayers.Remove(args.Slot);
-    _playerSetIndex.Remove(args.Slot);
-}
-```
-
-## Chat Messaging Helpers
-
-Reusable helpers for sending targeted messages:
-
-```csharp
-private static void SendChat(int slot, string text)
-{
-    var msg = new CCitadelUserMsg_ChatMsg
-    {
-        PlayerSlot = -1,
-        Text = text,
-        AllChat = true
-    };
-    NetMessages.Send(msg, RecipientFilter.Single(slot));
-}
-
-private static void SendChatAll(string text)
-{
-    var msg = new CCitadelUserMsg_ChatMsg
-    {
-        PlayerSlot = -1,
-        Text = text,
-        AllChat = true
-    };
-    NetMessages.Send(msg, RecipientFilter.All);
-}
-```
-
-## Key Patterns
-
-### Sequential vs Random Assignment
-
-```csharp
-if (Config.SelectionMode == "random")
-    AssignRandomSets(players);
-else
-{
-    // Sequential: each player gets the next set
-    for (int i = 0; i < players.Count; i++)
-        _playerSetIndex[players[i]] = i % Config.ItemSets.Count;
-}
-```
-
-### Duplicate Prevention
-
-When `AllowDuplicateSets` is false, validates at startup:
-
-```csharp
-if (!Config.AllowDuplicateSets && players.Count > Config.ItemSets.Count)
-{
-    SendChat(slot, "Not enough item sets for all players!");
-    return HookResult.Handled;
-}
-```
-
-### Item Application with Old/New Swap
-
-```csharp
-// Remove old items
-if (previousSets.TryGetValue(slot, out int oldIndex))
-    foreach (var item in Config.ItemSets[oldIndex].Items)
-        pawn.RemoveItem(item);
-
-// Give new items
-foreach (var item in Config.ItemSets[setIndex].Items)
-    pawn.AddItem(item);
-```
-
-## API Features Used
-
-| Feature | Reference |
-|---------|-----------|
-| `IPluginConfig<T>` | [Configuration](../api-reference/configuration) |
-| `[ChatCommand]` | [Chat Commands](../api-reference/chat-commands) |
-| `Timer.Every` | [Timers](../api-reference/timers) |
-| `NetMessages.Send`, `RecipientFilter` | [Networking](../api-reference/networking) |
-| `Players.FromSlot`, `Players.MaxSlots` | [Players](../api-reference/players) |
-| `CCitadelUserMsg_HudGameAnnouncement` | [Networking](../api-reference/networking) |
-| `OnClientDisconnect` | [Plugin Base](../api-reference/plugin-base) |
+- [Chat Commands](../api-reference/chat-commands)
+- [Players](../api-reference/players) — `AddItem` / `RemoveItem`
+- [Timers](../api-reference/timers) — `Timer.Every` and `IHandle.Cancel`
+- [Networking](../api-reference/networking) — HUD announcements

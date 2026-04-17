@@ -69,7 +69,7 @@ Programmatic access to Source 2 console variables.
 
 | Method | Returns | Description |
 |--------|---------|-------------|
-| `Find(string name)` | `ConVar?` | Looks up an existing ConVar by name. **Verified working** |
+| `Find(string name)` | `ConVar?` | Looks up an existing ConVar by name |
 | `Create(string name, string defaultValue, string description = "", bool serverOnly = false)` | `ConVar?` | Creates and registers a new ConVar |
 
 ### Instance Methods

@@ -7,78 +7,83 @@ sidebar_label: "Entities"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-The entity system provides managed wrappers around Source 2 entities. All entities derive from `CBaseEntity`.
+All Source 2 server entities are wrapped by `CBaseEntity` and its subclasses (`CCitadelPlayerPawn`, `CNPC_Trooper`, `CParticleSystem`, …). This page covers what every entity has in common: creation, lifecycle, transform, parenting, and how to escape into raw schema access when the managed API doesn't expose what you need.
 
-## CBaseEntity
+## Creation & Lookup
 
-Base managed wrapper for all Source 2 entities. Provides common operations: health, team, lifecycle, modifiers, schema access.
+```csharp
+var prop = CBaseEntity.CreateByDesignerName("prop_dynamic");
+var boss = CBaseEntity.CreateByDesignerName("npc_boss_tier2");
 
-### Static Methods (Creation & Lookup)
+var entity = CBaseEntity.FromHandle(someHandle);
+var pawn   = CBaseEntity.FromHandle<CCitadelPlayerPawn>(handle);
+```
 
 | Method | Returns | Description |
-|--------|---------|-------------|
-| `CreateByName(string className)` | `CBaseEntity?` | Creates a new entity by its **C++ class name** (e.g. `"info_particle_system"`, `"prop_dynamic"`) |
-| `CreateByDesignerName(string designerName)` | `CBaseEntity?` | Creates by **designer name** — resolves the base class, then writes `m_nSubclassID` + `m_pSubclassVData` so VData is available before `Spawn()`. Prefer this for subclassed designer-named entities (`npc_boss_tier2`, `citadel_breakable_prop`, `point_worldtext`, etc.) — these frequently crash when created via `CreateByName` alone. |
-| `FromHandle(uint entityHandle)` | `CBaseEntity?` | Gets entity by its entity handle |
-| `FromHandle<T>(uint entityHandle)` | `T?` | Gets typed entity by handle (avoids manual cast) |
-| `FromIndex(int index)` | `CBaseEntity?` | Gets entity by its global entity index |
-| `FromIndex<T>(int index)` | `T?` | Gets typed entity by index |
+|---|---|---|
+| `CreateByName(string className)` | `CBaseEntity?` | Create by **C++ class name** (e.g. `"info_particle_system"`, `"prop_dynamic"`) |
+| `CreateByDesignerName(string designerName)` | `CBaseEntity?` | Create by **designer name** — also writes `m_nSubclassID` + `m_pSubclassVData` so VData is ready before `Spawn()`. Works for plain class names too. |
+| `FromHandle(uint handle)` / `FromHandle<T>(uint)` | `CBaseEntity?` / `T?` | Look up by entity handle |
+| `FromIndex(int index)` / `FromIndex<T>(int)` | `CBaseEntity?` / `T?` | Look up by global entity index |
 
-> **Rule of thumb:** use `CreateByDesignerName` unless you have a specific reason not to. It works for plain C++ class names too (it falls back to `CreateByName` when no subclass mapping exists).
+> **Rule of thumb:** prefer `CreateByDesignerName`. Entities that rely on subclass VData (`npc_boss_tier2`, `citadel_breakable_prop`, `point_worldtext`, …) routinely crash when created via `CreateByName` alone because their VData pointer isn't populated before `Spawn()`.
 
-### Properties
+## Common Properties
 
 | Property | Type | Description |
-|----------|------|-------------|
-| `Name` | `string` | Entity targetname (set in Hammer or code) |
-| `DesignerName` | `string` | The designer/map name (e.g. `"npc_boss_tier3"`, `"player"`) |
-| `Classname` | `string` | The C++ DLL class name (e.g. `"CCitadelPlayerPawn"`) |
-| `EntityHandle` | `uint` | The entity handle (CEntityHandle as uint32) |
-| `EntityIndex` | `int` | The entity index (lower 14 bits of handle) |
-| `Health` | `int` | Current health (get/set) |
-| `MaxHealth` | `int` | Maximum health (get/set) |
-| `Position` | `Vector3` | World position (from BodyComponent) |
-| `TeamNum` | `int` | Team number (get/set) |
-| `LifeState` | `LifeState` | Life state enum (Alive, Dying, Dead, Respawnable, Respawning) |
-| `IsAlive` | `bool` | Shorthand for `LifeState == Alive` |
-| `ModifierProp` | `CModifierProperty?` | Modifier state flags manager |
-| `BodyComponent` | `CBodyComponent?` | Body component with scene node |
-| `SubclassVData` | `CEntitySubclassVDataBase?` | VData subclass info (`.Name` for VData key) |
+|---|---|---|
+| `Name` | `string` | Entity targetname |
+| `DesignerName` | `string` | Designer/map name (`"npc_boss_tier3"`, `"player"`) |
+| `Classname` | `string` | C++ class name (`"CCitadelPlayerPawn"`) |
+| `EntityHandle` | `uint` | Full 32-bit entity handle |
+| `EntityIndex` | `int` | Index (lower 14 bits of handle) |
+| `Position` | `Vector3` | World position (via `BodyComponent.SceneNode.AbsOrigin`) |
+| `AbsVelocity` | `Vector3` | Absolute velocity (get/set). See [Transform](#transform) for the caveats around writing it. |
+| `TeamNum` | `int` | Team index (get/set) |
+| `Health` / `MaxHealth` | `int` | Direct schema health values (get/set) |
+| `GetMaxHealth()` | `int` | Effective max health including modifier/buff effects — prefer this over `MaxHealth` for reads |
+| `Heal(float amount)` | `int` | Heal clamped to max; returns the actual amount healed |
+| `LifeState` / `IsAlive` | `LifeState` / `bool` | Lifecycle state (`Alive`, `Dying`, `Dead`, `Respawnable`, `Respawning`) |
+| `IsOnGround` | `bool` | `true` when `m_hGroundEntity` is valid |
+| `GroundEntity` | `CBaseEntity?` | The entity the pawn is standing on, or `null` if airborne |
+| `ModifierProp` | `CModifierProperty?` | Entry point for modifiers and state flags — see [Modifiers](modifiers) |
+| `BodyComponent` | `CBodyComponent?` | Scene node, transform, model |
+| `SubclassVData` | `CEntitySubclassVDataBase?` | Subclass VData pointer; `.Name` returns the designer key |
 
 ### Type Checking & Casting
 
 ```csharp
-// Check if entity is a specific type
 if (entity.Is<CCitadelPlayerPawn>())
 {
     var pawn = entity.As<CCitadelPlayerPawn>();
-    // pawn is typed, or null if cast failed
+    // pawn is typed, or null if the cast failed
 }
 ```
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `Is<T>()` | `bool` | Check if entity's native type matches T's class name |
-| `As<T>()` | `T?` | Cast to T if native type matches, otherwise `null` |
+| Method | Description |
+|---|---|
+| `Is<T>()` | Native class name matches `T` |
+| `As<T>()` | Typed wrapper, or `null` if the cast would fail |
 
-### Lifecycle
+## Lifecycle
 
 | Method | Description |
-|--------|-------------|
-| `Remove()` | Marks entity for removal at end of current frame |
-| `Spawn()` | Queues and executes entity spawn |
-| `Spawn(void* keyValues)` | Spawn with CEntityKeyValues |
+|---|---|
+| `Spawn()` | Queue and execute spawn |
+| `Spawn(CEntityKeyValues)` | Spawn with key-values (model path, origin, custom params) |
+| `Remove()` | Mark for removal at end of frame (`UTIL_Remove`) |
 
-:::caution Entity Removal
-Calling `Remove()` immediately after `CreateByName()` on certain entity types (e.g. `info_particle_system`) can crash the server with `WriteEnterPVS: GetEntServerClass failed`. Always delay removal by at least 1 tick:
+:::caution `Remove()` immediately after `CreateByName()`
+Some entity types (`info_particle_system`, projectiles) crash with `WriteEnterPVS: GetEntServerClass failed` if removed on the same tick they were created. Delay by at least one tick:
+
 ```csharp
 Timer.Once(1.Ticks(), () => entity.Remove());
 ```
 :::
 
-### Spawning Props With a Model
+## Spawning Props With a Model
 
-`prop_dynamic` and `prop_physics_override` need the model supplied via a `CEntityKeyValues` bag before `Spawn()`. Calling `SetModel()` on a plain `CreateByName("prop_dynamic")` before spawn produces the purple-checkerboard error model.
+`prop_dynamic` and `prop_physics_override` need the model path supplied via `CEntityKeyValues` **before** `Spawn()`. Calling `SetModel()` on a freshly-created prop prior to spawn shows the purple-checkerboard error model.
 
 ```csharp
 public override void OnPrecacheResources()
@@ -103,13 +108,13 @@ public HookResult CmdBall(ChatCommandContext ctx)
 }
 ```
 
-**Model path gotchas:**
+**Model-path rules:**
 
-- Use the `.vmdl` path, **not** `.vmdl_c`. The compiled-asset suffix (`_c`) will crash the server on spawn.
-- The model must be precached in `OnPrecacheResources` — runtime precache after map load isn't reliable.
+- Use the `.vmdl` path — **not** `.vmdl_c`. The compiled suffix crashes the server on spawn.
+- The model must be listed in `OnPrecacheResources`. Runtime precache after map load isn't reliable.
 - Browse available models at [s2v.app](https://s2v.app/).
 
-For a rigid, frozen prop you can stand on:
+### Frozen physics prop
 
 ```csharp
 var prop = CBaseEntity.CreateByDesignerName("prop_physics_override");
@@ -118,161 +123,162 @@ ekv.SetString("model", "models/abilities/viscous_cube.vmdl");
 ekv.SetBool("massless", true);
 ekv.SetVector("origin", pos);
 prop.Spawn(ekv);
-prop.AcceptInput("DisableMotion"); // freeze in place
+prop.AcceptInput("DisableMotion"); // lock in place
 ```
 
-**Disabling collision:** setting `"solid" = 0` in the EKV does **not** reliably disable collision on `prop_dynamic`. Fire the input after spawn instead:
+### Disabling collision
+
+`"solid" = 0` in the EKV does **not** disable collision on `prop_dynamic`. Fire the input after spawn:
 
 ```csharp
 prop.AcceptInput("DisableCollision");
 ```
 
-### Transform
+## Transform
 
 ```csharp
-// Teleport entity — pass null to leave component unchanged
+// Teleport — pass null to leave a component unchanged
 entity.Teleport(
     position: new Vector3(100, 200, 300),
-    angles: null,    // keep current angles
-    velocity: null   // keep current velocity
-);
+    angles:   null,
+    velocity: null);
 
-// Set velocity via Teleport (confirmed working)
-entity.Teleport(null, null, new Vector3(0, 0, 1500)); // launch upward
+// Set velocity mid-flight via Teleport
+entity.Teleport(null, null, new Vector3(0, 0, 1500));
 ```
 
-#### Velocity via Schema
+Reading velocity is straightforward (`entity.AbsVelocity`). Writing via the `AbsVelocity` setter works for simple cases, but for projectiles and anything driven by the physics path, **use `Teleport(velocity: …)`** — it's the only write that routes through the engine cleanly. See [Tracing — Projectile velocity is weird](tracing#projectile-velocity-is-weird) for the gory detail.
 
-Reading velocity works via schema accessors. Writing via schema does **not** reliably override the engine — use `Teleport` instead.
+Camera and view angles are networked separately from entity angles. `Teleport(angles: …)` rotates the model, not the client's camera. For player view control see [Networking — Set client camera angles](networking#set-client-camera-angles).
+
+### Model swapping
 
 ```csharp
-private static readonly SchemaAccessor<Vector3> _vecVelocity =
-    new("CBaseEntity"u8, "m_vecVelocity"u8);
-private static readonly SchemaAccessor<Vector3> _vecAbsVelocity =
-    new("CBaseEntity"u8, "m_vecAbsVelocity"u8);
-
-// Read current velocity
-Vector3 vel = _vecVelocity.Get(entity.Handle);
-Vector3 absVel = _vecAbsVelocity.Get(entity.Handle);
+pawn.SetModel("models/heroes_wip/werewolf/werewolf.vmdl"); // precache first
 ```
 
-:::caution
-`m_flSpeed` always reads `0` — it appears unused by the engine. Calculate speed from velocity instead: `velocity.Length()`.
-:::
+See the shipped `SetModelPlugin` example for a complete chat command that swaps the player to a werewolf model.
 
-:::caution
-`RenderFx` and `RenderMode` schema fields (`m_nRenderFX`, `m_nRenderMode`) have **no visible effect** when set on players server-side. These are likely client-only rendering properties.
-:::
-
-:::caution Model Swapping on Players
-`AcceptInput("SetModel")` crashes the server. The `SetModel(string)` method exists on `CBaseEntity` but has not been verified safe on player pawns. `modifier_citadel_animalcurse` applies C++ effects but no model change. `modifier_citadel_cheater_curse` turns the player into a frog but the model never reverts — use with caution.
-:::
-
-### Parenting
+## Parenting
 
 ```csharp
-entity.SetParent(parentEntity);  // Attach to parent
-entity.ClearParent();            // Detach
+entity.SetParent(parentEntity); // implemented via AcceptInput("SetParent", …)
+entity.ClearParent();
 ```
 
-### Entity I/O
+Parented children are removed automatically when the parent is removed — handy for pawn-attached UI (`point_worldtext` nametags, timer overlays). See [World Text — Nametag pattern](world-text#nametag-pattern).
+
+## Entity I/O
 
 ```csharp
 entity.AcceptInput("Start", activator, caller, "value");
 ```
 
-### Modifiers
+See [Entity I/O](entity-io) for hooking inputs and outputs rather than just firing them.
 
-Add modifiers (buffs/debuffs) to entities. See [Modifiers](modifiers) for full details.
+## Modifiers
+
+Entities expose modifiers through two surfaces:
+
+- `entity.AddModifier(…)` / `entity.RemoveModifier(…)` — apply and remove by name or instance
+- `entity.ModifierProp` — state flags (`SetModifierState`) and the list of currently-active modifiers
+
+Both overloads of `AddModifier` live on `CBaseEntity`:
 
 ```csharp
-// Simple overload
+// Plain
 using var kv = new KeyValues3();
 kv.SetFloat("duration", 5.0f);
 entity.AddModifier("modifier_citadel_knockdown", kv);
 
-// Overload with ability values (used for modifiers that read VData ability values)
-var abilityValues = new Dictionary<string, float> { { "TechDamage", 50f } };
-entity.AddModifier("modifier_my_custom", abilityValues, kv, caster: attacker);
+// With per-instance ability-value overrides (for modifiers that read
+// values off their owning ability)
+entity.AddModifier("ability_doorman_bomb/debuff",
+    abilityValues: new() { ["SlowPercent"] = 100.0f },
+    kv: kv);
 ```
 
-| Overload | Description |
-|----------|-------------|
-| `AddModifier(string name, KeyValues3? kv, CBaseEntity? caster, CBaseEntity? ability, int team)` | Simple modifier |
-| `AddModifier(string name, Dictionary<string, float> abilityValues, KeyValues3? kv, CBaseEntity? caster, CBaseEntity? ability, int team)` | With ability value overrides |
+Full reference: [Modifiers](modifiers).
 
-### Audio
+## Damage
+
+```csharp
+entity.Hurt(100f);                                   // self-damage, default attribution
+entity.Hurt(100f, attacker: shooter);                // credited to shooter
+entity.TakeDamage(customTakeDamageInfo);             // full CTakeDamageInfo control
+```
+
+Full reference: [Damage](damage).
+
+## Audio
 
 ```csharp
 entity.EmitSound("Mystical.Piano.AOE.Explode");
-entity.EmitSound("Damage.Send.Crit", pitch: 100, volume: 0.5f, soundLevel: 75f);
+entity.EmitSound("Damage.Send.Crit", pitch: 100, volume: 0.5f, delay: 0f);
 ```
 
-### Damage
+Full reference: [Sound](sound) — covers global sound, per-client limitations, and soundevent discovery.
+
+---
+
+## Schema Access (Advanced)
+
+:::note Advanced
+Raw schema access requires some engine knowledge — you're reading and writing the game's networked fields directly. If you're not sure whether this is the right approach for what you're trying to do, ask in the Deadworks Discord.
+:::
+
+When the managed API doesn't expose the field you need, you can read or write it by class + field name.
+
+### One-off reads and writes
 
 ```csharp
-// Simple damage
-entity.Hurt(100f, attacker, inflictor, ability, damageType: 0);
-
-// Full control via CTakeDamageInfo — see Damage docs
-entity.TakeDamage(damageInfo);
-```
-
-See [Damage](damage) for full details.
-
-### Schema Access
-
-Read/write any networked schema field by class and field name:
-
-```csharp
-// Read a field
 int health = entity.GetField<int>("CBaseEntity"u8, "m_iHealth"u8);
-
-// Write a field
 entity.SetField<int>("CBaseEntity"u8, "m_iHealth"u8, 500);
 ```
 
-For repeated access, use a static `SchemaAccessor<T>` instead:
+### Cached accessors (preferred for hot paths)
+
+`SchemaAccessor<T>` resolves the offset once and caches it — use this whenever the access happens in a loop, timer, or tick hook.
 
 ```csharp
 private static readonly SchemaAccessor<int> _health =
     new("CBaseEntity"u8, "m_iHealth"u8);
 
-// Usage
 int hp = _health.Get(entity.Handle);
 _health.Set(entity.Handle, 500);
 ```
 
-#### MoveType
+#### Variants
 
-The `m_MoveType` and `m_nActualMoveType` schema fields control how an entity moves. Set both every tick to override the engine's movement system.
-
-**MoveType_t enum:**
-
-| Value | Name | Effect via Schema |
-|-------|------|-------------------|
-| `0` | `MOVETYPE_NONE` | No movement |
-| `1` | `MOVETYPE_OBSOLETE` | Obsolete |
-| `2` | `MOVETYPE_WALK` | Normal walking (default) |
-| `3` | `MOVETYPE_FLY` | Fly, no gravity |
-| `4` | `MOVETYPE_FLYGRAVITY` | Fly with gravity |
-| `5` | `MOVETYPE_VPHYSICS` | Physics-driven |
-| `6` | `MOVETYPE_PUSH` | Push movement |
-| `7` | `MOVETYPE_NOCLIP` | Noclip (free flight, no collision) |
-| `8` | `MOVETYPE_OBSERVER` | Observer/spectator — **freezes** the player in place |
-| `9` | `MOVETYPE_STEP` | Step movement |
-| `10` | `MOVETYPE_SYNC` | Sync movement |
-| `11` | `MOVETYPE_CUSTOM` | Custom movement |
+| Accessor | Use for |
+|---|---|
+| `SchemaAccessor<T>` | Single-value fields of unmanaged type (`int`, `float`, `Vector3`, `byte`, …) |
+| `SchemaStringAccessor` | `CUtlSymbolLarge` string fields (write-only) |
+| `SchemaArrayAccessor<T>` | Array-typed fields — use an `index` parameter |
 
 ```csharp
-private static readonly SchemaAccessor<byte> _moveType = new("CBaseEntity"u8, "m_MoveType"u8);
+private static readonly SchemaStringAccessor _script =
+    new("CBaseEntity"u8, "m_iszPrivateVScripts"u8);
+_script.Set(entity.Handle, "my_script");
+
+private static readonly SchemaArrayAccessor<float> _dmgTypes =
+    new("CBaseEntity"u8, "m_flDamageTypes"u8);
+float val = _dmgTypes.Get(entity.Handle, index: 0);
+```
+
+### MoveType Recipe
+
+The `m_MoveType` and `m_nActualMoveType` fields control how the engine moves an entity. To override, set both every tick — the engine resets them during its own movement pass.
+
+```csharp
+private static readonly SchemaAccessor<byte> _moveType       = new("CBaseEntity"u8, "m_MoveType"u8);
 private static readonly SchemaAccessor<byte> _actualMoveType = new("CBaseEntity"u8, "m_nActualMoveType"u8);
 
-// Freeze a player (MOVETYPE_OBSERVER locks position)
-private void FreezePlayer(CCitadelPlayerPawn pawn, float durationSeconds)
+// Freeze a player in place for `durationSeconds`
+void FreezePlayer(CCitadelPlayerPawn pawn, float durationSeconds)
 {
-    const byte MOVETYPE_OBSERVER = 8;
-    const byte MOVETYPE_WALK = 2;
+    const byte MOVETYPE_OBSERVER = 8; // locks position
+    const byte MOVETYPE_WALK     = 2;
 
     var timer = Timer.Every(1.Ticks(), () =>
     {
@@ -291,149 +297,88 @@ private void FreezePlayer(CCitadelPlayerPawn pawn, float durationSeconds)
 }
 ```
 
-> **Note:** `MOVETYPE_NOCLIP` (7) grants true noclip flight with no collision. `MOVETYPE_OBSERVER` (8) freezes the player in place despite previously being misidentified as noclip.
+| Value | Name | Notes |
+|---|---|---|
+| `0` | `MOVETYPE_NONE` | No movement |
+| `2` | `MOVETYPE_WALK` | Default player movement |
+| `3` | `MOVETYPE_FLY` | Fly, no gravity |
+| `4` | `MOVETYPE_FLYGRAVITY` | Fly with gravity |
+| `5` | `MOVETYPE_VPHYSICS` | Physics-driven |
+| `7` | `MOVETYPE_NOCLIP` | True noclip — free flight, no collision |
+| `8` | `MOVETYPE_OBSERVER` | Freezes the player in place |
+| `9` | `MOVETYPE_STEP` | Step-based (NPCs) |
+| `11` | `MOVETYPE_CUSTOM` | Custom |
 
-## Entities (Static Class)
+### Known dead fields
 
-Enumerate all server entities.
+- `m_flSpeed` always reads `0`. Compute speed from velocity: `entity.AbsVelocity.Length()`.
+- `m_nRenderFX` / `m_nRenderMode` set server-side have no visible effect — they're client-only rendering state.
+
+---
+
+## `Entities` (Static Class)
+
+Iterate entities currently on the server.
 
 ```csharp
-// All entities
-foreach (var entity in Entities.All) { }
-
-// By C++ class type
-foreach (var pawn in Entities.ByClass<CCitadelPlayerPawn>()) { }
-
-// By designer name
-foreach (var boss in Entities.ByDesignerName("npc_boss_tier3")) { }
+foreach (var e in Entities.All) { … }
+foreach (var p in Entities.ByClass<CCitadelPlayerPawn>()) { … }
+foreach (var b in Entities.ByDesignerName("npc_boss_tier3")) { … }
 ```
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `Entities.All` | `IEnumerable<CBaseEntity>` | All valid entities on the server |
-| `Entities.ByClass<T>()` | `IEnumerable<T>` | Entities matching native type T |
-| `Entities.ByDesignerName(string)` | `IEnumerable<CBaseEntity>` | Entities with given designer name |
+| Member | Returns | Description |
+|---|---|---|
+| `Entities.All` | `IEnumerable<CBaseEntity>` | All valid server entities |
+| `Entities.ByClass<T>()` | `IEnumerable<T>` | Filter by native C++ type |
+| `Entities.ByDesignerName(string)` | `IEnumerable<CBaseEntity>` | Filter by designer name |
 
-## EntityData\<T\>
+## `EntityData<T>`
 
-Dictionary-like store that associates per-entity data with entities by their handle. **Automatically removes entries when an entity is deleted.**
+Per-entity keyed storage that auto-evicts entries when the entity is deleted. Use this instead of stashing entity references in a plain `Dictionary` — the latter leaks or holds stale handles.
 
 ```csharp
 private readonly EntityData<IHandle?> _timers = new();
 
-// Store data
 _timers[entity] = timerHandle;
 
-// Retrieve safely
-if (_timers.TryGet(entity, out var value))
-{
-    // Use value
-}
+if (_timers.TryGet(entity, out var value)) { … }
 
-// Remove
 _timers.Remove(entity);
 ```
 
 | Method | Description |
-|--------|-------------|
-| `this[entity]` | Set value for entity |
-| `TryGet(entity, out T)` | Try to get value, returns `true` if found |
-| `GetOrAdd(entity, defaultValue)` | Get existing or insert default, returns value |
-| `GetOrAdd(entity, factory)` | Get existing or create via factory func, returns value |
-| `Has(entity)` | Returns `true` if entity has an entry |
-| `Remove(entity)` | Remove entry for entity |
-| `Clear()` | Remove all entries |
+|---|---|
+| `this[entity]` | Set value |
+| `TryGet(entity, out T)` | Try-get, returns `true` on hit |
+| `GetOrAdd(entity, defaultValue)` / `GetOrAdd(entity, factory)` | Get existing or insert |
+| `Has(entity)` | Does an entry exist |
+| `Remove(entity)` / `Clear()` | Remove one / all |
 
-## Schema Accessors
+## NativeEntity (Base)
 
-For advanced access to entity fields not exposed by the managed API.
-
-### SchemaAccessor\<T\>
-
-Reads and writes a single networked schema field. Resolves offset once on first access and caches it.
-
-```csharp
-// Use UTF-8 string literals for class and field names
-private static readonly SchemaAccessor<int> _maxHealth =
-    new("CBaseEntity"u8, "m_iMaxHealth"u8);
-```
-
-### SchemaStringAccessor
-
-Write-only accessor for `CUtlSymbolLarge` (string) fields:
-
-```csharp
-private static readonly SchemaStringAccessor _name =
-    new("CBaseEntity"u8, "m_iszPrivateVScripts"u8);
-
-_name.Set(entity.Handle, "my_script");
-```
-
-### SchemaArrayAccessor\<T\>
-
-Reads/writes array-typed fields:
-
-```csharp
-private static readonly SchemaArrayAccessor<float> _dmgTypes =
-    new("CBaseEntity"u8, "m_flDamageTypes"u8);
-
-float val = _dmgTypes.Get(entity.Handle, index: 0);
-```
-
-## Common Entity Types
-
-Entity types found on a typical Deadlock server (from `CBaseEntity.FromIndex` iteration):
-
-| Class | Designer | Description |
-|-------|----------|-------------|
-| `CCitadelPlayerPawn` | `player` | Player hero entity |
-| `CCitadelPlayerController` | - | Player controller |
-| `CNPC_Trooper` | - | Lane troopers |
-| `CNPC_TrooperNeutral` | - | Neutral camp NPCs |
-| `CNPC_TrooperBoss` | - | Trooper boss |
-| `CNPC_Boss_Tier2` | `npc_boss_tier2` | Tier 2 (lane) guardian |
-| `CNPC_Boss_Tier3` | `npc_boss_tier3` | Tier 3 (base) patron |
-| `CNPC_BarrackBoss` | - | Barracks walker |
-| `CNPC_MidBoss` | - | Mid boss (Rejuvenator) |
-| `CNPC_BaseDefenseSentry` | - | Base defense turrets |
-| `CNPC_Neutral_Bug` | - | Neutral jungle bugs |
-| `CCitadel_BreakableProp` | - | Breakable props (boxes, crates) |
-| `CDynamicProp` | - | Dynamic props |
-| `CParticleSystem` | - | Particle effect entities |
-| `CWorld` | `worldent` | The world entity |
-| `CCitadelZipLineNode` | - | Zipline nodes |
-| `CItemXP` | - | Soul orb pickups |
-
-## NativeEntity
-
-Base class for all managed wrappers around native C++ entity/object pointers.
+`CBaseEntity` inherits from `NativeEntity`, the minimal wrapper over a native pointer. You'll only touch this directly when writing custom schema wrappers.
 
 | Property | Type | Description |
-|----------|------|-------------|
+|---|---|---|
 | `Handle` | `IntPtr` | Raw pointer to the native object |
-| `IsValid` | `bool` | `true` if the pointer is non-null |
+| `IsValid` | `bool` | Non-null pointer check |
 
-:::warning `IsValid` is a null-check, not a liveness-check
-`IsValid` only tells you whether the managed wrapper has a non-null pointer. It returns `true` even after the underlying entity has been `Remove()`d or the player has disconnected. To check whether an entity still actually exists, round-trip through the entity handle table:
+:::warning `IsValid` is a null-check, not a liveness check
+`IsValid` only verifies the wrapper's pointer is non-null. It keeps returning `true` after the underlying entity has been `Remove()`d or a player disconnects. To check whether an entity still actually exists in the engine, round-trip through the handle table:
 
 ```csharp
 bool IsAlive(CBaseEntity? e) =>
     e != null && CBaseEntity.FromHandle(e.EntityHandle) != null;
-
-// or for a typed check
-bool Exists(CBaseEntity? e) => e?.As<CBaseEntity>() != null;
 ```
 
-The `FromHandle` round-trip consults the engine's entity table, so it returns `null` once the entity is gone. Use this whenever you're holding an entity reference across ticks (in a timer, cached field, or collection).
+Do this whenever you're holding an entity reference across ticks (timer callbacks, cached fields, collections).
 :::
-
-## CEntitySubclassVDataBase
-
-Wraps the VData subclass pointer stored on an entity, providing its design-time name.
 
 ## See Also
 
-- [Players](players) — Player-specific entity types
-- [Modifiers](modifiers) — Adding buffs/debuffs via `AddModifier`
-- [Damage](damage) — Applying damage to entities
-- [Entity I/O](entity-io) — Hooking entity inputs/outputs
+- [Players](players) — `CCitadelPlayerPawn`, `CCitadelPlayerController`, ability and currency helpers
+- [Modifiers](modifiers) — `AddModifier`, `EModifierState`, `CModifierProperty`
+- [Damage](damage) — `Hurt`, `CTakeDamageInfo`, `OnTakeDamage`
+- [Sound](sound) — `EmitSound`, global/per-client playback recipes
+- [Entity I/O](entity-io) — Hooking designer inputs and outputs
+- [Tracing](tracing) — Ray and shape traces for LOS, collision, aim

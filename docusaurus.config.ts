@@ -102,7 +102,6 @@ const config: Config = {
           items: [
             { label: 'Roll The Dice', to: '/examples/roll-the-dice' },
             { label: 'Item Rotation', to: '/examples/item-rotation' },
-            { label: 'Deathmatch', to: '/examples/deathmatch' },
             { label: 'Scourge DOT', to: '/examples/scourge' },
           ],
         },

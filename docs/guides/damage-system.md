@@ -183,4 +183,3 @@ public HookResult OnHeroChanged(GameEvent ev)
 - [Timers](../api-reference/timers) — Timer.Sequence for DOT
 - [Players](../api-reference/players) — Currency types and management
 - [Scourge Example](../examples/scourge) — Complete DOT plugin
-- [Deathmatch Example](../examples/deathmatch) — Currency control in practice

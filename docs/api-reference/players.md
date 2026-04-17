@@ -108,7 +108,7 @@ The in-game physical representation of a player (the hero). Extends `CBasePlayer
 - **`EyeAngles`** — Quantized eye angles (~0.18° precision, suitable for most checks)
 - **`ViewAngles`** — Full-precision server-side view angles (use for accurate aim calculations)
 - **`CameraAngles`** — Client camera angles (useful for spectating/SourceTV)
-- **Velocity** — Use `m_vecVelocity` / `m_vecAbsVelocity` via `SchemaAccessor<Vector3>` (see [Entities — Velocity](entities#velocity-via-schema))
+- **Velocity** — Read via `pawn.AbsVelocity`; write via `Teleport(velocity: …)` (see [Entities — Transform](entities#transform))
 - **Setting camera** — Use `CCitadelUserMsg_SetClientCameraAngles` via `NetMessages.Send` (see [Networking](networking#set-client-camera-angles)). Schema writes and `Teleport` angles only move the model, not the camera.
 - **Camera offset** — The third-person camera sits ~35 units to the right of `EyePosition` (right shoulder view). Account for this when calculating aim angles.
 :::

@@ -217,4 +217,3 @@ public HookResult OnHeroChanged(GameEvent ev)
 
 - [Plugin Base](plugin-base) — Lifecycle hooks
 - [Players](players) — Player pawn and controller access
-- [Deathmatch Example](../examples/deathmatch) — Game event usage in practice

@@ -218,4 +218,3 @@ NetMessages.Send(msg, RecipientFilter.All);
 
 - [Chat Commands](chat-commands) — Chat command system
 - [Plugin Base](plugin-base) — `OnChatMessage` hook
-- [Deathmatch Example](../examples/deathmatch) — Chat rebroadcasting pattern

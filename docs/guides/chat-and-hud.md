@@ -190,4 +190,3 @@ NetMessages.Send(msg, filter);
 - [Networking API](../api-reference/networking) — Full message sending reference
 - [World Text API](../api-reference/world-text) — 3D text panels
 - [Players API](../api-reference/players) — Player enumeration
-- [Deathmatch Example](../examples/deathmatch) — Chat rebroadcasting

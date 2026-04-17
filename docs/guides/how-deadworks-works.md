@@ -76,12 +76,6 @@ A lot of gameplay code lives on the client, and plugins cannot reach into it:
 
 The practical implication: if your plugin idea requires UI changes, per-client visuals, or custom fonts, every player has to install a matching client-side mod too. For most server-only game modes (BR, bhop, tag, prop hunt, custom items), nothing client-side is needed.
 
-## Linux / Docker
-
-Valve has not released a native Linux build of the Deadlock dedicated server. You can still run Deadworks headless on Linux through Proton + Wine in a Docker container — the community image at [raimannma/deadworks](https://github.com/raimannma/deadworks) wraps the whole setup. This works today for hosting public servers; the trade-off is slightly higher operational complexity and an extra ~20% CPU overhead from Wine.
-
-The upstream project is expected to pick up native Linux support when Valve publishes a `linux_server` build.
-
 ## Managed vs Native
 
 A practical split for your code:

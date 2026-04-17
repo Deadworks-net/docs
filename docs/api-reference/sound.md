@@ -72,10 +72,6 @@ If `EmitSound` appears to return success but you hear nothing:
 - **Verify with `soundinfo <soundname>` in the console** — it will tell you whether the soundevent resolved to a playable sound and at what volume.
 - **Soundevents that are 3D-positional are inaudible when the listener is far from the entity.** Attach to the player pawn or use the global recipe above.
 
-## Custom Soundevents
-
-Adding a brand-new soundevent currently requires replacing an existing `.vsndevts` file in the game's VPK — the game does not read soundevents from an addon-local path. This is fragile (breaks when multiple plugins want custom sounds) and is not recommended for public servers yet.
-
 ## Finding Soundevent Names
 
 - `soundinfo <name>` in the server console — tests whether a name resolves and prints its sound file

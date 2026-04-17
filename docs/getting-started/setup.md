@@ -132,12 +132,11 @@ Plugins are loaded automatically when the server starts. Editing a plugin DLL wh
 |---------|----------|
 | No pink console output at all | Deadworks files not extracted to the correct directory. Verify files exist in `Deadlock/game/bin/win64/` |
 | "Failed to initialize .NET runtime" | Install or repair the .NET 10.0 SDK. The message scrolls past quickly — pipe console output to a file (`deadworks.exe > out.log`) if you need to search for it. |
+| Plugins folder is silently ignored | The .NET SDK isn't installed or is the wrong version. `[ERR] Failed to initialize .NET runtime` will appear in the log file — install .NET 10 SDK. |
 | "Unknown command 'dw_plugin'" | The runtime hasn't loaded — check for errors earlier in the pink console output |
 | Plugin shows as enabled but "not loaded" | Make sure both `YourPlugin.deps.json` and `YourPlugin.runtimeconfig.json` are next to the `.dll` in the plugins folder. Also verify you have `OnLoad`/`OnUnload` overrides — they're abstract on `DeadworksPluginBase` and the plugin fails silently without them. |
 | No IntelliSense in Visual Studio | Ensure `DeadworksManaged.Api.xml` is in the same folder as the DLL |
 | Build targets .NET Standard | Change your project to target `net10.0` (.NET Core), not .NET Standard |
-| Game crashes on connect with "AccessViolationException" | Usually caused by a port conflict with the local hideout server. See [Server Hosting](../guides/server-hosting) for the fix. As a last resort, some users have reported that moving the entire Deadlock folder to a different drive resolves recurring access violations. |
-| Plugins folder is silently ignored on a VPS | The VPS is missing the correct .NET SDK version. `[ERR] Failed to initialize .NET runtime` will appear in the log file — install .NET 10 SDK on the VPS. |
 
 ## Next Steps
 
