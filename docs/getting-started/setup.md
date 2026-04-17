@@ -15,6 +15,10 @@ This guide walks through installing Deadworks and setting up a Visual Studio pro
 
 ## 1. Install Deadworks
 
+### Download a Release
+
+The easiest path is to grab the latest release from [github.com/Deadworks-net/deadworks/releases](https://github.com/Deadworks-net/deadworks/releases) and extract it. Building from source is only necessary if you want to contribute to the framework itself.
+
 ### Extract Core Files
 
 Extract the Deadworks archive into your Deadlock installation:
@@ -52,7 +56,7 @@ Run the Deadworks executable and check the console for pink-colored output. Look
 
 ## 2. Create a Class Library Project
 
-In Visual Studio, create a new **C# Class Library** project.
+In Visual Studio, create a new **C# Class Library** project. The project name is arbitrary — plugins are discovered by assembly, not by name, so pick whatever you want.
 
 > **Important:** Target **.NET Core** (e.g. `net10.0`), **not** .NET Standard. Deadworks requires a .NET Core runtime.
 
@@ -143,17 +147,27 @@ Compiled plugin DLLs are loaded from:
 Deadlock/game/bin/win64/managed/plugins/
 ```
 
-Place your `.dll` (and optionally `.pdb` for debugging) in this directory. Plugins are loaded automatically when the server starts.
+Copy the full build output — **not just the `.dll`**. The loader uses `.deps.json` to resolve plugin-local dependencies, and `.runtimeconfig.json` describes the runtime target. The typical files you should deploy are:
+
+- `YourPlugin.dll` — the plugin itself
+- `YourPlugin.deps.json` — dependency manifest (required if your plugin references anything beyond the Deadworks API)
+- `YourPlugin.runtimeconfig.json` — runtime config
+- `YourPlugin.pdb` — optional, for stack traces and debugging
+
+Plugins are loaded automatically when the server starts. Editing a plugin DLL while the server is running hot-reloads it.
 
 ## Troubleshooting
 
 | Symptom | Solution |
 |---------|----------|
 | No pink console output at all | Deadworks files not extracted to the correct directory. Verify files exist in `Deadlock/game/bin/win64/` |
-| "Failed to initialize .NET runtime" | Install or repair the .NET 10.0 SDK |
+| "Failed to initialize .NET runtime" | Install or repair the .NET 10.0 SDK. The message scrolls past quickly — pipe console output to a file (`deadworks.exe > out.log`) if you need to search for it. |
 | "Unknown command 'dw_plugin'" | The runtime hasn't loaded — check for errors earlier in the pink console output |
+| Plugin shows as enabled but "not loaded" | Make sure both `YourPlugin.deps.json` and `YourPlugin.runtimeconfig.json` are next to the `.dll` in the plugins folder. Also verify you have `OnLoad`/`OnUnload` overrides — they're abstract on `DeadworksPluginBase` and the plugin fails silently without them. |
 | No IntelliSense in Visual Studio | Ensure `DeadworksManaged.Api.xml` is in the same folder as the DLL |
 | Build targets .NET Standard | Change your project to target `net10.0` (.NET Core), not .NET Standard |
+| Game crashes on connect with "AccessViolationException" | Usually caused by a port conflict with the local hideout server. See [Server Hosting](../guides/server-hosting) for the fix. As a last resort, some users have reported that moving the entire Deadlock folder to a different drive resolves recurring access violations. |
+| Plugins folder is silently ignored on a VPS | The VPS is missing the correct .NET SDK version. `[ERR] Failed to initialize .NET runtime` will appear in the log file — install .NET 10 SDK on the VPS. |
 
 ## Next Steps
 
