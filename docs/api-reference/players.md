@@ -38,11 +38,23 @@ Deadlock-specific player controller. Extends `CBasePlayerController`.
 | Method | Returns | Description |
 |--------|---------|-------------|
 | `GetHeroPawn()` | `CCitadelPlayerPawn?` | Returns the player's current hero pawn, or `null` |
-| `ChangeTeam(int team)` | `void` | Moves player to specified team |
+| `ChangeTeam(int team)` | `void` | Moves player to specified team. See the [Team & Hero Management](../guides/team-and-hero-management) guide for the visual-update caveat (prefer the `citadel_change_team` modifier for in-match switches). |
 | `SelectHero(Heroes hero)` | `void` | Forces player to select specified hero |
-| `PrintToConsole(string msg)` | `void` | Sends message to this player's console |
+| `PrintToConsole(string msg)` | `void` | Sends message to this player's console (via `echo` client command) |
 | `PrintToConsoleAll(string msg)` | `void` | *Static* — Sends message to all connected players' consoles |
-| `ServerCommand(string command)` | `void` | Executes command server-side as this player (bypasses FCVAR checks) |
+
+> **Running a server-only command as this player** is not exposed as a controller method. Use `Server.ExecuteCommand("...")` to run a server console command globally; there is no API surface for "run as if this client typed it" at the moment.
+
+### Reading the SteamID
+
+SteamID is not yet a first-class property on the controller. Use `ClientConnectEvent.SteamId` during connection, or a schema accessor on the live controller:
+
+```csharp
+private static readonly SchemaAccessor<ulong> _steamID =
+    new("CBasePlayerController"u8, "m_steamID"u8);
+
+ulong steamId = _steamID.Get(controller.Handle);
+```
 
 ### Properties
 
@@ -142,6 +154,30 @@ pawn.RemoveAbility("ability_priest_weaponswap");
 // Add an ability to slot 3
 pawn.AddAbility("ability_familiar_ability01", slot: 3);
 ```
+
+### Unlocking and Upgrading Abilities
+
+Every ability has an `UpgradeBits` field that encodes its unlock and upgrade tier. The low bit is the unlock flag; the next 4 bits are the upgrade stars. Setting it to `0b11111` unlocks and fully upgrades a signature ability:
+
+```csharp
+foreach (var ability in pawn.AbilityComponent.Abilities) {
+    if (ability.AbilitySlot < EAbilitySlot.Signature1
+     || ability.AbilitySlot > EAbilitySlot.Signature4) continue;
+    ability.UpgradeBits = ability.UpgradeBits | 0b11111;
+}
+```
+
+> **Do not write `m_nUpgradeInfo` directly via `SchemaAccessor`.** Bypassing the `SetUpgradeBits` native call (which is what the `UpgradeBits` setter uses) leaves the client UI and cooldown state desynced — abilities will appear grayed-out or fire on wrong cooldowns.
+
+| Ability property | Description |
+|---|---|
+| `UpgradeBits` | Raw unlock/upgrade bitmask (read/write) |
+| `IsUnlocked` | Shorthand for `(UpgradeBits & 1) != 0` |
+| `IsChanneling` | Whether the ability is currently being channeled |
+| `CooldownStart` / `CooldownEnd` | Cooldown window in server time (read/write) |
+| `AbilityName` | Internal name (`SubclassVData?.Name`) |
+| `AbilitySlot` | Which slot the ability occupies |
+| `IsSignature` / `IsActiveItem` / `IsInnate` / `IsWeapon` / `IsItem` | Slot-category shortcuts |
 
 ### EAbilitySlots_t
 
@@ -301,31 +337,30 @@ These can also be read via `SchemaAccessor<int>` on the controller handle using 
 Player slots above 31 contain garbage data (e.g. Level=1119879168). Always cap iteration to `slot < 32` when reading PlayerDataGlobal fields across all players.
 :::
 
-## Action Detection Limitations
+## Action Detection
 
-The API provides limited ability to detect what players are doing. This affects what kinds of triggers and conditions you can build.
+| Action | How to detect |
+|---|---|
+| Any ability activation | `player_used_ability` game event — `abilityname` field names the ability |
+| Shot fired | `player_used_ability` with `abilityname.StartsWith("citadel_weapon_")` |
+| Melee (light or heavy) | `player_used_ability` with `abilityname.StartsWith("ability_melee")`; the `Annotation` field is `"light_melee"` or `"heavy_melee"` |
+| Item used | `player_used_ability` with `abilityname.StartsWith("upgrade_")` |
+| Item bought / granted | `ability_added` game event (re-check `pawn.AbilityComponent.Abilities` one second later to see the full loadout) |
+| Ability attempt (including blocked) | `OnAbilityAttempt` hook — can also inspect held buttons via `args.IsHeld(InputButton.X)` |
+| Jump / dash / reload / mantle button press | `OnAbilityAttempt` — these are all input buttons (`InputButton.Jump`, `InputButton.Mantle`, `InputButton.Reload`, `InputButton.Weapon1` for light melee, etc.) |
+| Health / death | `OnTakeDamage` hook, `LifeState` property, `player_death` event |
+| Currency change | `OnModifyCurrency` hook |
+| Chat / console | `OnChatMessage`, `OnClientConCommand` |
+| On / off ground | `pawn.IsOnGround` (checks `m_hGroundEntity != 0xFFFFFFFF`) |
+| Position / eye position / view angles | `pawn.Position`, `pawn.EyePosition`, `pawn.ViewAngles` |
 
-**Can detect:**
-- Stamina changes (indicates jump/dash via `AbilityComponent.ResourceStamina`)
-- Position changes (via `Position`, `EyePosition`)
-- View angle changes (via `ViewAngles`, `EyeAngles`)
-- Health changes (via `Health`, `OnTakeDamage` hook)
-- Death and respawn (via `LifeState`, game events)
-- Currency changes (via `OnModifyCurrency` hook)
-- Chat messages and console commands
+### What you can't detect (directly)
 
-**Can partially detect:**
-- Ability attempts (via `OnAbilityAttempt` hook — fires when ability execution is attempted)
+- **Crouch state** — no dedicated flag exposed; infer from `MoveType` or the crouch input button via `OnAbilityAttempt`.
+- **Arbitrary keyboard keys** — only buttons in `InputBitMask_t` are networked. Keys not bound to a game input are invisible server-side.
 
-**Cannot detect:**
-- Item activation
-- Reload
-- Melee attack / parry
-- Crouch
-- Mantle
-
-:::tip Workaround
-For jump/dash detection, poll `AbilityComponent.ResourceStamina.CurrentValue` every tick — a decrease indicates a stamina-consuming action was performed.
+:::tip Stamina polling
+For sub-tick responsiveness to jumps or dashes (before `player_used_ability` fires), poll `AbilityComponent.ResourceStamina.CurrentValue` — a decrease is a hard signal that a stamina-consuming action just happened.
 :::
 
 ## Currency Types
