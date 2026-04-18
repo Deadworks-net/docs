@@ -22,11 +22,11 @@ var pawn   = CBaseEntity.FromHandle<CCitadelPlayerPawn>(handle);
 | Method | Returns | Description |
 |---|---|---|
 | `CreateByName(string className)` | `CBaseEntity?` | Create by **C++ class name** (e.g. `"info_particle_system"`, `"prop_dynamic"`) |
-| `CreateByDesignerName(string designerName)` | `CBaseEntity?` | Create by **designer name** — also writes `m_nSubclassID` + `m_pSubclassVData` so VData is ready before `Spawn()`. Works for plain class names too. |
+| `CreateByDesignerName(string designerName)` | `CBaseEntity?` | Create by **designer name**. Many entities in Deadlock are subclasses of other classes. |
 | `FromHandle(uint handle)` / `FromHandle<T>(uint)` | `CBaseEntity?` / `T?` | Look up by entity handle |
 | `FromIndex(int index)` / `FromIndex<T>(int)` | `CBaseEntity?` / `T?` | Look up by global entity index |
 
-> **Rule of thumb:** prefer `CreateByDesignerName`. Entities that rely on subclass VData (`npc_boss_tier2`, `citadel_breakable_prop`, `point_worldtext`, …) routinely crash when created via `CreateByName` alone because their VData pointer isn't populated before `Spawn()`.
+> **Rule of thumb:** prefer `CreateByDesignerName`. Entities that rely on subclass VData (`npc_boss_tier2`, `citadel_breakable_prop`, …) routinely crash when created via `CreateByName` alone because their VData pointer isn't populated before `Spawn()`.
 
 ## Common Properties
 
@@ -112,7 +112,7 @@ public HookResult CmdBall(ChatCommandContext ctx)
 
 - Use the `.vmdl` path — **not** `.vmdl_c`. The compiled suffix crashes the server on spawn.
 - The model must be listed in `OnPrecacheResources`. Runtime precache after map load isn't reliable.
-- Browse available models at [s2v.app](https://s2v.app/).
+- Browse available models using [Source2Viewer](https://s2v.app/).
 
 ### Frozen physics prop
 
@@ -255,64 +255,6 @@ _health.Set(entity.Handle, 500);
 | `SchemaAccessor<T>` | Single-value fields of unmanaged type (`int`, `float`, `Vector3`, `byte`, …) |
 | `SchemaStringAccessor` | `CUtlSymbolLarge` string fields (write-only) |
 | `SchemaArrayAccessor<T>` | Array-typed fields — use an `index` parameter |
-
-```csharp
-private static readonly SchemaStringAccessor _script =
-    new("CBaseEntity"u8, "m_iszPrivateVScripts"u8);
-_script.Set(entity.Handle, "my_script");
-
-private static readonly SchemaArrayAccessor<float> _dmgTypes =
-    new("CBaseEntity"u8, "m_flDamageTypes"u8);
-float val = _dmgTypes.Get(entity.Handle, index: 0);
-```
-
-### MoveType Recipe
-
-The `m_MoveType` and `m_nActualMoveType` fields control how the engine moves an entity. To override, set both every tick — the engine resets them during its own movement pass.
-
-```csharp
-private static readonly SchemaAccessor<byte> _moveType       = new("CBaseEntity"u8, "m_MoveType"u8);
-private static readonly SchemaAccessor<byte> _actualMoveType = new("CBaseEntity"u8, "m_nActualMoveType"u8);
-
-// Freeze a player in place for `durationSeconds`
-void FreezePlayer(CCitadelPlayerPawn pawn, float durationSeconds)
-{
-    const byte MOVETYPE_OBSERVER = 8; // locks position
-    const byte MOVETYPE_WALK     = 2;
-
-    var timer = Timer.Every(1.Ticks(), () =>
-    {
-        if (!pawn.IsValid || pawn.Health <= 0) return;
-        _moveType.Set(pawn.Handle, MOVETYPE_OBSERVER);
-        _actualMoveType.Set(pawn.Handle, MOVETYPE_OBSERVER);
-    });
-
-    Timer.Once(((int)durationSeconds).Seconds(), () =>
-    {
-        timer.Cancel();
-        if (!pawn.IsValid) return;
-        _moveType.Set(pawn.Handle, MOVETYPE_WALK);
-        _actualMoveType.Set(pawn.Handle, MOVETYPE_WALK);
-    });
-}
-```
-
-| Value | Name | Notes |
-|---|---|---|
-| `0` | `MOVETYPE_NONE` | No movement |
-| `2` | `MOVETYPE_WALK` | Default player movement |
-| `3` | `MOVETYPE_FLY` | Fly, no gravity |
-| `4` | `MOVETYPE_FLYGRAVITY` | Fly with gravity |
-| `5` | `MOVETYPE_VPHYSICS` | Physics-driven |
-| `7` | `MOVETYPE_NOCLIP` | True noclip — free flight, no collision |
-| `8` | `MOVETYPE_OBSERVER` | Freezes the player in place |
-| `9` | `MOVETYPE_STEP` | Step-based (NPCs) |
-| `11` | `MOVETYPE_CUSTOM` | Custom |
-
-### Known dead fields
-
-- `m_flSpeed` always reads `0`. Compute speed from velocity: `entity.AbsVelocity.Length()`.
-- `m_nRenderFX` / `m_nRenderMode` set server-side have no visible effect — they're client-only rendering state.
 
 ---
 

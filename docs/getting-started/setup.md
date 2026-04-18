@@ -13,6 +13,10 @@ This guide walks through installing Deadworks and setting up a Visual Studio pro
 - **Visual Studio 2022** (17.x+) or any IDE with .NET support
 - **Deadlock** installed via Steam
 
+## 0. Install Deadlock
+
+You may use your currently installed version of Deadlock, but for running a server, it's recommended to follow [server hosting instructions](../guides/server-hosting).
+
 ## 1. Install Deadworks
 
 Download the latest release from [https://github.com/Deadworks-net/deadworks/releases](https://github.com/Deadworks-net/deadworks/releases) and extract it into your Deadlock folder (`C:\Program Files (x86)\Steam\steamapps\common\Deadlock`). Building from source is only necessary if you want to contribute to the framework itself.

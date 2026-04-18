@@ -101,6 +101,8 @@ The in-game physical representation of a player (the hero). Extends `CBasePlayer
 | `ViewAngles` | `Vector3` | Raw server-side view angles (full float precision, no quantization) |
 | `Health` | `int` | Current health (inherited from `CBaseEntity`) |
 | `Position` | `Vector3` | World position (inherited from `CBaseEntity`) |
+| `AbilityComponent` | `CCitadelAbilityComponent` | Access to stamina and ability resources |
+| `ModifierProp` | `CModifierProperty` | Access to modifier state flags |
 
 :::tip Angles & Position — All Confirmed Working (Read)
 - **`Position`** — World-space origin of the pawn (feet)
@@ -110,10 +112,7 @@ The in-game physical representation of a player (the hero). Extends `CBasePlayer
 - **`CameraAngles`** — Client camera angles (useful for spectating/SourceTV)
 - **Velocity** — Read via `pawn.AbsVelocity`; write via `Teleport(velocity: …)` (see [Entities — Transform](entities#transform))
 - **Setting camera** — Use `CCitadelUserMsg_SetClientCameraAngles` via `NetMessages.Send` (see [Networking](networking#set-client-camera-angles)). Schema writes and `Teleport` angles only move the model, not the camera.
-- **Camera offset** — The third-person camera sits ~35 units to the right of `EyePosition` (right shoulder view). Account for this when calculating aim angles.
 :::
-| `AbilityComponent` | `CCitadelAbilityComponent` | Access to stamina and ability resources |
-| `ModifierProp` | `CModifierProperty` | Access to modifier state flags |
 
 ### Methods
 
@@ -207,10 +206,6 @@ foreach (var ability in pawn.AbilityComponent.Abilities) {
 | `ESlot_Weapon_Melee` | 22 | Melee weapon |
 | `ESlot_None` | 23 | No slot |
 
-:::note
-`AddAbility` only works for item abilities (`EAbilityType_Item`). The slot parameter corresponds to these values. Item abilities typically use slots 4-7.
-:::
-
 ## CCitadelAbilityComponent
 
 Ability component on a player pawn. Provides access to stamina/ability resources.
@@ -235,10 +230,6 @@ float latchVal = stamina.LatchValue;   // e.g. 3
 | `PrevRegenRate` | `float` | Yes | **No** | Stamina regeneration rate per second |
 | `LatchTime` | `float` | Yes | **No** | Server time of last latch event |
 | `LatchValue` | `float` | Yes | **No** | Latch value |
-
-:::caution Stamina Write Does Not Work
-While `CurrentValue` has a setter, the engine's native stamina system recalculates the value every tick, immediately overriding any managed-side writes. Use modifiers or abilities to affect stamina instead.
-:::
 
 ## Ability Entities
 
@@ -337,32 +328,6 @@ These can also be read via `SchemaAccessor<int>` on the controller handle using 
 Player slots above 31 contain garbage data (e.g. Level=1119879168). Always cap iteration to `slot < 32` when reading PlayerDataGlobal fields across all players.
 :::
 
-## Action Detection
-
-| Action | How to detect |
-|---|---|
-| Any ability activation | `player_used_ability` game event — `abilityname` field names the ability |
-| Shot fired | `player_used_ability` with `abilityname.StartsWith("citadel_weapon_")` |
-| Melee (light or heavy) | `player_used_ability` with `abilityname.StartsWith("ability_melee")`; the `Annotation` field is `"light_melee"` or `"heavy_melee"` |
-| Item used | `player_used_ability` with `abilityname.StartsWith("upgrade_")` |
-| Item bought / granted | `ability_added` game event (re-check `pawn.AbilityComponent.Abilities` one second later to see the full loadout) |
-| Ability attempt (including blocked) | `OnAbilityAttempt` hook — can also inspect held buttons via `args.IsHeld(InputButton.X)` |
-| Jump / dash / reload / mantle button press | `OnAbilityAttempt` — these are all input buttons (`InputButton.Jump`, `InputButton.Mantle`, `InputButton.Reload`, `InputButton.Weapon1` for light melee, etc.) |
-| Health / death | `OnTakeDamage` hook, `LifeState` property, `player_death` event |
-| Currency change | `OnModifyCurrency` hook |
-| Chat / console | `OnChatMessage`, `OnClientConCommand` |
-| On / off ground | `pawn.IsOnGround` (checks `m_hGroundEntity != 0xFFFFFFFF`) |
-| Position / eye position / view angles | `pawn.Position`, `pawn.EyePosition`, `pawn.ViewAngles` |
-
-### What you can't detect (directly)
-
-- **Crouch state** — no dedicated flag exposed; infer from `MoveType` or the crouch input button via `OnAbilityAttempt`.
-- **Arbitrary keyboard keys** — only buttons in `InputBitMask_t` are networked. Keys not bound to a game input are invisible server-side.
-
-:::tip Stamina polling
-For sub-tick responsiveness to jumps or dashes (before `player_used_ability` fires), poll `AbilityComponent.ResourceStamina.CurrentValue` — a decrease is a hard signal that a stamina-consuming action just happened.
-:::
-
 ## Currency Types
 
 ### ECurrencyType
@@ -396,7 +361,7 @@ For sub-tick responsiveness to jumps or dashes (before `player_used_ability` fir
 | `EOrbLaneTrooper` | 24 | Soul orb from lane trooper |
 
 :::note
-ECurrencySource has 45 values total. Only the most commonly used are listed above.
+ECurrencySource has 45 values total. Only some are listed above.
 :::
 
 ## LifeState

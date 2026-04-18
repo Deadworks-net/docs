@@ -103,7 +103,7 @@ public HookResult OnBoost(ChatCommandContext ctx)
 |---------|-------------|------------|
 | `DeadworksPluginBase` | Base class — provides `Timer`, lifecycle hooks | [Plugin Base](../api-reference/plugin-base) |
 | `[ChatCommand]` | Attribute to register chat commands | [Chat Commands](../api-reference/chat-commands) |
-| `HookResult` | `Continue` (default, let event proceed), `Handled` (consumed the event), or `Stop` (block further processing) | [Plugin Base](../api-reference/plugin-base) |
+| `HookResult` | `Continue` (default, let event proceed), `Handled` or `Stop` (block further processing) | [Plugin Base](../api-reference/plugin-base) |
 | `NetMessages.Send` | Send protobuf messages to players | [Networking](../api-reference/networking) |
 | `RecipientFilter` | Target specific players for messages | [Networking](../api-reference/networking) |
 | `Timer` | Schedule delayed/repeating actions | [Timers](../api-reference/timers) |

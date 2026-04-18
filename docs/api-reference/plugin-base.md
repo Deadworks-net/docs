@@ -76,10 +76,10 @@ Return values for hooks and event handlers:
 | Value | Raw | Description |
 |-------|-----|-------------|
 | `HookResult.Continue` | 0 | Default — event proceeds normally. Return this from passive observer hooks like `OnTakeDamage` when you don't want to change behavior. |
-| `HookResult.Stop` | 1 | Block the event entirely — no further processing |
-| `HookResult.Handled` | 2 | Event consumed — same effect as `Stop` for framework purposes. Conventionally used in chat-command handlers to signal "I handled this command, don't also display the user's message in chat." |
+| `HookResult.Stop` | 1 | Block the event entirely — no further processing. |
+| `HookResult.Handled` | 2 | Event consumed — same effect as `Stop` for framework purposes. Semantic difference only. |
 
-> **Practical tip:** for **observer** hooks (`OnTakeDamage`, `OnAddModifier`, `OnChatMessage`, `OnClientConCommand`), return `Continue` unless you explicitly want to block. For **chat-command** handlers and similar "I answered this" methods, return `Handled`. `Stop` and `Handled` currently behave identically at the framework layer — the distinction is semantic for readers of your code.
+> **Practical tip:** for **observer** hooks (`OnTakeDamage`, `OnAddModifier`, `OnChatMessage`, `OnClientConCommand`), return `Continue` unless you explicitly want to block. For **chat-command** handlers and similar "I answered this" methods, return `Handled`. `Stop` and `Handled` currently behave identically at the framework layer.
 
 ## IDeadworksPlugin
 

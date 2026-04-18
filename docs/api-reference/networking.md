@@ -150,28 +150,7 @@ Maps protobuf message types to network message IDs.
 | `GetMessageId(Type)` | `int` | Message ID for protobuf type, or `-1` |
 | `RegisterManual<T>(int)` | `void` | Manually register type with specific ID |
 
-## Common Message Types (Verified Sendable)
-
-All of the following have been tested with `NetMessages.Send()` and confirmed to send without error:
-
-| Message Type | Description |
-|-------------|-------------|
-| `CCitadelUserMsg_ForceShopClosed` | Force-close the shop UI |
-| `CCitadelUserMsg_HudGameAnnouncement` | Large HUD announcement with title and description |
-| `CCitadelUserMsg_KillStreak` | Kill streak notification (uses `PlayerPawn` and `NumKills`) |
-| `CCitadelUserMsg_TeamMsg` | Team message |
-| `CCitadelUserMsg_PlayerRespawned` | Player respawn notification (uses `PlayerPawn`) |
-| `CCitadelUserMsg_TriggerDamageFlash` | Damage flash effect (uses `EntindexFlashVictim`, `FlashValue`, `FlashType`) |
-| `CCitadelUserMsg_PostProcessingAnim` | Post-processing animation |
-| `CCitadelUserMsg_MusicQueue` | Music queue message |
-| `CCitadelUserMsg_AbilitiesChanged` | Abilities changed notification (uses `PurchaserPlayerSlot`) |
-| `CCitadelUserMsg_CameraController` | Camera controller message |
-| `CCitadelUserMsg_SetClientCameraAngles` | Force client camera to specific angles |
-| `CCitadelUserMsg_ChatMsg` | Chat message |
-
-:::caution Non-Sendable Messages
-`CCitadelUserMessage_GameOver` has no registered message ID and will throw an error when sent.
-:::
+## Common Message Types
 
 ### Set Client Camera Angles
 
@@ -187,21 +166,6 @@ NetMessages.Send(new CCitadelUserMsg_SetClientCameraAngles {
     }
 }, RecipientFilter.Single(slot));
 ```
-
-:::tip Third-Person Camera Offset
-The game uses a right-shoulder third-person camera, offset ~35 units to the right of `EyePosition`. When calculating aim angles (e.g. for auto-aim), offset the source point along the character's right vector:
-```csharp
-float yawRad = (float)(pawn.ViewAngles.Y * Math.PI / 180.0);
-float rightX = (float)Math.Sin(yawRad);
-float rightY = -(float)Math.Cos(yawRad);
-var cameraSrc = new Vector3(
-    pawn.EyePosition.X + rightX * 35f,
-    pawn.EyePosition.Y + rightY * 35f,
-    pawn.EyePosition.Z
-);
-// Then calculate pitch/yaw from cameraSrc to target
-```
-:::
 
 ### HUD Announcement Example
 

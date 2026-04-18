@@ -85,19 +85,9 @@ controller.SelectHero(randomHero);
 
 ## Precaching Heroes
 
-Heroes must be precached if you're swapping them at runtime. See [Precaching](precaching):
+Heroes must be precached if you're swapping them at runtime. See [Precaching](precaching).
 
-```csharp
-public override void OnPrecacheResources()
-{
-    // Precache a specific hero
-    Precache.AddHero(Heroes.Inferno);
-    Precache.AddHero("hero_wraith");
-
-    // Precache additional heroes as needed
-    Precache.AddHero("hero_astro");
-}
-```
+Deadworks currently automatically precaches all heroes.
 
 ## See Also
 

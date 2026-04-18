@@ -19,11 +19,11 @@ public override HookResult OnTakeDamage(TakeDamageEvent ev)
     // ev.Entity — the entity taking damage
     // ev.DamageInfo — full damage descriptor
 
-    // Block damage to bosses
+    // Block damage to the Patrons
     if (ev.Entity.DesignerName == "npc_boss_tier3")
         return HookResult.Stop;
 
-    return HookResult.Handled;
+    return HookResult.Continue;
 }
 ```
 
@@ -34,9 +34,6 @@ public override HookResult OnTakeDamage(TakeDamageEvent ev)
 | `Entity` | `CBaseEntity` | The entity taking damage |
 | `Info` | `CTakeDamageInfo` | Full damage descriptor (attacker, inflictor, amount, flags) |
 
-:::caution Property Name
-The property is `Info`, **not** `DamageInfo`. Use `ev.Info.Attacker`, `ev.Info.Damage`, etc.
-:::
 
 ## Applying Damage
 
@@ -61,17 +58,7 @@ entity.Hurt(
 );
 ```
 
-> If `attacker` is null, the framework treats it as self-damage (attacker = victim). Earlier builds would crash instead — if you're on an older Deadworks version and see an `AccessViolationException` in `Hurt`, update or pass `attacker: pawn`.
-
-:::caution Hurt() Cannot Kill
-`Hurt()` caps damage at 1 HP — even `Hurt(99999f, ...)` leaves the target alive at 1 HP. To guarantee a kill, use `CTakeDamageInfo` with `TakeDamageFlags.ForceDeath | TakeDamageFlags.AllowSuicide` (the `AllowSuicide` flag is required when victim == attacker):
-
-```csharp
-using var info = new CTakeDamageInfo(damage: 10000f, attacker: pawn);
-info.DamageFlags |= TakeDamageFlags.AllowSuicide | TakeDamageFlags.ForceDeath;
-pawn.TakeDamage(info);
-```
-:::
+> If `attacker` is null, the framework treats it as self-damage (attacker = victim). 
 
 ### Advanced: CTakeDamageInfo
 
@@ -154,59 +141,7 @@ Bit flags for damage type classification:
 | `DMG_HEADSHOT` | 524288 | Headshot |
 | `DMG_CRIT` | 1048576 | Critical hit |
 | `DMG_DOT` | 4194304 | Damage over time |
-| `DMG_LETHAL` | 16777216 | Lethal flag — does NOT bypass 1HP cap via `Hurt()` |
-
-## OnModifyCurrency Hook
-
-Intercept currency changes (gold, ability points):
-
-```csharp
-public override HookResult OnModifyCurrency(ModifyCurrencyEvent ev)
-{
-    // ev.Pawn — the player pawn
-    // ev.CurrencyType — ECurrencyType (EGold, EAbilityPoints)
-    // ev.Amount — the amount being added/removed
-    // ev.Source — ECurrencySource (EPlayerKill, EOrbPlayer, EItemPurchase, etc.)
-
-    // Block all currency gain except starting gold
-    if (ev.Source != ECurrencySource.EStartingAmount)
-        return HookResult.Stop;
-
-    return HookResult.Handled;
-}
-```
-
-### ModifyCurrencyEvent
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `Pawn` | `CCitadelPlayerPawn` | The player pawn |
-| `CurrencyType` | `ECurrencyType` | Type of currency |
-| `Amount` | `int` | Amount being modified |
-| `Source` | `ECurrencySource` | Reason for the change |
-
-## DOT (Damage Over Time) Pattern
-
-Using [Timer.Sequence](timers) for periodic damage:
-
-```csharp
-Timer.Sequence(step =>
-{
-    if (target.Health <= 0)
-        return step.Done();
-
-    float damage = target.Controller?.PlayerDataGlobal?.MaxHealth * 0.005f ?? 10f;
-    target.Hurt(damage, attacker, attacker, null);
-    target.EmitSound("Damage.Send.Crit");
-
-    if (step.Run >= maxTicks)
-        return step.Done();
-
-    return step.Wait(200.Milliseconds());
-});
-```
-
-See the [Scourge Example](../examples/scourge) for a complete DOT plugin.
+| `DMG_LETHAL` | 16777216 | Lethal flag |
 
 ## See Also
 

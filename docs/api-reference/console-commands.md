@@ -93,13 +93,9 @@ public override void OnStartupServer()
 }
 ```
 
-:::danger Don't set these to 0
-- `citadel_trooper_squad_size 0` — divide-by-zero, server crashes immediately
-:::
-
 ### Finding ConVar Names
 
-The `cvarlist` and `cmdlist` commands in the server console dump what's registered at runtime. Many game convars are hidden (`FCVAR_HIDDEN` / `FCVAR_CHEAT` / `FCVAR_DEVELOPMENTONLY`) and won't show up there — use the [community convar dump](https://deadlockmodding.pages.dev/convars) for a fuller list.
+The `cvarlist` and `cmdlist` commands in the server console dump what's registered at runtime. Many game convars are hidden by default but Deadworks strips these flags upon startup. `find` is also a useful command.
 
 ## Server.ExecuteCommand
 
@@ -113,33 +109,18 @@ Server.ExecuteCommand("sv_cheats 1");
 
 Use this when you need to invoke a command that has no managed equivalent (`changelevel`, `citadel_toggle_server_pause`, cheats-gated commands, etc.). For setting a convar value, prefer the typed `ConVar.Find(...).SetInt/SetFloat` methods.
 
-> **What happened to `controller.ServerCommand`?** The current build does not expose a method for "run a server command *as if this player typed it*". Arbitrary client-initiated commands are gated by `FCVAR_SERVER_CAN_EXECUTE` and there's no built-in bypass. Use `Server.ExecuteCommand` to run globally, or build the effect another way (hooks, schema writes, modifiers).
-
 ## Server.ClientCommand
 
-Send a console command to a specific client (the client will execute it as if they typed it themselves — subject to whatever FCVAR flags protect that command on the client):
-
-```csharp
-Server.ClientCommand(playerSlot, "echo Hello from the server!");
-Server.ClientCommand(playerSlot, "spec_player 3");
-```
+Send a console command to a specific client. Only `echo` and `play` are marked `FCVAR_SERVER_CAN_EXECUTE`, but use of `play` is discouraged.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `slot` | `int` | The player slot to send the command to |
-| `command` | `string` | The console command string (e.g. `"echo hello"`, `"playgamesound ..."`) |
+| `command` | `string` | The console command string (e.g. `"echo hello"`) |
 
 ## Blocking Client Commands
 
 Use the `OnClientConCommand` hook to intercept and block specific client console commands. This is useful for preventing players from performing certain actions.
-
-### Known Client Commands
-
-| Command | Description |
-|---------|-------------|
-| `selecthero` | Player selects/changes hero |
-| `citadel_hero_pick` | Hero pick during selection |
-| `sellitem` | Player sells an item. Args: `[sellitem, <ability_name>]` |
 
 ### Blocking Item Sales
 

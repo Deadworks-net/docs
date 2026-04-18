@@ -57,7 +57,6 @@ const sidebars: SidebarsConfig = {
         'guides/how-deadworks-works',
         'guides/plugin-lifecycle',
         'guides/server-hosting',
-        'guides/damage-system',
         'guides/team-and-hero-management',
         'guides/chat-and-hud',
       ],

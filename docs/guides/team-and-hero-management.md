@@ -54,88 +54,37 @@ controller.SelectHero(Heroes.Inferno);
 ### Random Hero Assignment
 
 ```csharp
-var heroes = Enum.GetValues<Heroes>();
+var heroes = Enum.GetValues<Heroes>()
+                 .Where(h => h.GetHeroData()?.AvailableInGame == true)
+                 .ToArray();
 var randomHero = heroes[Random.Shared.Next(heroes.Length)];
 controller.SelectHero(randomHero);
 ```
 
 ### Prevent Hero Changes
 
-Block hero changes outside spawn zones using `OnClientConCommand`:
+Block hero changes using `OnClientConCommand`:
 
 ```csharp
 public override HookResult OnClientConCommand(ClientConCommandEvent ev)
 {
-    if (ev.CommandName == "citadel_hero_pick")
+    if (ev.CommandName == "selecthero")
     {
-        var pawn = ev.Controller?.GetHeroPawn();
-        if (pawn != null && !IsInSpawnZone(pawn))
-        {
-            ev.Controller.PrintToConsole("Hero changes only in spawn!");
-            return HookResult.Stop;
-        }
+        return HookResult.Stop;
     }
-    return HookResult.Handled;
-}
-```
-
-### Hero Precaching
-
-When swapping heroes at runtime, precache them first:
-
-```csharp
-public override void OnPrecacheResources()
-{
-    // Precache each hero you plan to use at runtime
-    Precache.AddHero(Heroes.Inferno);
-    Precache.AddHero(Heroes.Wraith);
+    return HookResult.Continue;
 }
 ```
 
 ## Hero Reset
 
-Reset a hero's loadout, items, abilities, and level:
+Reset a pawn's hero including items, abilities, and level:
 
 ```csharp
-pawn.ResetHero(resetLevel: true);
-```
-
-### Custom Reset with Currency
-
-```csharp
-[GameEventHandler("player_hero_changed")]
-public HookResult OnHeroChanged(GameEvent ev)
-{
-    var pawn = ev.GetPlayerPawn("player") as CCitadelPlayerPawn;
-    if (pawn == null) return HookResult.Handled;
-
-    // Give starting resources
-    pawn.ModifyCurrency(ECurrencyType.EGold, 15000, ECurrencySource.ECheats, false, false, false);
-    pawn.ModifyCurrency(ECurrencyType.EAbilityPoints, 17, ECurrencySource.ECheats, false, false, false);
-
-    return HookResult.Handled;
-}
+pawn.ResetHero();
 ```
 
 ## Player Tracking
-
-### Active Player Set
-
-```csharp
-private readonly Dictionary<int, string> _playerSets = new();
-
-public override HookResult OnClientFullConnect(ClientFullConnectEvent ev)
-{
-    _playerSets[ev.Slot] = "default";
-    return HookResult.Handled;
-}
-
-public override HookResult OnClientDisconnect(ClientDisconnectedEvent ev)
-{
-    _playerSets.Remove(ev.Slot);
-    return HookResult.Handled;
-}
-```
 
 ### Iterating Connected Players
 
@@ -146,49 +95,18 @@ foreach (var controller in Players.GetAll())
     if (pawn == null) continue;
 
     // Do something with each active player
-    pawn.EmitSound("Mystical.Piano.AOE.Warning");
 }
 ```
 
 ### Player Cleanup on Disconnect
 
 ```csharp
-public override HookResult OnClientDisconnect(ClientDisconnectedEvent ev)
-{
-    // Clean up the disconnected player's pawn
-    var controller = Players.FromSlot(ev.Slot);
-    var pawn = controller?.GetHeroPawn();
-    pawn?.Remove();
+public override void OnClientDisconnect(ClientDisconnectedEvent args) {
+    var controller = args.Controller;
+    if (controller == null) return;
 
-    return HookResult.Handled;
-}
-```
-
-## Friendly Fire Toggle
-
-```csharp
-private bool _friendlyFire = false;
-
-[ChatCommand("ff")]
-public HookResult OnFriendlyFire(ChatCommandContext ctx)
-{
-    _friendlyFire = !_friendlyFire;
-
-    foreach (var pawn in Players.GetAllPawns())
-    {
-        // Set friendly fire state on all players
-        // Implementation depends on modifier states
-    }
-
-    // Announce to all
-    var msg = new CCitadelUserMsg_HudGameAnnouncement
-    {
-        TitleLocstring = "FRIENDLY FIRE",
-        DescriptionLocstring = _friendlyFire ? "ENABLED" : "DISABLED"
-    };
-    NetMessages.Send(msg, RecipientFilter.All);
-
-    return HookResult.Handled;
+    controller.GetHeroPawn()?.Remove();
+    controller.Remove();
 }
 ```
 

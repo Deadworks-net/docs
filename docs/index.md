@@ -41,7 +41,6 @@ Deadworks is a .NET plugin framework for creating server-side mods for **Deadloc
 - [How Deadworks Works](guides/how-deadworks-works) — Architecture, signatures, what's client vs server
 - [Plugin Lifecycle](guides/plugin-lifecycle) — Load/unload flow, hot-reloading, resource precaching
 - [Server Hosting](guides/server-hosting) — Launch options, firewalls, SDR, port conflicts, Linux
-- [Damage System](guides/damage-system) — Intercepting and modifying damage, applying DOT effects
 - [Team & Hero Management](guides/team-and-hero-management) — Balancing teams, forcing hero selection, currency control
 - [Chat & HUD Messaging](guides/chat-and-hud) — Sending chat messages, HUD announcements, world text
 

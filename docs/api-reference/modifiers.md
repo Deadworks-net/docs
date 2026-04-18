@@ -23,11 +23,11 @@ pawn.AddModifier("modifier_citadel_knockdown", kv);
 
 ```csharp
 entity.AddModifier(
-    string vdataName,       // Modifier VData name (e.g. "modifier_citadel_knockdown")
-    KeyValues3 kv,          // Parameters (duration, etc.)
+    string name,            // Modifier VData name (e.g. "modifier_citadel_knockdown")
+    KeyValues3? kv,         // Parameters (duration, etc.) (optional)
     CBaseEntity? caster,    // Entity that applied the modifier (optional)
     CBaseEntity? ability,   // Ability that caused the modifier (optional)
-    int stackCount          // Number of stacks (optional)
+    int team
 );
 ```
 
@@ -171,54 +171,11 @@ pawn.AddModifier("modifier_shrink_ray", kv, pawn, ability);
 pawn.RemoveAbility("upgrade_shrink_ray");
 ```
 
-**Important constraints:**
-
-- **Only item abilities work:** `AddAbility` only succeeds for `EAbilityType_Item` (type=3) abilities like `upgrade_shrink_ray`, `upgrade_colossus`, `upgrade_metal_skin`, `upgrade_unstable_concoction`. Hero signature/ultimate abilities (type=1) like `ability_sleep_dagger`, `ability_smoke_bomb`, `drifter_darkness` return `null`.
-- **Ability removal timing varies:** Some modifiers only read ability properties once during `OnCreated` (e.g., `modifier_shrink_ray`, `modifier_colossus_active`, `modifier_citadel_metal_skin`) — the ability can be removed immediately after `AddModifier`. Others reference the ability throughout their duration (e.g., `modifier_unstable_concoction`) — removing the ability too early causes a crash. When unsure, delay removal until after the modifier duration.
-
-```csharp
-// Safe: immediate removal (modifier reads ability once)
-pawn.AddModifier("modifier_shrink_ray", kv, pawn, ability);
-pawn.RemoveAbility("upgrade_shrink_ray");
-
-// Required: delayed removal (modifier references ability during lifetime)
-pawn.AddModifier("modifier_unstable_concoction", kv, pawn, ability);
-Timer.Once(5.Seconds(), () => {
-    if (pawn.IsValid)
-        pawn.RemoveAbility("upgrade_unstable_concoction");
-});
-```
-
-## Modifier VData Lookup
-
-When calling `AddModifier(name, ...)`, the name is looked up as follows:
-
-- **Standalone modifiers** (defined at top level in `modifiers.vdata`): Use the VData key name. Example: `"modifier_citadel_knockdown"`, `"modifier_speed_boost"`.
-- **Inline modifiers** (defined within abilities in `abilities.vdata`): Use the **C++ class name** (`_class` field), not the `_my_subclass_name`. The C++ class applies the core mechanic, but inline VData properties (custom particles, model overrides) may not be available.
-
-| Modifier | Source | Name for AddModifier | Notes |
-|----------|--------|---------------------|-------|
-| `modifier_citadel_knockdown` | Standalone | `"modifier_citadel_knockdown"` | Stun/knockdown, gravity 2.0 |
-| `modifier_speed_boost` | Standalone | `"modifier_speed_boost"` | +70 move speed with sprint particle |
-| `modifier_citadel_cheater_curse` | Standalone | `"modifier_citadel_cheater_curse"` | Frog transformation |
-| `modifier_shrink_ray` | Inline (item) | `"modifier_shrink_ray"` | Requires ability for `ModelScaleGrowth` |
-| `modifier_colossus_active` | Inline (item) | `"modifier_colossus_active"` | Requires ability for `ModelScaleGrowth` |
-| `modifier_citadel_metal_skin` | Inline (item) | `"modifier_citadel_metal_skin"` | Requires ability for resist values |
-| `modifier_unstable_concoction` | Inline (item) | `"modifier_unstable_concoction"` | Requires ability alive during duration |
-| `modifier_doorman_hotel_victim` | Inline | `"modifier_doorman_hotel_victim"` | Hotel victim effect |
-
-:::caution Inline Hero Modifiers Don't Work Standalone
-The following inline hero modifiers have been tested and **do not work** when applied via `AddModifier` standalone — they require their parent hero ability's C++ code to function:
-- `modifier_synth_affliction_debuff` — DoT affliction (inline in Synth ability)
-- `modifier_drifter_darkness_target` — Blindness (inline in Drifter ability)
-- `modifier_glitch_debuff` via `upgrade_glitch` — Glitch debuff (tried immediate + delayed removal)
-:::
-
 ## EModifierState Reference
 
 State behavior is inconsistent — some flags are honored by the client, others are only meaningful when set by internal C++ modifier code. When in doubt, try setting the flag every tick (from `OnGameFrame` or a 1-tick timer): several states that "don't work" when set once do work when sustained.
 
-**Confirmed working** via `SetModifierState`:
+### Examples
 
 | Raw Value | Name | Description |
 |-----------|------|-------------|
@@ -231,21 +188,6 @@ State behavior is inconsistent — some flags are honored by the client, others 
 | 115 | `UnitStatusHealthHidden` | Hides the healthbar above the hero. Set every tick. |
 | 116 | `UnitStatusHidden` | Hides the whole unit status / nameplate panel. Set every tick. |
 | 118 | `FriendlyFireEnabled` | Enables friendly-fire **for bullet damage only**. Abilities and melee still ignore teammates; see the FFA recipe in [team-and-hero-management](../guides/team-and-hero-management). |
-
-**Observed not working standalone** (effect is either client-gated or requires the owning ability/modifier):
-
-| Raw Value | Name | Notes |
-|-----------|------|-------|
-| 12 | `Disarmed` | No observed effect |
-| 13 | `Muted` | No observed effect |
-| 15 | `Silenced` | No observed effect |
-| 19 | `Invulnerable` | No observed effect — use a damage hook to block instead |
-| 36 | `Unkillable` | No observed effect |
-| 76 | `GlowThroughWallsToEnemy` | No observed effect |
-| 103 | `RespawnCredit` | No observed effect |
-| 104 | `RespawnCreditPersonal` | No observed effect |
-| 119 | `Flying` | No observed effect — use MoveType instead |
-| 193 | `Frozen` | No observed effect — use a movement modifier or MoveType |
 
 :::tip Try setting every tick before giving up
 The Discord dump has several cases of "doesn't work" turning into "works when set every tick." Before writing off a state, try:
@@ -270,19 +212,12 @@ pawn.ModifierProp?.SetModifierState((EModifierState)69, true); // InfiniteClip
 `EModifierState` has 302 values total. The raw values follow the `MODIFIER_STATE_` prefix pattern from VData (e.g., `MODIFIER_STATE_INFINITE_CLIP` = 69).
 :::
 
-## KeyValues3 Parameters Are Mostly Ignored
-
-When you pass `KeyValues3` parameters to `AddModifier`, **only `duration` is reliably honored** across most modifiers. The rest of the VData is compiled into the modifier definition; runtime overrides rarely take effect. If you need a variant of an existing modifier with different parameters, you'll usually need to:
-
-- Add the parent ability first and pass it as the `ability` argument (see [AddAbility + AddModifier Pattern](#addability--addmodifier-pattern) above), or
-- Author a custom modifier in your own VData, or
-- Apply the effect via a different mechanism (damage hooks, `SetModifierState`, etc.).
-
 ## Discovering Modifier Names
 
-The server has thousands of modifiers. Useful sources:
+Deadlock has hundreds of modifiers. Useful sources:
 
 - **`modifier_dump_list`** in the server console — lists currently-known modifiers. Results can vary between invocations; if it looks short, run it again after a map fully loads.
+- **`modifier_dump`** — lists modifiers currently active on an entity. Useful for discovering subclassed modifiers.
 - **[Deadlock modding modifier list](https://deadlockmodding.pages.dev/modifier-list)** — community-maintained dump.
 - **`scripts/modifiers.vdata`** (extracted from `pak01_dir.vpk`) — the authoritative standalone modifier definitions.
 - **`scripts/abilities.vdata`** — abilities contain inline modifier subclasses under `Modifiers` blocks. These are referenced as `upgrade_<item>/modifier_<name>` in VData but you call `AddModifier` with just the bare modifier name.

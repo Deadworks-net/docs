@@ -7,9 +7,28 @@ sidebar_label: "Server Hosting"
 
 :::info Windows only
 This guide covers running a Deadworks dedicated server on **Windows**. Linux is not supported — Valve hasn't published a native Linux server binary for Deadlock, so every path below assumes a Windows host (local machine or Windows VPS).
+
+Docker support is experimental and will be coming soon.
 :::
 
 This guide covers launch options, ports, firewalls, and the operational quirks that surface once real players try to connect.
+
+## Installing the Server
+
+Deadworks can be run using a normal game installation, but when running an actual server, it is recommended to create a separate install using [SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD).
+
+1. Download SteamCMD for Windows: https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip
+2. Create a folder for SteamCMD. Example: D:\steamcmd
+3. Extract the contents of the zip to the folder.
+
+To install Deadlock via SteamCMD:
+
+```
+force_install_dir my_deadworks_server
+app_update 1422450 validate
+```
+
+The same process is used for updating the server.
 
 ## Launching the Server
 
@@ -89,7 +108,7 @@ SDR gives you an IP that's hosted on Valve's relay network — no ports exposed 
 
 | Link form | Works? | Notes |
 |---|---|---|
-| `steam://connect/1.2.3.4:27015` | ✓ | Works at game startup and once Deadlock is already running (via the A2S patch) |
+| `steam://connect/1.2.3.4:27015` | ✓ | Works at game startup and once Deadlock is already running |
 | `steam://connect/yourdomain.com:27015` | ✗ from browser | Steam's deep-link handler doesn't resolve DNS — use the public IP |
 | `steam://connect/<SDR-id>` | ✗ | Steam ignores SDR IDs in connect links |
 

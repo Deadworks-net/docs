@@ -67,16 +67,6 @@ text.SetColor(255, 0, 0, 128);      // RGBA
 text.Remove();  // Inherited from CBaseEntity
 ```
 
-## Screen-Anchored Text (Pattern)
-
-There is no dedicated `ScreenText` class. To display text anchored to a player's camera, create a `CPointWorldText` and parent it to the player pawn using `SetParent()`.
-
-:::tip Camera Offset
-Deadlock uses a right-shoulder third-person camera, positioned ~35 units to the right of the player's eye position. ScreenText positions are relative to the model eye, not the actual camera — so screen-center coordinates are **not** `(0.5, 0.5)`.
-
-**Calibrated center position:** `posX: 2.341f, posY: 2.6f` (these values are far beyond the 0-1 range due to the shoulder offset).
-:::
-
 ### Positioning Tips
 
 | Parameter | Recommended Value | Notes |
@@ -91,36 +81,6 @@ Deadlock uses a right-shoulder third-person camera, positioned ~35 units to the 
 :::tip Pixel Art
 Use the full block character `"█"` for pixel-art style displays. The `"."` character is invisible at small sizes. The block character is approximately 2.6x taller than wide, so adjust `SpacingX` and `SpacingY` accordingly for square pixels.
 :::
-
-### Example: Toggle Screen Overlay
-
-```csharp
-private CPointWorldText? _screenText;
-
-[ChatCommand("worldtext")]
-public HookResult OnWorldText(ChatCommandContext ctx)
-{
-    var pawn = ctx.Controller?.GetHeroPawn();
-    if (pawn == null) return HookResult.Handled;
-
-    if (_screenText != null)
-    {
-        _screenText.Remove();
-        _screenText = null;
-        return HookResult.Handled;
-    }
-
-    // Create text at screen center
-    _screenText = CPointWorldText.Create(
-        "OVERLAY TEXT",
-        pawn.EyePosition,  // Will be parented to player
-        fontSize: 200f,
-        r: 255, g: 255, b: 255, a: 255
-    );
-
-    return HookResult.Handled;
-}
-```
 
 ## The EKV Workflow (Full Control)
 
@@ -182,16 +142,6 @@ public override void OnClientFullConnect(ClientFullConnectEvent args)
 }
 ```
 
-## Why Text Looks Blurry When Moving
-
-Deadlock runs temporal upscaling (DLSS by default) which smears `point_worldtext` during movement. It's not a bug in your plugin — the same text is sharp on a stationary camera. Three partial mitigations:
-
-- Bigger, thicker text reads through the smear better (larger `font_size`, heavier font)
-- Higher `depth_render_offset` pushes the text closer to the camera, slightly improving sharpness
-- On a development machine, disabling DLSS makes text crisp
-
-You cannot fix this per-plugin — any user with DLSS on will see some smear.
-
 ## Attaching to the Camera
 
 You **can't** parent a worldtext to the player's camera directly. The camera is not a networked entity, and the player controller sits at `(0,0,0)` on the server. Common workarounds:
@@ -199,37 +149,6 @@ You **can't** parent a worldtext to the player's camera directly. The camera is 
 - Attach to the pawn and accept that the text moves with the model (fine for nametags, timers, debug overlays)
 - Recompute position every tick in `OnGameFrame` based on `EyePosition + forward * distance` (visible stutter because client prediction can't help)
 - Use `CCitadelUserMsg_HudGameAnnouncement` for real HUD text (see [chat-and-hud](../guides/chat-and-hud))
-
-## Map-Line Drawing
-
-For drawing on the minimap instead of in the world, send `CCitadelUserMsg_MapLine` messages. Lines have an 8-second lifetime and are green only.
-
-```csharp
-// Draw a circle on the minimap at world position `center`, radius `radius`.
-void DrawCircle(Vector3 center, float radius, int edges = 32)
-{
-    float step = MathF.PI * 2f / edges;
-    for (int i = 0; i <= edges; i++)
-    {
-        float x = MathF.Cos(step * i) * radius;
-        float y = MathF.Sin(step * i) * radius;
-
-        var line = new CMsgMapLine {
-            Initial = i == 0,              // first point breaks the chain
-            X = (int)center.X + (int)x,
-            Y = (int)center.Y + (int)y,
-        };
-        var msg = new CCitadelUserMsg_MapLine { Mapline = line, SenderPlayerSlot = 0 };
-        NetMessages.Send(msg, RecipientFilter.All);
-    }
-}
-```
-
-Caveats:
-
-- Only green lines are supported. Color overrides are ignored.
-- Lines fade after ~8 seconds. Re-emit in `OnGameFrame` if you want persistent overlays.
-- More than ~8192 active lines at once causes rendering artifacts (colors darken or clip).
 
 ## See Also
 

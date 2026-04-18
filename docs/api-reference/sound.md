@@ -48,22 +48,6 @@ void PlayAt(string soundName, Vector3 position)
 }
 ```
 
-## "Announcer-Style" Global Sound (No Position)
-
-There is no first-class API for playing a sound globally with no spatial component. Two workarounds:
-
-1. **Use a global/UI soundevent** (announcer clips, UI dings — the Deadlock announcer line soundevents are authored as 2D) via the `point_soundevent` recipe above. Positional falloff won't apply because the underlying soundevent doesn't request it.
-2. **Send a client `play` concommand** to every player. This works but **bypasses the user's volume settings**, which is obnoxious — use only as a temporary hack during prototyping:
-
-    ```csharp
-    foreach (var controller in Players.GetAll())
-        Server.ClientCommand(controller.EntityIndex, $"play {soundName}");
-    ```
-
-## Per-Player Sound (Limited)
-
-There is **no supported way** to play a soundevent that only one player can hear. The obvious schema flags — `m_flClientCullRadius` and `m_bToLocalPlayer` on `point_soundevent` — don't actually gate audibility in testing. If you need a strictly-private sound, the `play` client concommand is the only approach, with the same volume-bypass warning above.
-
 ## Silent Soundevent Problems
 
 If `EmitSound` appears to return success but you hear nothing:

@@ -13,16 +13,6 @@ Register chat commands using the `[ChatCommand]` attribute on plugin methods.
 
 Chat commands are triggered when a player types a message starting with `/`. The bare command name you register (e.g. `"rtd"`) is what the player types **after** the slash.
 
-| Player types | Triggers `[ChatCommand("rtd")]`? |
-|---|---|
-| `/rtd` | ✓ |
-| `/rtd 5 extra args` | ✓ (args exposed via `ctx.Args`) |
-| `!rtd` | ✗ — only `/` is parsed as a command prefix |
-| `.rtd` / `-rtd` | ✗ |
-| `rtd` | ✗ — appears as a normal chat message |
-
-If you want to support additional prefixes (`!`, `.`, etc.), handle `OnChatMessage` directly and parse `ChatText` yourself — the framework only hooks `/`.
-
 ## ChatCommandAttribute
 
 Marks a plugin method as a handler for a chat command. Can be applied multiple times to map multiple commands to the same handler.

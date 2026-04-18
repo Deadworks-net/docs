@@ -18,29 +18,13 @@ Server Start
     │
     ├── OnStartupServer()         ← Server map loaded, set convars here
     │
-    │   ┌─────────────────────────────────────────────┐
-    │   │           SERVER RUNNING                    │
-    │   │                                             │
-    │   │  OnClientConnect()      ← Filter (bool)     │
-    │   │  OnClientPutInServer()  ← Client joins      │
-    │   │  OnClientFullConnect()  ← Client ready      │
-    │   │  OnGameFrame()          ← Every server tick │
-    │   │  OnCheckTransmit()      ← Per-player, tick  │
-    │   │  OnEntityCreated()      ← Entity born       │
-    │   │  OnEntitySpawned()      ← Entity ready      │
-    │   │  OnEntityDeleted()      ← Entity dying      │
-    │   │  OnEntityStartTouch()   ← Touch begin       │
-    │   │  OnEntityEndTouch()     ← Touch end         │
-    │   │  OnTakeDamage()         ← Damage event      │
-    │   │  OnModifyCurrency()     ← Currency event    │
-    │   │  OnAddModifier()        ← Modifier applied  │
-    │   │  OnAbilityAttempt()     ← Ability input     │
-    │   │  OnProcessUsercmds()    ← User input tick   │
-    │   │  OnChatMessage()        ← Chat message      │
-    │   │  OnClientConCommand()   ← Console cmd       │
-    │   │  OnClientDisconnect()   ← Client leaves     │
-    │   │  OnConfigReloaded()     ← Config hot-reload │
-    │   └─────────────────────────────────────────────┘
+    │   ┌─────────────────────────────┐
+    │   │        SERVER RUNNING       │
+    │   │                             │
+    │   │  OnClientConnect()          │
+    │   │  OnClientPutInServer()      │
+    |   |  ... other hooks ...        |
+    │   └─────────────────────────────┘
     │
     ├── OnUnload()                ← Plugin unloaded
     │
@@ -51,14 +35,12 @@ Server Start
 
 ### OnPrecacheResources
 
-Called during map load. **Must** precache all resources (particles, models, heroes) here.
+Called during map load. **Must** precache all resources (particles, models, etc.) here.
 
 ```csharp
 public override void OnPrecacheResources()
 {
     Precache.AddResource("particles/upgrades/mystical_piano_hit.vpcf");
-    Precache.AddHero(Heroes.Inferno);
-    Precache.AddHero(Heroes.Wraith);
 }
 ```
 
@@ -168,7 +150,7 @@ public override void OnClientDisconnect(ClientDisconnectedEvent args)
 }
 ```
 
-> `OnClientFullConnect` and `OnClientDisconnect` return `void` — they're notification hooks, not filter hooks. Use `OnClientConnect` (returns `bool`) if you need to reject a connection before the client joins.
+> You may use [`Players`](../api-reference/players) instead to access all players
 
 ## Async Work — Get Back On the Game Thread
 
@@ -190,11 +172,6 @@ private async Task FetchAndAnnounceAsync()
     Timer.NextTick(() =>
     {
         // Safe to interact with the game here.
-        var msg = new CCitadelUserMsg_HudGameAnnouncement {
-            TitleLocstring = "API",
-            DescriptionLocstring = response
-        };
-        NetMessages.Send(msg, RecipientFilter.All);
     });
 }
 ```

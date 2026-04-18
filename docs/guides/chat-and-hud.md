@@ -12,7 +12,7 @@ This guide covers sending messages to players through chat, HUD announcements, c
 Before diving in, the ceiling is worth knowing — it's asked about often:
 
 - **No custom HUD panels.** Panorama (the Deadlock UI system) is locked down server-side. You can't inject new UI elements, listen for game events from Panorama, or mutate the chrome.
-- **No worldtext that follows the camera.** The camera is not a networked entity. You can only parent to the pawn.
+- **No worldtext pinned to the screen.** The camera is not a networked entity. You can only parent to the pawn. However, you can configure the reorient mode of a worldtext to face the camera (billboarding).
 - **No per-recipient rendering.** `OnCheckTransmit` lets you hide an entity from specific players, but you can't give the *same* entity different text/color per viewer.
 - **No colored minimap lines.** `CCitadelUserMsg_MapLine` renders green only.
 
@@ -23,7 +23,6 @@ What you *can* do:
 - **Console output** (`PrintToConsole`)
 - **World text** (`point_worldtext`) — 3D panels parented to entities
 - **Minimap lines** (`CCitadelUserMsg_MapLine`) — short-lived green strokes
-- **A Panorama-side client mod** can scan chat text (which is plain text in Panorama) and render whatever it wants. This requires every player to install the client mod.
 
 ## HUD Announcements
 
@@ -73,7 +72,7 @@ Override `OnChatMessage` to intercept all chat:
 public override HookResult OnChatMessage(ChatMessage msg)
 {
     Console.WriteLine($"[Chat] Slot {msg.SenderSlot}: {msg.Text}");
-    return HookResult.Handled;
+    return HookResult.Continue;
 }
 ```
 
@@ -114,15 +113,6 @@ pawn.EmitSound("Mystical.Piano.AOE.Warning");
 
 // With parameters
 pawn.EmitSound("Damage.Send.Crit", pitch: 100, volume: 0.1f, soundLevel: 75f);
-```
-
-### Delayed Sound
-
-```csharp
-Timer.Once(1.Seconds(), () =>
-{
-    pawn.EmitSound("Mystical.Piano.AOE.Explode");
-});
 ```
 
 ## World Text
