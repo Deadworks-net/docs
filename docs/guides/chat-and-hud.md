@@ -134,7 +134,7 @@ text.SetMessage("ROUND 2");
 text.Remove();
 ```
 
-See [World Text API](../api-reference/world-text).
+See [World Text API](../api-reference/world-text.md).
 
 ## Targeting Players
 
@@ -177,6 +177,6 @@ NetMessages.Send(msg, filter);
 
 ## See Also
 
-- [Networking API](../api-reference/networking) — Full message sending reference
-- [World Text API](../api-reference/world-text) — 3D text panels
-- [Players API](../api-reference/players) — Player enumeration
+- [Networking API](../api-reference/networking.md) — Full message sending reference
+- [World Text API](../api-reference/world-text.md) — 3D text panels
+- [Players API](../api-reference/players.md) — Player enumeration

@@ -23,7 +23,7 @@ public class MyPlugin : DeadworksPluginBase
 | Property | Type | Description |
 |----------|------|-------------|
 | `Name` | `string` | Display name of the plugin (abstract — must override) |
-| `Timer` | `ITimer` | Per-plugin [timer service](timers) for scheduling actions |
+| `Timer` | `ITimer` | Per-plugin [timer service](timers.md) for scheduling actions |
 
 ### Lifecycle Hooks
 
@@ -31,7 +31,7 @@ public class MyPlugin : DeadworksPluginBase
 |--------|-------------|
 | `OnLoad(bool isReload)` | Called when plugin is loaded. `isReload` is `true` during hot-reload |
 | `OnUnload()` | Called when plugin is unloaded. Clean up hooks and timers here |
-| `OnPrecacheResources()` | Called during map load. Use [`Precache.AddResource()`](precaching) here |
+| `OnPrecacheResources()` | Called during map load. Use [`Precache.AddResource(.md)`](precaching.md) here |
 | `OnStartupServer()` | Called when the server starts (new map load) |
 | `OnGameFrame(bool simulating, bool firstTick, bool lastTick)` | Called every server frame (~64 Hz). `simulating` is true during active gameplay; the other flags tag the first/last frame of a contiguous simulation window. Prefer this over `Timer.Every(1.Ticks(), …)` when you need per-tick logic. |
 | `OnConfigReloaded()` | Called when plugin config is reloaded at runtime |
@@ -40,8 +40,8 @@ public class MyPlugin : DeadworksPluginBase
 
 | Method | Description |
 |--------|-------------|
-| `OnTakeDamage(TakeDamageEvent)` | Entity takes damage. Return `HookResult.Stop` to block. See [Damage](damage) |
-| `OnModifyCurrency(ModifyCurrencyEvent)` | Player currency modified. Return `Stop` to block. See [Players](players) |
+| `OnTakeDamage(TakeDamageEvent)` | Entity takes damage. Return `HookResult.Stop` to block. See [Damage](damage.md) |
+| `OnModifyCurrency(ModifyCurrencyEvent)` | Player currency modified. Return `Stop` to block. See [Players](players.md) |
 | `OnChatMessage(ChatMessage)` | Player sends chat message. Return `Stop` to block |
 | `OnClientConCommand(ClientConCommandEvent)` | Client sends console command. Return `Stop` to block |
 | `OnAddModifier(AddModifierEvent)` | Modifier about to be added. Return `Stop` to block |
@@ -87,7 +87,7 @@ The core interface that `DeadworksPluginBase` implements. You can implement this
 
 ## IPluginConfig\<T\>
 
-Interface for plugins with JSON configuration. See [Configuration](configuration).
+Interface for plugins with JSON configuration. See [Configuration](configuration.md).
 
 ```csharp
 public class MyPlugin : DeadworksPluginBase, IPluginConfig<MyConfig>
@@ -98,6 +98,6 @@ public class MyPlugin : DeadworksPluginBase, IPluginConfig<MyConfig>
 
 ## See Also
 
-- [Plugin Lifecycle Guide](../guides/plugin-lifecycle) — Full load/unload flow
-- [Chat Commands](chat-commands) — Attribute-based command registration
-- [Timers](timers) — Per-plugin timer service
+- [Plugin Lifecycle Guide](../guides/plugin-lifecycle.md) — Full load/unload flow
+- [Chat Commands](chat-commands.md) — Attribute-based command registration
+- [Timers](timers.md) — Per-plugin timer service

@@ -120,7 +120,7 @@ Sequence step context passed to `Timer.Sequence` callbacks.
 
 ### Per-Entity Timer Tracking
 
-Use [`EntityData<IHandle?>`](entities) to track timers per entity:
+Use [`EntityData<IHandle?>`](entities.md) to track timers per entity:
 
 ```csharp
 private readonly EntityData<IHandle?> _timers = new();
@@ -184,6 +184,6 @@ public override void OnUnload()
 
 ## See Also
 
-- [Entities](entities) — `EntityData<T>` for per-entity state
-- [Plugin Base](plugin-base) — Accessing the `Timer` property
-- [Scourge Example](../examples/scourge) — DOT effect using `Timer.Sequence`
+- [Entities](entities.md) — `EntityData<T>` for per-entity state
+- [Plugin Base](plugin-base.md) — Accessing the `Timer` property
+- [Scourge Example](../examples/scourge.md) — DOT effect using `Timer.Sequence`

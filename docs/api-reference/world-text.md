@@ -148,10 +148,10 @@ You **can't** parent a worldtext to the player's camera directly. The camera is 
 
 - Attach to the pawn and accept that the text moves with the model (fine for nametags, timers, debug overlays)
 - Recompute position every tick in `OnGameFrame` based on `EyePosition + forward * distance` (visible stutter because client prediction can't help)
-- Use `CCitadelUserMsg_HudGameAnnouncement` for real HUD text (see [chat-and-hud](../guides/chat-and-hud))
+- Use `CCitadelUserMsg_HudGameAnnouncement` for real HUD text (see [chat-and-hud](../guides/chat-and-hud.md))
 
 ## See Also
 
-- [Entities](entities) — Base entity operations (`Remove`, `SetParent`)
-- [Networking](networking) — HUD announcements as an alternative
-- [Chat & HUD Messaging](../guides/chat-and-hud) — When to use worldtext vs announcements
+- [Entities](entities.md) — Base entity operations (`Remove`, `SetParent`)
+- [Networking](networking.md) — HUD announcements as an alternative
+- [Chat & HUD Messaging](../guides/chat-and-hud.md) — When to use worldtext vs announcements

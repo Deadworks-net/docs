@@ -44,7 +44,7 @@ public override void OnPrecacheResources()
 }
 ```
 
-See [Precaching](../api-reference/precaching).
+See [Precaching](../api-reference/precaching.md).
 
 ### OnLoad
 
@@ -150,7 +150,7 @@ public override void OnClientDisconnect(ClientDisconnectedEvent args)
 }
 ```
 
-> You may use [`Players`](../api-reference/players) instead to access all players
+> You may use [`Players`](../api-reference/players.md) instead to access all players
 
 ## Async Work — Get Back On the Game Thread
 
@@ -192,7 +192,7 @@ If you launch `deadworks.exe` from Windows Terminal or PowerShell and the consol
 
 ## See Also
 
-- [Plugin Base](../api-reference/plugin-base) — All lifecycle hooks
-- [Precaching](../api-reference/precaching) — Resource precaching
-- [Console Commands](../api-reference/console-commands) — ConVar setup in OnStartupServer
-- [Server Hosting](server-hosting) — Running a dedicated server
+- [Plugin Base](../api-reference/plugin-base.md) — All lifecycle hooks
+- [Precaching](../api-reference/precaching.md) — Resource precaching
+- [Console Commands](../api-reference/console-commands.md) — ConVar setup in OnStartupServer
+- [Server Hosting](server-hosting.md) — Running a dedicated server

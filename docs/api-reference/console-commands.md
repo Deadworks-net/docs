@@ -167,5 +167,5 @@ public override HookResult OnClientConCommand(ClientConCommandEvent e)
 
 ## See Also
 
-- [Chat Commands](chat-commands) — Player chat commands (`[ChatCommand]`)
-- [Plugin Base](plugin-base) — `OnClientConCommand` hook for intercepting client commands
+- [Chat Commands](chat-commands.md) — Player chat commands (`[ChatCommand]`)
+- [Plugin Base](plugin-base.md) — `OnClientConCommand` hook for intercepting client commands

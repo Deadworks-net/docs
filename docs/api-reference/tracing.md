@@ -283,5 +283,5 @@ public HookResult OnTrace(ChatCommandContext ctx)
 
 ## See Also
 
-- [Entities](entities) — Entity references in trace results
-- [Players](players) — `EyePosition`, `EyeAngles`, `ViewAngles`
+- [Entities](entities.md) — Entity references in trace results
+- [Players](players.md) — `EyePosition`, `EyeAngles`, `ViewAngles`

@@ -92,8 +92,8 @@ public class RollTheDicePlugin : DeadworksPluginBase {
 
 ## See Also
 
-- [Chat Commands](../api-reference/chat-commands)
-- [Modifiers](../api-reference/modifiers)
-- [Particles](../api-reference/particles)
-- [Timers](../api-reference/timers)
-- [Precaching](../api-reference/precaching)
+- [Chat Commands](../api-reference/chat-commands.md)
+- [Modifiers](../api-reference/modifiers.md)
+- [Particles](../api-reference/particles.md)
+- [Timers](../api-reference/timers.md)
+- [Precaching](../api-reference/precaching.md)

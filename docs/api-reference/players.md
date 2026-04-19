@@ -38,7 +38,7 @@ Deadlock-specific player controller. Extends `CBasePlayerController`.
 | Method | Returns | Description |
 |--------|---------|-------------|
 | `GetHeroPawn()` | `CCitadelPlayerPawn?` | Returns the player's current hero pawn, or `null` |
-| `ChangeTeam(int team)` | `void` | Moves player to specified team. See the [Team & Hero Management](../guides/team-and-hero-management) guide for the visual-update caveat (prefer the `citadel_change_team` modifier for in-match switches). |
+| `ChangeTeam(int team)` | `void` | Moves player to specified team. See the [Team & Hero Management](../guides/team-and-hero-management.md) guide for the visual-update caveat (prefer the `citadel_change_team` modifier for in-match switches). |
 | `SelectHero(Heroes hero)` | `void` | Forces player to select specified hero |
 | `PrintToConsole(string msg)` | `void` | Sends message to this player's console (via `echo` client command) |
 | `PrintToConsoleAll(string msg)` | `void` | *Static* — Sends message to all connected players' consoles |
@@ -110,8 +110,8 @@ The in-game physical representation of a player (the hero). Extends `CBasePlayer
 - **`EyeAngles`** — Quantized eye angles (~0.18° precision, suitable for most checks)
 - **`ViewAngles`** — Full-precision server-side view angles (use for accurate aim calculations)
 - **`CameraAngles`** — Client camera angles (useful for spectating/SourceTV)
-- **Velocity** — Read via `pawn.AbsVelocity`; write via `Teleport(velocity: …)` (see [Entities — Transform](entities#transform))
-- **Setting camera** — Use `CCitadelUserMsg_SetClientCameraAngles` via `NetMessages.Send` (see [Networking](networking#set-client-camera-angles)). Schema writes and `Teleport` angles only move the model, not the camera.
+- **Velocity** — Read via `pawn.AbsVelocity`; write via `Teleport(velocity: …)` (see [Entities — Transform](entities.md#transform))
+- **Setting camera** — Use `CCitadelUserMsg_SetClientCameraAngles` via `NetMessages.Send` (see [Networking](networking.md#set-client-camera-angles)). Schema writes and `Teleport` angles only move the model, not the camera.
 :::
 
 ### Methods
@@ -378,7 +378,7 @@ Entity life-cycle state (`LifeState_t`):
 
 ## See Also
 
-- [Entities](entities) — Base entity system
-- [Modifiers](modifiers) — Modifier states on pawns
-- [Heroes](heroes) — Hero enum and data
-- [Team & Hero Management Guide](../guides/team-and-hero-management) — Practical patterns
+- [Entities](entities.md) — Base entity system
+- [Modifiers](modifiers.md) — Modifier states on pawns
+- [Heroes](heroes.md) — Hero enum and data
+- [Team & Hero Management Guide](../guides/team-and-hero-management.md) — Practical patterns

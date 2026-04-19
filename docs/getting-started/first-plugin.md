@@ -71,7 +71,7 @@ Players type `/hello` in chat and see a HUD announcement.
 
 ## Adding a Timed Effect
 
-Combine chat commands with the [Timer API](../api-reference/timers) for delayed actions:
+Combine chat commands with the [Timer API](../api-reference/timers.md) for delayed actions:
 
 ```csharp
 [ChatCommand("boost")]
@@ -101,15 +101,15 @@ public HookResult OnBoost(ChatCommandContext ctx)
 
 | Concept | Description | Learn More |
 |---------|-------------|------------|
-| `DeadworksPluginBase` | Base class — provides `Timer`, lifecycle hooks | [Plugin Base](../api-reference/plugin-base) |
-| `[ChatCommand]` | Attribute to register chat commands | [Chat Commands](../api-reference/chat-commands) |
-| `HookResult` | `Continue` (default, let event proceed), `Handled` or `Stop` (block further processing) | [Plugin Base](../api-reference/plugin-base) |
-| `NetMessages.Send` | Send protobuf messages to players | [Networking](../api-reference/networking) |
-| `RecipientFilter` | Target specific players for messages | [Networking](../api-reference/networking) |
-| `Timer` | Schedule delayed/repeating actions | [Timers](../api-reference/timers) |
+| `DeadworksPluginBase` | Base class — provides `Timer`, lifecycle hooks | [Plugin Base](../api-reference/plugin-base.md) |
+| `[ChatCommand]` | Attribute to register chat commands | [Chat Commands](../api-reference/chat-commands.md) |
+| `HookResult` | `Continue` (default, let event proceed), `Handled` or `Stop` (block further processing) | [Plugin Base](../api-reference/plugin-base.md) |
+| `NetMessages.Send` | Send protobuf messages to players | [Networking](../api-reference/networking.md) |
+| `RecipientFilter` | Target specific players for messages | [Networking](../api-reference/networking.md) |
+| `Timer` | Schedule delayed/repeating actions | [Timers](../api-reference/timers.md) |
 
 ## Next Steps
 
-- [Plugin Lifecycle](../guides/plugin-lifecycle) — Understand the full load/unload flow
-- [API Reference](../api-reference/plugin-base) — Deep dive into the base class
-- [Example Plugins](../examples/roll-the-dice) — See full real-world plugins
+- [Plugin Lifecycle](../guides/plugin-lifecycle.md) — Understand the full load/unload flow
+- [API Reference](../api-reference/plugin-base.md) — Deep dive into the base class
+- [Example Plugins](../examples/roll-the-dice.md) — See full real-world plugins

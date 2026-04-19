@@ -9,7 +9,7 @@ sidebar_position: 99
 # Protobuf Message Types
 
 These are auto-generated protobuf message types from Valve's game definitions.
-They are used with the [NetMessages](../networking) system for sending and hooking network messages.
+They are used with the [NetMessages](../networking.md) system for sending and hooking network messages.
 
 Each message type has standard protobuf accessors (`Has*`, `Clear*`, field number constants)
 following [Google.Protobuf](https://protobuf.dev/reference/csharp/api-docs/) conventions.

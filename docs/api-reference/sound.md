@@ -64,5 +64,5 @@ If `EmitSound` appears to return success but you hear nothing:
 
 ## See Also
 
-- [Entities](entities) — `EmitSound` is defined on `CBaseEntity`
-- [Precaching](precaching) — Soundevents usually don't need precaching, but the underlying `.vsnd` files sometimes do
+- [Entities](entities.md) — `EmitSound` is defined on `CBaseEntity`
+- [Precaching](precaching.md) — Soundevents usually don't need precaching, but the underlying `.vsnd` files sometimes do
