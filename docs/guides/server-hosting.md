@@ -57,14 +57,11 @@ cd /d "%~dp0"
 deadworks.exe ^
   -dedicated -console -insecure -allow_no_lobby_connect ^
   +hostport 27015 ^
-  +map dl_midtown ^
-  +sv_cheats 1 ^
-  +citadel_trooper_spawn_enabled 0
+  +map dl_midtown
 
 pause
 ```
 
-The `^` is the Windows line-continuation character — it lets you split a long command across lines. `pause` keeps the window open if the server exits so you can read any final log output.
 
 ## Opening the Firewall (Windows / VPS)
 
@@ -79,37 +76,10 @@ New-NetFirewallRule -DisplayName "Deadworks UDP 27015" `
 ```
 
 
-## Port Forwarding vs SDR
+## Port Forwarding
 
-You have two options for letting players outside your LAN connect:
-
-### Port Forwarding (recommended for public servers)
-
-Forward UDP/TCP `27015` (or your chosen port) on your router or VPS firewall. Players then connect with:
+Forward UDP/TCP `27015` (or your chosen port) on your router or VPS firewall to let players outside your LAN connect. Players then connect with:
 
 ```
 connect your.public.ip:27015
 ```
-
-This is also what makes `steam://connect/<ip>:<port>` deep links work — Steam issues an A2S query against the IP, and Deadworks' A2S patch responds so the connect button actually joins.
-
-If you're behind CGNAT and can't port-forward, SDR is your only option.
-
-### Steam Datagram Relay (SDR)
-
-SDR gives you an IP that's hosted on Valve's relay network — no ports exposed on your side. Follow the Deadlock modding community's guide to enable it: [deadlockmodding.pages.dev/dedicated-server-hosting#setting-up-for-hosting](https://deadlockmodding.pages.dev/dedicated-server-hosting#setting-up-for-hosting).
-
-**SDR caveats:**
-
-- `steam://connect/` deep links do **not** work with SDR relay addresses, only with regular `ip:port`. If you want a one-click join button, you need port forwarding.
-- Some users report that a subset of their friends can't connect via IP even with SDR enabled. If that happens, collect ping/traceroute data from the affected users — there's no known deterministic fix.
-
-## steam:// Connect Links
-
-| Link form | Works? | Notes |
-|---|---|---|
-| `steam://connect/1.2.3.4:27015` | ✓ | Works at game startup and once Deadlock is already running |
-| `steam://connect/yourdomain.com:27015` | ✗ from browser | Steam's deep-link handler doesn't resolve DNS — use the public IP |
-| `steam://connect/<SDR-id>` | ✗ | Steam ignores SDR IDs in connect links |
-
-If you need a web button, resolve the DNS server-side and emit the raw IP:port into the `href`.

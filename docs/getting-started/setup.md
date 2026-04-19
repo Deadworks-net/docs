@@ -15,7 +15,7 @@ This guide walks through installing Deadworks and setting up a Visual Studio pro
 
 ## 0. Install Deadlock
 
-You may use your currently installed version of Deadlock, but for running a server, it's recommended to follow [server hosting instructions](../guides/server-hosting).
+You may use your currently installed version of Deadlock, but for running a server, it's recommended to follow the [server hosting instructions](../guides/server-hosting.md).
 
 ## 1. Install Deadworks
 
