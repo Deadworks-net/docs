@@ -46,7 +46,7 @@ var pawn   = CBaseEntity.FromHandle<CCitadelPlayerPawn>(handle);
 | `LifeState` / `IsAlive` | `LifeState` / `bool` | Lifecycle state (`Alive`, `Dying`, `Dead`, `Respawnable`, `Respawning`) |
 | `IsOnGround` | `bool` | `true` when `m_hGroundEntity` is valid |
 | `GroundEntity` | `CBaseEntity?` | The entity the pawn is standing on, or `null` if airborne |
-| `ModifierProp` | `CModifierProperty?` | Entry point for modifiers and state flags — see [Modifiers](modifiers) |
+| `ModifierProp` | `CModifierProperty?` | Entry point for modifiers and state flags — see [Modifiers](modifiers.md) |
 | `BodyComponent` | `CBodyComponent?` | Scene node, transform, model |
 | `SubclassVData` | `CEntitySubclassVDataBase?` | Subclass VData pointer; `.Name` returns the designer key |
 
@@ -147,9 +147,9 @@ entity.Teleport(
 entity.Teleport(null, null, new Vector3(0, 0, 1500));
 ```
 
-Reading velocity is straightforward (`entity.AbsVelocity`). Writing via the `AbsVelocity` setter works for simple cases, but for projectiles and anything driven by the physics path, **use `Teleport(velocity: …)`** — it's the only write that routes through the engine cleanly. See [Tracing — Projectile velocity is weird](tracing#projectile-velocity-is-weird) for the gory detail.
+Reading velocity is straightforward (`entity.AbsVelocity`). Writing via the `AbsVelocity` setter works for simple cases, but for projectiles and anything driven by the physics path, **use `Teleport(velocity: …)`** — it's the only write that routes through the engine cleanly. See [Tracing — Projectile velocity is weird](tracing.md#projectile-velocity-is-weird) for the gory detail.
 
-Camera and view angles are networked separately from entity angles. `Teleport(angles: …)` rotates the model, not the client's camera. For player view control see [Networking — Set client camera angles](networking#set-client-camera-angles).
+Camera and view angles are networked separately from entity angles. `Teleport(angles: …)` rotates the model, not the client's camera. For player view control see [Networking — Set client camera angles](networking.md#set-client-camera-angles).
 
 ### Model swapping
 
@@ -166,7 +166,7 @@ entity.SetParent(parentEntity); // implemented via AcceptInput("SetParent", …)
 entity.ClearParent();
 ```
 
-Parented children are removed automatically when the parent is removed — handy for pawn-attached UI (`point_worldtext` nametags, timer overlays). See [World Text — Nametag pattern](world-text#nametag-pattern).
+Parented children are removed automatically when the parent is removed — handy for pawn-attached UI (`point_worldtext` nametags, timer overlays). See [World Text — Nametag pattern](world-text.md#nametag-pattern).
 
 ## Entity I/O
 
@@ -174,7 +174,7 @@ Parented children are removed automatically when the parent is removed — handy
 entity.AcceptInput("Start", activator, caller, "value");
 ```
 
-See [Entity I/O](entity-io) for hooking inputs and outputs rather than just firing them.
+See [Entity I/O](entity-io.md) for hooking inputs and outputs rather than just firing them.
 
 ## Modifiers
 
@@ -198,7 +198,7 @@ entity.AddModifier("ability_doorman_bomb/debuff",
     kv: kv);
 ```
 
-Full reference: [Modifiers](modifiers).
+Full reference: [Modifiers](modifiers.md).
 
 ## Damage
 
@@ -208,7 +208,7 @@ entity.Hurt(100f, attacker: shooter);                // credited to shooter
 entity.TakeDamage(customTakeDamageInfo);             // full CTakeDamageInfo control
 ```
 
-Full reference: [Damage](damage).
+Full reference: [Damage](damage.md).
 
 ## Audio
 
@@ -217,7 +217,7 @@ entity.EmitSound("Mystical.Piano.AOE.Explode");
 entity.EmitSound("Damage.Send.Crit", pitch: 100, volume: 0.5f, delay: 0f);
 ```
 
-Full reference: [Sound](sound) — covers global sound, per-client limitations, and soundevent discovery.
+Full reference: [Sound](sound.md) — covers global sound, per-client limitations, and soundevent discovery.
 
 ---
 
@@ -318,9 +318,9 @@ Do this whenever you're holding an entity reference across ticks (timer callback
 
 ## See Also
 
-- [Players](players) — `CCitadelPlayerPawn`, `CCitadelPlayerController`, ability and currency helpers
-- [Modifiers](modifiers) — `AddModifier`, `EModifierState`, `CModifierProperty`
-- [Damage](damage) — `Hurt`, `CTakeDamageInfo`, `OnTakeDamage`
-- [Sound](sound) — `EmitSound`, global/per-client playback recipes
-- [Entity I/O](entity-io) — Hooking designer inputs and outputs
-- [Tracing](tracing) — Ray and shape traces for LOS, collision, aim
+- [Players](players.md) — `CCitadelPlayerPawn`, `CCitadelPlayerController`, ability and currency helpers
+- [Modifiers](modifiers.md) — `AddModifier`, `EModifierState`, `CModifierProperty`
+- [Damage](damage.md) — `Hurt`, `CTakeDamageInfo`, `OnTakeDamage`
+- [Sound](sound.md) — `EmitSound`, global/per-client playback recipes
+- [Entity I/O](entity-io.md) — Hooking designer inputs and outputs
+- [Tracing](tracing.md) — Ray and shape traces for LOS, collision, aim

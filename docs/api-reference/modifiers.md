@@ -187,7 +187,7 @@ State behavior is inconsistent — some flags are honored by the client, others 
 | 69 | `InfiniteClip` | Infinite ammo, no reload needed |
 | 115 | `UnitStatusHealthHidden` | Hides the healthbar above the hero. Set every tick. |
 | 116 | `UnitStatusHidden` | Hides the whole unit status / nameplate panel. Set every tick. |
-| 118 | `FriendlyFireEnabled` | Enables friendly-fire **for bullet damage only**. Abilities and melee still ignore teammates; see the FFA recipe in [team-and-hero-management](../guides/team-and-hero-management). |
+| 118 | `FriendlyFireEnabled` | Enables friendly-fire **for bullet damage only**. Abilities and melee still ignore teammates; see the FFA recipe in [team-and-hero-management](../guides/team-and-hero-management.md). |
 
 :::tip Try setting every tick before giving up
 The Discord dump has several cases of "doesn't work" turning into "works when set every tick." Before writing off a state, try:
@@ -226,7 +226,7 @@ Tools for browsing the VDATA: [source2viewer-cli](https://github.com/ValveResour
 
 ## See Also
 
-- [Entities](entities) — `AddModifier` on `CBaseEntity`
-- [Players](players) — `ModifierProp` on `CCitadelPlayerPawn`
-- [Timers](timers) — Timed modifier application
-- [Roll The Dice Example](../examples/roll-the-dice) — Modifier effects in practice
+- [Entities](entities.md) — `AddModifier` on `CBaseEntity`
+- [Players](players.md) — `ModifierProp` on `CCitadelPlayerPawn`
+- [Timers](timers.md) — Timed modifier application
+- [Roll The Dice Example](../examples/roll-the-dice.md) — Modifier effects in practice

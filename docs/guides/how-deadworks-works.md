@@ -91,6 +91,6 @@ Contributing to the framework itself is separate from writing a plugin — most 
 
 ## See Also
 
-- [Project Setup](../getting-started/setup) — installing Deadworks
-- [Server Hosting](server-hosting) — running dedicated servers
-- [Plugin Lifecycle](plugin-lifecycle) — what runs when
+- [Project Setup](../getting-started/setup.md) — installing Deadworks
+- [Server Hosting](server-hosting.md) — running dedicated servers
+- [Plugin Lifecycle](plugin-lifecycle.md) — what runs when

@@ -180,5 +180,5 @@ NetMessages.Send(msg, RecipientFilter.All);
 
 ## See Also
 
-- [Chat Commands](chat-commands) — Chat command system
-- [Plugin Base](plugin-base) — `OnChatMessage` hook
+- [Chat Commands](chat-commands.md) — Chat command system
+- [Plugin Base](plugin-base.md) — `OnChatMessage` hook

@@ -175,6 +175,6 @@ public void OnReloadConfig(ConCommandContext ctx)
 
 ## See Also
 
-- [Plugin Base](plugin-base) — Base class and `OnConfigReloaded` hook
-- [Item Rotation Example](../examples/item-rotation) — Full config-driven plugin
-- [Scourge Example](../examples/scourge) — Config with float clamping
+- [Plugin Base](plugin-base.md) — Base class and `OnConfigReloaded` hook
+- [Item Rotation Example](../examples/item-rotation.md) — Full config-driven plugin
+- [Scourge Example](../examples/scourge.md) — Config with float clamping

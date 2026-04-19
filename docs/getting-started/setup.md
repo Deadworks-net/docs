@@ -144,5 +144,5 @@ Plugins are loaded automatically when the server starts. Editing a plugin DLL wh
 
 ## Next Steps
 
-- [Your First Plugin](first-plugin) — Build a minimal working plugin
-- [Plugin Lifecycle](../guides/plugin-lifecycle) — Understand load/unload/hot-reload behavior
+- [Your First Plugin](first-plugin.md) — Build a minimal working plugin
+- [Plugin Lifecycle](../guides/plugin-lifecycle.md) — Understand load/unload/hot-reload behavior

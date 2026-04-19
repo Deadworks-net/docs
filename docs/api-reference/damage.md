@@ -145,7 +145,7 @@ Bit flags for damage type classification:
 
 ## See Also
 
-- [Plugin Base](plugin-base) — `OnTakeDamage` and `OnModifyCurrency` hooks
-- [Entities](entities) — `Hurt()` and `TakeDamage()` on `CBaseEntity`
-- [Players](players) — Currency types and management
-- [Scourge Example](../examples/scourge) — Complete DOT implementation
+- [Plugin Base](plugin-base.md) — `OnTakeDamage` and `OnModifyCurrency` hooks
+- [Entities](entities.md) — `Hurt()` and `TakeDamage()` on `CBaseEntity`
+- [Players](players.md) — Currency types and management
+- [Scourge Example](../examples/scourge.md) — Complete DOT implementation

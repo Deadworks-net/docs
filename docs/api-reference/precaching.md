@@ -75,7 +75,7 @@ Deadworks runs on the server, but the **client still has to own the files** — 
 
 ## See Also
 
-- [Plugin Base](plugin-base) — `OnPrecacheResources()` lifecycle hook
-- [Particles](particles) — Particle effects require precaching
-- [World Text](world-text) — Fonts are resolved from the client's OS
-- [Heroes](heroes) — Hero precaching for dynamic selection
+- [Plugin Base](plugin-base.md) — `OnPrecacheResources()` lifecycle hook
+- [Particles](particles.md) — Particle effects require precaching
+- [World Text](world-text.md) — Fonts are resolved from the client's OS
+- [Heroes](heroes.md) — Hero precaching for dynamic selection

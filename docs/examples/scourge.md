@@ -166,11 +166,11 @@ public override void OnUnload()
 
 | Feature | Reference |
 |---------|-----------|
-| `IPluginConfig<T>`, `OnConfigParsed` | [Configuration](../api-reference/configuration) |
-| `OnTakeDamage` | [Damage](../api-reference/damage) |
-| `Timer.Sequence`, `IStep` | [Timers](../api-reference/timers) |
-| `EntityData<IHandle>` | [Entities](../api-reference/entities) |
-| `CBaseEntity.FromHandle` | [Entities](../api-reference/entities) |
-| `Hurt()`, `EmitSound()` | [Entities](../api-reference/entities) |
-| `SubclassVData` | [Entities](../api-reference/entities) |
-| `PlayerDataGlobal.HealthMax` | [Players](../api-reference/players) |
+| `IPluginConfig<T>`, `OnConfigParsed` | [Configuration](../api-reference/configuration.md) |
+| `OnTakeDamage` | [Damage](../api-reference/damage.md) |
+| `Timer.Sequence`, `IStep` | [Timers](../api-reference/timers.md) |
+| `EntityData<IHandle>` | [Entities](../api-reference/entities.md) |
+| `CBaseEntity.FromHandle` | [Entities](../api-reference/entities.md) |
+| `Hurt()`, `EmitSound()` | [Entities](../api-reference/entities.md) |
+| `SubclassVData` | [Entities](../api-reference/entities.md) |
+| `PlayerDataGlobal.HealthMax` | [Players](../api-reference/players.md) |

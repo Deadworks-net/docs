@@ -69,7 +69,7 @@ Wrapper around native `CitadelHeroData_t` (VData). Obtain via `Heroes.GetHeroDat
 
 ## Hero Selection
 
-Force a player to select a specific hero via [CCitadelPlayerController](players):
+Force a player to select a specific hero via [CCitadelPlayerController](players.md):
 
 ```csharp
 controller.SelectHero(Heroes.Inferno);
@@ -85,12 +85,12 @@ controller.SelectHero(randomHero);
 
 ## Precaching Heroes
 
-Heroes must be precached if you're swapping them at runtime. See [Precaching](precaching).
+Heroes must be precached if you're swapping them at runtime. See [Precaching](precaching.md).
 
 Deadworks currently automatically precaches all heroes.
 
 ## See Also
 
-- [Players](players) — `SelectHero` on controllers
-- [Precaching](precaching) — Hero precaching
-- [Team & Hero Management Guide](../guides/team-and-hero-management) — Practical patterns
+- [Players](players.md) — `SelectHero` on controllers
+- [Precaching](precaching.md) — Hero precaching
+- [Team & Hero Management Guide](../guides/team-and-hero-management.md) — Practical patterns

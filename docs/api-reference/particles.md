@@ -92,7 +92,7 @@ Timer.Once(5.Seconds(), () => particle.Destroy());
 
 ## Precaching
 
-Particle effects must be precached before use. See [Precaching](precaching).
+Particle effects must be precached before use. See [Precaching](precaching.md).
 
 ```csharp
 public override void OnPrecacheResources()
@@ -104,6 +104,6 @@ public override void OnPrecacheResources()
 
 ## See Also
 
-- [Precaching](precaching) — Resource precaching requirement
-- [Entities](entities) — Base entity operations
-- [Roll The Dice Example](../examples/roll-the-dice) — Particle effects in practice
+- [Precaching](precaching.md) — Resource precaching requirement
+- [Entities](entities.md) — Base entity operations
+- [Roll The Dice Example](../examples/roll-the-dice.md) — Particle effects in practice

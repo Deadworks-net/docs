@@ -76,7 +76,7 @@ Data for a received entity input.
 
 ## AcceptInput
 
-You can also fire inputs directly on entities. See [Entities](entities):
+You can also fire inputs directly on entities. See [Entities](entities.md):
 
 ```csharp
 entity.AcceptInput("Start", activator: null, caller: null, value: "");
@@ -85,5 +85,5 @@ entity.AcceptInput("Kill", activator: null, caller: null, value: "");
 
 ## See Also
 
-- [Entities](entities) — `AcceptInput` method
-- [Plugin Base](plugin-base) — Entity lifecycle hooks
+- [Entities](entities.md) — `AcceptInput` method
+- [Plugin Base](plugin-base.md) — Entity lifecycle hooks

@@ -85,7 +85,7 @@ The sender's player slot is available via the message:
 int senderSlot = ctx.Message.SenderSlot;
 ```
 
-This is useful for [sending targeted messages](networking):
+This is useful for [sending targeted messages](networking.md):
 
 ```csharp
 NetMessages.Send(msg, RecipientFilter.Single(ctx.Message.SenderSlot));
@@ -93,7 +93,7 @@ NetMessages.Send(msg, RecipientFilter.Single(ctx.Message.SenderSlot));
 
 ## ChatMessage
 
-Incoming chat message from a player. Also passed to `OnChatMessage()` on the [plugin base](plugin-base).
+Incoming chat message from a player. Also passed to `OnChatMessage()` on the [plugin base](plugin-base.md).
 
 | Property | Type | Description |
 |----------|------|-------------|
@@ -104,13 +104,13 @@ Incoming chat message from a player. Also passed to `OnChatMessage()` on the [pl
 
 ## Return Values
 
-Chat command handlers must return a [HookResult](plugin-base):
+Chat command handlers must return a [HookResult](plugin-base.md):
 
 - `HookResult.Handled` — Command was processed, message consumed
 - `HookResult.Stop` — Block further processing
 
 ## See Also
 
-- [Console Commands](console-commands) — Server console commands (`[ConCommand]`)
-- [Plugin Base](plugin-base) — `OnChatMessage` hook for raw message interception
-- [Networking](networking) — Sending responses back to players
+- [Console Commands](console-commands.md) — Server console commands (`[ConCommand]`)
+- [Plugin Base](plugin-base.md) — `OnChatMessage` hook for raw message interception
+- [Networking](networking.md) — Sending responses back to players
