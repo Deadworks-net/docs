@@ -9,28 +9,31 @@ This guide walks through installing Deadworks and setting up a Visual Studio pro
 
 ## Prerequisites
 
-- **.NET 10.0 SDK** (or later)
-- **Visual Studio 2022** (17.x+) or any IDE with .NET support
+- **.NET 10.0 SDK** (or later) - https://dotnet.microsoft.com/en-us/download
+- **Visual Studio** any IDE with .NET support - https://visualstudio.microsoft.com/
 - **Deadlock** installed via Steam
+
 
 ## 0. Install Deadlock
 
-You may use your currently installed version of Deadlock, but for running a server, it's recommended to follow the [server hosting instructions](../guides/server-hosting.md).
+You can use your locally installed version of Deadlock, but for running a server, it's recommended to follow the [server hosting instructions](../guides/server-hosting.md).
+
 
 ## 1. Install Deadworks
 
-Download the latest release from [https://github.com/Deadworks-net/deadworks/releases](https://github.com/Deadworks-net/deadworks/releases) and extract it into your Deadlock folder (`C:\Program Files (x86)\Steam\steamapps\common\Deadlock`). Building from source is only necessary if you want to contribute to the framework itself.
+Download the latest release from [https://github.com/Deadworks-net/deadworks/releases](https://github.com/Deadworks-net/deadworks/releases) and extract it into your Deadlock folder (`C:\Program Files (x86)\Steam\steamapps\common\Deadlock`).
 
-### Verify Installation
 
-Run the Deadworks executable and check the console for pink-colored output. Look for one of these messages:
 
-- **".NET runtime initialized"** — Deadworks is installed correctly and ready for plugins.
-- **"Failed to initialize .NET runtime"** — The .NET 10.0 SDK is missing or not installed correctly.
+
+
+
+
 
 ## 2. Create a Class Library Project
 
-In Visual Studio, create a new **C# Class Library** project. The project name is arbitrary — plugins are discovered by assembly, not by name, so pick whatever you want.
+In Visual Studio, create a new **C# Class Library** project. The project name can be anything, so pick whatever you want.
+
 
 > **Important:** Target **.NET Core** (e.g. `net10.0`), **not** .NET Standard. Deadworks requires a .NET Core runtime.
 
@@ -121,26 +124,30 @@ Compiled plugin DLLs are loaded from:
 Deadlock/game/bin/win64/managed/plugins/
 ```
 
-Copy the full build output — **not just the `.dll`**. The loader uses `.deps.json` to resolve plugin-local dependencies, and `.runtimeconfig.json` describes the runtime target. The typical files you should deploy are:
 
-- `YourPlugin.dll` — the plugin itself
-- `YourPlugin.deps.json` — dependency manifest (required if your plugin references anything beyond the Deadworks API)
-- `YourPlugin.runtimeconfig.json` — runtime config
-- `YourPlugin.pdb` — optional, for stack traces and debugging
+Copy the full build output to the `Deadlock/game/bin/win64/managed/plugins/` folder
+
+
+
 
 Plugins are loaded automatically when the server starts. Editing a plugin DLL while the server is running hot-reloads it.
+
 
 ## Troubleshooting
 
 | Symptom | Solution |
 |---------|----------|
 | No pink console output at all | Deadworks files not extracted to the correct directory. Verify files exist in `Deadlock/game/bin/win64/` |
-| "Failed to initialize .NET runtime" | Install or repair the .NET 10.0 SDK. The message scrolls past quickly — pipe console output to a file (`deadworks.exe > out.log`) if you need to search for it. |
-| Plugins folder is silently ignored | The .NET SDK isn't installed or is the wrong version. `[ERR] Failed to initialize .NET runtime` will appear in the log file — install .NET 10 SDK. |
-| "Unknown command 'dw_plugin'" | The runtime hasn't loaded — check for errors earlier in the pink console output |
-| Plugin shows as enabled but "not loaded" | Make sure both `YourPlugin.deps.json` and `YourPlugin.runtimeconfig.json` are next to the `.dll` in the plugins folder. Also verify you have `OnLoad`/`OnUnload` overrides — they're abstract on `DeadworksPluginBase` and the plugin fails silently without them. |
-| No IntelliSense in Visual Studio | Ensure `DeadworksManaged.Api.xml` is in the same folder as the DLL |
+| "Failed to initialize .NET runtime" | Install or repair the .NET 10.0 SDK. |
+| Plugins folder is silently ignored | The .NET SDK isn't installed or is the wrong version. |
+| "Unknown command 'dw_plugin'" | The runtime hasn't loaded, check for errors earlier in the pink console output |
+| No IntelliSense in Visual Studio | Ensure `DeadworksManaged.Api.xml` is in the same folder as the Deadworks DLL |
 | Build targets .NET Standard | Change your project to target `net10.0` (.NET Core), not .NET Standard |
+
+
+
+
+
 
 ## Next Steps
 
