@@ -123,6 +123,10 @@ public void CmdBoost(CCitadelPlayerController caller)
 }
 ```
 
+`Timer.Every(...)` keeps running until you cancel it.
+
+That is why the example saves the returned handle in `timer`, then uses `Timer.Once(...)` to stop it 10 seconds later.
+
 ## Key Concepts
 
 | Concept | Description | Learn More |

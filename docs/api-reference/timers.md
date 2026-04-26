@@ -7,181 +7,163 @@ sidebar_label: "Timers"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-The timer system provides per-plugin scheduling for delayed and repeating actions. Access via `this.Timer` in any `DeadworksPluginBase` subclass.
+Every plugin gets a `Timer` property from `DeadworksPluginBase`.
 
-## Duration
+Use timers when you want code to:
 
-Strongly-typed time value representing either game ticks or wall-clock time. Created via extension methods:
+- run later
+- repeat on an interval
+- wait until the next tick
+- stop after a certain amount of time
+
+## Which Timer Should I Use?
+
+| If you want to... | Use this |
+|-------------------|----------|
+| run code one time after a delay | `Timer.Once(...)` |
+| run code over and over | `Timer.Every(...)` |
+| wait until the next game tick | `Timer.NextTick(...)` |
+| build a multi-step timed effect | `Timer.Sequence(...)` |
+
+If you are new, start with `Once`, `Every`, and `NextTick`. You can ignore `Sequence` until you need it.
+
+## Durations
+
+A `Duration` is just "how long should this wait?"
 
 ```csharp
-// Tick-based (tied to server tick rate)
-1.Ticks()       // 1 game tick
-64.Ticks()      // 64 game ticks
-
-// Real-time
-3.Seconds()     // 3 seconds
-1.5.Seconds()   // 1.5 seconds
-500.Milliseconds()  // 500ms
-1700.Milliseconds() // 1.7 seconds
+1.Ticks()            // 1 game tick
+5.Seconds()          // 5 real seconds
+500.Milliseconds()   // half a second
+1700.Milliseconds()  // 1.7 seconds
 ```
 
-### Extension Methods
+A game tick is one server update step.
 
-| Method | Input Type | Description |
-|--------|-----------|-------------|
-| `.Ticks()` | `int`, `long` | Create tick-based duration |
-| `.Seconds()` | `int`, `double` | Create real-time duration |
-| `.Milliseconds()` | `int`, `long` | Create duration in milliseconds |
+Deadworks only runs timer callbacks on ticks, never between them.
 
-## ITimer
+That means:
 
-Per-plugin timer service. Accessed via `this.Timer` property.
+- `1.Ticks()` means "wait exactly 1 server tick"
+- `5.Seconds()` means "wait at least 5 seconds, then run on the next game tick"
+- `500.Milliseconds()` means "wait at least 500ms, then run on the next game tick"
 
-### Timer.Once
+On a 64 tick server, one tick is about 15.6 milliseconds.
 
-Execute a callback once after a delay:
+Use `Ticks()` when you care about exact tick counts, such as "next tick" or "every tick."
+
+## Timer.Once
+
+Use `Timer.Once` when something should happen one time after a delay:
 
 ```csharp
 Timer.Once(5.Seconds(), () =>
 {
-    Console.WriteLine("5 seconds have passed!");
+    Console.WriteLine("Five seconds passed.");
 });
 ```
 
-### Timer.Every
+## Timer.Every
 
-Execute a callback repeatedly at a fixed interval. Returns an `IHandle` for cancellation:
+Use `Timer.Every` when something should keep running until you stop it.
+
+`Timer.Every` returns a handle. Save that handle if you want to cancel the timer later.
 
 ```csharp
-var handle = Timer.Every(1.Ticks(), () =>
+var regenTimer = Timer.Every(1.Seconds(), () =>
 {
-    // Runs every tick
-    pawn.AbilityComponent.ResourceStamina.CurrentValue =
-        pawn.AbilityComponent.ResourceStamina.MaxValue;
+    Console.WriteLine("Still running...");
 });
 
-// Cancel later
-handle.Cancel();
+Timer.Once(10.Seconds(), () => regenTimer.Cancel());
 ```
 
-### Timer.Sequence
+## Timer.NextTick
 
-Run a stateful sequence with control over pacing. Useful for multi-step timed effects:
+Use `Timer.NextTick` when you want to wait just one game tick before touching the game again.
 
-```csharp
-Timer.Sequence(step =>
-{
-    // step.Run = how many times invoked (starts at 1)
-    // step.ElapsedTicks = ticks since sequence started
+This is useful when:
 
-    if (step.Run > 10)
-        return step.Done();  // End the sequence
-
-    // Apply damage each step
-    target.Hurt(damagePerTick, attacker, attacker, null);
-
-    return step.Wait(200.Milliseconds());  // Wait before next step
-});
-```
-
-### Timer.NextTick
-
-Defer an action to the next game tick. Thread-safe:
+- an entity exists but is not fully ready yet
+- you just spawned something and want to touch it on the next tick
+- you came back from `await` and need to get onto the game thread safely
 
 ```csharp
 Timer.NextTick(() =>
 {
-    // Runs on the next tick
+    // Safe place to touch game objects on the next tick
 });
 ```
 
-## IHandle
+## Timer.Sequence
 
-Handle to a scheduled timer for cancellation and status checking.
+`Timer.Sequence` is the more advanced timer.
 
-| Member | Type | Description |
-|--------|------|-------------|
-| `Cancel()` | `void` | Cancel this timer. No-op if already finished |
-| `CancelOnMapChange()` | `void` | Auto-cancel this timer when the map changes |
-| `IsFinished` | `bool` | Whether this timer has completed or been cancelled |
+Use it when each step decides whether to keep going, wait again, or stop.
 
-## IStep
+```csharp
+Timer.Sequence(step =>
+{
+    if (step.Run > 10)
+        return step.Done();
 
-Sequence step context passed to `Timer.Sequence` callbacks.
+    target.Hurt(damagePerTick, attacker: attacker);
 
-| Member | Type | Description |
-|--------|------|-------------|
-| `Run` | `int` | How many times the callback has been invoked (starts at 1) |
-| `ElapsedTicks` | `long` | Game ticks elapsed since the sequence started |
-| `Wait(Duration)` | `Pace` | Execute again after specified duration |
-| `Done()` | `Pace` | End the sequence |
+    return step.Wait(200.Milliseconds());
+});
+```
 
-## Patterns
+Useful pieces inside a sequence:
 
-### Per-Entity Timer Tracking
+- `step.Run` is how many times the sequence has run so far
+- `step.Wait(...)` tells it when to run again
+- `step.Done()` stops the sequence
 
-Use [`EntityData<IHandle?>`](entities) to track timers per entity:
+This is good for things like damage-over-time effects, wave spawners, and short scripted sequences.
+
+## Timer Handles
+
+Repeating timers give you an `IHandle`.
+
+You usually only need three parts of it:
+
+| Member | What it does |
+|--------|---------------|
+| `Cancel()` | Stops the timer |
+| `CancelOnMapChange()` | Stops the timer automatically when the map changes |
+| `IsFinished` | Tells you whether the timer already ended |
+
+## One Timer Per Player or Entity
+
+If each player or pawn should have its own running timer, store the handle for that specific entity.
+
+[`EntityData<IHandle?>`](entities) works well for this:
 
 ```csharp
 private readonly EntityData<IHandle?> _timers = new();
 
-// Start a timer for a specific entity
-var timer = Timer.Every(1.Ticks(), () => { /* ... */ });
+var timer = Timer.Every(1.Ticks(), () =>
+{
+    // ...
+});
+
 _timers[pawn] = timer;
 
-// Cancel later
-if (_timers.TryGet(pawn, out var t))
+if (_timers.TryGet(pawn, out var existing) && existing != null)
 {
-    t?.Cancel();
+    existing.Cancel();
     _timers.Remove(pawn);
-}
-```
-
-### Toggle Pattern
-
-```csharp
-private readonly EntityData<IHandle?> _activeTimers = new();
-
-[Command("stamina")]
-public void CmdStamina(CCitadelPlayerController caller)
-{
-    var pawn = caller.GetHeroPawn();
-    if (pawn == null) return;
-
-    // If already active, cancel (toggle off)
-    if (_activeTimers.TryGet(pawn, out var existing) && existing != null)
-    {
-        existing.Cancel();
-        _activeTimers.Remove(pawn);
-        return;
-    }
-
-    // Start new timer (toggle on)
-    var timer = Timer.Every(1.Ticks(), () =>
-    {
-        if (pawn.Health <= 0) return;
-        var stamina = pawn.AbilityComponent.ResourceStamina;
-        stamina.LatchValue = stamina.MaxValue;
-        stamina.CurrentValue = stamina.MaxValue;
-    });
-    _activeTimers[pawn] = timer;
 }
 ```
 
 ## Cleanup
 
-Timers are **per-plugin** and automatically cleaned up when the plugin is unloaded. For manual cleanup in `OnUnload()`:
+Timers belong to your plugin, so they are automatically cleaned up when the plugin unloads.
 
-```csharp
-public override void OnUnload()
-{
-    // EntityData stores will be cleaned up,
-    // but you can manually cancel if needed
-}
-```
+You only need to cancel them yourself when you want to stop them earlier than that.
 
 ## See Also
 
-- [Entities](entities) — `EntityData<T>` for per-entity state
-- [First Plugin](../getting-started/first-plugin) — `DeadworksPluginBase` gives your plugin a `Timer`
-- [Scourge Example](../examples/scourge) — DOT effect using `Timer.Sequence`
+- [Entities](entities) - `EntityData<T>` for per-entity state
+- [First Plugin](../getting-started/first-plugin) - `DeadworksPluginBase` gives your plugin a `Timer`
+- [Scourge Example](../examples/scourge) - DOT effect using `Timer.Sequence`
