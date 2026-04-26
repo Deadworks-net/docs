@@ -12,7 +12,7 @@ Deadworks is a .NET plugin framework for creating server-side mods for **Deadloc
 ## Quick Start
 
 - [Project Setup](getting-started/setup) — Create a Visual Studio project, reference the API DLL, and configure auto-deploy
-- [Your First Plugin](getting-started/first-plugin) — Build a minimal plugin with a chat command
+- [Your First Plugin](getting-started/first-plugin) — Build a minimal plugin with a command
 
 
 

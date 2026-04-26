@@ -135,4 +135,4 @@ public override void OnStartupServer()
 
 - [Players API](../api-reference/players) — Controller and pawn reference
 - [Heroes API](../api-reference/heroes) — Hero enum and data
-- [Console Commands](../api-reference/console-commands) — ConVar manipulation
+- [ConVars](../api-reference/convars) — ConVar manipulation

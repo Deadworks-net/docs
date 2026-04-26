@@ -61,16 +61,14 @@ public class MyPlugin : DeadworksPluginBase
     [PluginConfig]
     public MyPluginConfig Config { get; set; } = new();
 
-    [ChatCommand("settings")]
-    public HookResult OnSettings(ChatCommandContext ctx)
+    [Command("settings", Description = "Print the current config settings")]
+    public void CmdSettings(CCitadelPlayerController caller)
     {
-        var pawn = ctx.Controller?.GetHeroPawn();
-        if (pawn == null) return HookResult.Handled;
+        var pawn = caller.GetHeroPawn();
+        if (pawn == null) return;
 
-        ctx.Controller.PrintToConsole($"Interval: {Config.SwapIntervalSeconds}s");
-        ctx.Controller.PrintToConsole($"Mode: {Config.SelectionMode}");
-
-        return HookResult.Handled;
+        caller.PrintToConsole($"Interval: {Config.SwapIntervalSeconds}s");
+        caller.PrintToConsole($"Mode: {Config.SelectionMode}");
     }
 }
 ```
@@ -165,16 +163,18 @@ public void Validate()
 Reload config from disk at runtime:
 
 ```csharp
-[ConCommand("dw_reload_config")]
-public void OnReloadConfig(ConCommandContext ctx)
+[Command("reload_config", ConsoleOnly = true, ServerOnly = true)]
+public void CmdReloadConfig()
 {
     bool success = this.ReloadConfig();
-    ctx.Controller?.PrintToConsole(success ? "Config reloaded!" : "Reload failed.");
+    Console.WriteLine(success ? "Config reloaded!" : "Reload failed.");
 }
 ```
 
+If you want to run extra code after a reload, override `OnConfigReloaded()` in your plugin.
+
 ## See Also
 
-- [Plugin Base](plugin-base) — Base class and `OnConfigReloaded` hook
+- [First Plugin](../getting-started/first-plugin) — Building your plugin class
 - [Item Rotation Example](../examples/item-rotation) — Full config-driven plugin
 - [Scourge Example](../examples/scourge) — Config with float clamping

@@ -79,7 +79,7 @@ A practical split for your code:
 | Game logic, control flow, plugin state, HTTP, file I/O | Function signature scanning and hook installation |
 | Entity/player lookups, schema reads/writes | Protocol-level hooks, message interception before dispatch |
 | Timer scheduling | Memory-unsafe fast paths |
-| Event handling (`OnTakeDamage`, chat commands, …) | Adding a new hook surface to expose to .NET |
+| Event handling (`OnTakeDamage`, commands, …) | Adding a new hook surface to expose to .NET |
 
 If you need functionality that crosses the P/Invoke boundary (new hook, new helper), the typical pattern is:
 

@@ -1,6 +1,10 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+// @ts-ignore — JS module without types
+import remarkSourceLines from './scripts/remark-source-lines.mjs';
+
+const isDev = process.env.NODE_ENV === 'development';
 
 const config: Config = {
   title: 'Deadworks API',
@@ -21,6 +25,8 @@ const config: Config = {
     locales: ['en'],
   },
 
+  clientModules: isDev ? ['./src/dev-editor/index.ts'] : [],
+
   presets: [
     [
       'classic',
@@ -28,6 +34,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: '/',
+          beforeDefaultRemarkPlugins: isDev ? [remarkSourceLines] : [],
         },
         blog: false,
         theme: {
@@ -57,8 +64,8 @@ const config: Config = {
           label: 'Docs',
         },
         {
-          to: '/api-reference/plugin-base',
-          label: 'API Reference',
+          to: '/api-reference/commands',
+          label: 'Features',
           position: 'left',
         },
         {
@@ -93,7 +100,7 @@ const config: Config = {
           title: 'Documentation',
           items: [
             { label: 'Getting Started', to: '/getting-started/setup' },
-            { label: 'API Reference', to: '/api-reference/plugin-base' },
+            { label: 'Features', to: '/api-reference/commands' },
             { label: 'Guides', to: '/guides/plugin-lifecycle' },
           ],
         },

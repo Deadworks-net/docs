@@ -86,4 +86,3 @@ entity.AcceptInput("Kill", activator: null, caller: null, value: "");
 ## See Also
 
 - [Entities](entities) — `AcceptInput` method
-- [Plugin Base](plugin-base) — Entity lifecycle hooks

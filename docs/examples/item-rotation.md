@@ -14,9 +14,9 @@ A minimal plugin that swaps every player's loadout to a new item set on a timer.
 
 ## What It Does
 
-- `/ir_start` — begins rotation. Every player gets a starting set.
+- `/ir_start` or `!ir_start` begins rotation. Every player gets a starting set.
 - Every 10 seconds, each player advances to the next set: items from the previous set are removed, items from the new set are given, a warning sound plays, and a HUD announcement names the new set.
-- `/ir_reset` — stops rotation and clears any items that were given.
+- `/ir_reset` or `!ir_reset` stops rotation and clears any items that were given.
 
 Extend the `_sets` array to add more loadouts.
 
@@ -24,7 +24,7 @@ Extend the `_sets` array to add more loadouts.
 
 | Concept | Where |
 |---|---|
-| Recurring work | `Timer.Every(10.Seconds(), …)` — save the handle so `/ir_reset` can cancel it |
+| Recurring work | `Timer.Every(10.Seconds(), ...)` - save the handle so `/ir_reset` can cancel it |
 | Per-player state | `Dictionary<int, int>` mapping player slot to current set index |
 | Item swap | `pawn.RemoveItem(oldItem)` then `pawn.AddItem(newItem)` |
 | Sound feedback | `pawn.EmitSound("Mystical.Piano.AOE.Warning")` |
@@ -54,11 +54,11 @@ public class ItemRotationPlugin : DeadworksPluginBase {
     private readonly Dictionary<int, int> _playerSet = new(); // slot -> set index
     private IHandle? _timer;
 
-    [ChatCommand("ir_start")]
-    public HookResult CmdStart(ChatCommandContext ctx) {
-        if (_timer != null) return HookResult.Handled;
+    [Command("ir_start", Description = "Start the item rotation game")]
+    public void CmdStart(CCitadelPlayerController? caller) {
+        if (_timer != null) return;
 
-        // Initial assignment — each player starts on a different set
+        // Initial assignment - each player starts on a different set
         int i = 0;
         foreach (var controller in Players.GetAll()) {
             var pawn = controller.GetHeroPawn();
@@ -71,13 +71,11 @@ public class ItemRotationPlugin : DeadworksPluginBase {
         }
 
         _timer = Timer.Every(10.Seconds(), Rotate);
-        return HookResult.Handled;
     }
 
-    [ChatCommand("ir_reset")]
-    public HookResult CmdReset(ChatCommandContext ctx) {
+    [Command("ir_reset", Description = "Stop the item rotation game and clear all items")]
+    public void CmdReset(CCitadelPlayerController? caller) {
         Stop();
-        return HookResult.Handled;
     }
 
     private void Rotate() {
@@ -138,7 +136,7 @@ public class ItemRotationPlugin : DeadworksPluginBase {
 
 ## See Also
 
-- [Chat Commands](../api-reference/chat-commands)
-- [Players](../api-reference/players) — `AddItem` / `RemoveItem`
-- [Timers](../api-reference/timers) — `Timer.Every` and `IHandle.Cancel`
-- [Networking](../api-reference/networking) — HUD announcements
+- [Commands](../api-reference/commands)
+- [Players](../api-reference/players) - `AddItem` / `RemoveItem`
+- [Timers](../api-reference/timers) - `Timer.Every` and `IHandle.Cancel`
+- [Networking](../api-reference/networking) - HUD announcements

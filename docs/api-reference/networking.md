@@ -180,5 +180,5 @@ NetMessages.Send(msg, RecipientFilter.All);
 
 ## See Also
 
-- [Chat Commands](chat-commands) — Chat command system
-- [Plugin Base](plugin-base) — `OnChatMessage` hook
+- [Commands](commands) — Command registration and chat-triggered actions
+- [Chat and HUD Guide](../guides/chat-and-hud) — Intercepting chat and sending HUD messages

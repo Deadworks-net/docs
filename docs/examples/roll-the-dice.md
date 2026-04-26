@@ -5,14 +5,14 @@ sidebar_label: "Roll The Dice"
 
 # Example: Roll The Dice
 
-A minimal chat command plugin that applies a random effect to the player. Covers chat commands, HUD announcements, sounds, particles, modifiers, and timers in one small file.
+A minimal command plugin that applies a random effect to the player. Covers command registration, HUD announcements, sounds, particles, modifiers, and timers in one small file.
 
 ## What It Does
 
-- Player types `/rtd` in chat
-- Plugin rolls a random effect (just one in this example — Mystical Piano Strike) and shows a HUD announcement naming the roll
-- Effect plays a warning sound, waits 1.7 seconds, spawns a particle, plays an impact sound, and knocks the player down for 3 seconds
-- Particle auto-cleans after 5 seconds
+- Player runs `/rtd` or `!rtd`
+- The plugin rolls a random effect and shows a HUD announcement naming the roll
+- The effect plays a warning sound, waits 1.7 seconds, spawns a particle, plays an impact sound, and knocks the player down for 3 seconds
+- The particle auto-cleans after 5 seconds
 
 Extend the `effects` array with more `(name, apply)` tuples to add rolls.
 
@@ -20,13 +20,13 @@ Extend the `effects` array with more `(name, apply)` tuples to add rolls.
 
 | Concept | Where |
 |---|---|
-| Chat command | `[ChatCommand("rtd")]` |
+| Command | `[Command("rtd")]` |
 | HUD announcement | `CCitadelUserMsg_HudGameAnnouncement` via `NetMessages.Send` |
 | Sound | `pawn.EmitSound(...)` |
 | Particles | `CParticleSystem.Create(...).AtPosition(...).Spawn()` |
 | Modifier | `pawn.AddModifier("modifier_citadel_knockdown", kv)` with a `duration` |
 | Delayed work | `Timer.Once(..., () => ...)` for both the impact delay and the particle cleanup |
-| Precaching | `Precache.AddResource` in `OnPrecacheResources` — required before `CParticleSystem.Create` |
+| Precaching | `Precache.AddResource` in `OnPrecacheResources` - required before `CParticleSystem.Create` |
 
 ## Full Source
 
@@ -48,10 +48,10 @@ public class RollTheDicePlugin : DeadworksPluginBase {
         Precache.AddResource("particles/upgrades/mystical_piano_hit.vpcf");
     }
 
-    [ChatCommand("rtd")]
-    public HookResult CmdRollTheDice(ChatCommandContext ctx) {
-        var pawn = ctx.Controller?.GetHeroPawn();
-        if (pawn == null) return HookResult.Handled;
+    [Command("rtd", Description = "Roll a random effect on yourself")]
+    public void CmdRollTheDice(CCitadelPlayerController caller) {
+        var pawn = caller.GetHeroPawn();
+        if (pawn == null) return;
 
         var effects = new (string Name, Action<CCitadelPlayerPawn> Apply)[] {
             ("Mystical Piano Strike", ApplyPianoStrike)
@@ -63,10 +63,9 @@ public class RollTheDicePlugin : DeadworksPluginBase {
             TitleLocstring = "ROLL THE DICE",
             DescriptionLocstring = roll.Name
         };
-        NetMessages.Send(msg, RecipientFilter.Single(ctx.Message.SenderSlot));
+        NetMessages.Send(msg, RecipientFilter.Single(caller.EntityIndex - 1));
 
         roll.Apply(pawn);
-        return HookResult.Handled;
     }
 
     private void ApplyPianoStrike(CCitadelPlayerPawn pawn) {
@@ -92,7 +91,7 @@ public class RollTheDicePlugin : DeadworksPluginBase {
 
 ## See Also
 
-- [Chat Commands](../api-reference/chat-commands)
+- [Commands](../api-reference/commands)
 - [Modifiers](../api-reference/modifiers)
 - [Particles](../api-reference/particles)
 - [Timers](../api-reference/timers)

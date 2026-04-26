@@ -137,5 +137,4 @@ public HookResult OnPlayerHeroChanged(PlayerHeroChangedEvent args)
 
 ## See Also
 
-- [Plugin Base](plugin-base) — Lifecycle hooks
 - [Players](players) — Player pawn and controller access

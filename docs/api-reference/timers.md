@@ -142,18 +142,18 @@ if (_timers.TryGet(pawn, out var t))
 ```csharp
 private readonly EntityData<IHandle?> _activeTimers = new();
 
-[ChatCommand("stamina")]
-public HookResult OnStamina(ChatCommandContext ctx)
+[Command("stamina")]
+public void CmdStamina(CCitadelPlayerController caller)
 {
-    var pawn = ctx.Controller?.GetHeroPawn();
-    if (pawn == null) return HookResult.Handled;
+    var pawn = caller.GetHeroPawn();
+    if (pawn == null) return;
 
     // If already active, cancel (toggle off)
     if (_activeTimers.TryGet(pawn, out var existing) && existing != null)
     {
         existing.Cancel();
         _activeTimers.Remove(pawn);
-        return HookResult.Handled;
+        return;
     }
 
     // Start new timer (toggle on)
@@ -165,8 +165,6 @@ public HookResult OnStamina(ChatCommandContext ctx)
         stamina.CurrentValue = stamina.MaxValue;
     });
     _activeTimers[pawn] = timer;
-
-    return HookResult.Handled;
 }
 ```
 
@@ -185,5 +183,5 @@ public override void OnUnload()
 ## See Also
 
 - [Entities](entities) — `EntityData<T>` for per-entity state
-- [Plugin Base](plugin-base) — Accessing the `Timer` property
+- [First Plugin](../getting-started/first-plugin) — `DeadworksPluginBase` gives your plugin a `Timer`
 - [Scourge Example](../examples/scourge) — DOT effect using `Timer.Sequence`

@@ -258,11 +258,11 @@ static Vector3 ForwardFromAngles(Vector3 angles)
 ## Example: Player Eye Trace
 
 ```csharp
-[ChatCommand("trace")]
-public HookResult OnTrace(ChatCommandContext ctx)
+[Command("trace")]
+public void CmdTrace(CCitadelPlayerController caller)
 {
-    var pawn = ctx.Controller?.GetHeroPawn();
-    if (pawn == null) return HookResult.Handled;
+    var pawn = caller.GetHeroPawn();
+    if (pawn == null) return;
 
     var result = Trace.Ray(
         pawn.EyePosition,
@@ -273,11 +273,9 @@ public HookResult OnTrace(ChatCommandContext ctx)
 
     if (result.DidHit)
     {
-        ctx.Controller.PrintToConsole($"Hit at {result.HitPosition}");
-        ctx.Controller.PrintToConsole($"Distance: {result.Fraction * 5000f} units");
+        caller.PrintToConsole($"Hit at {result.HitPosition}");
+        caller.PrintToConsole($"Distance: {result.Fraction * 5000f} units");
     }
-
-    return HookResult.Handled;
 }
 ```
 

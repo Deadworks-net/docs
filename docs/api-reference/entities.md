@@ -91,20 +91,18 @@ public override void OnPrecacheResources()
     Precache.AddResource("models/hideout/hideout_sandbox_ball.vmdl");
 }
 
-[ChatCommand("ball")]
-public HookResult CmdBall(ChatCommandContext ctx)
+[Command("ball")]
+public void CmdBall(CCitadelPlayerController caller)
 {
-    var pos = ctx.Controller?.GetHeroPawn()?.Position ?? Vector3.Zero;
+    var pos = caller.GetHeroPawn()?.Position ?? Vector3.Zero;
 
     var prop = CBaseEntity.CreateByDesignerName("prop_dynamic");
-    if (prop == null) return HookResult.Handled;
+    if (prop == null) return;
 
     var ekv = new CEntityKeyValues();
     ekv.SetString("model", "models/hideout/hideout_sandbox_ball.vmdl");
     ekv.SetVector("origin", pos + new Vector3(0, 0, 128));
     prop.Spawn(ekv);
-
-    return HookResult.Handled;
 }
 ```
 
@@ -157,7 +155,7 @@ Camera and view angles are networked separately from entity angles. `Teleport(an
 pawn.SetModel("models/heroes_wip/werewolf/werewolf.vmdl"); // precache first
 ```
 
-See the shipped `SetModelPlugin` example for a complete chat command that swaps the player to a werewolf model.
+See the shipped `SetModelPlugin` example for a complete command that swaps the player to a werewolf model.
 
 ## Parenting
 

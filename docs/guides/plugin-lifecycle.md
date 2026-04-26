@@ -192,7 +192,7 @@ If you launch `deadworks.exe` from Windows Terminal or PowerShell and the consol
 
 ## See Also
 
-- [Plugin Base](../api-reference/plugin-base) — All lifecycle hooks
+- [First Plugin](../getting-started/first-plugin) — Starting from `DeadworksPluginBase`
 - [Precaching](../api-reference/precaching) — Resource precaching
-- [Console Commands](../api-reference/console-commands) — ConVar setup in OnStartupServer
+- [ConVars](../api-reference/convars) — ConVar setup in `OnStartupServer`
 - [Server Hosting](server-hosting) — Running a dedicated server

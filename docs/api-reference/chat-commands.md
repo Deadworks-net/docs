@@ -1,116 +1,27 @@
 ---
 title: "Chat Commands"
-sidebar_label: "Chat Commands"
 ---
 
 # Chat Commands
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Register chat commands using the `[ChatCommand]` attribute on plugin methods.
+Chat-triggered commands use the unified [`[Command]`](commands) attribute.
 
-## Prefix: `/` Only
+Use `[Command("name")]` when you want the same command to be available as:
 
-Chat commands are triggered when a player types a message starting with `/`. The bare command name you register (e.g. `"rtd"`) is what the player types **after** the slash.
+- `/name`
+- `!name`
+- `dw_name`
 
-## ChatCommandAttribute
-
-Marks a plugin method as a handler for a chat command. Can be applied multiple times to map multiple commands to the same handler.
+If you only want the chat versions and do not want the `dw_name` console command, set `ChatOnly = true`:
 
 ```csharp
-[ChatCommand("rtd")]
-public HookResult OnRollTheDice(ChatCommandContext ctx)
+[Command("hello", ChatOnly = true)]
+public void CmdHello(CCitadelPlayerController caller)
 {
-    // Player typed /rtd in chat
-    return HookResult.Handled;
+    // Respond to /hello and !hello, but do not register dw_hello
 }
 ```
 
-### Multiple Commands on One Handler
-
-```csharp
-[ChatCommand("help")]
-[ChatCommand("info")]
-public HookResult OnHelp(ChatCommandContext ctx)
-{
-    // Handles both /help and /info
-    return HookResult.Handled;
-}
-```
-
-### Properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `Command` | `string` | The command string this attribute matches (e.g. `"rtd"`) |
-
-## ChatCommandContext
-
-Context object passed to every chat command handler.
-
-### Properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `Message` | `ChatMessage` | The raw chat message that triggered the command |
-| `Command` | `string` | The matched command string (e.g. `"rtd"`) |
-| `Args` | `string[]` | Arguments following the command, split by whitespace |
-| `Controller` | `CCitadelPlayerController?` | The player controller who sent the command, or `null` |
-
-### Common Pattern
-
-```csharp
-[ChatCommand("mycommand")]
-public HookResult OnMyCommand(ChatCommandContext ctx)
-{
-    // Get the player's pawn (in-game entity)
-    var pawn = ctx.Controller?.GetHeroPawn();
-    if (pawn == null)
-        return HookResult.Handled;
-
-    // Parse optional arguments
-    int duration = ctx.Args.Length > 0 && int.TryParse(ctx.Args[0], out var d) ? d : 30;
-
-    // Do something with the player...
-
-    return HookResult.Handled;
-}
-```
-
-### Accessing Sender Slot
-
-The sender's player slot is available via the message:
-
-```csharp
-int senderSlot = ctx.Message.SenderSlot;
-```
-
-This is useful for [sending targeted messages](networking):
-
-```csharp
-NetMessages.Send(msg, RecipientFilter.Single(ctx.Message.SenderSlot));
-```
-
-## ChatMessage
-
-Incoming chat message from a player. Also passed to `OnChatMessage()` on the [plugin base](plugin-base).
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `SenderSlot` | `int` | Player slot index of the sender |
-| `ChatText` | `string` | The raw chat text that was sent |
-| `AllChat` | `bool` | Whether this was an all-chat message (vs team chat) |
-| `LaneColor` | `LaneColor` | Lane color of the sender |
-
-## Return Values
-
-Chat command handlers must return a [HookResult](plugin-base):
-
-- `HookResult.Handled` — Command was processed, message consumed
-- `HookResult.Stop` — Block further processing
-
-## See Also
-
-- [Console Commands](console-commands) — Server console commands (`[ConCommand]`)
-- [Plugin Base](plugin-base) — `OnChatMessage` hook for raw message interception
-- [Networking](networking) — Sending responses back to players
+For the full explanation of arguments, aliases, `SuppressChat`, and console behavior, see [Commands](commands).
