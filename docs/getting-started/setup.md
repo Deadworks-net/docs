@@ -71,7 +71,7 @@ Add a post-build target to automatically copy your compiled plugin to the game's
 ```xml
 <Target Name="DeployToGame" AfterTargets="Build">
   <ItemGroup>
-    <DeployFiles Include="$(OutputPath)YourPlugin.dll;$(OutputPath)YourPlugin.pdb" />
+    <DeployFiles Include="$(OutputPath)REPLACE_THIS_WITH_YOUR_PLUGIN_OUTPUT_NAME.dll;$(OutputPath)REPLACE_THIS_WITH_YOUR_PLUGIN_OUTPUT_NAME.pdb" />
   </ItemGroup>
   <Copy
     SourceFiles="@(DeployFiles)"
@@ -81,6 +81,8 @@ Add a post-build target to automatically copy your compiled plugin to the game's
     ContinueOnError="WarnAndContinue" />
 </Target>
 ```
+
+Replace `REPLACE_THIS_WITH_YOUR_PLUGIN_OUTPUT_NAME` with the actual file name your plugin project builds, without the `.dll` or `.pdb` extension. For example, if your project builds `CoolPlugin.dll`, use `CoolPlugin.dll` and `CoolPlugin.pdb`.
 
 ## 5. Complete .csproj Example
 
@@ -131,6 +133,17 @@ Copy the full build output to the `Deadlock/game/bin/win64/managed/plugins/` fol
 
 
 Plugins are loaded automatically when the server starts. Editing a plugin DLL while the server is running hot-reloads it.
+
+
+## 6. Run Deadworks
+
+Run `deadworks.exe` from your `Deadlock/game/bin/win64/` folder.
+
+Once Deadworks is running, open Deadlock and connect to your local server from the in-game console:
+
+```text
+connect localhost:27067
+```
 
 
 ## Troubleshooting

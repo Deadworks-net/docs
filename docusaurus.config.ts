@@ -74,10 +74,10 @@ const config: Config = {
           position: 'left',
         },
         {
-          href: 'https://deadworks.net/database',
-          label: 'Database',
+          href: 'https://deadworks.net/servers',
+          label: 'Servers',
           position: 'right',
-          className: 'navbar-icon-database',
+          className: 'navbar-icon-servers',
         },
         {
           href: 'https://github.com/Deadworks-net/deadworks',
