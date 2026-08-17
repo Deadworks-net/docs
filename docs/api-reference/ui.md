@@ -9,8 +9,8 @@ sidebar_label: "UI Panels"
 
 Server-controlled Panorama panels. There are two ways to get one on screen:
 
-- **Server-driven** — build the layout in C#. Nothing ships to the player.
-- **Client addon** — the player mounts a VPK containing an `.xml` (and optionally a `.js`), and the server tells them which one to load. Use this when you want real styling, images, or client-side logic.
+- **Server-driven.** Build the layout in C#. Nothing ships to the player.
+- **Client addon.** The player mounts a VPK containing an `.xml` (and optionally a `.js`), and the server tells them which one to load. Use this when you want real styling, images, or client-side logic.
 
 Both address the panel by the same string id and use the same update and event API.
 
@@ -45,7 +45,7 @@ UI.Panel("myPanel").Set(controller.Recipients, "score", 42);
 
 Fluent on any node: `.WithId(id)`, `.WithStyle(name, value)`, `.WithStyles(params (string,string)[])`, `.Add(params UINode[])`. On a button: `.OnClick(eventName, args…)`.
 
-Styles are Panorama CSS — the same kebab-case names you would write in a `.vcss`. It is **not** web CSS: there is no flexbox and no `display`. Boxes stack with `flow-children: down | right`, position with `horizontal-align` / `vertical-align` plus margins, and fill leftover space with `width: fill-parent-flow(1.0)`. Gradients are `gradient( linear, 0% 0%, 0% 100%, from( #000 ), to( #fff ) )`. Colours take an alpha byte: `#0a0c08e6`.
+Styles are Panorama CSS, using the same kebab-case names you would write in a `.vcss`. It is **not** web CSS: there is no flexbox and no `display`. Boxes stack with `flow-children: down | right`, position with `horizontal-align` / `vertical-align` plus margins, and fill leftover space with `width: fill-parent-flow(1.0)`. Gradients are `gradient( linear, 0% 0%, 0% 100%, from( #000 ), to( #fff ) )`. Colours take an alpha byte: `#0a0c08e6`.
 
 Images use the mod tree's compiled texture: `file://{images}/<addon>/<file>.vtex`. A `Button` only auto-creates its text Label when it has no children, so add a child `Label` when the inner text needs its own styling.
 
@@ -59,12 +59,12 @@ Images use the mod tree's compiled texture: `file://{images}/<addon>/<file>.vtex
 | `DestroyLayout(to)` | Destroy the panel and forget it |
 | `AppendChild(to, parentId, child)` | Append a subtree under an existing node id |
 | `RemoveChild(to, targetId)` | Remove a child by id |
-| `LoadXml(to, xmlPath)` | Load a client addon — see [Client addons](#client-addons) |
+| `LoadXml(to, xmlPath)` | Load a client addon. See [Client addons](#client-addons) |
 | `Reload(to)` | Re-send whatever layout that player last got |
 
 `Precache` once then `Show` is the pattern for a HUD whose structure never changes: the tree ships one time and every later update is text only. `BuildLayout` re-sends the whole tree each call.
 
-`AppendChild` / `RemoveChild` edit a list in place — adding one row costs a fraction of rebuilding the tree.
+`AppendChild` / `RemoveChild` edit a list in place. Adding one row costs a fraction of rebuilding the tree.
 
 `Reload` exists for the edit loop: change an addon's files, run it, see the result without restarting the client.
 
@@ -75,7 +75,7 @@ Images use the mod tree's compiled texture: `file://{images}/<addon>/<file>.vtex
 | `Set(to, key, value)` | Guaranteed delivery, latest value wins per `(panel, key)` |
 | `SetUnreliable(to, key, value)` | May be dropped under load, latest value wins |
 | `Clear(to)` | Clears the panel's state |
-| `SendRaw(to, text)` | Opaque text to the panel script's `onRaw` — no state, no auto-binding |
+| `SendRaw(to, text)` | Opaque text to the panel script's `onRaw`. No state, no auto-binding |
 
 **A key matching a Label id updates that Label automatically**, in both server-driven panels and client addons. Keys with no matching Label are still delivered, for a panel script to render itself.
 
@@ -92,7 +92,7 @@ UI.Panel("hud").Build()
 
 Updates arrive in the order you issue them, and a panel's pending `Set`s always land ahead of the next structural op on that panel.
 
-**Pace recurring updates.** The channel delivers a fixed number of updates per second — `UI.MaxFramesPerSecond` reports it. Sending faster only grows a queue and adds latency. To move more data, put more fields in each update rather than sending more updates.
+**Pace recurring updates.** The channel delivers a fixed number of updates per second, which `UI.MaxFramesPerSecond` reports. Sending faster only grows a queue and adds latency. To move more data, put more fields in each update rather than sending more updates.
 
 **Use `SetUnreliable` for values that change every frame**, where a missed update is immediately superseded. On that path send the *full* set of fields every time: if the one update carrying a change is dropped and the value then holds steady, skipping "unchanged" fields leaves the client stale indefinitely.
 
@@ -139,7 +139,7 @@ Your layout includes `dw_addon.js` **from the framework**, then your own script:
 </scripts>
 ```
 
-The two schemes are doing different jobs. `file://` is a path into **your** content tree, which is right for your own script. `s2r://` is a resource reference resolved from whatever is mounted, which is right for `dw_addon.js` — it lives in the framework's VPK, so a `file://` lookup would fail at compile time even though it resolves fine at runtime.
+The two schemes are doing different jobs. `file://` is a path into **your** content tree, which is right for your own script. `s2r://` is a resource reference resolved from whatever is mounted, which is right for `dw_addon.js`. It lives in the framework's VPK, so a `file://` lookup would fail at compile time even though it resolves fine at runtime.
 
 Do not copy `dw_addon.js` into your own VPK to work around that. Both VPKs would then provide the same path and mount order would decide which wins; a stale copy speaks an old protocol and your panel quietly stops updating. If it happens anyway, the console says so:
 
@@ -158,7 +158,7 @@ DW.registerPanel({
 });
 ```
 
-`init` and `onDestroy` pair up and can fire more than once — the panel is rebuilt on reconnect. `render` receives `changed`, the list of keys this update touched, or `null` meaning assume everything changed.
+`init` and `onDestroy` pair up and can fire more than once, because the panel is rebuilt on reconnect. `render` receives `changed`, the list of keys this update touched, or `null` meaning assume everything changed.
 
 The `panel` argument:
 
@@ -177,11 +177,11 @@ The `panel` argument:
 
 ### Shipping it
 
-Your addon is a VPK, and the paths inside it are what matter — `panorama/layout/…` and `panorama/scripts/…` at the VPK root, with `{resources}` resolving to `panorama/`.
+Your addon is a VPK, and the paths inside it are what matter: `panorama/layout/…` and `panorama/scripts/…` at the VPK root, with `{resources}` resolving to `panorama/`.
 
 **It has to be mounted before the game starts.** Panorama initialises early in launch, so nothing can add UI content at runtime.
 
-- **While developing,** put the VPK in `<game>/citadel/deadworks_mods/`. That directory is on the engine's search path, so everything in it mounts at startup. Then iterate with `Reload` — no restart needed unless you change which files exist.
+- **While developing,** put the VPK in `<game>/citadel/deadworks_mods/`. That directory is on the engine's search path, so everything in it mounts at startup. Then iterate with `Reload`. No restart needed unless you change which files exist.
 - **To distribute,** publish it in your server's content manifest. The launcher downloads each item into `<game>/citadel/deadworks_addons/vpks/` before joining, so players install nothing by hand.
 
 ### Knowing whether it loaded
@@ -228,7 +228,7 @@ Panorama logs to the in-game console. Work down this list:
 |---------|-------|
 | No `[DW_BOOTSTRAP]` lines at all | The launcher's addon isn't mounted. Nothing else can work. |
 | `loadxml failed for '…'` | Your VPK isn't mounted, or the path is wrong. `UI.Addon(...)` reports `Failed`. |
-| Layout appears, `[DW_ADDON]` lines don't | Your `<scripts>` block didn't run — check the include paths. |
+| Layout appears, `[DW_ADDON]` lines don't | Your `<scripts>` block didn't run. Check the include paths. |
 | `registered:` but never `channel live` | The panel is up but no update has arrived. Check you're sending to the right panel id. |
 | Panel appears then vanishes | The client tore down after a few seconds without updates and asked for a resync. |
 
