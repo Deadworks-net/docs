@@ -134,12 +134,18 @@ Your layout includes `dw_addon.js` **from the framework**, then your own script:
 
 ```xml
 <scripts>
-    <include src="file://{resources}/scripts/dw_addon.js" />
+    <include src="s2r://panorama/scripts/dw_addon.js" />
     <include src="file://{resources}/scripts/killfeed.js" />
 </scripts>
 ```
 
-`dw_addon.js` ships with Deadworks and resolves through the shared resource path. Do not copy it into your VPK — a stale copy will drift from the server it is talking to.
+The two schemes are doing different jobs. `file://` is a path into **your** content tree, which is right for your own script. `s2r://` is a resource reference resolved from whatever is mounted, which is right for `dw_addon.js` — it lives in the framework's VPK, so a `file://` lookup would fail at compile time even though it resolves fine at runtime.
+
+Do not copy `dw_addon.js` into your own VPK to work around that. Both VPKs would then provide the same path and mount order would decide which wins; a stale copy speaks an old protocol and your panel quietly stops updating. If it happens anyway, the console says so:
+
+```
+[DW_ADDON] PROTOCOL MISMATCH: this dw_addon.js speaks v1, the bootstrap speaks v2.
+```
 
 Your script registers a handler. The panel id comes from the server's `UI.Panel(id)`, so you never repeat it:
 
@@ -289,7 +295,7 @@ public class RoundHud : DeadworksPluginBase {
 ```xml
 <root>
     <scripts>
-        <include src="file://{resources}/scripts/dw_addon.js" />
+        <include src="s2r://panorama/scripts/dw_addon.js" />
         <include src="file://{resources}/scripts/killfeed.js" />
     </scripts>
 
