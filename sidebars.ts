@@ -38,6 +38,7 @@ const sidebars: SidebarsConfig = {
         'api-reference/precaching',
         'api-reference/tracing',
         'api-reference/world-text',
+        'api-reference/ui',
       ],
     },
     {

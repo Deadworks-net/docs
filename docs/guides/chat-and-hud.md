@@ -11,13 +11,13 @@ This guide covers sending messages to players through chat, HUD announcements, c
 
 Before diving in, the ceiling is worth knowing — it's asked about often:
 
-- **No custom HUD panels.** Panorama (the Deadlock UI system) is locked down server-side. You can't inject new UI elements, listen for game events from Panorama, or mutate the chrome.
 - **No worldtext pinned to the screen.** The camera is not a networked entity. You can only parent to the pawn. However, you can configure the reorient mode of a worldtext to face the camera (billboarding).
 - **No per-recipient rendering.** `OnCheckTransmit` lets you hide an entity from specific players, but you can't give the *same* entity different text/color per viewer.
 - **No colored minimap lines.** `CCitadelUserMsg_MapLine` renders green only.
 
 What you *can* do:
 
+- **Custom HUD panels** — build a layout in C#, or ship your own and drive it from the server. See [UI Panels](../api-reference/ui). Panorama runs client-side, so this needs the Deadworks launcher on each player; without it they see nothing.
 - **HUD announcements** (`CCitadelUserMsg_HudGameAnnouncement`) — a single title/description popup per-player
 - **Chat messages** (`CCitadelUserMsg_ChatMsg`) — supports per-recipient text by sending one message per player
 - **Console output** (`PrintToConsole`)
