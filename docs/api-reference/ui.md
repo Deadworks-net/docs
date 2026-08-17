@@ -376,9 +376,3 @@ public class KillFeed : DeadworksPluginBase {
 ```
 
 `headline` lands on the Label of the same id with no script involved. `total` has no matching Label, so `render` formats it into `tally`.
-
-## See Also
-
-- [Networking](networking) — raw net messages and `RecipientFilter`
-- [Chat & HUD Messaging](../guides/chat-and-hud) — announcements, chat, worldtext
-- [Players](players) — `Recipients`, `Slot`, `Players.FromSlot`
