@@ -166,7 +166,7 @@ Every ability has an `UpgradeBits` field that encodes its unlock and upgrade tie
 foreach (var ability in pawn.AbilityComponent.Abilities) {
     if (ability.AbilitySlot < EAbilitySlot.Signature1
      || ability.AbilitySlot > EAbilitySlot.Signature4) continue;
-    ability.UpgradeBits = ability.UpgradeBits | 0b11111;
+    ability.UpgradeBits = 0b11111;
 }
 ```
 
