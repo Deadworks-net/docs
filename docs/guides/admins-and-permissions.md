@@ -11,6 +11,8 @@ Nothing is locked down until you set it up: commands that don't ask for a permis
 
 ## Make Yourself Admin
 
+For a step-by-step version with troubleshooting, see [Making Yourself Admin](making-yourself-admin).
+
 1. Start the server once. Deadworks creates `configs/permissions/` next to `managed/`:
 
    ```text

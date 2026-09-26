@@ -86,7 +86,7 @@ connect your.public.ip:27015
 
 ## Admins
 
-To let yourself and your staff use admin commands in-game, add your SteamIDs to `configs/permissions/players.jsonc`. See [Admins & Permissions](admins-and-permissions).
+To use admin commands in-game, give your Steam account the `admin` role. See [Making Yourself Admin](making-yourself-admin). For staff with limited access, see [Admins & Permissions](admins-and-permissions).
 
 ## Finding Plugins
 
