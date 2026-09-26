@@ -228,5 +228,6 @@ public override void OnLoad(bool isReload)
 
 ## See Also
 
+- [Commands for One Role](../guides/role-only-commands) — Step-by-step: a plugin with permissions, and a role that can use it
 - [Admins & Permissions](../guides/admins-and-permissions) — Setting up roles and admins as a server owner
 - [Commands](commands) — `[Command]` and argument binding

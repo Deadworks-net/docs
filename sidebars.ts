@@ -52,6 +52,7 @@ const sidebars: SidebarsConfig = {
         'guides/server-hosting',
         'guides/making-yourself-admin',
         'guides/admins-and-permissions',
+        'guides/role-only-commands',
         'guides/uploading-content',
         'guides/team-and-hero-management',
         'guides/chat-and-hud',

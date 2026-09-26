@@ -48,12 +48,15 @@ dw_role_grant 76561197960287930 admin
 Roles live in `roles.jsonc`. The default file is:
 
 ```jsonc
+// Roles for the Deadworks permission system. ...
 {
   "default": {
     "permissions": []
   },
   "admin": {
-    "permissions": ["*"],
+    "permissions": [
+      "*"
+    ],
     "immunity": 100
   }
 }
@@ -179,19 +182,18 @@ Each time a plugin loads, Deadworks writes `configs/permissions/generated/<Plugi
 // ============================================================================
 {
   "plugin": "Moderation",
-
   "commands": [
-    // !ban / /ban / dw_ban: Ban a player
     {
+      /* !ban / /ban / dw_ban: Ban a player */
       "name": "ban",
       "aliases": [],
       "description": "Ban a player",
       "permission": "moderation.player.ban",
       "targetImmunity": "Enforce"
     },
-    // !kick / /kick / dw_kick: Kick a player
-    // OVERRIDDEN in overrides.jsonc. The plugin asks for "moderation.player.kick".
     {
+      /* !kick / /kick / dw_kick: Kick a player */
+      /* OVERRIDDEN in overrides.jsonc. The plugin asks for "moderation.player.kick". */
       "name": "kick",
       "aliases": [],
       "description": "Kick a player",
@@ -200,14 +202,31 @@ Each time a plugin loads, Deadworks writes `configs/permissions/generated/<Plugi
       "targetImmunity": "Enforce"
     }
   ],
-
   "permissions": [
-    // Required by: ban
-    { "tag": "moderation.player.ban", "description": "", "declaredBy": ["ban"] },
-    // Checked in code. Issue bans with no expiry
-    { "tag": "moderation.player.ban.permanent", "description": "Issue bans with no expiry", "declaredBy": ["[DeclarePermission]"] },
-    // Required by: kick
-    { "tag": "moderation.player.kick", "description": "", "declaredBy": ["kick"] }
+    {
+      /* Required by: ban */
+      "tag": "moderation.player.ban",
+      "description": "",
+      "declaredBy": [
+        "ban"
+      ]
+    },
+    {
+      /* Checked in code. Issue bans with no expiry */
+      "tag": "moderation.player.ban.permanent",
+      "description": "Issue bans with no expiry",
+      "declaredBy": [
+        "[DeclarePermission]"
+      ]
+    },
+    {
+      /* Required by: kick */
+      "tag": "moderation.player.kick",
+      "description": "",
+      "declaredBy": [
+        "kick"
+      ]
+    }
   ]
 }
 ```
@@ -275,4 +294,5 @@ Leave it on for any server that's reachable from the internet.
 ## See Also
 
 - [Permissions](../api-reference/permissions) — Adding permissions to your own plugin
+- [Commands for One Role](role-only-commands) — Worked example from plugin to role
 - [Server Hosting](server-hosting) — Running a server
