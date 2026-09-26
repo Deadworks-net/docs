@@ -54,7 +54,7 @@ public class ItemRotationPlugin : DeadworksPluginBase {
     private readonly Dictionary<int, int> _playerSet = new(); // slot -> set index
     private IHandle? _timer;
 
-    [Command("ir_start", Description = "Start the item rotation game", Permission = "itemrotation.manage")]
+    [Command("ir_start", Description = "Start the item rotation game")]
     public void CmdStart(CCitadelPlayerController? caller) {
         if (_timer != null) return;
 
@@ -73,7 +73,7 @@ public class ItemRotationPlugin : DeadworksPluginBase {
         _timer = Timer.Every(10.Seconds(), Rotate);
     }
 
-    [Command("ir_reset", Description = "Stop the item rotation game and clear all items", Permission = "itemrotation.manage")]
+    [Command("ir_reset", Description = "Stop the item rotation game and clear all items")]
     public void CmdReset(CCitadelPlayerController? caller) {
         Stop();
     }

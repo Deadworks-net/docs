@@ -5,6 +5,10 @@ sidebar_label: "2. Administering Your Server"
 
 # Administering Your Server
 
+:::info Coming soon
+This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
+:::
+
 **Step 2 of 7** in [Admins & Permissions](/permissions). Before this: [make yourself admin](making-yourself-admin).
 
 This guide shows you how to use the admin commands that come with Deadworks while a match is running: dealing with a spammer, kicking a griefer, banning a cheater, changing map. Every command here comes from the [Admin plugin](admin-plugin), which the next page covers in full.

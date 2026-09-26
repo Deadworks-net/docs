@@ -5,6 +5,10 @@ sidebar_label: "5. Changing Command Access"
 
 # Changing Who Can Use a Plugin's Commands
 
+:::info Coming soon
+This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
+:::
+
 **Step 5 of 7** in [Admins & Permissions](/permissions). Before this: [staff roles](staff-roles).
 
 Plugins decide their own defaults. Some commands are open to everyone, others need a permission. You don't always agree with those choices:

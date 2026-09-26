@@ -5,6 +5,10 @@ sidebar_label: "Penalties & Admin Tools API"
 
 # Penalties & Admin Tools
 
+:::info Coming soon
+This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
+:::
+
 > **Namespace:** `DeadworksManaged.Api`
 
 Building blocks for admin plugins. The [Admin plugin](../guides/admin-plugin) that ships with Deadworks is built on these, and your plugin can use them too, so bans, announcements and logs behave the same whichever plugin issues them.

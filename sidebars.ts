@@ -56,14 +56,14 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Admins & Permissions',
+      label: '(COMING SOON) Admins & Permissions',
       collapsed: true,
       link: {
         type: 'generated-index',
-        title: 'Admins & Permissions',
+        title: 'Admins & Permissions (Coming Soon)',
         slug: '/permissions',
         description:
-          'Who can use which commands on your server. Read these in order: each guide builds on the one before, from making yourself admin to writing your own permission-aware plugins.',
+          'Not released yet: these features are coming in an upcoming Deadworks release. Who can use which commands on your server. Read these in order: each guide builds on the one before, from making yourself admin to writing your own permission-aware plugins.',
       },
       items: [
         'guides/making-yourself-admin',

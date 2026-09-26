@@ -5,6 +5,10 @@ sidebar_label: "4. Staff Roles"
 
 # Setting Up Staff Roles
 
+:::info Coming soon
+This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
+:::
+
 **Step 4 of 7** in [Admins & Permissions](/permissions). Before this: [the Admin plugin](admin-plugin).
 
 This guide sets up a typical staff team for the [Admin plugin](admin-plugin): trial moderators, moderators, admins and an owner, where each rank can do a bit more than the one below it and can't act against the ranks above.

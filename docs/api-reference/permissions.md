@@ -5,6 +5,10 @@ sidebar_label: "Permissions API"
 
 # Permissions
 
+:::info Coming soon
+This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
+:::
+
 > **Namespace:** `DeadworksManaged.Api`
 
 Deadworks has one built-in permission system that every plugin shares. As a plugin developer you only decide **which permission each command needs**. Server owners decide **who has it**, using roles and player lists described in [How Permissions Work](../guides/admins-and-permissions).

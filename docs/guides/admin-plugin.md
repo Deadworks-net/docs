@@ -5,6 +5,10 @@ sidebar_label: "3. The Admin Plugin"
 
 # The Admin Plugin
 
+:::info Coming soon
+This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
+:::
+
 **Step 3 of 7** in [Admins & Permissions](/permissions). Before this: [administering your server](administering-your-server).
 
 Deadworks comes with an **Admin** plugin that has the commands every server needs to run a match and deal with problem players: kicking, banning, gagging, changing map and so on. It's enabled by default and does nothing for players who don't have its permissions, so a fresh server is exactly as open as before, apart from the server console.
