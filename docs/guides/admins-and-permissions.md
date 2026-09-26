@@ -252,6 +252,7 @@ These work from the server console. Players can use them from their own console 
 | `dw_role_revoke <player> <role> [--temp]` | `deadworks.permissions.manage` | Take a role away |
 | `dw_perm_grant <player> <permission> [--temp]` | `deadworks.permissions.manage` | Give a player a permission. Use `-permission` to deny one. |
 | `dw_perm_revoke <player> <permission> [--temp]` | `deadworks.permissions.manage` | Remove a permission (or deny) from a player's entry |
+| `dw_penalties_reload` | `deadworks.penalties.reload` | Re-read `configs/penalties/penalties.jsonc` after editing it by hand |
 | `dw_plugin ...` | `deadworks.plugins.manage` | List, enable and disable plugins |
 | `dw_reloadconfig [plugin]` | `deadworks.config.reload` | Reload plugin configs |
 

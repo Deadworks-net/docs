@@ -15,7 +15,7 @@ The commands are split into two groups. Each group has its own permissions, so y
 
 | Group | Permissions | For |
 |-------|-------------|-----|
-| **Moderation** | `admin.moderation.*` | Dealing with players: kick, ban, gag, mute, slay, who |
+| **Moderation** | `admin.moderation.*` | Dealing with players: kick, ban, gag, slay, who |
 | **Server** | `admin.server.*` | Running the server: change map, cvars, configs, console commands |
 
 Moderators usually get the moderation group only. Server control is for people you trust with the whole server.
@@ -44,14 +44,15 @@ Wherever a command takes a `<player>`, you can use:
 | `ban <player> <minutes> [reason]` | `admin.moderation.ban` | Kicks the player and stops them rejoining for that many minutes. |
 | `addban <steamid> <minutes> [reason]` | `admin.moderation.ban.offline` | Bans someone who isn't on the server, by SteamID. |
 | `unban <steamid>` | `admin.moderation.unban` | Lifts a ban. |
+| `bans` | `admin.moderation.ban` | Lists active bans. |
 | `gag <player> [minutes] [reason]` | `admin.moderation.gag` | Stops the player **typing** in chat. |
 | `ungag <player>` | `admin.moderation.gag` | Lifts a gag. |
-| `mute <player> [minutes] [reason]` | `admin.moderation.mute` | Stops the player **talking** on voice chat. |
-| `unmute <player>` | `admin.moderation.mute` | Lifts a mute. |
-| `silence <player> [minutes] [reason]` | both of the above | Gag and mute at once. `unsilence` lifts both. |
+| `gags` | `admin.moderation.gag` | Lists active gags. |
 | `slay <player>` | `admin.moderation.slay` | Kills the player's hero. |
-| `who [player]` | `admin.moderation.who` | Lists players with their slot, SteamID, team, roles and active penalties. |
-| `penalties [steamid]` | anyone, for themselves | Shows your own bans, gags and mutes. Staff with `admin.moderation.who` can look up anyone. |
+| `who [player]` | `admin.moderation.who` | Lists players with their slot, SteamID, team, roles, and whether they're gagged or not yet verified by Steam. |
+| `penalties [steamid]` | anyone, for themselves | Shows your own bans and gags, past and present. Staff with `admin.moderation.who` can look up anyone. |
+
+Lists (`who`, `bans`, `gags`, `penalties`) are printed to your console, since they don't fit in chat.
 
 ### Gag vs Mute
 
@@ -59,13 +60,14 @@ These follow SourceMod's meanings:
 
 - **gag** = text chat
 - **mute** = voice chat
-- **silence** = both
+
+Voice muting (`mute`, `unmute`, and `silence` for both) isn't available yet; it needs more work in Deadworks' voice handling first.
 
 ### Durations
 
 - Durations are in **minutes**: `60` is an hour, `1440` a day, `10080` a week.
-- `0` means **permanent**. So does leaving the time off `gag`, `mute` and `silence`.
-- Permanent bans, gags and mutes need an extra permission, `admin.moderation.ban.permanent`. That lets you give moderators temporary bans only.
+- `0` means **permanent**. So does leaving the time off `gag`.
+- Permanent bans and gags need an extra permission, `admin.moderation.ban.permanent`. That lets you give moderators temporary bans only.
 
 ```text
 !ban lapka 60 spamming mic           ← one hour
@@ -76,13 +78,14 @@ dw_addban STEAM_0:1:11101 1440 ban evasion
 
 ### Where Penalties Are Kept
 
-Bans, gags and mutes are saved to `configs/penalties/penalties.jsonc`, so they survive restarts. Deadworks itself enforces them, so they apply no matter which other plugins you run:
+Bans and gags are saved to `configs/penalties/penalties.jsonc`, so they survive restarts. Deadworks itself enforces them, so they apply no matter which other plugins you run:
 
 - **Banned** players are turned away when they connect, and told why and for how long.
 - **Gagged** players' messages never reach chat, or any plugin that reads chat. They're told they're gagged.
-- **Muted** players can't be heard.
 
-Expired and lifted penalties stay in the file for 90 days, so `penalties` can show someone's history.
+Expired and lifted penalties stay in the file for 90 days (`penalties.history_days` in `configs/deadworks.jsonc`), so `penalties` can show someone's history.
+
+If you edit `penalties.jsonc` by hand, run `dw_penalties_reload` (needs `deadworks.penalties.reload`).
 
 ## Server Commands
 
@@ -140,13 +143,31 @@ Use it to check what your staff have been doing, or to settle a ban appeal.
 
 ## Settings
 
-`configs/Admin/Admin.jsonc` holds the plugin's own settings, such as the default reason used when none is given, and whether staff must give a reason for a ban.
+`configs/AdminPlugin/AdminPlugin.jsonc` holds the plugin's own settings:
+
+```jsonc
+{
+  "default_kick_reason": "Kicked by an admin",
+  "default_ban_reason": "Banned by an admin",
+  "default_gag_reason": "Gagged by an admin",
+  "require_reason": false,          // true: ban, addban and gag refuse to run without a reason
+  "map_change_delay_seconds": 3
+}
+```
+
+Run `dw_reloadconfig AdminPlugin` after editing it.
 
 ## Turning Parts Off
 
 - **Don't want some commands at all?** Don't give anyone their permission. Only the server console will be able to use them.
 - **Want a command available to someone who wouldn't normally have it,** or to require a different permission? Use [`overrides.jsonc`](overriding-command-permissions).
-- **Don't want the plugin at all?** Run `dw_plugin disable Admin`. Penalties that are already saved are still enforced, because Deadworks enforces them, not the plugin.
+- **Don't want the plugin at all?** Run `dw_plugin disable AdminPlugin`. Penalties that are already saved are still enforced, because Deadworks enforces them, not the plugin.
+
+## Where It Lives
+
+The plugin ships in `game/bin/win64/managed/builtin/AdminPlugin.dll`, not in `plugins/`, so it's updated whenever you update Deadworks and your `plugins/` folder stays yours. `dw_plugin list` marks it `[ships with Deadworks]`.
+
+To run a modified version, put your own `AdminPlugin.dll` in `plugins/`. It's used instead of the built-in one.
 
 ## Not in the Admin Plugin
 

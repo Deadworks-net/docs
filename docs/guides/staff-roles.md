@@ -13,7 +13,7 @@ It assumes you've read [Making Yourself Admin](making-yourself-admin). For how r
 
 | | Trial Mod | Moderator | Admin | Owner |
 |---|:---:|:---:|:---:|:---:|
-| Kick, gag, mute, `who` | ✅ | ✅ | ✅ | ✅ |
+| Kick, gag, `who` | ✅ | ✅ | ✅ | ✅ |
 | Temporary bans, unban, slay | | ✅ | ✅ | ✅ |
 | Permanent and offline bans | | | ✅ | ✅ |
 | Change map, cvars, configs | | | ✅ | ✅ |
@@ -37,7 +37,6 @@ Replace the contents of `configs/permissions/roles.jsonc` with:
     "permissions": [
       "admin.moderation.kick",
       "admin.moderation.gag",
-      "admin.moderation.mute",
       "admin.moderation.who",
       "deadworks.admin.notify"
     ],

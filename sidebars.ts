@@ -23,6 +23,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'api-reference/commands',
         'api-reference/permissions',
+        'api-reference/admin-api',
         'api-reference/convars',
         'api-reference/timers',
         'api-reference/entities',
