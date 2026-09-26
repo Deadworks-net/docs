@@ -71,11 +71,11 @@ A bigger setup might look like this:
     "permissions": ["rtd.use"]
   },
   "vip": {
-    "permissions": ["moderation.player.mute"]
+    "permissions": ["admin.moderation.who"]
   },
   "moderator": {
     "inherits": ["vip"],
-    "permissions": ["moderation.player.*", "-moderation.player.ban"],
+    "permissions": ["admin.moderation.*", "-admin.moderation.ban"],
     "immunity": 50
   },
   "admin": {
@@ -97,21 +97,21 @@ The `default` role always applies to every player. Leave it empty if you don't w
 
 | You write | It means |
 |-----------|----------|
-| `moderation.player.ban` | Exactly that permission |
-| `moderation.player.*` | Everything under `moderation.player.` (`moderation.player.ban`, `moderation.player.kick`, …) |
-| `moderation.*` | Everything from the Moderation plugin |
+| `admin.moderation.ban` | Exactly that permission |
+| `admin.moderation.*` | Everything under `admin.moderation.` (`admin.moderation.ban`, `admin.moderation.kick`, …) |
+| `admin.*` | Everything from the Admin plugin |
 | `*` | Everything |
-| `-moderation.player.ban` | **Not** that permission, even if a wildcard gives it |
+| `-admin.moderation.ban` | **Not** that permission, even if a wildcard gives it |
 
-Capitalization doesn't matter. Wildcards only work as the whole last part, and they stop at dots: `moderation.*` does not match `moderationtools.nuke`.
+Capitalization doesn't matter. Wildcards only work as the whole last part, and they stop at dots: `admin.*` does not match `admintools.nuke`.
 
 When several entries match, **the most specific one wins**:
 
-- An exact permission beats a wildcard, and `moderation.player.*` beats `moderation.*`, which beats `*`.
+- An exact permission beats a wildcard, and `admin.moderation.*` beats `admin.*`, which beats `*`.
 - If two are equally specific, one given to the player directly beats one from a role.
 - If it's still a tie, a deny (`-`) wins.
 
-That's how `["*", "-moderation.player.ban"]` means "everything except banning", and how you can give one moderator a single extra permission.
+That's how `["*", "-admin.moderation.ban"]` means "everything except banning", and how you can give one moderator a single extra permission.
 
 If nothing matches, the answer is no.
 
@@ -127,7 +127,7 @@ If nothing matches, the answer is no.
   },
   "STEAM_0:1:19999": {
     "roles": ["moderator"],
-    "permissions": ["moderation.player.ban"],   // this moderator may also ban
+    "permissions": ["admin.moderation.ban"],   // this moderator may also ban
     "immunity": 60                               // replaces what their roles give
   }
 }
@@ -173,40 +173,40 @@ Immunity only matters when a command picks another player. Plugins choose which 
 
 ## What Plugins Offer: the `generated` Folder
 
-Each time a plugin loads, Deadworks writes `configs/permissions/generated/<Plugin>.jsonc` listing its commands and permissions:
+Each time a plugin loads, Deadworks writes `configs/permissions/generated/<Plugin>.jsonc` listing its commands and permissions. Part of the Admin plugin's file, with `kick` overridden, looks like this:
 
 ```jsonc
 // ============================================================================
 //  AUTO-GENERATED. DO NOT EDIT. This file is rewritten every time the
-//  "Moderation" plugin loads. Any changes you make here will be lost.
+//  "Admin" plugin loads. Any changes you make here will be lost.
 //  ...
 // ============================================================================
 {
-  "plugin": "Moderation",
+  "plugin": "Admin",
   "commands": [
     {
       /* !ban / /ban / dw_ban: Ban a player */
       "name": "ban",
       "aliases": [],
       "description": "Ban a player",
-      "permission": "moderation.player.ban",
+      "permission": "admin.moderation.ban",
       "targetImmunity": "Enforce"
     },
     {
       /* !kick / /kick / dw_kick: Kick a player */
-      /* OVERRIDDEN in overrides.jsonc. The plugin asks for "moderation.player.kick". */
+      /* OVERRIDDEN in overrides.jsonc. The plugin asks for "admin.moderation.kick". */
       "name": "kick",
       "aliases": [],
       "description": "Kick a player",
       "permission": "my.custom.permission",
-      "declaredPermission": "moderation.player.kick",
+      "declaredPermission": "admin.moderation.kick",
       "targetImmunity": "Enforce"
     }
   ],
   "permissions": [
     {
       /* Required by: ban */
-      "tag": "moderation.player.ban",
+      "tag": "admin.moderation.ban",
       "description": "",
       "declaredBy": [
         "ban"
@@ -214,7 +214,7 @@ Each time a plugin loads, Deadworks writes `configs/permissions/generated/<Plugi
     },
     {
       /* Checked in code. Issue bans with no expiry */
-      "tag": "moderation.player.ban.permanent",
+      "tag": "admin.moderation.ban.permanent",
       "description": "Issue bans with no expiry",
       "declaredBy": [
         "[DeclarePermission]"
@@ -222,7 +222,7 @@ Each time a plugin loads, Deadworks writes `configs/permissions/generated/<Plugi
     },
     {
       /* Required by: kick */
-      "tag": "moderation.player.kick",
+      "tag": "admin.moderation.kick",
       "description": "",
       "declaredBy": [
         "kick"
@@ -267,8 +267,8 @@ When a player (not the server console) uses the grant and revoke commands:
 `dw_perm_check` is the quickest way to find out why someone can or can't do something:
 
 ```text
-] dw_perm_check lapka moderation.player.ban
-lapka (76561197960287931): moderation.player.ban is denied by "-moderation.player.ban" from role:moderator
+] dw_perm_check lapka admin.moderation.ban
+lapka (76561197960287931): admin.moderation.ban is denied by "-admin.moderation.ban" from role:moderator
 ```
 
 `dw_help` only lists commands the caller is allowed to run.

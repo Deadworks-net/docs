@@ -78,7 +78,7 @@ public void CmdHeal(CCitadelPlayerController caller)
 | Property | Type | Description |
 |----------|------|-------------|
 | `Description` | `string` | Short help text shown by `dw_help` |
-| `Permission` | `string` | Permission a player needs to run it, e.g. `moderation.player.kick`. Empty means anyone. See [Permissions](permissions). |
+| `Permission` | `string` | Permission a player needs to run it, e.g. `admin.moderation.kick`. Empty means anyone. See [Permissions](permissions). |
 | `TargetImmunity` | `TargetImmunity` | Whether [`Target`](#target-arguments) arguments skip players the caller can't target. See [Immunity](permissions#immunity). |
 | `ServerOnly` | `bool` | Only let the server console run this command |
 | `ChatOnly` | `bool` | Only create `/name` and `!name` |
@@ -177,7 +177,7 @@ If the player types too many arguments, Deadworks will reject the command unless
 Use `Target` when the caller should pick one or more players:
 
 ```csharp
-[Command("kick", Permission = "moderation.player.kick")]
+[Command("kick", Permission = "admin.moderation.kick")]
 public void CmdKick(CCitadelPlayerController? caller, Target target)
 {
     foreach (var player in target)

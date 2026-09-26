@@ -16,13 +16,13 @@ Permissions are opt-in. A command without a `Permission` works exactly as before
 ```csharp
 using DeadworksManaged.Api;
 
-namespace Moderation;
+namespace DeadworksAdmin;
 
-public class ModerationPlugin : DeadworksPluginBase
+public class AdminPlugin : DeadworksPluginBase
 {
-    public override string Name => "Moderation";
+    public override string Name => "Admin";
 
-    [Command("kick", Description = "Kick a player", Permission = "moderation.player.kick")]
+    [Command("kick", Description = "Kick a player", Permission = "admin.moderation.kick")]
     public void CmdKick(CCitadelPlayerController? caller, Target target)
     {
         foreach (var player in target)
@@ -40,7 +40,7 @@ public class ModerationPlugin : DeadworksPluginBase
 That's all a plugin needs. On a fresh server:
 
 - the server console (and RCON) can run everything,
-- a player can run `!kick` once the server owner gives them `moderation.player.kick`, or a role that includes it such as the built-in `admin` role (`*`),
+- a player can run `!kick` once the server owner gives them `admin.moderation.kick`, or a role that includes it such as the built-in `admin` role (`*`),
 - a player without it sees `You don't have permission to use this command.` The failed `!kick` is not shown in chat.
 
 ## Naming Permissions
@@ -48,15 +48,16 @@ That's all a plugin needs. On a fresh server:
 Permissions are dot-separated strings, compared case-insensitively. Use `<plugin>.<area>.<action>`:
 
 ```text
-moderation.player.kick
-moderation.player.ban
-moderation.player.ban.permanent
+admin.moderation.kick
+admin.moderation.ban
+admin.moderation.ban.permanent
 itemtest.rcon
 ```
 
 - Start with your plugin's name, lowercased without spaces (`"Item Rotation"` → `itemrotation.`). Deadworks logs a warning if a permission doesn't, because server owners grant whole plugins with wildcards like `itemrotation.*`.
 - `deadworks.*` is reserved for built-in commands.
-- Group related permissions so wildcards are useful: owners can grant `moderation.player.*` to moderators.
+- Group related permissions so wildcards are useful: owners can grant `admin.moderation.*` to moderators.
+- The examples on this page come from Deadworks' own **Admin** plugin, which is why they start with `admin.`. Your plugin uses its own name; `admin.*` belongs to the Admin plugin.
 
 Wildcards and denies are for server owners to use in their config. Plugins always ask about one exact permission.
 
@@ -74,10 +75,10 @@ Server owners can change a command's permission in `overrides.jsonc` without tou
 For anything finer than "can run this command", check inside the handler:
 
 ```csharp
-[Command("ban", Permission = "moderation.player.ban")]
+[Command("ban", Permission = "admin.moderation.ban")]
 public void CmdBan(CCitadelPlayerController? caller, Target target, int minutes = 0)
 {
-    if (minutes == 0 && !caller.HasPermission("moderation.player.ban.permanent"))
+    if (minutes == 0 && !caller.HasPermission("admin.moderation.ban.permanent"))
         throw new CommandException("You can't issue permanent bans.");
 
     // ...
@@ -91,8 +92,8 @@ public void CmdBan(CCitadelPlayerController? caller, Target target, int minutes 
 Permissions on `[Command]` are listed for server owners automatically. For permissions you only check in code, add `[DeclarePermission]` to your plugin class so they're listed too:
 
 ```csharp
-[DeclarePermission("moderation.player.ban.permanent", Description = "Issue bans with no expiry")]
-public class ModerationPlugin : DeadworksPluginBase
+[DeclarePermission("admin.moderation.ban.permanent", Description = "Issue bans with no expiry")]
+public class AdminPlugin : DeadworksPluginBase
 {
     // ...
 }
