@@ -22,6 +22,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'api-reference/commands',
+        'api-reference/permissions',
         'api-reference/convars',
         'api-reference/timers',
         'api-reference/entities',
@@ -49,6 +50,7 @@ const sidebars: SidebarsConfig = {
         'guides/how-deadworks-works',
         'guides/plugin-lifecycle',
         'guides/server-hosting',
+        'guides/admins-and-permissions',
         'guides/uploading-content',
         'guides/team-and-hero-management',
         'guides/chat-and-hud',

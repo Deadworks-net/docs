@@ -78,6 +78,8 @@ public void CmdHeal(CCitadelPlayerController caller)
 | Property | Type | Description |
 |----------|------|-------------|
 | `Description` | `string` | Short help text shown by `dw_help` |
+| `Permission` | `string` | Permission a player needs to run it, e.g. `moderation.player.kick`. Empty means anyone. See [Permissions](permissions). |
+| `TargetImmunity` | `TargetImmunity` | Whether [`Target`](#target-arguments) arguments skip players the caller can't target. See [Immunity](permissions#immunity). |
 | `ServerOnly` | `bool` | Only let the server console run this command |
 | `ChatOnly` | `bool` | Only create `/name` and `!name` |
 | `ConsoleOnly` | `bool` | Only create `dw_name` |
@@ -98,7 +100,7 @@ public void CmdCvarDump(string outputPath = "")
 ```
 
 ```csharp
-[Command("rcon", Description = "Execute a server console command", SuppressChat = true)]
+[Command("rcon", Description = "Execute a server console command", Permission = "itemtest.rcon", SuppressChat = true)]
 public void CmdRcon(CCitadelPlayerController? caller, params string[] commandParts)
 {
     if (commandParts.Length == 0)
@@ -170,6 +172,21 @@ public void CmdGiveGold(CCitadelPlayerController caller, int amount = 50000)
 
 If the player types too many arguments, Deadworks will reject the command unless you use one of the options below.
 
+### Target Arguments
+
+Use `Target` when the caller should pick one or more players:
+
+```csharp
+[Command("kick", Permission = "moderation.player.kick")]
+public void CmdKick(CCitadelPlayerController? caller, Target target)
+{
+    foreach (var player in target)
+        player.Kick();
+}
+```
+
+Callers can type `@me`, `@all`, `@team`, `@enemy`, `#slot`, a SteamID, or part of a player's name. Use `target.Single()` when the command works on exactly one player. See [Targeting Players and Immunity](permissions#targeting-players-and-immunity).
+
 ### `params` Arguments
 
 Use `params T[]` when you want "everything left over":
@@ -229,6 +246,8 @@ Usage: givegold [amount:int=50000]
 ```
 
 Chat commands send their errors back through chat. Console commands print their errors to console.
+
+If the command has a `Permission` the player doesn't hold, they get `You don't have permission to use this command.` and your method doesn't run.
 
 Throw `CommandException` when you want to show a simple user-facing error message:
 

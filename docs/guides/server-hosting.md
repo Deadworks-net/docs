@@ -84,6 +84,10 @@ Forward UDP/TCP `27015` (or your chosen port) on your router or VPS firewall to 
 connect your.public.ip:27015
 ```
 
+## Admins
+
+To let yourself and your staff use admin commands in-game, add your SteamIDs to `configs/permissions/players.jsonc`. See [Admins & Permissions](admins-and-permissions).
+
 ## Finding Plugins
 
 The best place to find community-built plugins is the [Deadworks Discord](https://discord.gg/d3JHnVGA26) — share, request, and discuss plugins with other server hosts.
