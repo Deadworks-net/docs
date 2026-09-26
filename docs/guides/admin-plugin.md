@@ -1,9 +1,11 @@
 ---
 title: "The Admin Plugin"
-sidebar_label: "The Admin Plugin"
+sidebar_label: "3. The Admin Plugin"
 ---
 
 # The Admin Plugin
+
+**Step 3 of 7** in [Admins & Permissions](/permissions). Before this: [administering your server](administering-your-server).
 
 Deadworks comes with an **Admin** plugin that has the commands every server needs to run a match and deal with problem players: kicking, banning, gagging, changing map and so on. It's enabled by default and does nothing for players who don't have its permissions, so a fresh server is exactly as open as before, apart from the server console.
 
@@ -179,8 +181,6 @@ The Admin plugin sticks to what every server needs. These are left to other plug
 - votes and map voting
 - IP bans (Deadlock players always have a SteamID, and IP bans catch innocent people on shared connections)
 
-## See Also
+## Next
 
-- [Setting Up Staff Roles](staff-roles) — Who gets which commands
-- [Admins & Permissions](admins-and-permissions) — How roles, permissions and immunity work
-- [Making Yourself Admin](making-yourself-admin) — Give your own account full access
+**[4. Setting Up Staff Roles](staff-roles)**: give other people some of these commands.

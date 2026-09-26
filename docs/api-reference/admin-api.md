@@ -1,6 +1,6 @@
 ---
 title: "Penalties & Admin Tools"
-sidebar_label: "Penalties & Admin Tools"
+sidebar_label: "Penalties & Admin Tools API"
 ---
 
 # Penalties & Admin Tools
@@ -115,5 +115,5 @@ public override bool OnClientConnect(ClientConnectEvent e)
 
 ## See Also
 
-- [The Admin Plugin](../guides/admin-plugin) — The shipped commands built on these APIs
-- [Permissions](permissions) — `HasPermission`, `Target` and immunity
+- [3. The Admin Plugin](../guides/admin-plugin): the shipped commands built on these APIs
+- [Permissions API](permissions): `HasPermission`, `Target` and immunity

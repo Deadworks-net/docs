@@ -1,13 +1,15 @@
 ---
 title: "Setting Up Staff Roles"
-sidebar_label: "Setting Up Staff Roles"
+sidebar_label: "4. Staff Roles"
 ---
 
 # Setting Up Staff Roles
 
+**Step 4 of 7** in [Admins & Permissions](/permissions). Before this: [the Admin plugin](admin-plugin).
+
 This guide sets up a typical staff team for the [Admin plugin](admin-plugin): trial moderators, moderators, admins and an owner, where each rank can do a bit more than the one below it and can't act against the ranks above.
 
-It assumes you've read [Making Yourself Admin](making-yourself-admin). For how roles, wildcards and immunity work in general, see [Admins & Permissions](admins-and-permissions).
+It assumes you've read [Making Yourself Admin](making-yourself-admin). For how roles, wildcards and immunity work in general, see [How Permissions Work](admins-and-permissions).
 
 ## The Plan
 
@@ -216,8 +218,6 @@ A permission given to a player by its exact name always wins over their roles.
 
 **Don't hand out `*` casually.** It includes permissions from every plugin you'll ever install.
 
-## See Also
+## Next
 
-- [The Admin Plugin](admin-plugin) — Every command and what it does
-- [Admins & Permissions](admins-and-permissions) — Wildcards, denies, immunity and all console commands
-- [Changing Command Access](overriding-command-permissions) — Change which permission a command needs
+**[5. Changing Command Access](overriding-command-permissions)**: lock or unlock a specific plugin's commands.

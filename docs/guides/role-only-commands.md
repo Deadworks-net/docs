@@ -1,9 +1,11 @@
 ---
 title: "Commands for One Role"
-sidebar_label: "Commands for One Role"
+sidebar_label: "7. Plugin Commands for a Role"
 ---
 
 # Commands for One Role
+
+**Step 7 of 7** in [Admins & Permissions](/permissions), for plugin developers. Before this: [how permissions work](admins-and-permissions).
 
 This guide walks through a small plugin whose commands only some players can use, then sets up a role on the server so that exactly those players can.
 
@@ -274,7 +276,7 @@ dw_perm_grant greeny -medic.heal.all
 }
 ```
 
-## Next Steps
+## Next
 
-- [Permissions](../api-reference/permissions) — Everything a plugin can do with permissions and targeting
-- [Admins & Permissions](admins-and-permissions) — Roles, immunity and the console commands in full
+- [Permissions API](../api-reference/permissions): everything a plugin can do with permissions and targeting
+- [Penalties & Admin Tools API](../api-reference/admin-api): bans, gags, announcements and the admin log

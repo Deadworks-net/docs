@@ -43,4 +43,4 @@ For plugin settings, see [ConVars](convars).
 | `dw_help` | Anyone | Lists the commands you're allowed to run |
 | `dw_plugin <list\|enable\|disable\|commands> [name]` | Server console, or `deadworks.plugins.manage` | Manage plugins |
 | `dw_reloadconfig [name]` | Server console, or `deadworks.config.reload` | Reload plugin configs |
-| `dw_perm_*`, `dw_role_*` | See [Admins & Permissions](../guides/admins-and-permissions#console-commands) | Manage roles and permissions |
+| `dw_perm_*`, `dw_role_*` | See [How Permissions Work](../guides/admins-and-permissions#console-commands) | Manage roles and permissions |

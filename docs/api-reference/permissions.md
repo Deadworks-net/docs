@@ -1,13 +1,13 @@
 ---
 title: "Permissions"
-sidebar_label: "Permissions"
+sidebar_label: "Permissions API"
 ---
 
 # Permissions
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Deadworks has one built-in permission system that every plugin shares. As a plugin developer you only decide **which permission each command needs**. Server owners decide **who has it**, using roles and player lists described in [Admins & Permissions](../guides/admins-and-permissions).
+Deadworks has one built-in permission system that every plugin shares. As a plugin developer you only decide **which permission each command needs**. Server owners decide **who has it**, using roles and player lists described in [How Permissions Work](../guides/admins-and-permissions).
 
 Permissions are opt-in. A command without a `Permission` works exactly as before: anyone can run it.
 
@@ -229,6 +229,6 @@ public override void OnLoad(bool isReload)
 
 ## See Also
 
-- [Commands for One Role](../guides/role-only-commands) — Step-by-step: a plugin with permissions, and a role that can use it
-- [Admins & Permissions](../guides/admins-and-permissions) — Setting up roles and admins as a server owner
-- [Commands](commands) — `[Command]` and argument binding
+- [7. Commands for One Role](../guides/role-only-commands): step by step, a plugin with permissions and a role that can use it
+- [Penalties & Admin Tools API](admin-api): bans, gags, announcements and the admin log
+- [Commands](commands): `[Command]` and argument binding

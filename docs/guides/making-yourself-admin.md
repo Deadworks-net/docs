@@ -1,9 +1,11 @@
 ---
 title: "Making Yourself Admin"
-sidebar_label: "Making Yourself Admin"
+sidebar_label: "1. Make Yourself Admin"
 ---
 
 # Making Yourself Admin
+
+**Step 1 of 7** in [Admins & Permissions](/permissions). Start here.
 
 As the server owner you can already run every command from the **server console**. This guide gives your own Steam account the same access, so you can use admin commands from in-game chat and your game console as well.
 
@@ -98,6 +100,6 @@ Make sure you've fully joined the server, or use your SteamID instead of your na
 dw_role_grant 76561197960287930 admin
 ```
 
-## Next Steps
+## Next
 
-To see what admin commands you now have, read [The Admin Plugin](admin-plugin). To give other people limited access, such as moderators who can kick but not ban, see [Setting Up Staff Roles](staff-roles) and [Admins & Permissions](admins-and-permissions). To lock or unlock a specific plugin command, see [Changing Command Access](overriding-command-permissions).
+**[2. Administering Your Server](administering-your-server)**: using the admin commands in a match, and picking players with `@enemy`, `#slot` and more.

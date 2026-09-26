@@ -1,47 +1,28 @@
 ---
-title: "Admins & Permissions"
-sidebar_label: "Admins & Permissions"
+title: "How Permissions Work"
+sidebar_label: "6. How Permissions Work"
 ---
 
-# Admins & Permissions
+# How Permissions Work
+
+**Step 6 of 7** in [Admins & Permissions](/permissions). This is the full reference; the earlier guides cover everything most servers need.
 
 Deadworks decides who can use which plugin commands with **roles** and **permissions**. Plugins say which permission each command needs; you decide who has it. You never need to change a plugin to do this.
 
 Nothing is locked down until you set it up: commands that don't ask for a permission work for everyone, and the server console can always run everything.
 
-## Make Yourself Admin
+## Files at a Glance
 
-For a step-by-step version with troubleshooting, see [Making Yourself Admin](making-yourself-admin).
-
-1. Start the server once. Deadworks creates `configs/permissions/` next to `managed/`:
-
-   ```text
-   game/bin/win64/configs/permissions/
-     roles.jsonc       who can do what
-     players.jsonc     who has which role
-     overrides.jsonc   change what a command requires
-     generated/        every plugin's commands and permissions (read-only)
-   ```
-
-2. Add your SteamID to `players.jsonc`:
-
-   ```jsonc
-   {
-     "76561197960287930": { "roles": ["admin"] }
-   }
-   ```
-
-   Any common SteamID format works: `76561197960287930`, `STEAM_0:0:11101` or `[U:1:22202]`. You can find yours with the `status` console command or a site like steamid.io.
-
-3. Run `dw_perm_reload` in the server console, or restart.
-
-The built-in `admin` role has `*`, which is every permission.
-
-You can also do step 2 from the server console instead of editing the file:
+Deadworks keeps everything in `game/bin/win64/configs/permissions/`:
 
 ```text
-dw_role_grant 76561197960287930 admin
+roles.jsonc       who can do what
+players.jsonc     who has which role
+overrides.jsonc   change what a command requires
+generated/        every plugin's commands and permissions (read-only)
 ```
+
+New to this? Start with [1. Make Yourself Admin](making-yourself-admin); this page explains the rules in full.
 
 ## Roles
 
@@ -293,8 +274,6 @@ Leave it on for any server that's reachable from the internet.
 
 `store` picks where roles and players come from. `json` is the files described on this page; a plugin can provide another store, such as a database. See [Custom Stores](../api-reference/permissions#custom-stores).
 
-## See Also
+## Next
 
-- [Permissions](../api-reference/permissions) — Adding permissions to your own plugin
-- [Commands for One Role](role-only-commands) — Worked example from plugin to role
-- [Server Hosting](server-hosting) — Running a server
+**[7. Commands for One Role](role-only-commands)**: for plugin developers, a plugin whose commands only some players can use.

@@ -1,9 +1,11 @@
 ---
 title: "Changing Who Can Use a Plugin's Commands"
-sidebar_label: "Changing Command Access"
+sidebar_label: "5. Changing Command Access"
 ---
 
 # Changing Who Can Use a Plugin's Commands
+
+**Step 5 of 7** in [Admins & Permissions](/permissions). Before this: [staff roles](staff-roles).
 
 Plugins decide their own defaults. Some commands are open to everyone, others need a permission. You don't always agree with those choices:
 
@@ -207,7 +209,6 @@ If you only want to open `ir_start` and not the other two, combine both steps: o
 - **Older plugins.** Commands from plugins built before `[Command]` existed don't appear in the generated files and can't be overridden. Ask the author to update, or disable the plugin with `dw_plugin disable <name>`.
 - **Removing an override** puts the command back to what the plugin chose. Delete the line and run `dw_perm_reload`.
 
-## See Also
+## Next
 
-- [Admins & Permissions](admins-and-permissions) — Roles, players, immunity and all console commands
-- [Making Yourself Admin](making-yourself-admin) — Give your own account full access
+**[6. How Permissions Work](admins-and-permissions)**: the full reference for roles, wildcards, immunity and every console command.
