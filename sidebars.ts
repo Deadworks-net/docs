@@ -51,6 +51,8 @@ const sidebars: SidebarsConfig = {
         'guides/plugin-lifecycle',
         'guides/server-hosting',
         'guides/making-yourself-admin',
+        'guides/admin-plugin',
+        'guides/staff-roles',
         'guides/admins-and-permissions',
         'guides/overriding-command-permissions',
         'guides/role-only-commands',
