@@ -163,8 +163,8 @@ Deadworks can read typed text arguments for these common types:
 Optional arguments work the same way they do in normal C#:
 
 ```csharp
-[Command("givegold", Description = "Give yourself gold")]
-public void CmdGiveGold(CCitadelPlayerController caller, int amount = 50000)
+[Command("givesouls", Description = "Give yourself souls")]
+public void CmdGiveSouls(CCitadelPlayerController caller, int amount = 50000)
 {
     // ...
 }
@@ -235,14 +235,14 @@ Most of the time, arguments work the way you would expect:
 
 Examples:
 
-- `dw_givegold 2500`
+- `dw_givesouls 2500`
 - `dw_rcon "sv_cheats 1"`
 - `/sayas announcer "match starts now"`
 
 If the player types the command wrong, Deadworks prints a usage message automatically. For example:
 
 ```text
-Usage: givegold [amount:int=50000]
+Usage: givesouls [amount:int=50000]
 ```
 
 Chat commands send their errors back through chat. Console commands print their errors to console.

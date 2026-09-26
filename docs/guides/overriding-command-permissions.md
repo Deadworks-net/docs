@@ -7,7 +7,7 @@ sidebar_label: "Changing Command Access"
 
 Plugins decide their own defaults. Some commands are open to everyone, others need a permission. You don't always agree with those choices:
 
-- A plugin lets **anyone** run a command you only want staff to use, like giving themselves gold.
+- A plugin lets **anyone** run a command you only want staff to use, like giving themselves souls.
 - A plugin **locks** a command you're happy for everyone to use.
 
 You can change either one in `configs/permissions/overrides.jsonc` without editing or rebuilding the plugin. This guide shows both, using the example plugins that ship with Deadworks.
@@ -20,11 +20,11 @@ Every plugin gets a file in `configs/permissions/generated/` that lists its comm
 
 ```jsonc
 {
-  /* !givegold / /givegold / dw_givegold: Give yourself gold (default 50000) */
+  /* !givesouls / /givesouls / dw_givesouls: Give yourself souls (default 50000) */
   /* Anyone can run it. */
-  "name": "givegold",
+  "name": "givesouls",
   "aliases": [],
-  "description": "Give yourself gold (default 50000)",
+  "description": "Give yourself souls (default 50000)",
   "permission": "",
   "targetImmunity": "Ignore"
 }
@@ -32,7 +32,7 @@ Every plugin gets a file in `configs/permissions/generated/` that lists its comm
 
 Two things matter here:
 
-- `"name"` is what you'll use in the override: `givegold`.
+- `"name"` is what you'll use in the override: `givesouls`.
 - `"permission"` is what the command needs right now. Empty, with the comment `Anyone can run it.`, means it's open to everyone.
 
 :::note Don't edit the generated files
@@ -41,7 +41,7 @@ They're rewritten every time the plugin loads. Only read them; make changes in `
 
 ## Restrict an Open Command
 
-Let's make `!givegold` staff-only.
+Let's make `!givesouls` staff-only.
 
 ### 1. Require a Permission
 
@@ -50,7 +50,7 @@ Open `configs/permissions/overrides.jsonc` and add the command under `"commands"
 ```jsonc
 {
   "commands": {
-    "givegold": "itemtest.cheats"
+    "givesouls": "itemtest.cheats"
   }
 }
 ```
@@ -60,7 +60,7 @@ The permission name is up to you. Following the plugin's naming (`itemtest.` + s
 ```jsonc
 {
   "commands": {
-    "givegold":   "itemtest.cheats",
+    "givesouls":  "itemtest.cheats",
     "additem":    "itemtest.cheats",
     "giveimbued": "itemtest.cheats"
   }
@@ -75,17 +75,17 @@ In the server console:
 dw_perm_reload
 ```
 
-Now only players with `itemtest.cheats` can use `!givegold`. Everyone else gets `You don't have permission to use this command.` Admins with `*` still can, and so can the server console.
+Now only players with `itemtest.cheats` can use `!givesouls`. Everyone else gets `You don't have permission to use this command.` Admins with `*` still can, and so can the server console.
 
 The generated file now shows the change:
 
 ```jsonc
 {
-  /* !givegold / /givegold / dw_givegold: Give yourself gold (default 50000) */
+  /* !givesouls / /givesouls / dw_givesouls: Give yourself souls (default 50000) */
   /* OVERRIDDEN in overrides.jsonc. The plugin asks for no permission. */
-  "name": "givegold",
+  "name": "givesouls",
   "aliases": [],
-  "description": "Give yourself gold (default 50000)",
+  "description": "Give yourself souls (default 50000)",
   "permission": "itemtest.cheats",
   "declaredPermission": "",
   "targetImmunity": "Enforce"
@@ -199,10 +199,10 @@ If you only want to open `ir_start` and not the other two, combine both steps: o
 
 ## Good to Know
 
-- **Use the command's name**, without `!`, `/` or `dw_`. `"givegold"`, `"!givegold"` and `"dw_givegold"` all work and mean the same thing.
+- **Use the command's name**, without `!`, `/` or `dw_`. `"givesouls"`, `"!givesouls"` and `"dw_givesouls"` all work and mean the same thing.
 - **One entry covers the aliases.** If a command has aliases (listed in `"aliases"`), overriding any of its names changes all of them.
 - **Same name in two plugins.** If two plugins both have a command called `ban`, an override for `ban` applies to both.
-- **Immunity follows the permission.** By default, commands that need a permission can't target players with higher immunity, and public ones can. When you override a command, the generated file's `"targetImmunity"` shows which applies now. For example, `givegold` changed from `Ignore` to `Enforce` above.
+- **Immunity follows the permission.** By default, commands that need a permission can't target players with higher immunity, and public ones can. When you override a command, the generated file's `"targetImmunity"` shows which applies now. For example, `givesouls` changed from `Ignore` to `Enforce` above.
 - **Server-console-only commands stay that way.** Some commands are marked `Server console only; players can never run it.` in the generated file. Overrides can't open those to players.
 - **Older plugins.** Commands from plugins built before `[Command]` existed don't appear in the generated files and can't be overridden. Ask the author to update, or disable the plugin with `dw_plugin disable <name>`.
 - **Removing an override** puts the command back to what the plugin chose. Delete the line and run `dw_perm_reload`.
