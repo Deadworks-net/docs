@@ -100,4 +100,4 @@ dw_role_grant 76561197960287930 admin
 
 ## Next Steps
 
-To give other people limited access, such as moderators who can kick but not ban, see [Admins & Permissions](admins-and-permissions).
+To give other people limited access, such as moderators who can kick but not ban, see [Admins & Permissions](admins-and-permissions). To lock or unlock a specific plugin command, see [Changing Command Access](overriding-command-permissions).

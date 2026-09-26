@@ -168,6 +168,7 @@ Immunity only matters when a command picks another player. Plugins choose which 
 
 - Use the command's name without `!`, `/` or `dw_`. One entry covers all of the command's aliases.
 - This is how you lock down a command whose plugin didn't give it a permission.
+- For a step-by-step walkthrough, see [Changing Who Can Use a Plugin's Commands](overriding-command-permissions).
 - If two plugins register a command with the same name, the override applies to both.
 
 ## What Plugins Offer: the `generated` Folder
