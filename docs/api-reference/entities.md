@@ -40,9 +40,10 @@ var pawn   = CBaseEntity.FromHandle<CCitadelPlayerPawn>(handle);
 | `Position` | `Vector3` | World position (via `BodyComponent.SceneNode.AbsOrigin`) |
 | `AbsVelocity` | `Vector3` | Absolute velocity (get/set). See [Transform](#transform) for the caveats around writing it. |
 | `TeamNum` | `int` | Team index (get/set) |
-| `Health` / `MaxHealth` | `int` | Direct schema health values (get/set) |
-| `GetMaxHealth()` | `int` | Effective max health including modifier/buff effects — prefer this over `MaxHealth` for reads |
-| `Heal(float amount)` | `int` | Heal clamped to max; returns the actual amount healed |
+| `Health` | `int` | Current health (get/set). See [Health](#health) |
+| `MaxHealth` | `int` | Raw max-health field (read-only). Use `GetMaxHealth()` instead |
+| `GetMaxHealth()` | `int` | Max health, including items and buffs on heroes |
+| `Heal(float amount)` | `int` | Heal, capped at max health; returns the amount actually healed |
 | `LifeState` / `IsAlive` | `LifeState` / `bool` | Lifecycle state (`Alive`, `Dying`, `Dead`, `Respawnable`, `Respawning`) |
 | `IsOnGround` | `bool` | `true` when `m_hGroundEntity` is valid |
 | `GroundEntity` | `CBaseEntity?` | The entity the pawn is standing on, or `null` if airborne |
@@ -64,6 +65,59 @@ if (entity.Is<CCitadelPlayerPawn>())
 |---|---|
 | `Is<T>()` | Native class name matches `T` |
 | `As<T>()` | Typed wrapper, or `null` if the cast would fail |
+
+## Health
+
+```csharp
+// Top a pawn back up to full
+pawn.Heal(pawn.GetMaxHealth());
+
+int missing = pawn.GetMaxHealth() - pawn.Health;
+```
+
+| Member | Use it for |
+|---|---|
+| `Health` | Reading current health. Setting it changes the number directly: it isn't capped at max health and doesn't count as a heal or as damage. |
+| `GetMaxHealth()` | Max health. On heroes this includes items and buffs. |
+| `MaxHealth` | Rarely needed. Read-only, and on heroes it isn't kept up to date with items and buffs, so use `GetMaxHealth()`. |
+| `Heal(float amount)` | Healing. Capped at `GetMaxHealth()`; returns how much was actually added. |
+
+To damage or kill, use [`Hurt()`](damage#applying-damage) rather than setting `Health`, so the game runs its normal damage and death handling.
+
+**`Heal()` gotchas:**
+
+- The amount is truncated, so `Heal(10.9f)` adds 10.
+- At or above max health it adds nothing and returns 0. It doesn't remove overheal.
+- It returns 0 without healing on entities that can't take damage.
+- A negative amount isn't rejected: it lowers health.
+
+### Watching heals
+
+Heals show up in `OnModifierEvent` as one of two events, depending on where they came from:
+
+| Event | Raised by | What you get |
+|---|---|---|
+| `HealthTaken` | `Heal()` calls | `args.Damage` with `Victim`, `HealthRequested` and `HealthApplied` |
+| `UnitHealed` | The game's own healing, which doesn't go through `Heal()` | `args.Target` is the healed entity and `args.Caster` is the healer, which can be null |
+
+```csharp
+public override void OnModifierEvent(ModifierEvent args)
+{
+    if (args.Event == EModifierEvent.HealthTaken && args.Damage is { } heal)
+    {
+        // A Heal() call.
+        // heal.Victim          - the entity being healed
+        // heal.HealthRequested - the amount asked for
+        // heal.HealthApplied   - what actually landed after the max-health cap
+    }
+    else if (args.Event == EModifierEvent.UnitHealed)
+    {
+        // The game healed args.Target. args.Caster is the healer, if there is one.
+    }
+}
+```
+
+`HealthTaken` fires even when nothing was healed (`HealthApplied` is 0), for example on a target already at full health.
 
 ## Lifecycle
 
