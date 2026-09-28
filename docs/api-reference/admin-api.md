@@ -15,24 +15,26 @@ Building blocks for admin plugins. The [Admin plugin](../guides/admin-plugin) th
 
 ## Penalties
 
-Bans, gags and mutes are stored and **enforced by Deadworks**. Your plugin only decides when to add or lift them.
+Bans, gags and mutes are stored by Deadworks, and bans and gags are **enforced by Deadworks** too (mutes aren't yet). Your plugin only decides when to add or lift them.
 
 ```csharp
 var id = Permissions.GetSteamId(player.Slot);
+if (id == 0)
+    throw new CommandException("Bots can't be banned.");
 if (!caller.CanTarget(player))
     throw new CommandException("You can't ban them.");
 
+// caller is the command's Caller: the admin the ban is recorded against
 Penalties.Add(PenaltyType.Ban, id, TimeSpan.FromHours(1), "spamming", caller, player.PlayerName);
 ```
 
 | Member | Description |
 |--------|-------------|
-| `Add(type, steamId64, duration, reason, admin, playerName = null)` | Adds a penalty. `duration: null` is permanent. Replaces an active penalty of the same type. A ban kicks the player if they're on the server. |
-| `Remove(type, steamId64, admin)` | Lifts the active penalty. `false` if there wasn't one. |
+| `Add(type, steamId64, duration, reason, by, playerName = null)` | Adds a penalty. `by` is the `Caller` issuing it (`Caller.Console` for the console). `duration: null` is permanent. Replaces an active penalty of the same type. A ban kicks the player if they're on the server. |
+| `Remove(type, steamId64, by)` | Lifts the active penalty. `false` if there wasn't one. |
 | `GetActive(type, steamId64)` / `GetActive(type?)` | The active penalty, or every active one |
 | `IsBanned`, `IsGagged`, `IsMuted` | Shortcuts for `GetActive(...) != null` |
 | `GetHistoryAsync(steamId64)` | Everything the store has for a player, newest first, including lifted and expired ones |
-| `Added`, `Removed` | Events. `Removed` also fires when a penalty runs out. |
 | `RegisterStore(this, name, store)` | Supply penalties from a database or web panel (see below) |
 
 **What Deadworks enforces:**
@@ -43,9 +45,28 @@ Penalties.Add(PenaltyType.Ban, id, TimeSpan.FromHours(1), "spamming", caller, pl
 | `Gag` | Their chat is dropped before chat commands' broadcast and before any plugin's `OnChatMessage`. Their chat commands still run. |
 | `Mute` | Stored, but **not enforced yet**: voice blocking is still to come |
 
-**Immunity isn't checked by `Penalties`.** Check `caller.CanTarget(player)`, or `Permissions.CanTarget(callerId, targetId)` for offline players, before penalizing someone on another player's behalf. A `Target` argument does this for you when the command has a permission.
+`Add` can refuse:
 
-`Penalty` is a record with `Type`, `SteamId64`, `PlayerName`, `CreatedUtc`, `ExpiresUtc` (null = permanent), `Reason`, `AdminSteamId64` (0 = console), `AdminName`, `RemovedUtc`, `RemovedBySteamId64`, plus `IsActiveAt(now)` and `DescribeRemaining(now)` ("for 1h 5m", "permanently").
+| Exception | When |
+|-----------|------|
+| `ArgumentException` | The SteamID is `0` (bots have none). Check for it first, like the example above. |
+| `CommandException`: `<name> hasn't been verified by Steam yet. Try again in a moment.` | The player is on the server but Steam hasn't confirmed them yet (see [Steam Verification](#steam-verification)). A SteamID for someone who isn't on the server is accepted as usual. |
+| `CommandException`: `Penalties can't be changed right now: ...` | The penalty store isn't available (see [Custom Stores](#custom-stores)). `Remove` throws this too. |
+
+Let a `CommandException` reach the caller, or catch it.
+
+To react when a penalty starts or ends, for example to post it to Discord, override these in your plugin:
+
+```csharp
+public override void OnPenaltyAdded(Penalty penalty) { /* ... */ }
+public override void OnPenaltyRemoved(Penalty penalty) { /* lifted, replaced or expired */ }
+```
+
+`OnPenaltyRemoved` isn't called for penalties that disappear because the store was reloaded.
+
+**Immunity isn't checked by `Penalties`.** Check `caller.CanTarget(player)`, or, for offline players, `caller.IsConsole || Permissions.CanTarget(caller.SteamId64, targetId)`, before penalizing someone on another player's behalf. A `Target` argument does this for you when the command has a permission.
+
+`Penalty` is a record with `Id` (a `Guid`), `Type`, `SteamId64`, `PlayerName`, `CreatedUtc`, `ExpiresUtc` (null = permanent), `Reason`, `AdminSteamId64` (0 = console), `AdminName`, `RemovedUtc`, `RemovedBySteamId64`, plus `IsPermanent`, `IsActiveAt(now)` and `DescribeRemaining(now)` ("for 1h 5m", "permanently").
 
 ### Custom Stores
 
@@ -62,7 +83,15 @@ public interface IPenaltyStore
 }
 ```
 
-Register it in `OnLoad` with `Penalties.RegisterStore(this, "mysql", store)`. It's used when `penalties.store` in `configs/deadworks.jsonc` is `"mysql"`, and Deadworks falls back to the JSON store when your plugin unloads.
+Register it in `OnLoad` with `Penalties.RegisterStore(this, "mysql", store)`. It's used when `penalties.store` in `configs/deadworks.jsonc` is `"mysql"`.
+
+Like permission stores, penalty stores **fail closed**. If `penalties.store` names a store no plugin has registered, if that plugin unloads, or if penalties can't be loaded at all at startup (for example `penalties.jsonc` has an error):
+
+- new players are refused at connect with `This server can't check its ban list right now. Try again in a few minutes.` Bots are never refused.
+- players already on the server stay, and bans that were already loaded are still enforced.
+- adding or lifting penalties throws `Penalties can't be changed right now: the '<store>' store isn't available.`
+
+If `penalties.jsonc` breaks after it loaded once, the old penalties stay enforced, but changes are refused with `Penalties can't be changed right now: penalties.jsonc has an error. Fix it and run dw_penalties_reload.`
 
 ## Admin Activity
 
@@ -75,11 +104,21 @@ AdminActivity.Log(caller, $"ran rcon: {command}");   // logged, not announced
 
 | Member | Description |
 |--------|-------------|
-| `Show(admin, action, details = null)` | Announces `action` in chat and logs it. `details` goes in the log only. |
+| `Show(admin, action, details = null)` | Announces `action` in chat and logs it. `admin` is a `Caller`. `details` goes in the log only. |
 | `Log(admin, action, details = null)` | Logs without announcing |
-| `Logged` | Event with every `AdminLogEntry`, e.g. to forward to Discord |
 
-Players see `ADMIN: slayed lapka`; players with `deadworks.admin.notify` see `wisp: slayed lapka`. Server owners can change both under `admin.show_activity` in `configs/deadworks.jsonc`. Every action is also written to `logs/admin/admin-YYYY-MM-DD.log`.
+To receive every logged action, e.g. to forward it to Discord, override `OnAdminAction` in your plugin:
+
+```csharp
+public override void OnAdminAction(AdminLogEntry entry)
+{
+    // ...
+}
+```
+
+Players see `ADMIN: slayed lapka`; players with `deadworks.admin.notify` see `wisp: slayed lapka`. Server owners can change both under `admin.show_activity` in `configs/deadworks.jsonc`. Every `Show` and `Log` is also written to `logs/admin/admin-YYYY-MM-DD.log` (the folder is `admin.log_dir`), as `<time> <admin> (<steamid>) <action> [<details>]` in UTC. Only actions that go through `AdminActivity` are logged; Deadworks' own permission commands aren't.
+
+When the Admin plugin's `rcon` sets a password cvar (or `rcon_password`), the log and `OnAdminAction` get `ran rcon: sv_password (value hidden)` instead of the value. If you log commands yourself, leave secrets out.
 
 ## Server Helpers
 
@@ -93,13 +132,21 @@ Players see `ADMIN: slayed lapka`; players with `deadworks.admin.notify` see `wi
 
 ## Steam Verification
 
-A player's SteamID isn't confirmed until Steam validates them, a few seconds after they connect.
+The engine checks a player's Steam ticket when they connect, so the SteamID is already the right one. A few seconds later Steam confirms the ticket is still valid; until then the player has only the `default` role (so `default`'s immunity, 0 unless the owner set one), and can't be banned, gagged or muted. See [Steam Validation](../guides/admins-and-permissions#steam-validation) for why.
 
 | Member | Description |
 |--------|-------------|
-| `Players.IsAuthenticated(slot)` | Whether Steam has validated the player (always true when `permissions.require_steam_auth` is off) |
-| `Players.ClientAuthorized` | Event `(slot, steamId64)`, once per connection when validation happens. Unsubscribe in `OnUnload`. |
+| `Players.IsAuthenticated(slot)` | Whether Steam has confirmed the player. `false` for bots and empty slots. `true` straight away when `sv_lan` is on or `require_steam_auth` is off. |
 | `Permissions.GetSteamId(slot)` | The SteamID the player connected with |
+
+To run code when Steam confirms a player, override `OnClientAuthorized`. It's called once per connection:
+
+```csharp
+public override void OnClientAuthorized(ClientAuthorizedEvent args)
+{
+    // args.Slot, args.SteamId64, args.Controller (may be null)
+}
+```
 
 ## Refusing a Connection With a Reason
 
@@ -120,4 +167,4 @@ public override bool OnClientConnect(ClientConnectEvent e)
 ## See Also
 
 - [3. The Admin Plugin](../guides/admin-plugin): the shipped commands built on these APIs
-- [Permissions API](permissions): `HasPermission`, `Target` and immunity
+- [Permissions API](permissions): `Caller`, `HasPermission`, `Target` and immunity

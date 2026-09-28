@@ -152,6 +152,18 @@ public override void OnClientDisconnect(ClientDisconnectedEvent args)
 
 > You may use [`Players`](../api-reference/players) instead to access all players
 
+## Permission and Admin Callbacks (Coming Soon)
+
+**Coming soon:** these overrides come with the permission system. Like the others on this page, they stop when your plugin unloads or hot-reloads, so there's nothing to unsubscribe.
+
+| Override | Called when |
+|----------|-------------|
+| `OnClientAuthorized(ClientAuthorizedEvent args)` | Steam confirms a player, once per connection, a few seconds after they join. `args.Slot`, `args.SteamId64`, `args.Controller` (may be `null`). See [Steam Verification](../api-reference/admin-api#steam-verification). |
+| `OnPermissionsChanged(ulong? steamId64)` | After a permissions reload or any grant or revoke. `null` means everyone. See [Reacting to Changes](../api-reference/permissions#reacting-to-changes). |
+| `OnPenaltyAdded(Penalty penalty)` | A ban, gag or mute is added. See [Penalties](../api-reference/admin-api#penalties). |
+| `OnPenaltyRemoved(Penalty penalty)` | A penalty is lifted, replaced or expires |
+| `OnAdminAction(AdminLogEntry entry)` | An admin action is logged through `AdminActivity` (the Admin plugin's commands, or any plugin that calls it). See [Admin Activity](../api-reference/admin-api#admin-activity). |
+
 ## Async Work — Get Back On the Game Thread
 
 After `await`, C# may resume on a thread-pool thread. Touching any game object off the main thread will corrupt memory or crash. **Always** wrap game-touching code in `Timer.NextTick(...)` after an `await`:
