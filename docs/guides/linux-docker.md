@@ -76,12 +76,14 @@ If `STEAM_PASSWORD` is empty, this command shows a QR code to scan with the Stea
 
 ## Files
 
-Two folders are created next to `compose.yaml`.
+These folders are created next to `compose.yaml`. Together they are everything worth backing up; the Docker volumes can always be re-created.
 
 | Folder | Contents |
 | --- | --- |
 | `plugins` | Plugin `.dll` files |
-| `configs` | `deadworks.jsonc`, plugin configs, `server.cfg` |
+| `configs` | `deadworks.jsonc`, plugin configs, `server.cfg`, and your admins and bans (`permissions/`, `penalties/`) |
+| `maps` | Custom map `.vpk` files |
+| `logs` | The admin action log (`admin/`) |
 
 Paths used elsewhere in this documentation map as follows:
 
@@ -89,6 +91,7 @@ Paths used elsewhere in this documentation map as follows:
 | --- | --- |
 | `game/bin/win64/managed/plugins/` | `plugins/` |
 | `game/bin/win64/configs/` | `configs/` |
+| `game/bin/win64/logs/` | `logs/` |
 
 ## Settings
 
@@ -189,7 +192,7 @@ Servers on the same machine share one copy of the game. Each additional server u
 
 The file defines two servers, `one` and `two`. To add another, copy a block, change its name and port, and add the name under `volumes:` at the end of the file.
 
-Each server has its own folders (`one/plugins`, `one/configs`). Use the server name in commands:
+Each server has its own folders (`one/plugins`, `one/configs`, `one/logs`); `maps` is shared. Use the server name in commands:
 
 ```bash
 docker compose exec two console status
