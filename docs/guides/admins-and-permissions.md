@@ -337,7 +337,7 @@ A plugin checked 'medic.heal.other', which no loaded plugin declares. If it isn'
 
 When a player connects, the engine checks their Steam ticket and refuses the connection if the SteamID doesn't match it. So a made-up SteamID is turned away at the door, as long as your server is logged into Steam. A few seconds later, Steam's servers confirm the ticket is still valid and the player is still signed in. If not, the engine kicks them (straight away, with the default `sv_steamauth_enforce 2`).
 
-A player's roles and permissions only apply once Steam has confirmed them. Until then they have only the `default` role (and its immunity, 0 unless you gave `default` one). This stops someone using a stolen or replayed Steam ticket to act as an admin during those first seconds, or for good on a server with `sv_steamauth_enforce 0`. SourceMod, CounterStrikeSharp and CS2Fixes work the same way.
+A player's roles and permissions only apply once Steam has confirmed them. That happens once per connection: after a map change, players keep their roles straight away, because the engine keeps their confirmation. Until then they have only the `default` role (and its immunity, 0 unless you gave `default` one). This stops someone using a stolen or replayed Steam ticket to act as an admin during those first seconds, or for good on a server with `sv_steamauth_enforce 0`. SourceMod, CounterStrikeSharp and CS2Fixes work the same way.
 
 While a player is waiting:
 
@@ -373,7 +373,7 @@ If `store` names a store that no plugin has registered, or its plugin unloads, *
 permissions.store is 'mysql', but no plugin has registered that store. Nobody has any permissions until one does; the server console still works.
 ```
 
-Deadworks doesn't fall back to the JSON files. If loading one player fails, they have only `default`, and Deadworks tries again at most every 30 seconds. While a player's entry is still loading, staff can't target them or change their roles, and `addban` can't target an offline SteamID whose entry hasn't loaded. When a player leaves, their entry is forgotten, so the store is read again the next time they join and picks up changes made elsewhere.
+Deadworks doesn't fall back to the JSON files. If loading one player fails, they have only `default`, and Deadworks tries again at most every 30 seconds. While a player's entry is still loading, staff can't target them or change their roles, and `addban` can't target an offline SteamID whose entry hasn't loaded. When a player leaves, their entry is forgotten, so the store is read again the next time they join and picks up changes made elsewhere. A map change doesn't count as leaving.
 
 ## Next
 

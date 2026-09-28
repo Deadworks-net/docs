@@ -88,7 +88,7 @@ Register it in `OnLoad` with `Penalties.RegisterStore(this, "mysql", store)`. It
 Like permission stores, penalty stores **fail closed**. If `penalties.store` names a store no plugin has registered, if that plugin unloads, or if penalties can't be loaded at all at startup (for example `penalties.jsonc` has an error):
 
 - new players are refused at connect with `This server can't check its ban list right now. Try again in a few minutes.` Bots are never refused.
-- players already on the server stay, and bans that were already loaded are still enforced.
+- players already on the server stay, including when they reload after a map change, and bans that were already loaded are still enforced.
 - adding or lifting penalties throws `Penalties can't be changed right now: the '<store>' store isn't available.`
 
 If `penalties.jsonc` breaks after it loaded once, the old penalties stay enforced, but changes are refused with `Penalties can't be changed right now: penalties.jsonc has an error. Fix it and run dw_penalties_reload.`
@@ -139,7 +139,7 @@ The engine checks a player's Steam ticket when they connect, so the SteamID is a
 | `Players.IsAuthenticated(slot)` | Whether Steam has confirmed the player. `false` for bots and empty slots. `true` straight away when `sv_lan` is on or `require_steam_auth` is off. |
 | `Permissions.GetSteamId(slot)` | The SteamID the player connected with |
 
-To run code when Steam confirms a player, override `OnClientAuthorized`. It's called once per connection:
+To run code when Steam confirms a player, override `OnClientAuthorized`. It's called once per connection, and not again when the player reloads after a map change:
 
 ```csharp
 public override void OnClientAuthorized(ClientAuthorizedEvent args)

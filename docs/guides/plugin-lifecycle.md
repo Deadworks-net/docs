@@ -158,7 +158,7 @@ public override void OnClientDisconnect(ClientDisconnectedEvent args)
 
 | Override | Called when |
 |----------|-------------|
-| `OnClientAuthorized(ClientAuthorizedEvent args)` | Steam confirms a player, once per connection, a few seconds after they join. `args.Slot`, `args.SteamId64`, `args.Controller` (may be `null`). See [Steam Verification](../api-reference/admin-api#steam-verification). |
+| `OnClientAuthorized(ClientAuthorizedEvent args)` | Steam confirms a player, once per connection (not again after a map change), a few seconds after they join. `args.Slot`, `args.SteamId64`, `args.Controller` (may be `null`). See [Steam Verification](../api-reference/admin-api#steam-verification). |
 | `OnPermissionsChanged(ulong? steamId64)` | After a permissions reload or any grant or revoke. `null` means everyone. See [Reacting to Changes](../api-reference/permissions#reacting-to-changes). |
 | `OnPenaltyAdded(Penalty penalty)` | A ban, gag or mute is added. See [Penalties](../api-reference/admin-api#penalties). |
 | `OnPenaltyRemoved(Penalty penalty)` | A penalty is lifted, replaced or expires |

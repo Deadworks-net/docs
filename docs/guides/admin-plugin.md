@@ -97,7 +97,7 @@ Expired and lifted penalties stay in the file for 90 days (`penalties.history_da
 
 If you edit `penalties.jsonc` by hand, run `dw_penalties_reload` (needs `deadworks.penalties.reload`).
 
-If the ban list can't be loaded when the server starts (for example `penalties.jsonc` has an error), Deadworks plays safe: new players are turned away with `This server can't check its ban list right now. Try again in a few minutes.`, and bans and gags can't be added or lifted. Players already on the server stay. If the file breaks after it loaded, the bans already loaded keep working, but new ones are refused with `Penalties can't be changed right now: penalties.jsonc has an error. Fix it and run dw_penalties_reload.`
+If the ban list can't be loaded when the server starts (for example `penalties.jsonc` has an error), Deadworks plays safe: new players are turned away with `This server can't check its ban list right now. Try again in a few minutes.`, and bans and gags can't be added or lifted. Players already on the server stay, including through a map change. If the file breaks after it loaded, the bans already loaded keep working, but new ones are refused with `Penalties can't be changed right now: penalties.jsonc has an error. Fix it and run dw_penalties_reload.`
 
 ## Server Commands
 
