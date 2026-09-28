@@ -80,7 +80,7 @@ public void CmdHeal(CCitadelPlayerController caller)
 | `Description` | `string` | Short help text shown by `dw_help` |
 | `Permission` | `string` | **Coming soon.** Permission a player needs to run it, e.g. `admin.moderation.kick`. Empty means anyone. See [Permissions](permissions). |
 | `TargetImmunity` | `TargetImmunity` | **Coming soon.** Whether [`Target`](#target-arguments) arguments skip players the caller can't target. See [Immunity](permissions#immunity). |
-| `ServerOnly` | `bool` | Only let the server console run this command |
+| `ServerOnly` | `bool` | Only let the server console run this command. If a player types it in chat, the message goes to chat unchanged. |
 | `ChatOnly` | `bool` | Only create `/name` and `!name` |
 | `ConsoleOnly` | `bool` | Only create `dw_name` |
 | `SuppressChat` | `bool` | Hide `!name` from chat after it runs |
@@ -100,8 +100,11 @@ public void CmdCvarDump(string outputPath = "")
 ```
 
 ```csharp
-[Command("rcon", Description = "Execute a server console command", SuppressChat = true)]
-public void CmdRcon(CCitadelPlayerController? caller, params string[] commandParts)
+[Command("myrcon",
+    Description = "Execute a server console command",
+    ServerOnly = true,
+    ConsoleOnly = true)]
+public void CmdMyRcon(CCitadelPlayerController? caller, params string[] commandParts)
 {
     if (commandParts.Length == 0)
         throw new CommandException("Nothing to execute.");
@@ -109,6 +112,8 @@ public void CmdRcon(CCitadelPlayerController? caller, params string[] commandPar
     Server.ExecuteCommand(string.Join(' ', commandParts));
 }
 ```
+
+`ServerOnly = true` matters here: without it, any player could run server commands from their console. **Coming soon:** to let trusted players use it, drop `ServerOnly` and give it a [permission](permissions) instead, e.g. `Permission = "myplugin.rcon"`. The name `myrcon` avoids clashing with the `rcon` command of the Admin plugin that will ship with Deadworks.
 
 ## Handler Signatures
 
@@ -148,6 +153,23 @@ If you use `CCitadelPlayerController?`, then:
 - a player call gives you that player in `caller`
 - a server console call gives you `caller == null`
 
+### The `Caller` Parameter (Coming Soon) {#caller}
+
+`Caller` stands for whoever ran the command, a player or the server console, and is the recommended first parameter:
+
+```csharp
+[Command("status")]
+public void CmdStatus(Caller caller)
+{
+    if (caller.IsConsole)
+        caller.Reply("Called from server console");
+    else
+        caller.Reply($"Hello, {caller.Name}");
+}
+```
+
+`caller.Player` is the player's controller, or `null` for the console. `caller.Reply(...)` answers in chat for a player and in the server console for the console, and `caller.HasPermission(...)` is always `true` for the console. See [The `Caller` Parameter](permissions#the-caller-parameter) for every member.
+
 ### Typed Arguments
 
 Deadworks can read typed text arguments for these common types:
@@ -178,7 +200,7 @@ Use `Target` when the caller should pick one or more players:
 
 ```csharp
 [Command("kick", Permission = "admin.moderation.kick")]
-public void CmdKick(CCitadelPlayerController? caller, Target target)
+public void CmdKick(Caller caller, Target target)
 {
     foreach (var player in target)
         player.Kick();
@@ -231,12 +253,12 @@ Most of the time, arguments work the way you would expect:
 
 - Spaces split arguments.
 - Put text in double quotes if it should stay together.
-- Inside quotes, `\"` means a quote character and `\\` means a backslash.
+- In chat, inside quotes, `\"` means a quote character and `\\` means a backslash, and an empty `""` argument is dropped. Console commands are split up by the engine, which doesn't support these escapes.
 
 Examples:
 
 - `dw_givesouls 2500`
-- `dw_rcon "sv_cheats 1"`
+- `dw_myrcon "sv_cheats 1"`
 - `/sayas announcer "match starts now"`
 
 If the player types the command wrong, Deadworks prints a usage message automatically. For example:
@@ -254,4 +276,14 @@ Throw `CommandException` when you want to show a simple user-facing error messag
 ```csharp
 if (commandParts.Length == 0)
     throw new CommandException("Nothing to execute.");
+```
+
+## Older Attributes: `[ChatCommand]` and `[ConCommand]` {#chatcommand-and-concommand}
+
+**Coming soon:** the older `[ChatCommand]` and `[ConCommand]` attributes are removed. Code that uses them no longer compiles; switch each one to `[Command]` (with `ChatOnly = true` or `ConsoleOnly = true` if you only want one form).
+
+A plugin DLL built against an older Deadworks that still uses them loads, but those commands aren't registered, and the server console prints an error for each one:
+
+```text
+[PluginLoader] ERROR: MyPlugin.CmdHeal uses [ConCommand("heal")], which is no longer supported, so the command was not registered. Rebuild the plugin with [Command].
 ```
