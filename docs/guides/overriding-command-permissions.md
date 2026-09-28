@@ -94,7 +94,7 @@ The generated file now shows the change:
   "description": "Give yourself souls (default 50000)",
   "permission": "itemtest.cheats",
   "declaredPermission": "",
-  "targetImmunity": "Enforce"
+  "targetImmunity": "Ignore"
 }
 ```
 
@@ -211,7 +211,7 @@ If you only want to open `ir_start` and not the other two, combine both steps: o
 - **Built-in commands too.** `dw_plugin`, `dw_reloadconfig`, `dw_help` and the permission commands are listed in `generated/deadworks.jsonc` under the plugin name `Deadworks`, and can be overridden like anything else, e.g. `"Deadworks:plugin": ""`. Opening up `perm_grant`, `role_grant` and friends lets players hand out permissions, so think hard before you do.
 - **Typos are reported.** An entry that matches no command is listed in the server console at startup and on `dw_perm_reload`, e.g. `overrides.jsonc: 'givesoul' doesn't match any command. Check the name in generated/<Plugin>.jsonc.`
 - **Keep the file valid.** If `overrides.jsonc` can't be read when the server starts, players can't run any command until you fix it and run `dw_perm_reload` (the server console still can). The console says `[Permissions] ERROR: failed to parse overrides.jsonc: <reason>. Players can't run any commands until it's fixed and dw_perm_reload is run; the server console still can.` If it breaks later, `dw_perm_reload` replies `Failed to reload permissions; the server console has details. The previous settings are still in use.`
-- **Immunity follows the permission.** By default, commands that need a permission can't target players with higher immunity, and public ones can. When you override a command, the generated file's `"targetImmunity"` shows which applies now. For example, `givesouls` changed from `Ignore` to `Enforce` above.
+- **Overrides don't change immunity.** Whether a command can target players with higher immunity is up to the plugin: by default, commands the plugin locks behind a permission can't, and ones it makes public can. An override keeps that, so opening up `slay` to everyone still doesn't let anyone use it on your admins. The generated file's `"targetImmunity"` shows which applies.
 - **Server-console-only commands stay that way.** Some commands are marked `Server console only; players can never run it.` in the generated file. Overrides can't open those to players.
 - **Older plugins.** Commands that still use the old `[ChatCommand]` or `[ConCommand]` attributes aren't registered at all; the server console prints an `ERROR:` line naming each one when the plugin loads. Ask the author to update to `[Command]`, or disable the plugin with `dw_plugin disable <name>`.
 - **Removing an override** puts the command back to what the plugin chose. Delete the line and run `dw_perm_reload`.

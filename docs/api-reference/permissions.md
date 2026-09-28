@@ -252,7 +252,7 @@ Immunity only applies when a command picks players. It never stops a command fro
 
 | Value | Behavior |
 |-------|----------|
-| `Auto` (default) | Enforce if the command has a `Permission`; ignore if anyone can run it |
+| `Auto` (default) | Enforce if the command declares a `Permission`; ignore if it declares none. A server making the command public in `overrides.jsonc` doesn't change this, so a public `slay` still can't be used on admins |
 | `Enforce` | Always leave out players the caller can't target |
 | `Ignore` | Never consider immunity, e.g. for a stats or spectate command |
 
