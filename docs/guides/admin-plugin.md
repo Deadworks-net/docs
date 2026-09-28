@@ -124,6 +124,8 @@ When staff use a command, the server announces it. By default:
 
 Durations read like `for 30 minutes`, `for 1 day`, `for 1h 30m` or `permanently`. `rcon`, `unban` and changes to password cvars are logged but not announced.
 
+Each command is announced once, even on a group: `!slay @enemy` shows `ADMIN: slayed lapka, wisp, dingus and 2 others`, and the action log lists every target. You always see the line for your own commands, even when announcements are set to `none`.
+
 You can change this in `configs/deadworks.jsonc`:
 
 ```jsonc
