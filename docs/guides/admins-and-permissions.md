@@ -291,7 +291,7 @@ So the players with the highest immunity on your server, usually the owners, can
 
 The reply comes once the change is saved, and only goes to the player who asked. If saving fails, you're told `Failed to save, so nothing changed: <reason>`, and the change isn't applied.
 
-`dw_perm_check` is the quickest way to find out why someone can or can't do something. Give it a command's name (`dw_perm_check lapka ban`, with or without `!`, `/` or `dw_`) and it tells you which permission that command needs on your server, after [overrides](#overriding-command-permissions), and whether they have it. A permission it doesn't recognize gets `(note: no loaded plugin declares ...)`, usually a typo; `dw_perm_grant` adds the same note when it gives one out.
+`dw_perm_check` is the quickest way to find out why someone can or can't do something. Give it a command's name (`dw_perm_check lapka ban`, with or without `!`, `/` or `dw_`) and it tells you which permission that command needs on your server, after [overrides](#changing-what-a-command-requires), and whether they have it. A permission it doesn't recognize gets `(note: no loaded plugin declares ...)`, usually a typo; `dw_perm_grant` adds the same note when it gives one out.
 
 A player who tries a command before Steam has confirmed them is told `You don't have permission to use this command yet: your roles apply once Steam has confirmed your account, a few seconds after joining.`, rather than a plain refusal. For an online player it shows what applies right now, so before Steam confirms them it reports only `default`. When the answer comes from an inherited role, it says which role inherits it:
 
