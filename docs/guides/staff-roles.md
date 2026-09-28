@@ -100,7 +100,7 @@ dw_role_list
 - **`inherits`** passes permissions up the ladder. A moderator gets everything a trial mod has, plus their own. An admin gets everything a moderator has.
 - **Immunity** is set on each role here. A role without an `immunity` would take the highest one among the roles it inherits.
 - **`deadworks.admin.notify`** lets staff see *who* did something when the server announces an admin action. Players only see "ADMIN: …". Because every other staff role inherits from `trialmod`, they all get it.
-- **`admin.moderation.ban`** covers permanent bans and `addban` for players who've left, so moderators can do both. Keep `ban` for people you trust with that.
+- **`admin.moderation.ban`** covers permanent bans and banning players who've left by SteamID, so moderators can do both. Keep `ban` for people you trust with that.
 - **The admin role** gets the whole server group except `rcon` and `cvar`, which leaves changing map and running configs. The denies (`-`) take those two out of the `admin.server.*` wildcard, because an exact entry beats a wildcard in the same role. `cvar` is left to the owner because it also covers `sv_cheats` and passwords like `sv_password`.
 - **`deadworks.permissions.manage`** lets admins add and remove staff. See [Step 3](#step-3-let-admins-manage-staff).
 - **The owner** has `*`: everything, including permissions that plugins add later.

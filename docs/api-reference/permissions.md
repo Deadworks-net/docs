@@ -220,12 +220,26 @@ A `Target` is never empty. If nothing matches, or a name matches several players
 | `Single()` | The one matched player, or a `CommandException` telling the caller to be more specific |
 | `IsGroup` | `true` for `@all`, `@team` and `@enemy` |
 | `Input` | The argument as typed |
+| `Target.Resolve(caller, input, enforceImmunity = true)` | Resolves a string the same way, for commands that decide for themselves whether an argument is a player. Throws a `CommandException` with the usual message if nothing matches |
 
 ```csharp
 [Command("goto", Permission = "teams.teleport")]
 public void CmdGoto(Caller caller, Target target)
 {
     var destination = target.Single();
+    // ...
+}
+```
+
+To accept either a player or a SteamID that isn't on the server, take a `string` and check it yourself. This is how the Admin plugin's `ban` works:
+
+```csharp
+[Command("whitelist", Permission = "whitelist.add")]
+public void CmdWhitelist(Caller caller, string player)
+{
+    var id = SteamIds.TryParse(player, out var steamId)
+        ? steamId
+        : Permissions.GetSteamId(Target.Resolve(caller, player).Single().Slot);
     // ...
 }
 ```

@@ -103,10 +103,10 @@ They're kicked, and turned away if they try to reconnect.
 
 ### They left before you could ban them
 
-Use `addban` with their SteamID. It works whether or not they're on the server.
+Use `ban` with their SteamID instead of a name. It works whether or not they're on the server.
 
 ```text
-!addban 76561197960287931 1440 ban evasion
+!ban 76561197960287931 1440 ban evasion
 ```
 
 To find the SteamID of someone who's already gone, look in the admin log, `logs/admin/`. Every Admin plugin action names the target's SteamID, so a kick you gave earlier shows it. The server console also prints each player's SteamID as they connect. Next time, run `!who` while they're still there.
@@ -178,7 +178,7 @@ dw_rcon find bot
 | Spamming chat | `!gag <player> <minutes> [reason]` |
 | Griefing, AFK | `!kick <player> [reason]` |
 | Cheating | `!ban <player> <minutes> [reason]`, `0` = permanent |
-| Already left | `!addban <steamid> <minutes> [reason]` |
+| Already left | `!ban <steamid> <minutes> [reason]` |
 | Undo | `!unban <steamid>`, `!ungag <player>` |
 | Record | `!penalties <steamid>` |
 | Kill a hero | `!slay <player>`, `!slay @enemy` |

@@ -47,8 +47,7 @@ Wherever a command takes a `<player>`, you can use:
 | Command | Permission | What it does |
 |---------|------------|--------------|
 | `kick <player> [reason]` | `admin.moderation.kick` | Disconnects the player. They can rejoin. The reason goes in the announcement and the action log. |
-| `ban <player> <minutes> [reason]` | `admin.moderation.ban` | Kicks the player and stops them rejoining for that many minutes. |
-| `addban <steamid> <minutes> [reason]` | `admin.moderation.ban` | Bans someone who isn't on the server, by SteamID. |
+| `ban <player> <minutes> [reason]` | `admin.moderation.ban` | Kicks the player and stops them rejoining for that many minutes. `<player>` can also be the SteamID of someone who isn't on the server. `addban` is another name for it. |
 | `unban <steamid>` | `admin.moderation.unban` | Lifts any ban, whoever gave it. |
 | `bans` | `admin.moderation.ban` | Lists active bans. |
 | `gag <player> <minutes> [reason]` | `admin.moderation.gag` | Stops the player **typing** in chat. |
@@ -72,7 +71,7 @@ The Admin plugin has no voice commands (`mute`, `unmute`, `silence`). Deadworks 
 ### Durations
 
 - Durations are in **minutes**: `60` is an hour, `1440` a day, `10080` a week.
-- `0` means **permanent**. `ban`, `addban` and `gag` all need a duration.
+- `0` means **permanent**. `ban` and `gag` both need a duration.
 - Anyone who can ban or gag can do it permanently, so only give `admin.moderation.ban` and `admin.moderation.gag` to people you trust with that.
 
 A one-hour ban, a permanent ban, 30 minutes of no text chat, and a one-day ban by SteamID:
@@ -81,7 +80,7 @@ A one-hour ban, a permanent ban, 30 minutes of no text chat, and a one-day ban b
 !ban lapka 60 spamming mic
 !ban lapka 0 cheating
 !gag #4 30
-dw_addban STEAM_0:1:11101 1440 ban evasion
+dw_ban STEAM_0:1:11101 1440 ban evasion
 ```
 
 A player who has only just joined can't be banned or gagged until Steam has confirmed their identity, which takes a few seconds. You'll see `lapka hasn't been verified by Steam yet. Try again in a moment.` Kicking and slaying work straight away.
@@ -162,7 +161,7 @@ Use it to check what your staff have been doing, or to settle a ban appeal.
   "default_kick_reason": "Kicked by an admin",
   "default_ban_reason": "Banned by an admin",
   "default_gag_reason": "Gagged by an admin",
-  "require_reason": false,          // true: ban, addban and gag refuse to run without a reason
+  "require_reason": false,          // true: ban and gag refuse to run without a reason
   "map_change_delay_seconds": 3    // 0 to 60
 }
 ```

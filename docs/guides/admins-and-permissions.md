@@ -226,12 +226,11 @@ Each time a plugin loads, Deadworks writes `configs/permissions/generated/<DLL n
   ],
   "permissions": [
     {
-      /* Required by: ban, addban, bans */
+      /* Required by: ban, bans */
       "tag": "admin.moderation.ban",
       "description": "",
       "declaredBy": [
         "ban",
-        "addban",
         "bans"
       ]
     },
@@ -342,7 +341,7 @@ A player's roles and permissions only apply once Steam has confirmed them. That 
 While a player is waiting:
 
 - Bans still apply. They're checked when the player connects, using the SteamID from their ticket, and again once Steam confirms them.
-- Staff can kick or slay them, but not ban, gag or mute them. Trying gives `<name> hasn't been verified by Steam yet. Try again in a moment.` `addban` on a SteamID that isn't on the server works as usual.
+- Staff can kick or slay them, but not ban, gag or mute them. Trying gives `<name> hasn't been verified by Steam yet. Try again in a moment.` `ban` on a SteamID that isn't on the server works as usual.
 
 The wait is skipped automatically when `sv_lan` is 1. Deadworks reads `sv_lan` once, when the first player connects, and keeps that until the server restarts, so nobody can switch the wait off with `cvar`. The console says `[Permissions] sv_lan is on, so players' roles apply without waiting for Steam. Changing sv_lan needs a restart to take effect here.`
 
@@ -373,7 +372,7 @@ If `store` names a store that no plugin has registered, or its plugin unloads, *
 permissions.store is 'mysql', but no plugin has registered that store. Nobody has any permissions until one does; the server console still works.
 ```
 
-Deadworks doesn't fall back to the JSON files. If loading one player fails, they have only `default`, and Deadworks tries again at most every 30 seconds. While a player's entry is still loading, staff can't target them or change their roles, and `addban` can't target an offline SteamID whose entry hasn't loaded. When a player leaves, their entry is forgotten, so the store is read again the next time they join and picks up changes made elsewhere. A map change doesn't count as leaving.
+Deadworks doesn't fall back to the JSON files. If loading one player fails, they have only `default`, and Deadworks tries again at most every 30 seconds. While a player's entry is still loading, staff can't target them or change their roles, and `ban` can't target an offline SteamID whose entry hasn't loaded. When a player leaves, their entry is forgotten, so the store is read again the next time they join and picks up changes made elsewhere. A map change doesn't count as leaving.
 
 ## Next
 
