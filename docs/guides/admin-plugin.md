@@ -85,7 +85,7 @@ There's no `silence` (gag and mute together); run both.
 ### Durations
 
 - Durations are in **minutes**: `60` is an hour, `1440` a day, `10080` a week.
-- `0` means **permanent**. `ban` and `gag` both need a duration.
+- `0` means **permanent**. `ban`, `gag` and `mute` all need a duration.
 - Anyone who can ban, gag or mute can do it permanently, so only give `admin.moderation.ban`, `admin.moderation.gag` and `admin.moderation.mute` to people you trust with that.
 - Banning, gagging or muting someone who already is **replaces** what they had, and the announcement says so: `banned lapka for 1 hour: appeal (replaces a permanent ban by wisp)`.
 - A new ban that ends sooner than the one it replaces partly lifts it, so it needs `admin.moderation.unban` as well. Without it you get `lapka already has a permanent ban by wisp. Shortening it needs admin.moderation.unban.`
@@ -100,7 +100,7 @@ A one-hour ban, a permanent ban, 30 minutes of no text chat, and a one-day ban b
 dw_ban STEAM_0:1:11101 1440 ban evasion
 ```
 
-A player who has only just joined can't be banned, gagged or muted until Steam has confirmed their identity, which takes a few seconds. You'll see `lapka hasn't been verified by Steam yet. Try again in a moment.` Kicking and slaying work straight away.
+A player who has only just joined can't be banned, gagged or muted until Steam has confirmed their identity, which takes a few seconds. You'll see `lapka hasn't been verified by Steam yet. Try again in a moment; if Steam is down, kick them, or ask someone at the server console.` Kicking and slaying work straight away, and the server console can ban, gag or mute them anyway, so the owner can still act while Steam is down.
 
 ### Where Penalties Are Kept
 
@@ -108,7 +108,7 @@ Bans, gags and mutes are saved to `configs/penalties/penalties.jsonc`, so they s
 
 - **Banned** players are turned away when they connect.
 - **Gagged** players' messages never reach chat, or any plugin that reads chat. They're told they're gagged.
-- **Muted** players' voice is dropped by the server, so nobody hears them. They aren't told each time they talk, but they see the announcement when they're muted.
+- **Muted** players' voice is dropped by the server, so nobody hears them. When they talk they're told they're muted, at most every 30 seconds.
 
 Expired and lifted penalties stay in the file for 90 days (`penalties.history_days` in `configs/deadworks.jsonc`; `0` keeps them forever), so `penalties` can show someone's history.
 
@@ -120,7 +120,7 @@ If the ban list can't be loaded when the server starts (for example `penalties.j
 
 | Command | Permission | What it does |
 |---------|------------|--------------|
-| `map [name]` | `admin.server.map` | Changes map after a 3-second warning. With no name, lists the maps you can pick. Unknown maps are refused. |
+| `map [name]` | `admin.server.map` | Changes map after a 3-second warning. With no name, lists the maps you can pick. Unknown maps are refused, and so is a second change while one is counting down. `map cancel` calls a pending change off. |
 | `cvar <name> [value]` | `admin.server.cvar` | Shows or changes a server setting (cvar), including `sv_cheats` and passwords such as `sv_password`. |
 | `resetcvar <name>` | `admin.server.cvar` | Puts a cvar back to its default. |
 | `execcfg <file>` | `admin.server.config` | Runs a config file from the server's `cfg/` folder. |
@@ -162,9 +162,13 @@ Every Admin plugin command, and anything other plugins record through Deadworks'
 2026-09-26T14:02:11Z wisp (76561197960287930) banned lapka for 1 hour: spamming mic [target=76561197960287931 penalty=3f2b8c1e-...]
 ```
 
-Actions from the server console are logged as `Console`, with no SteamID. When `rcon` sets a password cvar, the log says `ran rcon: sv_password (value hidden)` instead of the value.
+Actions from the server console, including RCON, are logged as `Console`, with no SteamID. When `rcon` sets a password cvar, the log says `ran rcon: sv_password (value hidden)` instead of the value.
 
 Staff changes are logged too, though never announced: roles and permissions given or taken (`dw_role_*`, `dw_perm_*`), plugins enabled or disabled, and config, permission and penalty reloads.
+
+So are commands staff were refused, at most once a minute per person and command, so you can see a moderator trying something they weren't given: `2026-09-26T14:05:00Z greeny (76561197960287932) was refused dw_rcon (needs admin.server.rcon)`. The server console shows everyone's refusals, not only staff's.
+
+Banning, gagging or muting a SteamID that isn't on the server is logged and confirmed to you, but not announced to the players, who wouldn't know who that is.
 
 The folder is `admin.log_dir` in `configs/deadworks.jsonc` (default `logs/admin`, relative to `game/bin/win64`).
 

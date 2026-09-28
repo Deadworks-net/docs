@@ -169,7 +169,7 @@ dw_rcon find bot
 ## Keeping Track
 
 - **Players see what staff do.** Players see `ADMIN: banned lapka for 1 hour: griefing`; other staff see who did it. The server owner can change this.
-- **Admin commands are logged.** Every Admin plugin command goes in `logs/admin/admin-YYYY-MM-DD.log` with the admin, the target's SteamID and the reason, including ones that aren't announced, like `rcon` and `unban`. Role and permission changes aren't in this log.
+- **Admin commands are logged.** Every Admin plugin command goes in `logs/admin/admin-YYYY-MM-DD.log` with the admin, the target's SteamID and the reason, including ones that aren't announced, like `rcon` and `unban`. So are staff changes (roles and permissions given or taken), and attempts by staff to use commands they don't have.
 
 ## Quick Reference
 

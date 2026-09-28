@@ -256,6 +256,8 @@ Each time a plugin loads, Deadworks writes `configs/permissions/generated/<DLL n
 
 These work from the server console. Players can use them from their own console if they have the permission shown.
 
+Wherever a command takes `<player>`, you can give a SteamID, `#slot` or part of the name of someone on the server, or the exact name saved for them in `players.jsonc` if they're not on. That's how you demote a moderator who's away: `dw_role_revoke greeny moderator`. If several saved players have that name, you're asked for a SteamID. A name with a space in it needs quotes: `dw_role_grant "Big Dave" admin`.
+
 | Command | Permission | What it does |
 |---------|------------|--------------|
 | `dw_perm_reload` | `deadworks.permissions.reload` | Re-read `roles.jsonc`, `players.jsonc` and `overrides.jsonc` |
@@ -338,12 +340,12 @@ A plugin checked 'medic.heal.other', which no loaded plugin declares. If it isn'
 
 When a player connects, the engine checks their Steam ticket and refuses the connection if the SteamID doesn't match it. So a made-up SteamID is turned away at the door, as long as your server is logged into Steam. A few seconds later, Steam's servers confirm the ticket is still valid and the player is still signed in. If not, the engine kicks them (straight away, with the default `sv_steamauth_enforce 2`).
 
-A player's roles and permissions only apply once Steam has confirmed them. That happens once per connection: after a map change, players keep their roles straight away, because the engine keeps their confirmation. Until then they have only the `default` role (and its immunity, 0 unless you gave `default` one). This stops someone using a stolen or replayed Steam ticket to act as an admin during those first seconds, or for good on a server with `sv_steamauth_enforce 0`. SourceMod, CounterStrikeSharp and CS2Fixes work the same way.
+A player's roles and permissions only apply once Steam has confirmed them. That happens once per connection: after a map change, players keep their roles straight away, because the engine keeps their confirmation. Until then they have only the `default` role. Their immunity counts from the start, though: it protects them rather than letting them do anything, so an admin who just joined, or every admin while Steam is down, can't be kicked by someone with less. This stops someone using a stolen or replayed Steam ticket to act as an admin during those first seconds, or for good on a server with `sv_steamauth_enforce 0`. SourceMod, CounterStrikeSharp and CS2Fixes work the same way.
 
 While a player is waiting:
 
 - Bans still apply. They're checked when the player connects, using the SteamID from their ticket, and again once Steam confirms them.
-- Staff can kick or slay them, but not ban, gag or mute them. Trying gives `<name> hasn't been verified by Steam yet. Try again in a moment.` `ban` on a SteamID that isn't on the server works as usual.
+- Staff can kick or slay them, but not ban, gag or mute them. Trying gives `<name> hasn't been verified by Steam yet. Try again in a moment; if Steam is down, kick them, or ask someone at the server console.` The server console can ban, gag and mute them regardless, so the owner can still act during a Steam outage. `ban` on a SteamID that isn't on the server works as usual.
 
 The wait is skipped automatically when `sv_lan` is 1. Deadworks reads `sv_lan` once, when the first player connects, and keeps that until the server restarts, so nobody can switch the wait off with `cvar`. The console says `[Permissions] sv_lan is on, so players' roles apply without waiting for Steam. Changing sv_lan needs a restart to take effect here.`
 

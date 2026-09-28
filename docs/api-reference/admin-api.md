@@ -51,7 +51,7 @@ Penalties.Add(PenaltyType.Ban, id, TimeSpan.FromHours(1), "spamming", caller, pl
 | Exception | When |
 |-----------|------|
 | `ArgumentException` | The SteamID is `0` (bots have none). Check for it first, like the example above. |
-| `CommandException`: `<name> hasn't been verified by Steam yet. Try again in a moment.` | The player is on the server but Steam hasn't confirmed them yet (see [Steam Verification](#steam-verification)). A SteamID for someone who isn't on the server is accepted as usual. |
+| `CommandException`: `<name> hasn't been verified by Steam yet. ...` | The player is on the server but Steam hasn't confirmed them yet (see [Steam Verification](#steam-verification)). `Caller.Console` is allowed anyway, so the owner can act during a Steam outage. A SteamID for someone who isn't on the server is accepted as usual. |
 | `CommandException`: `Penalties can't be changed right now: ...` | The penalty store isn't available (see [Custom Stores](#custom-stores)). `Remove` throws this too. |
 
 Let a `CommandException` reach the caller, or catch it.
@@ -65,7 +65,7 @@ public override void OnPenaltyRemoved(Penalty penalty) { /* lifted, replaced or 
 
 `OnPenaltyRemoved` isn't called for penalties that disappear because the store was reloaded.
 
-**Immunity isn't checked by `Penalties`.** Check `caller.CanTarget(player)`, or, for offline players, `caller.IsConsole || Permissions.CanTarget(caller.SteamId64, targetId)`, before penalizing someone on another player's behalf. A `Target` argument does this for you when the command has a permission.
+**Immunity isn't checked by `Penalties`.** Check `caller.CanTarget(player)`, or `caller.CanTarget(steamId)` for someone who may not be on the server, before penalizing someone on another player's behalf. If it's `false` and `Permissions.IsLoaded(steamId)` is too, their entry is still loading from a custom store; try again shortly. A `Target` argument does this for you when the command has a permission.
 
 `Penalty` is a record with `Id` (a `Guid`), `Type`, `SteamId64`, `PlayerName`, `CreatedUtc`, `ExpiresUtc` (null = permanent), `Reason`, `AdminSteamId64` (0 = console), `AdminName`, and, once it's been lifted or replaced, `RemovedUtc`, `RemovedBySteamId64`, `RemovedByName`, `RemovalReason` and `ReplacedBy` (the new penalty's `Id`). It also has `IsPermanent`, `IsActiveAt(now)`, `DescribeRemaining(now)` ("for 1 hour", "for 1h 5m", "permanently") and `HowEnded(now)`.
 
@@ -121,7 +121,7 @@ public override void OnAdminAction(AdminLogEntry entry)
 }
 ```
 
-Players see `ADMIN: slayed lapka`; players with `deadworks.admin.notify` see `wisp: slayed lapka`. Server owners can change both under `admin.show_activity` in `configs/deadworks.jsonc`. Every `Show` and `Log` is also written to `logs/admin/admin-YYYY-MM-DD.log` (the folder is `admin.log_dir`), as `<time> <admin> (<steamid>) <action> [<details>]` in UTC. Only actions that go through `AdminActivity` are logged; Deadworks' own permission commands aren't.
+Players see `ADMIN: slayed lapka`; players with `deadworks.admin.notify` see `wisp: slayed lapka`. Server owners can change both under `admin.show_activity` in `configs/deadworks.jsonc`. Every `Show` and `Log` is also written to `logs/admin/admin-YYYY-MM-DD.log` (the folder is `admin.log_dir`), as `<time> <admin> (<steamid>) <action> [<details>]` in UTC. Only actions that go through `AdminActivity` are logged. Deadworks logs its own staff changes (role and permission changes, plugin enable and disable, reloads) and commands staff were refused the same way.
 
 When the Admin plugin's `rcon` sets a password cvar (or `rcon_password`), the log and `OnAdminAction` get `ran rcon: sv_password (value hidden)` instead of the value. If you log commands yourself, leave secrets out.
 

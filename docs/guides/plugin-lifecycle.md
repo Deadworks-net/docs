@@ -113,6 +113,11 @@ public override void OnUnload()
 **What's cleaned up automatically:**
 - Per-plugin timers
 - `EntityData<T>` entries (on entity deletion)
+- Commands, game event handlers, net message hooks and entity I/O hooks the plugin registered
+- Converters registered with `CommandConverters`, and permission and penalty stores it registered
+- Its `generated/<Plugin>.jsonc` permissions entry (the file is rewritten or removed)
+
+A hot reload runs `OnUnload` and then `OnLoad(isReload: true)` off the game thread; don't touch entities there, or defer it with `Timer.NextTick`.
 
 **What you should clean up manually:**
 - Dynamic game event listeners (via `IHandle.Cancel()`)
@@ -159,7 +164,7 @@ public override void OnClientDisconnect(ClientDisconnectedEvent args)
 | Override | Called when |
 |----------|-------------|
 | `OnClientAuthorized(ClientAuthorizedEvent args)` | Steam confirms a player, once per connection (not again after a map change), a few seconds after they join. `args.Slot`, `args.SteamId64`, `args.Controller` (may be `null`). See [Steam Verification](../api-reference/admin-api#steam-verification). |
-| `OnPermissionsChanged(ulong? steamId64)` | After a permissions reload or any grant or revoke. `null` means everyone. See [Reacting to Changes](../api-reference/permissions#reacting-to-changes). |
+| `OnPermissionsChanged(ulong? steamId64)` | After a permissions reload, any grant or revoke, when Steam confirms a player, and when a custom store's entry for a player arrives. `null` means everyone. See [Reacting to Changes](../api-reference/permissions#reacting-to-changes). |
 | `OnPenaltyAdded(Penalty penalty)` | A ban, gag or mute is added. See [Penalties](../api-reference/admin-api#penalties). |
 | `OnPenaltyRemoved(Penalty penalty)` | A penalty is lifted, replaced or expires |
 | `OnAdminAction(AdminLogEntry entry)` | An admin action is logged through `AdminActivity` (the Admin plugin's commands, or any plugin that calls it). See [Admin Activity](../api-reference/admin-api#admin-activity). |

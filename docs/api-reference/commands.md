@@ -263,7 +263,7 @@ Examples:
 If the player types the command wrong, Deadworks prints a usage message automatically. For example:
 
 ```text
-Usage: givesouls [amount:int=50000]
+Usage: dw_givesouls [amount=50000]
 ```
 
 Chat commands send their errors back through chat. Console commands print their errors to console.

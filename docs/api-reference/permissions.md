@@ -161,7 +161,7 @@ Server owners get the reverse: after startup and on `dw_perm_reload`, the consol
 |--------|---------|-------------|
 | `Has(ulong steamId64, string permission)` | `bool` | Whether the player holds the permission |
 | `Has(CCitadelPlayerController player, string permission)` | `bool` | Same as `player.HasPermission(permission)`. `false` if `player` is `null`. |
-| `Explain(ulong steamId64, string permission)` | `PermissionExplanation` | Which grant decided the answer from the player's saved entry, and which role it came from. `dw_perm_check` prints the same, except that for an online player it shows what applies right now (only `default` before Steam confirms them). |
+| `Explain(ulong steamId64, string permission)` | `PermissionExplanation` | Which grant decided `Has`'s answer, and which role it came from. Like `Has`, it's only `default` while the player is on the server but not yet confirmed by Steam. `dw_perm_check` prints the same. |
 | `CanTarget(ulong caller, ulong target)` | `bool` | Whether the caller's immunity is at least the target's. `false` while the target's entry is still loading from a custom store. |
 | `CanTarget(CCitadelPlayerController caller, CCitadelPlayerController target)` | `bool` | Same as `caller.CanTarget(target)`. `false` if either is `null`. |
 | `IsLoaded(ulong steamId64)` | `bool` | Whether the store's answer for this SteamID has arrived, starting to load it if nothing has asked yet. Until it has, checks by SteamID answer as `default` and `CanTarget` refuses; `OnPermissionsChanged` fires with that SteamID when it arrives. Always `true` at once for the JSON store. |
@@ -245,8 +245,10 @@ public void CmdWhitelist(Caller caller, string player)
     ulong id;
     if (SteamIds.TryParse(player, out var steamId))
     {
-        if (!caller.IsConsole && !Permissions.CanTarget(caller.SteamId64, steamId))
-            throw new CommandException("Their immunity is higher than yours.");
+        if (!caller.CanTarget(steamId))
+            throw new CommandException(Permissions.IsLoaded(steamId)
+                ? "Their immunity is higher than yours."
+                : "Their record is still loading. Try again in a moment.");
         id = steamId;
     }
     else
