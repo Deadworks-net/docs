@@ -71,6 +71,14 @@ public void CmdHeal(CCitadelPlayerController caller)
 }
 ```
 
+### When a Command Fails
+
+Throw `CommandException` to refuse: its message is the caller's answer, in chat or the console, wherever they typed the command. Any other exception is a bug in your plugin: the server console gets the plugin, command and stack trace, the caller is told `That command failed. The server console has details.`, and the typed command never ends up in public chat.
+
+A command can be `async` if it returns `Task`. Deadworks follows it to the end: a `CommandException` thrown after an `await` still becomes the caller's answer, other exceptions are reported as above, and both are handled on the game thread. That answer only reaches the player who ran the command; if they've left by then, nobody is told. Code after an `await` runs off the game thread, so don't touch entities or call the engine there without `Timer.NextTick`.
+
+`async void` commands aren't registered: an exception in one can't be caught and would take the whole server down. The server console says so when the plugin loads.
+
 ## CommandAttribute
 
 `[Command]` tells Deadworks to register a method as a command.

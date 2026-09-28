@@ -30,7 +30,8 @@ Penalties.Add(PenaltyType.Ban, id, TimeSpan.FromHours(1), "spamming", caller, pl
 
 | Member | Description |
 |--------|-------------|
-| `Add(type, steamId64, duration, reason, by, playerName = null)` | Adds a penalty. `by` is the `Caller` issuing it (`Caller.Console` for the console). `duration: null` is permanent. Replaces an active penalty of the same type. A ban kicks the player if they're on the server. |
+| `Add(type, steamId64, duration, reason, by, playerName = null)` | Adds a penalty. `by` is the `Caller` issuing it (`Caller.Console` for the console). `duration: null` is permanent; zero or negative throws `ArgumentOutOfRangeException`. Replaces an active penalty of the same type, even with a shorter one. A ban kicks the player if they're on the server. |
+| `WouldShorten(type, steamId64, duration)` | The active penalty that adding this one would cut short, or `null`. Shortening partly lifts a penalty, so check this if that should need more than adding, as the Admin plugin's `ban` requires `admin.moderation.unban`. |
 | `Remove(type, steamId64, by)` | Lifts the active penalty. `false` if there wasn't one. |
 | `GetActive(type, steamId64)` / `GetActive(type?)` | The active penalty, or every active one |
 | `IsBanned`, `IsGagged`, `IsMuted` | Shortcuts for `GetActive(...) != null` |

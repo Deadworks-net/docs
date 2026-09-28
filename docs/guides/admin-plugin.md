@@ -76,6 +76,9 @@ There's no `silence` (gag and mute together); run both.
 - Durations are in **minutes**: `60` is an hour, `1440` a day, `10080` a week.
 - `0` means **permanent**. `ban` and `gag` both need a duration.
 - Anyone who can ban, gag or mute can do it permanently, so only give `admin.moderation.ban`, `admin.moderation.gag` and `admin.moderation.mute` to people you trust with that.
+- Banning, gagging or muting someone who already is **replaces** what they had, and the announcement says so: `banned lapka for 1 hour: appeal (replaces a permanent ban by wisp)`.
+- A new ban that ends sooner than the one it replaces partly lifts it, so it needs `admin.moderation.unban` as well. Without it you get `lapka already has a permanent ban by wisp. Shortening it needs admin.moderation.unban.`
+- Nobody can ban, gag or mute themselves.
 
 A one-hour ban, a permanent ban, 30 minutes of no text chat, and a one-day ban by SteamID:
 
@@ -98,7 +101,7 @@ Bans, gags and mutes are saved to `configs/penalties/penalties.jsonc`, so they s
 
 Expired and lifted penalties stay in the file for 90 days (`penalties.history_days` in `configs/deadworks.jsonc`), so `penalties` can show someone's history.
 
-If you edit `penalties.jsonc` by hand, run `dw_penalties_reload` (needs `deadworks.penalties.reload`).
+If you edit `penalties.jsonc` by hand, run `dw_penalties_reload` (needs `deadworks.penalties.reload`) for your changes to take effect. Until then they're safe: a ban or unban in the meantime keeps your entries as you wrote them (comments aside), and while the file has an error, penalties can't be added or lifted, so nothing you wrote is overwritten.
 
 If the ban list can't be loaded when the server starts (for example `penalties.jsonc` has an error), Deadworks plays safe: new players are turned away, and bans and gags can't be added or lifted. Players already on the server stay, including through a map change. If the file breaks after it loaded, the bans already loaded keep working, but new ones are refused with `Penalties can't be changed right now: penalties.jsonc has an error. Fix it and run dw_penalties_reload.`
 
@@ -150,7 +153,7 @@ Every Admin plugin command, and anything other plugins record through Deadworks'
 
 Actions from the server console are logged as `Console`, with no SteamID. When `rcon` sets a password cvar, the log says `ran rcon: sv_password (value hidden)` instead of the value.
 
-Changes to roles and permissions (`dw_role_*`, `dw_perm_*`), `dw_plugin` and `dw_reloadconfig` are **not** in this log.
+Staff changes are logged too, though never announced: roles and permissions given or taken (`dw_role_*`, `dw_perm_*`), plugins enabled or disabled, and config, permission and penalty reloads.
 
 The folder is `admin.log_dir` in `configs/deadworks.jsonc` (default `logs/admin`, relative to `game/bin/win64`).
 

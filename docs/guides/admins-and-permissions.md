@@ -372,6 +372,8 @@ If `store` names a store that no plugin has registered, or its plugin unloads, *
 permissions.store is 'mysql', but no plugin has registered that store. Nobody has any permissions until one does; the server console still works.
 ```
 
+The same happens if `configs/deadworks.jsonc` itself has an error (a missing quote, say; trailing commas are fine), because then Deadworks can't tell which store you meant. Until you fix it and restart: nobody has any permissions, new players can't join because the ban list can't be checked, and the server isn't listed. The console starts with `[DeadworksConfig] ERROR: failed to parse deadworks.jsonc: <reason>`. Falling back to the defaults instead would quietly swap a database for the JSON files and stop enforcing its bans.
+
 Deadworks doesn't fall back to the JSON files. If loading one player fails, they have only `default`, and Deadworks tries again at most every 30 seconds. While a player's entry is still loading, staff can't target them or change their roles, and `ban` can't target an offline SteamID whose entry hasn't loaded. When a player leaves, their entry is forgotten, so the store is read again the next time they join and picks up changes made elsewhere. A map change doesn't count as leaving.
 
 ## Next

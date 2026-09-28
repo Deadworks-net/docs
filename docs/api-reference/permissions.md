@@ -173,6 +173,8 @@ To read or print SteamIDs in any format, use `SteamIds`: `SteamIds.TryParse(text
 
 :::tip Use `caller.SteamId64` or `Permissions.GetSteamId(slot)` for anything security-related
 `CBasePlayerController.PlayerSteamId` can be changed by plugins, and a controller can be handed to a different player across reconnects. The permission system records the SteamID the engine gave at connect, and these return that one.
+
+Checks by SteamID wait for Steam like checks by player do: while that SteamID's player is on the server but not yet verified, `Permissions.Has(steamId, ...)` answers as `default`, and so does the caller side of `Permissions.CanTarget(callerId, targetId)`. A SteamID that isn't on the server is judged by its saved entry.
 :::
 
 ### Reacting to Changes
@@ -231,15 +233,25 @@ public void CmdGoto(Caller caller, Target target)
 }
 ```
 
-To accept either a player or a SteamID that isn't on the server, take a `string` and check it yourself. This is how the Admin plugin's `ban` works:
+To accept either a player or a SteamID that isn't on the server, take a `string` and resolve it yourself. `Target.Resolve` checks immunity for players on the server; for a SteamID you check it, since nothing else will:
 
 ```csharp
 [Command("whitelist", Permission = "whitelist.add")]
 public void CmdWhitelist(Caller caller, string player)
 {
-    var id = SteamIds.TryParse(player, out var steamId)
-        ? steamId
-        : Permissions.GetSteamId(Target.Resolve(caller, player).Single().Slot);
+    ulong id;
+    if (SteamIds.TryParse(player, out var steamId))
+    {
+        if (!caller.IsConsole && !Permissions.CanTarget(caller.SteamId64, steamId))
+            throw new CommandException("Their immunity is higher than yours.");
+        id = steamId;
+    }
+    else
+    {
+        id = Permissions.GetSteamId(Target.Resolve(caller, player).Single().Slot);
+        if (id == 0)
+            throw new CommandException("That's a bot.");
+    }
     // ...
 }
 ```

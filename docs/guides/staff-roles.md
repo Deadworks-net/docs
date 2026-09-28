@@ -159,7 +159,7 @@ Removing -admin.server.rcon would give lapka (76561197960287931) admin.server.rc
 
 When a rule stops someone, the reply says which one, for example `You can't change mastardy (76561197960287933): you need higher immunity than theirs (90).` See [How Permissions Work](admins-and-permissions#console-commands) for every message.
 
-Role and permission changes (`dw_role_*`, `dw_perm_*`), `dw_plugin` and `dw_reloadconfig` are **not** written to the admin log in `logs/admin/`. Only give `deadworks.permissions.manage` to people you trust to use it without a record.
+Role and permission changes (`dw_role_*`, `dw_perm_*`) are written to the admin log in `logs/admin/`, with who made them, so you can always see who promoted whom.
 
 Want senior moderators who manage trial mods and nobody else? Give them a role that inherits `trialmod`, adds `deadworks.permissions.manage`, and has immunity above trial mods but below moderators, such as 30. They can hire and fire trial mods, but can't hand out their own role (its immunity isn't lower than theirs) or touch moderators.
 
