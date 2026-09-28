@@ -40,7 +40,7 @@ When started with no flags, Deadworks uses these defaults:
 -dedicated -console -dev -insecure -allow_no_lobby_connect
 +tv_citadel_auto_record 0 +spec_replay_enable 0 +tv_enable 0
 +citadel_upload_replay_enabled 0
-+hostport 27015
++hostport 27067
 +map dl_midtown
 ```
 
@@ -56,7 +56,7 @@ cd /d "%~dp0"
 
 deadworks.exe ^
   -dedicated -console -insecure -allow_no_lobby_connect ^
-  +hostport 27015 ^
+  +hostport 27067 ^
   +map dl_midtown
 
 pause
@@ -68,21 +68,25 @@ pause
 On a fresh Windows VPS the port you configured is almost certainly blocked by the Windows Firewall, even if the VPS provider's network-level firewall is open. Run this in PowerShell (as Administrator) once:
 
 ```powershell
-New-NetFirewallRule -DisplayName "Deadworks TCP 27015" `
-  -Direction Inbound -LocalPort 27015 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Deadworks TCP 27067" `
+  -Direction Inbound -LocalPort 27067 -Protocol TCP -Action Allow
 
-New-NetFirewallRule -DisplayName "Deadworks UDP 27015" `
-  -Direction Inbound -LocalPort 27015 -Protocol UDP -Action Allow
+New-NetFirewallRule -DisplayName "Deadworks UDP 27067" `
+  -Direction Inbound -LocalPort 27067 -Protocol UDP -Action Allow
 ```
 
 
 ## Port Forwarding
 
-Forward UDP/TCP `27015` (or your chosen port) on your router or VPS firewall to let players outside your LAN connect. Players then connect with:
+Forward UDP/TCP `27067` (or your chosen port) on your router or VPS firewall to let players outside your LAN connect. Players then connect with:
 
 ```
-connect your.public.ip:27015
+connect your.public.ip:27067
 ```
+
+## Admins (Coming Soon)
+
+To use admin commands in-game, give your Steam account the `admin` role. See [Making Yourself Admin](making-yourself-admin). For staff with limited access, see [How Permissions Work](admins-and-permissions).
 
 ## Finding Plugins
 

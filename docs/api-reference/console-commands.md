@@ -26,4 +26,21 @@ public void CmdHeal()
 }
 ```
 
+**Coming soon:** to limit who can run a command, give it a [permission](permissions):
+
+```csharp
+[Command("heal", ConsoleOnly = true, Permission = "healing.heal")]
+```
+
+The server console (and RCON) can always run every command.
+
 For plugin settings, see [ConVars](convars).
+
+## Built-in Commands
+
+| Command | Who can run it | Description |
+|---------|----------------|-------------|
+| `dw_help` | Anyone | Lists the commands you can run (coming soon: only the ones you're allowed to) |
+| `dw_plugin <list\|enable\|disable\|commands> [name]` | Server console (coming soon: or `deadworks.plugins.manage`) | Manage plugins |
+| `dw_reloadconfig [name]` | Server console (coming soon: or `deadworks.config.reload`) | Reload plugin configs |
+| `dw_perm_*`, `dw_role_*` (coming soon) | See [How Permissions Work](../guides/admins-and-permissions#console-commands) | Manage roles and permissions |

@@ -78,6 +78,8 @@ public void CmdHeal(CCitadelPlayerController caller)
 | Property | Type | Description |
 |----------|------|-------------|
 | `Description` | `string` | Short help text shown by `dw_help` |
+| `Permission` | `string` | **Coming soon.** Permission a player needs to run it, e.g. `admin.moderation.kick`. Empty means anyone. See [Permissions](permissions). |
+| `TargetImmunity` | `TargetImmunity` | **Coming soon.** Whether [`Target`](#target-arguments) arguments skip players the caller can't target. See [Immunity](permissions#immunity). |
 | `ServerOnly` | `bool` | Only let the server console run this command |
 | `ChatOnly` | `bool` | Only create `/name` and `!name` |
 | `ConsoleOnly` | `bool` | Only create `dw_name` |
@@ -161,14 +163,29 @@ Deadworks can read typed text arguments for these common types:
 Optional arguments work the same way they do in normal C#:
 
 ```csharp
-[Command("givegold", Description = "Give yourself gold")]
-public void CmdGiveGold(CCitadelPlayerController caller, int amount = 50000)
+[Command("givesouls", Description = "Give yourself souls")]
+public void CmdGiveSouls(CCitadelPlayerController caller, int amount = 50000)
 {
     // ...
 }
 ```
 
 If the player types too many arguments, Deadworks will reject the command unless you use one of the options below.
+
+### Target Arguments (Coming Soon) {#target-arguments}
+
+Use `Target` when the caller should pick one or more players:
+
+```csharp
+[Command("kick", Permission = "admin.moderation.kick")]
+public void CmdKick(CCitadelPlayerController? caller, Target target)
+{
+    foreach (var player in target)
+        player.Kick();
+}
+```
+
+Callers can type `@me`, `@all`, `@team`, `@enemy`, `#slot`, a SteamID, or part of a player's name. Use `target.Single()` when the command works on exactly one player. See [Targeting Players and Immunity](permissions#targeting-players-and-immunity).
 
 ### `params` Arguments
 
@@ -218,17 +235,19 @@ Most of the time, arguments work the way you would expect:
 
 Examples:
 
-- `dw_givegold 2500`
+- `dw_givesouls 2500`
 - `dw_rcon "sv_cheats 1"`
 - `/sayas announcer "match starts now"`
 
 If the player types the command wrong, Deadworks prints a usage message automatically. For example:
 
 ```text
-Usage: givegold [amount:int=50000]
+Usage: givesouls [amount:int=50000]
 ```
 
 Chat commands send their errors back through chat. Console commands print their errors to console.
+
+**Coming soon:** if the command has a `Permission` the player doesn't hold, they get `You don't have permission to use this command.` and your method doesn't run.
 
 Throw `CommandException` when you want to show a simple user-facing error message:
 

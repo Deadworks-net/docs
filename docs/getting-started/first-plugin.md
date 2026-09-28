@@ -142,6 +142,7 @@ That is why the example saves the returned handle in `timer`, then uses `Timer.O
 
 - [Plugin Lifecycle](../guides/plugin-lifecycle) - Understand the full load/unload flow
 - [Commands](../api-reference/commands) - Add more chat and console commands
+- [Commands for One Role](../guides/role-only-commands) - Limit a command to some players (coming soon)
 - [ConVars](../api-reference/convars) - Add console settings to your plugin
 - [Timers](../api-reference/timers) - Run delayed and repeating logic
 - [Example Plugins](../examples/roll-the-dice) - See full real-world plugins

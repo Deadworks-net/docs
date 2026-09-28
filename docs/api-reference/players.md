@@ -57,6 +57,8 @@ ulong steamId = controller.PlayerSteamId;
 
 During connection you can also use `ClientConnectEvent.SteamId`.
 
+**Coming soon:** `PlayerSteamId` can be set by plugins (to hand a disconnected player's controller to someone else), so don't use it to decide what a player is allowed to do. `Permissions.GetSteamId(controller.Slot)` returns the SteamID the player actually connected with. Most plugins don't need either: use [`HasPermission`](permissions) instead.
+
 ### Properties
 
 | Property | Type | Description |
