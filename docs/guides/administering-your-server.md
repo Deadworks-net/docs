@@ -46,20 +46,21 @@ Most commands start with a player. You can write that player several ways:
 
 Some examples:
 
-```text
-!slay @enemy               kill every enemy hero
-!kick #4 afk               kick whoever is in slot 4
-!gag "Big Dave" 10         names with spaces go in quotes
-!who lap                   look someone up before acting
-```
+| You type | It does |
+|----------|---------|
+| `!slay @enemy` | Kills every enemy hero |
+| `!kick #4 afk` | Kicks whoever is in slot 4 |
+| `!gag "Big Dave" 10` | Names with spaces go in quotes |
+| `!who lap` | Looks someone up before you act |
 
 A few rules:
 
 - **Get slot numbers and SteamIDs from `!who`.** It lists everyone with their `#slot`, name, SteamID, team and roles.
 - **Use `#slot` when names are similar.** If "lap" matches both "lapka" and "lapdog", you'll get a list back instead of hitting the wrong person.
-- **Groups only work for `kick` and `slay`.** Bans and gags are too serious to hand out to a whole team by accident, so they always take one player.
+- **Groups only work for `kick`, `slay` and `who`.** Bans and gags are too serious to hand out to a whole team by accident, so they always take one player. `!kick @all` and `!kick @team` leave you out, but `!kick @me` or your own name kicks you.
 - **You can't act on higher-ranked staff.** A moderator can't kick an admin. With `@all` or `@enemy`, anyone you can't act on is skipped. See [immunity](admins-and-permissions#immunity).
 - **Bots can be kicked and slain, but not banned or gagged,** because they have no SteamID.
+- **Someone who has just joined can't be banned or gagged for a few seconds,** until Steam confirms who they are. You'll be told to try again in a moment. Kick and slay work straight away.
 
 ## Common Situations
 
@@ -67,13 +68,13 @@ A few rules:
 
 Gag them. They can still play and talk on voice, but can't type in chat.
 
-```text
-!gag lapka 30 spamming chat          30 minutes
-!ungag lapka                         lift it early
-!gags                                who's gagged right now
-```
+| You type | It does |
+|----------|---------|
+| `!gag lapka 30 spamming chat` | Gags lapka for 30 minutes |
+| `!ungag lapka` | Lifts it early |
+| `!gags` | Shows who's gagged right now |
 
-The time comes **before** the reason. `!gag lapka spamming` doesn't work, because "spamming" isn't a number of minutes. Leave the time off entirely (`!gag lapka`) for a gag with no end, which needs the permanent-penalty permission.
+The time comes **before** the reason, and you always need one. `!gag lapka spamming` doesn't work, because "spamming" isn't a number of minutes. Use `0` for a gag with no end: `!gag lapka 0 spamming`.
 
 Gagged players are told they're gagged and for how long whenever they try to chat. Their chat commands like `!penalties` still work.
 
@@ -92,13 +93,13 @@ The reason is printed in their chat and console and sent with the disconnect.
 
 Ban them for a set number of minutes. `0` means permanent.
 
-```text
-!ban lapka 60 griefing               one hour
-!ban lapka 1440 cheating             one day (10080 is a week)
-!ban lapka 0 cheating                permanent
-```
+| You type | It does |
+|----------|---------|
+| `!ban lapka 60 griefing` | Bans for one hour |
+| `!ban lapka 1440 cheating` | Bans for one day (`10080` is a week) |
+| `!ban lapka 0 cheating` | Bans permanently |
 
-They're kicked with the reason, and turned away if they try to reconnect; the refusal says how long is left. Permanent bans need an extra permission, so your server may only let senior staff hand them out.
+They're kicked with the reason, and turned away if they try to reconnect; the refusal says how long is left.
 
 ### They left before you could ban them
 
@@ -108,15 +109,15 @@ Use `addban` with their SteamID. It works whether or not they're on the server.
 !addban 76561197960287931 1440 ban evasion
 ```
 
-To find the SteamID of someone who's already gone, look in the admin log, `logs/admin/`. Every action names the target's SteamID, so a kick you gave earlier shows it. The server console also prints each player's SteamID as they connect. Next time, run `!who` while they're still there.
+To find the SteamID of someone who's already gone, look in the admin log, `logs/admin/`. Every Admin plugin action names the target's SteamID, so a kick you gave earlier shows it. The server console also prints each player's SteamID as they connect. Next time, run `!who` while they're still there.
 
 ### Undoing a mistake
 
-```text
-!unban 76561197960287931             unban takes a SteamID
-!ungag lapka
-!bans                                list every active ban
-```
+| You type | It does |
+|----------|---------|
+| `!unban 76561197960287931` | Lifts a ban. `unban` takes a SteamID. |
+| `!ungag lapka` | Lifts a gag |
+| `!bans` | Lists every active ban |
 
 ### Checking a player's record
 
@@ -130,22 +131,22 @@ This shows their bans and gags: active, lifted and expired, with who gave them a
 
 ### Changing map
 
-```text
-!map                     list the maps you can pick
-!map dl_midtown          changes after a 3-second warning
-```
+| You type | It does |
+|----------|---------|
+| `!map` | Lists the maps you can pick |
+| `!map dl_midtown` | Changes map after a 3-second warning |
 
 Everyone sees the warning, then the new map loads and players reconnect on their own. Roles, bans and gags carry over.
 
 ### Changing a setting
 
-```text
-!cvar sv_gravity             show the current value and the default
-!cvar sv_gravity 600         change it (everyone sees the change)
-!resetcvar sv_gravity        back to the default
-```
+| You type | It does |
+|----------|---------|
+| `!cvar sv_gravity` | Shows the current value and the default |
+| `!cvar sv_gravity 600` | Changes it (everyone sees the change) |
+| `!resetcvar sv_gravity` | Puts it back to the default |
 
-Some settings need extra permissions: `sv_cheats`, and password settings like `sv_password`. `rcon_password` can't be touched from here at all.
+`cvar` also reaches `sv_cheats` and password settings like `sv_password`, so servers usually keep it for the owner. `cvar` and `resetcvar` can't touch `rcon_password`.
 
 ### Running a config file
 
@@ -162,12 +163,12 @@ dw_rcon status
 dw_rcon find bot
 ```
 
-`rcon` runs any server console command and shows you what it printed. Only the most trusted people should have it: console commands aren't limited by permissions, so rcon can do anything, including making someone an owner.
+`rcon` runs any server console command and shows you what it printed. To pass a whole command as one argument, quote it: `dw_rcon "sv_cheats 1"`. Only the most trusted people should have it: console commands aren't limited by permissions, so rcon can do anything, including changing `rcon_password` or making someone an owner.
 
 ## Keeping Track
 
-- **Players see what staff do.** Players see `ADMIN: banned lapka (60 minutes): griefing`; other staff see who did it. The server owner can change this.
-- **Everything is logged.** Every admin action goes in `logs/admin/admin-YYYY-MM-DD.log` with the admin, the target's SteamID and the reason, including actions that aren't announced, like `rcon` and `unban`.
+- **Players see what staff do.** Players see `ADMIN: banned lapka for 1 hour: griefing`; other staff see who did it. The server owner can change this.
+- **Admin commands are logged.** Every Admin plugin command goes in `logs/admin/admin-YYYY-MM-DD.log` with the admin, the target's SteamID and the reason, including ones that aren't announced, like `rcon` and `unban`. Role and permission changes aren't in this log.
 
 ## Quick Reference
 

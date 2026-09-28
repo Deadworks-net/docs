@@ -38,7 +38,7 @@ Wherever a command takes a `<player>`, you can use:
 | `#3` | The player in slot 3 (see `who`) |
 | `76561197960287931`, `STEAM_0:1:11101`, `[U:1:22203]` | That player, by SteamID |
 | `@me` | Yourself |
-| `@all`, `@team`, `@enemy` | Groups of players. Only `kick` and `slay` accept these. |
+| `@all`, `@team`, `@enemy` | Groups of players. Only `kick`, `slay` and `who` accept these. A group `kick` leaves you out, but `kick @me` or your own name kicks you. |
 
 **Immunity:** you can't use moderation commands on someone whose [immunity](admins-and-permissions#immunity) is higher than yours. A moderator can't kick an admin. The server console can target anyone.
 
@@ -48,17 +48,17 @@ Wherever a command takes a `<player>`, you can use:
 |---------|------------|--------------|
 | `kick <player> [reason]` | `admin.moderation.kick` | Disconnects the player and shows them the reason. They can rejoin. |
 | `ban <player> <minutes> [reason]` | `admin.moderation.ban` | Kicks the player and stops them rejoining for that many minutes. |
-| `addban <steamid> <minutes> [reason]` | `admin.moderation.ban.offline` | Bans someone who isn't on the server, by SteamID. |
-| `unban <steamid>` | `admin.moderation.unban` | Lifts a ban. |
+| `addban <steamid> <minutes> [reason]` | `admin.moderation.ban` | Bans someone who isn't on the server, by SteamID. |
+| `unban <steamid>` | `admin.moderation.unban` | Lifts any ban, whoever gave it. |
 | `bans` | `admin.moderation.ban` | Lists active bans. |
-| `gag <player> [minutes] [reason]` | `admin.moderation.gag` | Stops the player **typing** in chat. |
-| `ungag <player>` | `admin.moderation.gag` | Lifts a gag. |
+| `gag <player> <minutes> [reason]` | `admin.moderation.gag` | Stops the player **typing** in chat. |
+| `ungag <player>` | `admin.moderation.gag` | Lifts any gag, whoever gave it. |
 | `gags` | `admin.moderation.gag` | Lists active gags. |
 | `slay <player>` | `admin.moderation.slay` | Kills the player's hero. |
 | `who [player]` | `admin.moderation.who` | Lists players with their slot, SteamID, team, roles, and whether they're gagged or not yet verified by Steam. |
 | `penalties [steamid]` | anyone, for themselves | Shows your own bans and gags, past and present. Staff with `admin.moderation.who` can look up anyone. |
 
-Lists (`who`, `bans`, `gags`, `penalties`) are printed to your console, since they don't fit in chat.
+Lists (`who`, `bans`, `gags`, `penalties`) are printed to your console, since they don't fit in chat. `penalties` may take a moment to load; if you leave before it arrives, it isn't shown to whoever takes your slot.
 
 ### Gag vs Mute
 
@@ -67,20 +67,24 @@ These follow SourceMod's meanings:
 - **gag** = text chat
 - **mute** = voice chat
 
-Voice muting (`mute`, `unmute`, and `silence` for both) isn't available yet; it needs more work in Deadworks' voice handling first.
+The Admin plugin has no voice commands (`mute`, `unmute`, `silence`). Deadworks can store mutes that plugins add through the [API](../api-reference/admin-api#penalties), but doesn't enforce them yet; that needs more work in its voice handling first.
 
 ### Durations
 
 - Durations are in **minutes**: `60` is an hour, `1440` a day, `10080` a week.
-- `0` means **permanent**. So does leaving the time off `gag`.
-- Permanent bans and gags need an extra permission, `admin.moderation.ban.permanent`. That lets you give moderators temporary bans only.
+- `0` means **permanent**. `ban`, `addban` and `gag` all need a duration.
+- Anyone who can ban or gag can do it permanently, so only give `admin.moderation.ban` and `admin.moderation.gag` to people you trust with that.
+
+A one-hour ban, a permanent ban, 30 minutes of no text chat, and a one-day ban by SteamID:
 
 ```text
-!ban lapka 60 spamming mic           ← one hour
-!ban lapka 0 cheating                ← permanent, needs admin.moderation.ban.permanent
-!gag #4 30                           ← 30 minutes of no text chat
+!ban lapka 60 spamming mic
+!ban lapka 0 cheating
+!gag #4 30
 dw_addban STEAM_0:1:11101 1440 ban evasion
 ```
+
+A player who has only just joined can't be banned or gagged until Steam has confirmed their identity, which takes a few seconds. You'll see `lapka hasn't been verified by Steam yet. Try again in a moment.` Kicking and slaying work straight away.
 
 ### Where Penalties Are Kept
 
@@ -93,25 +97,19 @@ Expired and lifted penalties stay in the file for 90 days (`penalties.history_da
 
 If you edit `penalties.jsonc` by hand, run `dw_penalties_reload` (needs `deadworks.penalties.reload`).
 
+If the ban list can't be loaded when the server starts (for example `penalties.jsonc` has an error), Deadworks plays safe: new players are turned away with `This server can't check its ban list right now. Try again in a few minutes.`, and bans and gags can't be added or lifted. Players already on the server stay. If the file breaks after it loaded, the bans already loaded keep working, but new ones are refused with `Penalties can't be changed right now: penalties.jsonc has an error. Fix it and run dw_penalties_reload.`
+
 ## Server Commands
 
 | Command | Permission | What it does |
 |---------|------------|--------------|
 | `map [name]` | `admin.server.map` | Changes map after a 3-second warning. With no name, lists the maps you can pick. Unknown maps are refused. |
-| `cvar <name> [value]` | `admin.server.cvar` | Shows or changes a server setting (cvar). |
+| `cvar <name> [value]` | `admin.server.cvar` | Shows or changes a server setting (cvar), including `sv_cheats` and passwords such as `sv_password`. |
 | `resetcvar <name>` | `admin.server.cvar` | Puts a cvar back to its default. |
 | `execcfg <file>` | `admin.server.config` | Runs a config file from the server's `cfg/` folder. |
-| `rcon <command>` | `admin.server.rcon` | Runs any server console command and shows you the output. |
+| `rcon <command>` | `admin.server.rcon` | Runs any server console command and shows you the output. A single quoted argument runs as typed: `dw_rcon "sv_cheats 1"`. |
 
-### Protected Settings
-
-Some cvars need more than `admin.server.cvar`:
-
-| Cvar | Needs |
-|------|-------|
-| `sv_cheats` | `admin.server.cvar.cheats` |
-| Password-type cvars, such as `sv_password` | `admin.server.cvar.protected` |
-| `rcon_password` | Can't be read or changed from the Admin plugin at all |
+`admin.server.cvar` can turn on cheats and read or change the server password, so give it only to people you trust with those. `cvar` and `resetcvar` can't read or change `rcon_password`; `rcon` can, since it's full console access anyway.
 
 :::danger `rcon` is full control of the server
 Console commands skip every permission check. Someone with `admin.server.rcon` can run `dw_role_grant` on themselves and become an owner. Only give it to people you'd give `*` to.
@@ -121,10 +119,10 @@ Console commands skip every permission check. Someone with `admin.server.rcon` c
 
 When staff use a command, the server announces it. By default:
 
-- **Players** see what happened, but not who did it: `ADMIN: banned lapka (60 minutes): spamming mic`.
-- **Staff** see who did it: `wisp: banned lapka (60 minutes): spamming mic`. "Staff" means anyone with the `deadworks.admin.notify` permission.
+- **Players** see what happened, but not who did it: `ADMIN: banned lapka for 1 hour: spamming mic`.
+- **Staff** see who did it: `wisp: banned lapka for 1 hour: spamming mic`. "Staff" means anyone with the `deadworks.admin.notify` permission.
 
-`rcon`, `unban` and changes to protected cvars are recorded but not announced.
+Durations read like `for 30 minutes`, `for 1 day`, `for 1h 30m` or `permanently`. `rcon`, `unban` and changes to password cvars are logged but not announced.
 
 You can change this in `configs/deadworks.jsonc`:
 
@@ -139,11 +137,17 @@ You can change this in `configs/deadworks.jsonc`:
 
 ## The Action Log
 
-Every admin action is written to a daily log file, `logs/admin/admin-YYYY-MM-DD.log`, whether or not it was announced:
+Every Admin plugin command, and anything other plugins record through Deadworks' [admin log](../api-reference/admin-api#admin-activity), is written to a daily file, `logs/admin/admin-YYYY-MM-DD.log`, whether or not it was announced. Times and file dates are UTC:
 
 ```text
-2026-09-26T14:02:11Z [Admin] wisp (76561197960287930) ban lapka (76561197960287931) minutes=60 reason="spamming mic"
+2026-09-26T14:02:11Z wisp (76561197960287930) banned lapka for 1 hour: spamming mic [target=76561197960287931 penalty=3f2b8c1e-...]
 ```
+
+Actions from the server console are logged as `Console`, with no SteamID. When `rcon` sets a password cvar, the log says `ran rcon: sv_password (value hidden)` instead of the value.
+
+Changes to roles and permissions (`dw_role_*`, `dw_perm_*`), `dw_plugin` and `dw_reloadconfig` are **not** in this log.
+
+The folder is `admin.log_dir` in `configs/deadworks.jsonc` (default `logs/admin`, relative to `game/bin/win64`).
 
 Use it to check what your staff have been doing, or to settle a ban appeal.
 
@@ -157,7 +161,7 @@ Use it to check what your staff have been doing, or to settle a ban appeal.
   "default_ban_reason": "Banned by an admin",
   "default_gag_reason": "Gagged by an admin",
   "require_reason": false,          // true: ban, addban and gag refuse to run without a reason
-  "map_change_delay_seconds": 3
+  "map_change_delay_seconds": 3    // 0 to 60
 }
 ```
 

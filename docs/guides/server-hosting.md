@@ -88,6 +88,8 @@ connect your.public.ip:27067
 
 To use admin commands in-game, give your Steam account the `admin` role. See [Making Yourself Admin](making-yourself-admin). For staff with limited access, see [How Permissions Work](admins-and-permissions).
 
+Admin permissions apply a few seconds after a player joins, once Steam has confirmed who they are. On a LAN-only server, set `sv_lan 1` (and restart) to skip that wait. Never do that on a server reachable from the internet: without the wait, anyone can claim an admin's SteamID. See [Steam Validation](admins-and-permissions#steam-validation).
+
 ## Finding Plugins
 
 The best place to find community-built plugins is the [Deadworks Discord](https://discord.gg/d3JHnVGA26) — share, request, and discuss plugins with other server hosts.
