@@ -25,7 +25,7 @@ Every admin command works in three places:
 
 Admin commands never show up in public chat, even with `!`, so players don't see you typing them. They do see the result, such as `ADMIN: kicked lapka: spamming`.
 
-Commands that print a list (`who`, `bans`, `gags`, `penalties`, `map` with no name) print it in your **console**, and chat tells you to look there.
+Commands that print a list (`who`, `bans`, `gags`, `mutes`, `penalties`, `map` with no name) print it in your **console**, and chat tells you to look there.
 
 Not sure what you're allowed to run? Type `dw_help` in your console. It lists only the commands you can use.
 
@@ -57,7 +57,7 @@ A few rules:
 
 - **Get slot numbers and SteamIDs from `!who`.** It lists everyone with their `#slot`, name, SteamID, team and roles.
 - **Use `#slot` when names are similar.** If "lap" matches both "lapka" and "lapdog", you'll get a list back instead of hitting the wrong person.
-- **Groups only work for `kick`, `slay` and `who`.** Bans and gags are too serious to hand out to a whole team by accident, so they always take one player. `!kick @all` and `!kick @team` leave you out, but `!kick @me` or your own name kicks you.
+- **Groups only work for `kick`, `slay` and `who`.** Bans, gags and mutes are too serious to hand out to a whole team by accident, so they always take one player. `!kick @all` and `!kick @team` leave you out, but `!kick @me` or your own name kicks you.
 - **You can't act on higher-ranked staff.** A moderator can't kick an admin. With `@all` or `@enemy`, anyone you can't act on is skipped. See [immunity](admins-and-permissions#immunity).
 - **Bots can be kicked and slain, but not banned or gagged,** because they have no SteamID.
 - **Someone who has just joined can't be banned or gagged for a few seconds,** until Steam confirms who they are. You'll be told to try again in a moment. Kick and slay work straight away.
@@ -73,6 +73,7 @@ Gag them. They can still play and talk on voice, but can't type in chat.
 | `!gag lapka 30 spamming chat` | Gags lapka for 30 minutes |
 | `!ungag lapka` | Lifts it early |
 | `!gags` | Shows who's gagged right now |
+| `!mutes` | Shows who's muted right now |
 
 The time comes **before** the reason, and you always need one. `!gag lapka spamming` doesn't work, because "spamming" isn't a number of minutes. Use `0` for a gag with no end: `!gag lapka 0 spamming`.
 
@@ -125,7 +126,7 @@ To find the SteamID of someone who's already gone, look in the admin log, `logs/
 !penalties 76561197960287931
 ```
 
-This shows their bans and gags: active, lifted and expired, with who gave them and why. Players can type `!penalties` with no SteamID to see their own record.
+This shows their bans, gags and mutes: active, lifted and expired, with who gave them and why. Players can type `!penalties` with no SteamID to see their own record.
 
 ## Running the Server
 
@@ -136,7 +137,7 @@ This shows their bans and gags: active, lifted and expired, with who gave them a
 | `!map` | Lists the maps you can pick |
 | `!map dl_midtown` | Changes map after a 3-second warning |
 
-Everyone sees the warning, then the new map loads and players reconnect on their own. Roles, bans and gags carry over.
+Everyone sees the warning, then the new map loads and players reconnect on their own. Roles, bans, gags and mutes carry over.
 
 ### Changing a setting
 
@@ -176,6 +177,7 @@ dw_rcon find bot
 |-----------|---------|
 | Who's on, with slots and SteamIDs | `!who` |
 | Spamming chat | `!gag <player> <minutes> [reason]` |
+| Mic spam | `!mute <player> <minutes> [reason]` |
 | Griefing, AFK | `!kick <player> [reason]` |
 | Cheating | `!ban <player> <minutes> [reason]`, `0` = permanent |
 | Already left | `!ban <steamid> <minutes> [reason]` |

@@ -15,7 +15,7 @@ Building blocks for admin plugins. The [Admin plugin](../guides/admin-plugin) th
 
 ## Penalties
 
-Bans, gags and mutes are stored by Deadworks, and bans and gags are **enforced by Deadworks** too (mutes aren't yet). Your plugin only decides when to add or lift them.
+Bans, gags and mutes are stored and **enforced by Deadworks**. Your plugin only decides when to add or lift them.
 
 ```csharp
 var id = Permissions.GetSteamId(player.Slot);
@@ -43,7 +43,7 @@ Penalties.Add(PenaltyType.Ban, id, TimeSpan.FromHours(1), "spamming", caller, pl
 |------|----------|
 | `Ban` | The player is refused at connect, and checked again once Steam has verified them |
 | `Gag` | Their chat is dropped before chat commands' broadcast and before any plugin's `OnChatMessage`. Their chat commands still run. |
-| `Mute` | Stored, but **not enforced yet**: voice blocking is still to come |
+| `Mute` | Voice chat: the player's voice is dropped before anyone hears it or any plugin's `HookIncoming<CCLCMsg_VoiceData>` sees it |
 
 `Add` can refuse:
 

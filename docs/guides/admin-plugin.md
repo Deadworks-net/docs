@@ -21,7 +21,7 @@ The commands are split into two groups. Each group has its own permissions, so y
 
 | Group | Permissions | For |
 |-------|-------------|-----|
-| **Moderation** | `admin.moderation.*` | Dealing with players: kick, ban, gag, slay, who |
+| **Moderation** | `admin.moderation.*` | Dealing with players: kick, ban, gag, mute, slay, who |
 | **Server** | `admin.server.*` | Running the server: change map, cvars, configs, console commands |
 
 Moderators usually get the moderation group only. Server control is for people you trust with the whole server.
@@ -53,11 +53,14 @@ Wherever a command takes a `<player>`, you can use:
 | `gag <player> <minutes> [reason]` | `admin.moderation.gag` | Stops the player **typing** in chat. |
 | `ungag <player>` | `admin.moderation.gag` | Lifts any gag, whoever gave it. |
 | `gags` | `admin.moderation.gag` | Lists active gags. |
+| `mute <player> <minutes> [reason]` | `admin.moderation.mute` | Stops the player **talking** on voice chat. |
+| `unmute <player>` | `admin.moderation.mute` | Lifts any mute, whoever gave it. |
+| `mutes` | `admin.moderation.mute` | Lists active mutes. |
 | `slay <player>` | `admin.moderation.slay` | Kills the player's hero. |
-| `who [player]` | `admin.moderation.who` | Lists players with their slot, SteamID, team, roles, and whether they're gagged or not yet verified by Steam. |
-| `penalties [steamid]` | anyone, for themselves | Shows your own bans and gags, past and present. Staff with `admin.moderation.who` can look up anyone. |
+| `who [player]` | `admin.moderation.who` | Lists players with their slot, SteamID, team, roles, and whether they're gagged, muted or not yet verified by Steam. |
+| `penalties [steamid]` | anyone, for themselves | Shows your own bans, gags and mutes, past and present. Staff with `admin.moderation.who` can look up anyone. |
 
-Lists (`who`, `bans`, `gags`, `penalties`) are printed to your console, since they don't fit in chat. `penalties` may take a moment to load; if you leave before it arrives, it isn't shown to whoever takes your slot.
+Lists (`who`, `bans`, `gags`, `mutes`, `penalties`) are printed to your console, since they don't fit in chat. `penalties` may take a moment to load; if you leave before it arrives, it isn't shown to whoever takes your slot.
 
 ### Gag vs Mute
 
@@ -66,13 +69,13 @@ These follow SourceMod's meanings:
 - **gag** = text chat
 - **mute** = voice chat
 
-The Admin plugin has no voice commands (`mute`, `unmute`, `silence`). Deadworks can store mutes that plugins add through the [API](../api-reference/admin-api#penalties), but doesn't enforce them yet; that needs more work in its voice handling first.
+There's no `silence` (gag and mute together); run both.
 
 ### Durations
 
 - Durations are in **minutes**: `60` is an hour, `1440` a day, `10080` a week.
 - `0` means **permanent**. `ban` and `gag` both need a duration.
-- Anyone who can ban or gag can do it permanently, so only give `admin.moderation.ban` and `admin.moderation.gag` to people you trust with that.
+- Anyone who can ban, gag or mute can do it permanently, so only give `admin.moderation.ban`, `admin.moderation.gag` and `admin.moderation.mute` to people you trust with that.
 
 A one-hour ban, a permanent ban, 30 minutes of no text chat, and a one-day ban by SteamID:
 
@@ -83,14 +86,15 @@ A one-hour ban, a permanent ban, 30 minutes of no text chat, and a one-day ban b
 dw_ban STEAM_0:1:11101 1440 ban evasion
 ```
 
-A player who has only just joined can't be banned or gagged until Steam has confirmed their identity, which takes a few seconds. You'll see `lapka hasn't been verified by Steam yet. Try again in a moment.` Kicking and slaying work straight away.
+A player who has only just joined can't be banned, gagged or muted until Steam has confirmed their identity, which takes a few seconds. You'll see `lapka hasn't been verified by Steam yet. Try again in a moment.` Kicking and slaying work straight away.
 
 ### Where Penalties Are Kept
 
-Bans and gags are saved to `configs/penalties/penalties.jsonc`, so they survive restarts. Deadworks itself enforces them, so they apply no matter which other plugins you run:
+Bans, gags and mutes are saved to `configs/penalties/penalties.jsonc`, so they survive restarts. Deadworks itself enforces them, so they apply no matter which other plugins you run:
 
 - **Banned** players are turned away when they connect.
 - **Gagged** players' messages never reach chat, or any plugin that reads chat. They're told they're gagged.
+- **Muted** players' voice is dropped by the server, so nobody hears them. They aren't told each time they talk, but they see the announcement when they're muted.
 
 Expired and lifted penalties stay in the file for 90 days (`penalties.history_days` in `configs/deadworks.jsonc`), so `penalties` can show someone's history.
 
@@ -161,7 +165,8 @@ Use it to check what your staff have been doing, or to settle a ban appeal.
   "default_kick_reason": "Kicked by an admin",
   "default_ban_reason": "Banned by an admin",
   "default_gag_reason": "Gagged by an admin",
-  "require_reason": false,          // true: ban and gag refuse to run without a reason
+  "default_mute_reason": "Muted by an admin",
+  "require_reason": false,          // true: ban, gag and mute refuse to run without a reason
   "map_change_delay_seconds": 3    // 0 to 60
 }
 ```
