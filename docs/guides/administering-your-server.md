@@ -99,7 +99,7 @@ Ban them for a set number of minutes. `0` means permanent.
 | `!ban lapka 1440 cheating` | Bans for one day (`10080` is a week) |
 | `!ban lapka 0 cheating` | Bans permanently |
 
-They're kicked with the reason, and turned away if they try to reconnect; the refusal says how long is left.
+They're kicked, and turned away if they try to reconnect.
 
 ### They left before you could ban them
 

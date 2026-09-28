@@ -46,7 +46,7 @@ Wherever a command takes a `<player>`, you can use:
 
 | Command | Permission | What it does |
 |---------|------------|--------------|
-| `kick <player> [reason]` | `admin.moderation.kick` | Disconnects the player and shows them the reason. They can rejoin. |
+| `kick <player> [reason]` | `admin.moderation.kick` | Disconnects the player. They can rejoin. The reason goes in the announcement and the action log. |
 | `ban <player> <minutes> [reason]` | `admin.moderation.ban` | Kicks the player and stops them rejoining for that many minutes. |
 | `addban <steamid> <minutes> [reason]` | `admin.moderation.ban` | Bans someone who isn't on the server, by SteamID. |
 | `unban <steamid>` | `admin.moderation.unban` | Lifts any ban, whoever gave it. |
@@ -90,14 +90,14 @@ A player who has only just joined can't be banned or gagged until Steam has conf
 
 Bans and gags are saved to `configs/penalties/penalties.jsonc`, so they survive restarts. Deadworks itself enforces them, so they apply no matter which other plugins you run:
 
-- **Banned** players are turned away when they connect, and told why and for how long.
+- **Banned** players are turned away when they connect.
 - **Gagged** players' messages never reach chat, or any plugin that reads chat. They're told they're gagged.
 
 Expired and lifted penalties stay in the file for 90 days (`penalties.history_days` in `configs/deadworks.jsonc`), so `penalties` can show someone's history.
 
 If you edit `penalties.jsonc` by hand, run `dw_penalties_reload` (needs `deadworks.penalties.reload`).
 
-If the ban list can't be loaded when the server starts (for example `penalties.jsonc` has an error), Deadworks plays safe: new players are turned away with `This server can't check its ban list right now. Try again in a few minutes.`, and bans and gags can't be added or lifted. Players already on the server stay, including through a map change. If the file breaks after it loaded, the bans already loaded keep working, but new ones are refused with `Penalties can't be changed right now: penalties.jsonc has an error. Fix it and run dw_penalties_reload.`
+If the ban list can't be loaded when the server starts (for example `penalties.jsonc` has an error), Deadworks plays safe: new players are turned away, and bans and gags can't be added or lifted. Players already on the server stay, including through a map change. If the file breaks after it loaded, the bans already loaded keep working, but new ones are refused with `Penalties can't be changed right now: penalties.jsonc has an error. Fix it and run dw_penalties_reload.`
 
 ## Server Commands
 

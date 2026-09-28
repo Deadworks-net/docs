@@ -124,7 +124,7 @@ When the Admin plugin's `rcon` sets a password cvar (or `rcon_password`), the lo
 
 | Member | Description |
 |--------|-------------|
-| `Server.Kick(slot, message)` / `controller.Kick(message)` | Disconnects a player, printing the message to their chat and console first and passing it to the engine as the reason |
+| `Server.Kick(slot, message)` / `controller.Kick(message)` | Disconnects a player, printing the message to their chat and console first and passing it to the engine as the reason. Deadlock doesn't show the engine's reason to the player |
 | `Server.ExecuteCommand(command, onOutput)` | Runs a server command and gives you what it printed. The callback comes on a later frame. |
 | `Server.IsMapValid(map)` | Whether a map exists. Names containing spaces, `;`, quotes or `..` are always rejected, so a valid name is safe to put in a command. |
 | `Server.GetMapList()` | The game's maps plus `serverbrowser.extra_maps` |
@@ -163,6 +163,8 @@ public override bool OnClientConnect(ClientConnectEvent e)
     return true;
 }
 ```
+
+The reason goes to the server console. Deadlock doesn't show it to the player, who is simply disconnected, so don't rely on it to explain anything to them.
 
 ## See Also
 
