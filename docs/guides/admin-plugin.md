@@ -110,7 +110,7 @@ Bans, gags and mutes are saved to `configs/penalties/penalties.jsonc`, so they s
 - **Gagged** players' messages never reach chat, or any plugin that reads chat. They're told they're gagged.
 - **Muted** players' voice is dropped by the server, so nobody hears them. They aren't told each time they talk, but they see the announcement when they're muted.
 
-Expired and lifted penalties stay in the file for 90 days (`penalties.history_days` in `configs/deadworks.jsonc`), so `penalties` can show someone's history.
+Expired and lifted penalties stay in the file for 90 days (`penalties.history_days` in `configs/deadworks.jsonc`; `0` keeps them forever), so `penalties` can show someone's history.
 
 If you edit `penalties.jsonc` by hand, run `dw_penalties_reload` (needs `deadworks.penalties.reload`) for your changes to take effect. Until then they're safe: a ban or unban in the meantime keeps your entries as you wrote them (comments aside), and while the file has an error, penalties can't be added or lifted, so nothing you wrote is overwritten.
 
@@ -185,7 +185,7 @@ Use it to check what your staff have been doing, or to settle a ban appeal.
 }
 ```
 
-Run `dw_reloadconfig AdminPlugin` after editing it.
+Run `dw_reloadconfig AdminPlugin` after editing it. If the file has an error, the reply says what and where, and the plugin keeps its previous settings. If it has an error when the server starts, the console prints an `ERROR:` and the plugin runs on its defaults until you fix it, which can be less strict than what you wrote (`require_reason`, for one).
 
 ## Turning Parts Off
 

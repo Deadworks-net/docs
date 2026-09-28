@@ -93,10 +93,11 @@ public void CmdWhoAmI(Caller caller)
 |--------|-------------|
 | `Caller.Console` | *Static.* The server console |
 | `Caller.Of(player)` | *Static.* A `Caller` for a `CCitadelPlayerController` |
-| `Player` | The `CCitadelPlayerController`, or `null` for the console |
+| `Player` | The `CCitadelPlayerController`, or `null` for the console, or once the player has left |
+| `IsConnected` | Whether the player who ran the command is still on the server. Always `true` for the console. Check it after an `await`. |
 | `IsConsole` | `true` for the server console |
-| `Name` | The player's name, or `"Console"` |
-| `SteamId64` | The SteamID the engine gave the player at connect, or `0` for the console |
+| `Name` | The player's name when they ran the command, or `"Console"` |
+| `SteamId64` | The SteamID the engine gave the player at connect, or `0` for the console. Kept after they leave. |
 | `HasPermission(permission)` | Whether the caller holds the permission. Always `true` for the console. |
 | `CanTarget(player)` | Whether the caller may act on that player (see [Immunity](#immunity)). Always `true` for the console. |
 | `CanTarget(steamId64)` | The same for a SteamID, on the server or not, judged by their saved entry. `false` while that entry is still loading from a custom store. |
@@ -163,9 +164,9 @@ Server owners get the reverse: after startup and on `dw_perm_reload`, the consol
 | `Explain(ulong steamId64, string permission)` | `PermissionExplanation` | Which grant decided the answer from the player's saved entry, and which role it came from. `dw_perm_check` prints the same, except that for an online player it shows what applies right now (only `default` before Steam confirms them). |
 | `CanTarget(ulong caller, ulong target)` | `bool` | Whether the caller's immunity is at least the target's. `false` while the target's entry is still loading from a custom store. |
 | `CanTarget(CCitadelPlayerController caller, CCitadelPlayerController target)` | `bool` | Same as `caller.CanTarget(target)`. `false` if either is `null`. |
-| `IsLoaded(ulong steamId64)` | `bool` | Whether the store's answer for this SteamID has arrived. Checks by SteamID start loading it and answer as `default` until it has. Always `true` for the JSON store. |
-| `GetImmunity(ulong steamId64)` | `int` | The player's immunity |
-| `GetRoles(ulong steamId64)` | `IReadOnlyList<string>` | Roles assigned to the player (not counting `default`) |
+| `IsLoaded(ulong steamId64)` | `bool` | Whether the store's answer for this SteamID has arrived, starting to load it if nothing has asked yet. Until it has, checks by SteamID answer as `default` and `CanTarget` refuses; `OnPermissionsChanged` fires with that SteamID when it arrives. Always `true` at once for the JSON store. |
+| `GetImmunity(ulong steamId64)` | `int` | The player's immunity, from their saved entry even before Steam confirms them (it protects them) |
+| `GetRoles(ulong steamId64)` | `IReadOnlyList<string>` | Roles assigned to the player (not counting `default`). Like `Has`, none while they're on the server but not yet confirmed by Steam. For access checks, prefer a permission. |
 | `GetSteamId(int slot)` | `ulong` | The SteamID64 the player in this slot connected with, or `0` for bots and empty slots |
 | `RegisterStore(...)` | `void` | See [Custom Stores](#custom-stores) |
 

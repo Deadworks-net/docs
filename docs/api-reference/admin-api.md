@@ -67,9 +67,11 @@ public override void OnPenaltyRemoved(Penalty penalty) { /* lifted, replaced or 
 
 **Immunity isn't checked by `Penalties`.** Check `caller.CanTarget(player)`, or, for offline players, `caller.IsConsole || Permissions.CanTarget(caller.SteamId64, targetId)`, before penalizing someone on another player's behalf. A `Target` argument does this for you when the command has a permission.
 
-`Penalty` is a record with `Id` (a `Guid`), `Type`, `SteamId64`, `PlayerName`, `CreatedUtc`, `ExpiresUtc` (null = permanent), `Reason`, `AdminSteamId64` (0 = console), `AdminName`, and, once it's been lifted or replaced, `RemovedUtc`, `RemovedBySteamId64`, `RemovedByName`, `RemovalReason` and `ReplacedBy` (the new penalty's `Id`). It also has `IsPermanent`, `IsActiveAt(now)`, `DescribeRemaining(now)` ("for 1 hour", "for 1h 5m", "permanently") and `EndedAt(now)`.
+`Penalty` is a record with `Id` (a `Guid`), `Type`, `SteamId64`, `PlayerName`, `CreatedUtc`, `ExpiresUtc` (null = permanent), `Reason`, `AdminSteamId64` (0 = console), `AdminName`, and, once it's been lifted or replaced, `RemovedUtc`, `RemovedBySteamId64`, `RemovedByName`, `RemovalReason` and `ReplacedBy` (the new penalty's `Id`). It also has `IsPermanent`, `IsActiveAt(now)`, `DescribeRemaining(now)` ("for 1 hour", "for 1h 5m", "permanently") and `HowEnded(now)`.
 
-`EndedAt(now)` says how it stopped applying: `PenaltyEnd.Lifted` (unban, ungag, unmute), `PenaltyEnd.Replaced` (a newer one of the same type took over, so the player is still penalized), `PenaltyEnd.Expired`, or `null` if it still applies. Check it in `OnPenaltyRemoved` before announcing an unban: extending a ban replaces it.
+`HowEnded(now)` says how it stopped applying: `PenaltyEnd.Lifted` (unban, ungag, unmute), `PenaltyEnd.Replaced` (a newer one of the same type took over, so the player is still penalized), `PenaltyEnd.Expired`, or `null` if it still applies. Running out wins: a penalty can't be lifted or replaced once it has expired. Check it in `OnPenaltyRemoved` before announcing an unban: extending a ban replaces it.
+
+A custom `IPenaltyStore` has to save and give back `RemovedByName`, `RemovalReason` and `ReplacedBy` as well as the other fields; without `ReplacedBy`, every extended ban reads as lifted.
 
 ### Custom Stores
 
@@ -135,7 +137,7 @@ When the Admin plugin's `rcon` sets a password cvar (or `rcon_password`), the lo
 
 ## Steam Verification
 
-The engine checks a player's Steam ticket when they connect, so the SteamID is already the right one. A few seconds later Steam confirms the ticket is still valid; until then the player has only the `default` role (so `default`'s immunity, 0 unless the owner set one), and can't be banned, gagged or muted. See [Steam Validation](../guides/admins-and-permissions#steam-validation) for why.
+The engine checks a player's Steam ticket when they connect, so the SteamID is already the right one. A few seconds later Steam confirms the ticket is still valid; until then the player has only the `default` role and can't be banned, gagged or muted. Their immunity, though, is taken from their saved entry from the start: it protects them rather than letting them do anything, so an admin who just joined, or every admin while Steam is down, can't be kicked by someone with less immunity. See [Steam Validation](../guides/admins-and-permissions#steam-validation) for why.
 
 | Member | Description |
 |--------|-------------|

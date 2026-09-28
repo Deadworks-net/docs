@@ -78,7 +78,18 @@ public void CmdHeal(Caller caller)
 
 Throw `CommandException` to refuse: its message is the caller's answer, in chat or the console, wherever they typed the command. Any other exception is a bug in your plugin: the server console gets the plugin, command and stack trace, the caller is told `That command failed. The server console has details.`, and the typed command never ends up in public chat.
 
-A command can be `async` if it returns `Task`. Deadworks follows it to the end: a `CommandException` thrown after an `await` still becomes the caller's answer, other exceptions are reported as above, and both are handled on the game thread. That answer only reaches the player who ran the command; if they've left by then, nobody is told. Code after an `await` runs off the game thread, so don't touch entities or call the engine there without `Timer.NextTick`.
+A command can be `async` if it returns `Task` or `ValueTask`. Code after an `await` carries on on the game thread, on a later tick, so it can touch entities and call the engine as usual (unless you use `ConfigureAwait(false)`). Deadworks follows the command to the end: a `CommandException` thrown after an `await` still becomes the caller's answer, and other exceptions are reported as above.
+
+The player may have left by the time an `await` finishes. `Caller` remembers who ran the command, so it never mixes them up with someone who has joined since: `caller.IsConnected` turns false, `HasPermission` and `CanTarget` refuse, `caller.Player` is `null` and replies go nowhere. `caller.IsConsole` stays false, so a player who left is never mistaken for the console.
+
+```csharp
+[Command("stats")]
+public async Task CmdStats(Caller caller)
+{
+    var stats = await _database.LoadStatsAsync(caller.SteamId64);
+    caller.Reply($"You've played {stats.Matches} matches."); // nothing happens if they've left
+}
+```
 
 `async void` commands aren't registered: an exception in one can't be caught and would take the whole server down. The server console says so when the plugin loads.
 
