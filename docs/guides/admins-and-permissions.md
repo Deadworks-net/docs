@@ -261,7 +261,7 @@ These work from the server console. Players can use them from their own console 
 | `dw_perm_reload` | `deadworks.permissions.reload` | Re-read `roles.jsonc`, `players.jsonc` and `overrides.jsonc` |
 | `dw_role_list` | `deadworks.permissions.view` | List roles with their immunity and permissions |
 | `dw_perm_list <player>` | `deadworks.permissions.view` | Show a player's roles, permissions and immunity |
-| `dw_perm_check <player> <permission>` | `deadworks.permissions.view` | Show whether a player has a permission, and which entry decided it |
+| `dw_perm_check <player> <command\|permission>` | `deadworks.permissions.view` | Show whether a player can use a command (and which permission it needs) or has a permission, and which entry decided it |
 | `dw_role_grant <player> <role> [--temp]` | `deadworks.permissions.manage` | Give a player a role |
 | `dw_role_revoke <player> <role> [--temp]` | `deadworks.permissions.manage` | Take a role away |
 | `dw_perm_grant <player> <permission> [--temp]` | `deadworks.permissions.manage` | Give a player a permission. Use `-permission` to deny one. |
@@ -291,7 +291,9 @@ So the players with the highest immunity on your server, usually the owners, can
 
 The reply comes once the change is saved, and only goes to the player who asked. If saving fails, you're told `Failed to save, so nothing changed: <reason>`, and the change isn't applied.
 
-`dw_perm_check` is the quickest way to find out why someone can or can't do something. For an online player it shows what applies right now, so before Steam confirms them it reports only `default`. When the answer comes from an inherited role, it says which role inherits it:
+`dw_perm_check` is the quickest way to find out why someone can or can't do something. Give it a command's name (`dw_perm_check lapka ban`, with or without `!`, `/` or `dw_`) and it tells you which permission that command needs on your server, after [overrides](#overriding-command-permissions), and whether they have it. A permission it doesn't recognize gets `(note: no loaded plugin declares ...)`, usually a typo; `dw_perm_grant` adds the same note when it gives one out.
+
+A player who tries a command before Steam has confirmed them is told `You don't have permission to use this command yet: your roles apply once Steam has confirmed your account, a few seconds after joining.`, rather than a plain refusal. For an online player it shows what applies right now, so before Steam confirms them it reports only `default`. When the answer comes from an inherited role, it says which role inherits it:
 
 ```text
 ] dw_perm_check lapka admin.moderation.ban
@@ -371,6 +373,10 @@ If `store` names a store that no plugin has registered, or its plugin unloads, *
 ```text
 permissions.store is 'mysql', but no plugin has registered that store. Nobody has any permissions until one does; the server console still works.
 ```
+
+A misspelled setting, such as `"immunty": 50` or `"inherit": [...]` in `roles.jsonc`, would otherwise just be ignored, so every file described here warns about keys it doesn't know when it loads, with the closest real one: `[Permissions] WARNING: roles.jsonc: in 'moderator', 'immunty' (did you mean 'immunity'?) isn't a setting Deadworks knows, so it's ignored.` The rest of the file still loads.
+
+If `dw_perm_reload` or `dw_penalties_reload` fails, the reply says why (the file, and the line and position of the error), so staff without access to the server console can fix it.
 
 The same happens if `configs/deadworks.jsonc` itself has an error (a missing quote, say; trailing commas are fine), because then Deadworks can't tell which store you meant. Until you fix it and restart: nobody has any permissions, new players can't join because the ban list can't be checked, and the server isn't listed. The console starts with `[DeadworksConfig] ERROR: failed to parse deadworks.jsonc: <reason>`. Falling back to the defaults instead would quietly swap a database for the JSON files and stop enforcing its bans.
 

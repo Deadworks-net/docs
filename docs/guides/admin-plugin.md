@@ -48,17 +48,28 @@ Wherever a command takes a `<player>`, you can use:
 |---------|------------|--------------|
 | `kick <player> [reason]` | `admin.moderation.kick` | Disconnects the player. They can rejoin. The reason goes in the announcement and the action log. |
 | `ban <player> <minutes> [reason]` | `admin.moderation.ban` | Kicks the player and stops them rejoining for that many minutes. `<player>` can also be the SteamID of someone who isn't on the server. `addban` is another name for it. |
-| `unban <steamid>` | `admin.moderation.unban` | Lifts any ban, whoever gave it. |
+| `unban <steamid> [reason]` | `admin.moderation.unban` | Lifts any ban, whoever gave it. The reason goes in the player's history. |
 | `bans` | `admin.moderation.ban` | Lists active bans. |
 | `gag <player> <minutes> [reason]` | `admin.moderation.gag` | Stops the player **typing** in chat. |
-| `ungag <player>` | `admin.moderation.gag` | Lifts any gag, whoever gave it. |
+| `ungag <player> [reason]` | `admin.moderation.gag` | Lifts any gag, whoever gave it. |
 | `gags` | `admin.moderation.gag` | Lists active gags. |
 | `mute <player> <minutes> [reason]` | `admin.moderation.mute` | Stops the player **talking** on voice chat. |
-| `unmute <player>` | `admin.moderation.mute` | Lifts any mute, whoever gave it. |
+| `unmute <player> [reason]` | `admin.moderation.mute` | Lifts any mute, whoever gave it. |
 | `mutes` | `admin.moderation.mute` | Lists active mutes. |
 | `slay <player>` | `admin.moderation.slay` | Kills the player's hero. |
 | `who [player]` | `admin.moderation.who` | Lists players with their slot, SteamID, team, roles, and whether they're gagged, muted or not yet verified by Steam. |
 | `penalties [steamid]` | anyone, for themselves | Shows your own bans, gags and mutes, past and present. Staff with `admin.moderation.who` can look up anyone. |
+
+`ban`, `gag`, `mute` and their `un` commands all take a SteamID in place of `<player>`, for someone who has left, so an appeal can be settled without waiting for them to come back.
+
+`penalties` shows each one with how long it was given for and how it ended, which is what you need for an appeal:
+
+```text
+Penalties for 76561197960287931:
+  2026-09-26 ban for 1 day by wisp: cheating; lifted early by lapka on 2026-09-27: appeal accepted
+  2026-09-20 gag for 30 minutes by greeny: spam; ran out
+  2026-09-28 mute permanently by wisp: mic spam; ACTIVE, permanent
+```
 
 Lists (`who`, `bans`, `gags`, `mutes`, `penalties`) are printed to your console, since they don't fit in chat. `penalties` may take a moment to load; if you leave before it arrives, it isn't shown to whoever takes your slot.
 

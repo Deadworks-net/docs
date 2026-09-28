@@ -99,6 +99,7 @@ public void CmdWhoAmI(Caller caller)
 | `SteamId64` | The SteamID the engine gave the player at connect, or `0` for the console |
 | `HasPermission(permission)` | Whether the caller holds the permission. Always `true` for the console. |
 | `CanTarget(player)` | Whether the caller may act on that player (see [Immunity](#immunity)). Always `true` for the console. |
+| `CanTarget(steamId64)` | The same for a SteamID, on the server or not, judged by their saved entry. `false` while that entry is still loading from a custom store. |
 | `Reply(message)` | Answers the caller: in chat for a player, in the server console for the console |
 | `PrintToConsole(message)` | Prints to the player's console, or the server console |
 
@@ -162,6 +163,7 @@ Server owners get the reverse: after startup and on `dw_perm_reload`, the consol
 | `Explain(ulong steamId64, string permission)` | `PermissionExplanation` | Which grant decided the answer from the player's saved entry, and which role it came from. `dw_perm_check` prints the same, except that for an online player it shows what applies right now (only `default` before Steam confirms them). |
 | `CanTarget(ulong caller, ulong target)` | `bool` | Whether the caller's immunity is at least the target's. `false` while the target's entry is still loading from a custom store. |
 | `CanTarget(CCitadelPlayerController caller, CCitadelPlayerController target)` | `bool` | Same as `caller.CanTarget(target)`. `false` if either is `null`. |
+| `IsLoaded(ulong steamId64)` | `bool` | Whether the store's answer for this SteamID has arrived. Checks by SteamID start loading it and answer as `default` until it has. Always `true` for the JSON store. |
 | `GetImmunity(ulong steamId64)` | `int` | The player's immunity |
 | `GetRoles(ulong steamId64)` | `IReadOnlyList<string>` | Roles assigned to the player (not counting `default`) |
 | `GetSteamId(int slot)` | `ulong` | The SteamID64 the player in this slot connected with, or `0` for bots and empty slots |
@@ -179,7 +181,7 @@ Checks by SteamID wait for Steam like checks by player do: while that SteamID's 
 
 ### Reacting to Changes
 
-Override `OnPermissionsChanged` to refresh anything you cache, such as UI. It's called after a reload or any grant or revoke, with the affected SteamID64, or `null` when everyone may have changed:
+Override `OnPermissionsChanged` to refresh anything you cache, such as UI. It's called after a reload, any grant or revoke, and when Steam confirms a player (their own roles replace `default` then), with the affected SteamID64, or `null` when everyone may have changed:
 
 ```csharp
 public override void OnPermissionsChanged(ulong? steamId64)

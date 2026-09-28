@@ -181,7 +181,7 @@ dw_rcon find bot
 | Griefing, AFK | `!kick <player> [reason]` |
 | Cheating | `!ban <player> <minutes> [reason]`, `0` = permanent |
 | Already left | `!ban <steamid> <minutes> [reason]` |
-| Undo | `!unban <steamid>`, `!ungag <player>` |
+| Undo | `!unban <steamid> [reason]`, `!ungag <player>`, `!unmute <player>` |
 | Record | `!penalties <steamid>` |
 | Kill a hero | `!slay <player>`, `!slay @enemy` |
 | Change map | `!map <name>` |

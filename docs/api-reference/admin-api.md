@@ -32,7 +32,7 @@ Penalties.Add(PenaltyType.Ban, id, TimeSpan.FromHours(1), "spamming", caller, pl
 |--------|-------------|
 | `Add(type, steamId64, duration, reason, by, playerName = null)` | Adds a penalty. `by` is the `Caller` issuing it (`Caller.Console` for the console). `duration: null` is permanent; zero or negative throws `ArgumentOutOfRangeException`. Replaces an active penalty of the same type, even with a shorter one. A ban kicks the player if they're on the server. |
 | `WouldShorten(type, steamId64, duration)` | The active penalty that adding this one would cut short, or `null`. Shortening partly lifts a penalty, so check this if that should need more than adding, as the Admin plugin's `ban` requires `admin.moderation.unban`. |
-| `Remove(type, steamId64, by)` | Lifts the active penalty. `false` if there wasn't one. |
+| `Remove(type, steamId64, by, reason = "")` | Lifts the active penalty, keeping the reason in its history. `false` if there wasn't one. |
 | `GetActive(type, steamId64)` / `GetActive(type?)` | The active penalty, or every active one |
 | `IsBanned`, `IsGagged`, `IsMuted` | Shortcuts for `GetActive(...) != null` |
 | `GetHistoryAsync(steamId64)` | Everything the store has for a player, newest first, including lifted and expired ones |
@@ -67,7 +67,9 @@ public override void OnPenaltyRemoved(Penalty penalty) { /* lifted, replaced or 
 
 **Immunity isn't checked by `Penalties`.** Check `caller.CanTarget(player)`, or, for offline players, `caller.IsConsole || Permissions.CanTarget(caller.SteamId64, targetId)`, before penalizing someone on another player's behalf. A `Target` argument does this for you when the command has a permission.
 
-`Penalty` is a record with `Id` (a `Guid`), `Type`, `SteamId64`, `PlayerName`, `CreatedUtc`, `ExpiresUtc` (null = permanent), `Reason`, `AdminSteamId64` (0 = console), `AdminName`, `RemovedUtc`, `RemovedBySteamId64`, plus `IsPermanent`, `IsActiveAt(now)` and `DescribeRemaining(now)` ("for 1h 5m", "permanently").
+`Penalty` is a record with `Id` (a `Guid`), `Type`, `SteamId64`, `PlayerName`, `CreatedUtc`, `ExpiresUtc` (null = permanent), `Reason`, `AdminSteamId64` (0 = console), `AdminName`, and, once it's been lifted or replaced, `RemovedUtc`, `RemovedBySteamId64`, `RemovedByName`, `RemovalReason` and `ReplacedBy` (the new penalty's `Id`). It also has `IsPermanent`, `IsActiveAt(now)`, `DescribeRemaining(now)` ("for 1 hour", "for 1h 5m", "permanently") and `EndedAt(now)`.
+
+`EndedAt(now)` says how it stopped applying: `PenaltyEnd.Lifted` (unban, ungag, unmute), `PenaltyEnd.Replaced` (a newer one of the same type took over, so the player is still penalized), `PenaltyEnd.Expired`, or `null` if it still applies. Check it in `OnPenaltyRemoved` before announcing an unban: extending a ban replaces it.
 
 ### Custom Stores
 

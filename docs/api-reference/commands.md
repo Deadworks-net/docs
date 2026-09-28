@@ -27,15 +27,18 @@ public class HelloPlugin : DeadworksPluginBase
     public override string Name => "Hello";
 
     [Command("hello", Description = "Show a welcome message")]
-    public void CmdHello(CCitadelPlayerController caller)
+    public void CmdHello(Caller caller)
     {
+        if (caller.Player is not { } player)
+            throw new CommandException("Only players can say hello.");
+
         var msg = new CCitadelUserMsg_HudGameAnnouncement
         {
             TitleLocstring = "HELLO",
             DescriptionLocstring = "Welcome to Deadworks"
         };
 
-        NetMessages.Send(msg, RecipientFilter.Single(caller.EntityIndex - 1));
+        NetMessages.Send(msg, RecipientFilter.Single(player.EntityIndex - 1));
     }
 }
 ```
@@ -63,7 +66,7 @@ If you add aliases, every alias gets the same chat and console versions:
 
 ```csharp
 [Command("heal", "h", "restore")]
-public void CmdHeal(CCitadelPlayerController caller)
+public void CmdHeal(Caller caller)
 {
     // /heal, !heal, dw_heal
     // /h, !h, dw_h
@@ -89,8 +92,8 @@ A command can be `async` if it returns `Task`. Deadworks follows it to the end: 
 | `Permission` | `string` | **Coming soon.** Permission a player needs to run it, e.g. `admin.moderation.kick`. Empty means anyone. See [Permissions](permissions). |
 | `TargetImmunity` | `TargetImmunity` | **Coming soon.** Whether [`Target`](#target-arguments) arguments skip players the caller can't target. See [Immunity](permissions#immunity). |
 | `ServerOnly` | `bool` | Only let the server console run this command. If a player types it in chat, the message goes to chat unchanged. |
-| `ChatOnly` | `bool` | Only create `/name` and `!name` |
-| `ConsoleOnly` | `bool` | Only create `dw_name` |
+| `ChatOnly` | `bool` | Only create `/name` and `!name`. Not even the server console can run it then. |
+| `ConsoleOnly` | `bool` | Only create `dw_name`. Players can still run it from their own game console, so it isn't a way to keep a command from them: use `Permission` or `ServerOnly` for that. |
 | `SuppressChat` | `bool` | Hide `!name` from chat after it runs |
 | `Hidden` | `bool` | Do not show this command in `dw_help` |
 
@@ -112,7 +115,7 @@ public void CmdCvarDump(string outputPath = "")
     Description = "Execute a server console command",
     ServerOnly = true,
     ConsoleOnly = true)]
-public void CmdMyRcon(CCitadelPlayerController? caller, params string[] commandParts)
+public void CmdMyRcon(Caller caller, params string[] commandParts)
 {
     if (commandParts.Length == 0)
         throw new CommandException("Nothing to execute.");
@@ -127,43 +130,9 @@ public void CmdMyRcon(CCitadelPlayerController? caller, params string[] commandP
 
 Write a normal C# method for your command, and Deadworks fills in the values for you.
 
-### Caller Injection
+### The `Caller` Parameter {#caller}
 
-If your command needs a player, use `CCitadelPlayerController`:
-
-```csharp
-[Command("werewolf")]
-public void CmdWerewolf(CCitadelPlayerController caller)
-{
-    var pawn = caller.GetHeroPawn();
-    if (pawn == null)
-        return;
-
-    // ...
-}
-```
-
-If the same command should also work from the server console, use `CCitadelPlayerController?` instead:
-
-```csharp
-[Command("status")]
-public void CmdStatus(CCitadelPlayerController? caller)
-{
-    if (caller == null)
-        Console.WriteLine("Called from server console");
-}
-```
-
-If you use `CCitadelPlayerController` without `?`, only players can run the command.
-
-If you use `CCitadelPlayerController?`, then:
-
-- a player call gives you that player in `caller`
-- a server console call gives you `caller == null`
-
-### The `Caller` Parameter (Coming Soon) {#caller}
-
-`Caller` stands for whoever ran the command, a player or the server console, and is the recommended first parameter:
+`Caller` stands for whoever ran the command, a player or the server console. Make it your command's first parameter:
 
 ```csharp
 [Command("status")]
@@ -178,23 +147,32 @@ public void CmdStatus(Caller caller)
 
 `caller.Player` is the player's controller, or `null` for the console. `caller.Reply(...)` answers in chat for a player and in the server console for the console, and `caller.HasPermission(...)` is always `true` for the console. See [The `Caller` Parameter](permissions#the-caller-parameter) for every member.
 
+#### Taking a controller instead
+
+Older plugins take the player's controller directly. It still works, but `Caller` is clearer:
+
+- `CCitadelPlayerController caller`: only players can run the command. From the server console, it replies `Only players can run this command.`
+- `CCitadelPlayerController? caller`: `null` means the server console, which is easy to miss. Deadworks prints a note for the plugin's author when it loads one.
+
 ### Typed Arguments
 
 Deadworks can read typed text arguments for these common types:
 
 - `string`
 - `bool`
-- `int`
-- `long`
+- `int`, `long`, `uint`, `ulong` (so a SteamID64 can be a number)
 - `float`
 - `double`
-- enums
+- enums (by name, ignoring case; a number the enum doesn't have is refused)
+- any of these as nullable, e.g. `int?`
+
+A parameter of any other type needs a [converter](#custom-converters). Without one, Deadworks says so when the plugin loads, since the command could only ever print its usage.
 
 Optional arguments work the same way they do in normal C#:
 
 ```csharp
 [Command("givesouls", Description = "Give yourself souls")]
-public void CmdGiveSouls(CCitadelPlayerController caller, int amount = 50000)
+public void CmdGiveSouls(Caller caller, int amount = 50000)
 {
     // ...
 }
@@ -223,7 +201,7 @@ Use `params T[]` when you want "everything left over":
 
 ```csharp
 [Command("sayas")]
-public void CmdSayAs(CCitadelPlayerController caller, string speaker, params string[] messageParts)
+public void CmdSayAs(Caller caller, string speaker, params string[] messageParts)
 {
     var text = string.Join(' ', messageParts);
 }
@@ -253,7 +231,9 @@ public override void OnLoad(bool isReload)
 }
 ```
 
-After that, `MyType` can be used like any other command argument type.
+After that, `MyType` can be used like any other command argument type. If the text isn't valid, throw `CommandException` from the parser to tell the caller what's wrong; any other exception shows them the command's usage.
+
+Your converters are removed when your plugin unloads or hot-reloads, so there's nothing to unregister. Registering a converter for a type another plugin already has replaces theirs, with a warning in the console.
 
 ## Argument Parsing
 

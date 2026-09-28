@@ -20,11 +20,15 @@ If you only want the console version and do not want chat commands, set `Console
 
 ```csharp
 [Command("heal", ConsoleOnly = true)]
-public void CmdHeal()
+public void CmdHeal(Caller caller)
 {
-    Console.WriteLine("Healing command ran.");
+    caller.Reply("Healing command ran.");
 }
 ```
+
+:::caution `ConsoleOnly` doesn't mean "server console only"
+Players can still type `dw_heal` in their own game console. Without a `Permission`, anyone can run it. To keep a command to the server console and RCON, set `ServerOnly = true`.
+:::
 
 **Coming soon:** to limit who can run a command, give it a [permission](permissions):
 
