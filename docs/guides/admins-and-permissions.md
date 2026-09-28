@@ -155,7 +155,7 @@ A `null` list (`"roles": null`) counts as empty.
 :::caution The console commands rewrite this file
 `dw_role_grant`, `dw_role_revoke`, `dw_perm_grant` and `dw_perm_revoke` re-read `players.jsonc` before saving and only change that one player's entry. Edits you've made by hand since the last reload are kept, and other entries keep their keys as you wrote them (`STEAM_0:…`, `[U:1:…]`). Comments are lost, though, apart from the block at the top of the file.
 
-If the file has an error, nothing is written and the command replies `Failed to save, so nothing changed: players.jsonc has an error, so it wasn't changed. Fix it and run dw_perm_reload. (<reason>)`
+If the file has an error, nothing is written and the command replies `Failed to save, so nothing changed: players.jsonc has an error. Fix it and run dw_perm_reload. (<reason>)`
 
 Use `--temp` if you only want a change until the next restart.
 :::
