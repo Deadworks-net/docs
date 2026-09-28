@@ -22,7 +22,7 @@ If you haven't set up admins yet, do [Making Yourself Admin](making-yourself-adm
 
 ## Step 1: Find the Command
 
-Every plugin gets a file in `configs/permissions/generated/` that lists its commands and what they currently require. For the **Item Test** plugin, open `generated/ItemTestPlugin.jsonc` and find the command:
+Every plugin gets a file in `configs/permissions/generated/`, named after its DLL, that lists its commands and what they currently require. For the **Item Test** plugin, open `generated/ItemTestPlugin.jsonc` and find the command:
 
 ```jsonc
 {
@@ -169,7 +169,7 @@ Run `dw_perm_reload`. Everyone can use `!ir_start`, and also `!ir_swap` and `!ir
 dw_perm_grant troublemaker -itemrotation.manage
 ```
 
-The `-` makes it a deny, which beats the `default` role's grant.
+The `-` makes it a deny. A player's own entry is checked before any of their roles, so it beats the `default` role's grant.
 
 If you only want to open `ir_start` and not the other two, combine both steps: override `ir_start` to a permission of its own, then give that to `default`.
 
@@ -207,10 +207,13 @@ If you only want to open `ir_start` and not the other two, combine both steps: o
 
 - **Use the command's name**, without `!`, `/` or `dw_`. `"givesouls"`, `"!givesouls"` and `"dw_givesouls"` all work and mean the same thing.
 - **One entry covers the aliases.** If a command has aliases (listed in `"aliases"`), overriding any of its names changes all of them.
-- **Same name in two plugins.** If two plugins both have a command called `ban`, an override for `ban` applies to both.
+- **Same name in two plugins.** If two plugins both have a command called `ban`, an override for `ban` applies to both. To change only one, put the plugin's name in front: `"Admin:ban"`. Use the `"plugin"` name at the top of its generated file, or its DLL name (`"AdminPlugin:ban"`). A plugin-qualified entry beats a bare one.
+- **Built-in commands too.** `dw_plugin`, `dw_reloadconfig`, `dw_help` and the permission commands are listed in `generated/deadworks.jsonc` under the plugin name `Deadworks`, and can be overridden like anything else, e.g. `"Deadworks:plugin": ""`. Opening up `perm_grant`, `role_grant` and friends lets players hand out permissions, so think hard before you do.
+- **Typos are reported.** An entry that matches no command is listed in the server console at startup and on `dw_perm_reload`, e.g. `overrides.jsonc: 'givesoul' doesn't match any command. Check the name in generated/<Plugin>.jsonc.`
+- **Keep the file valid.** If `overrides.jsonc` can't be read when the server starts, players can't run any command until you fix it and run `dw_perm_reload` (the server console still can). The console says `[Permissions] ERROR: failed to parse overrides.jsonc: <reason>. Players can't run any commands until it's fixed and dw_perm_reload is run; the server console still can.` If it breaks later, `dw_perm_reload` replies `Failed to reload permissions; the server console has details. The previous settings are still in use.`
 - **Immunity follows the permission.** By default, commands that need a permission can't target players with higher immunity, and public ones can. When you override a command, the generated file's `"targetImmunity"` shows which applies now. For example, `givesouls` changed from `Ignore` to `Enforce` above.
 - **Server-console-only commands stay that way.** Some commands are marked `Server console only; players can never run it.` in the generated file. Overrides can't open those to players.
-- **Older plugins.** Commands from plugins built before `[Command]` existed don't appear in the generated files and can't be overridden. Ask the author to update, or disable the plugin with `dw_plugin disable <name>`.
+- **Older plugins.** Commands that still use the old `[ChatCommand]` or `[ConCommand]` attributes aren't registered at all; the server console prints an `ERROR:` line naming each one when the plugin loads. Ask the author to update to `[Command]`, or disable the plugin with `dw_plugin disable <name>`.
 - **Removing an override** puts the command back to what the plugin chose. Delete the line and run `dw_perm_reload`.
 
 ## Next

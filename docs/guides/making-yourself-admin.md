@@ -89,7 +89,8 @@ It also has immunity 100, so staff you add later with lower immunity can't kick 
 **"You don't have permission to use this command."**
 
 - Wait a few seconds after joining and try again. Your permissions only apply once Steam has confirmed your identity, which happens shortly after you connect.
-- Run `dw_perm_list <your name>` in the server console. If it says **"Not validated by Steam yet"** and never changes, you're probably on a LAN or offline setup. Set `"require_steam_auth": false` under `"permissions"` in `configs/deadworks.jsonc` and restart. Only do this for a server that isn't reachable from the internet.
+- Run `dw_perm_list <your name>` in the server console. If it says **"Not validated by Steam yet"** and never changes, your server probably isn't logged into Steam, for example a LAN or offline setup. On a LAN server, set `sv_lan 1` and restart, and the wait is skipped; never do that on a server reachable from the internet, because then anyone can claim your SteamID. Otherwise you can set `"require_steam_auth": false` under `"permissions"` in `configs/deadworks.jsonc` and restart, but only on a server nobody untrusted can reach: without Steam checks, anyone can claim your SteamID and get your permissions. See [Steam Validation](admins-and-permissions#steam-validation).
+- If `dw_perm_list` says `Warning: permissions.store is '<name>', but no plugin has registered that store. ...`, then `permissions.store` in `configs/deadworks.jsonc` names a store from a plugin that isn't loaded. Until that plugin loads, nobody has permissions. Set it back to `"json"` to use the files from this guide.
 - If it shows `Roles: none`, the SteamID in `players.jsonc` isn't yours. Compare it with the number `dw_perm_list` shows next to your name.
 
 **`dw_perm_reload` says "Failed to reload permissions"**
