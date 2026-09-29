@@ -244,7 +244,7 @@ public override void OnLoad(bool isReload)
 
 After that, `MyType` can be used like any other argument type. If the text isn't valid, throw `CommandException` from the parser to tell the caller what's wrong; any other exception shows them the command's usage.
 
-Your converters are removed when your plugin unloads or hot-reloads, so there's nothing to unregister. Registering a converter for a type another plugin already has replaces theirs, with a warning in the console.
+Your converters are removed when your plugin unloads or hot-reloads, so there's nothing to unregister. A converter applies to every plugin's commands, so register them for your own types: one for a shared type such as `TimeSpan` replaces any other plugin's, with a warning in the console. Registering one for a type Deadworks already parses (numbers, `bool`, `string`, enums, `Caller`, `Target` or `CCitadelPlayerController`) throws `ArgumentException`.
 
 ## Argument Parsing
 

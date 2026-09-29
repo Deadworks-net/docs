@@ -17,7 +17,7 @@ It takes about a minute. There are two ways to do it; pick one.
 
 ## Option A: From the Server Console (easiest)
 
-You don't need to look up your SteamID for this. Until `players.jsonc` has anyone in it, the server reminds you at startup: `[Permissions] No admins yet. Join the server, then run this here: dw_role_grant <your name> admin`
+You don't need to look up your SteamID for this. Until `players.jsonc` has anyone in it, the server reminds you at startup, and again with your SteamID when you join: `[Permissions] No admins yet. To make lapka one, run this in the server console or over RCON: dw_role_grant 76561197960287931 admin`
 
 :::tip Where's the server console?
 - **Windows:** the window `deadworks.exe` runs in. Type straight into it.

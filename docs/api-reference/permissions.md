@@ -171,7 +171,7 @@ Server owners get the matching warnings for grants in their own files; see [Warn
 | `IsLoaded(ulong steamId64)` | `bool` | Returns whether the store's answer for this SteamID has arrived, and starts loading it if nothing has asked yet. Always `true` for the JSON store. |
 | `GetImmunity(ulong steamId64)` | `int` | Returns the player's immunity, from their saved entry even before Steam confirms them. |
 | `GetRoles(ulong steamId64)` | `IReadOnlyList<string>` | Returns the roles assigned to the player, not counting `default` or inherited roles. For access checks, prefer a permission. |
-| `GetSteamId(int slot)` | `ulong` | Returns the SteamID64 the player in this slot connected with, or `0` for bots and empty slots. |
+| `GetSteamId64(int slot)` | `ulong` | Returns the SteamID64 the player in this slot connected with, or `0` for bots and empty slots. |
 | `RegisterStore(owner, name, store)` | `void` | Registers a permission store. See [Custom Stores](#custom-stores). |
 
 Checks by SteamID wait for Steam like checks by player do. While a SteamID's player is on the server but not yet confirmed by Steam, `Has` and `Explain` answer as `default`, `GetRoles` returns none, and `CanTarget(callerId, targetId)` gives that caller `default`'s immunity. A SteamID that isn't on the server is judged by its saved entry.
@@ -182,7 +182,7 @@ With a custom store, a SteamID whose entry hasn't arrived yet also answers as `d
 
 To read or print SteamIDs in any format, use `SteamIds`: `SteamIds.TryParse(text, out var steamId64)` accepts SteamID64, `STEAM_0:1:11101` and `[U:1:22203]`; `SteamIds.ToSteam2(id)` and `SteamIds.ToSteam3(id)` format one.
 
-:::tip Use `caller.SteamId64` or `Permissions.GetSteamId(slot)` for anything security-related
+:::tip Use `caller.SteamId64` or `Permissions.GetSteamId64(slot)` for anything security-related
 `CBasePlayerController.PlayerSteamId` can be changed by plugins, and a controller can be handed to a different player across reconnects. These two return the SteamID the player actually connected with.
 :::
 
@@ -264,7 +264,7 @@ public void CmdWhitelist(Caller caller, string player)
     }
     else
     {
-        id = Permissions.GetSteamId(Target.Resolve(caller, player).Single().Slot);
+        id = Permissions.GetSteamId64(Target.Resolve(caller, player).Single().Slot);
         if (id == 0)
             throw new CommandException("That's a bot.");
     }

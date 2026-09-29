@@ -57,9 +57,9 @@ ulong steamId = controller.PlayerSteamId;
 
 During connection you can also use `ClientConnectEvent.SteamId`.
 
-**Coming soon:** `Players.IsAuthenticated(slot)` says whether Steam has confirmed the player in that slot. It's `false` for bots and empty slots, and `true` without waiting when `sv_lan` is on or `permissions.require_steam_auth` is off. See [Steam Verification](admin-api#steam-verification).
+**Coming soon:** `Players.IsAuthorized(slot)` says whether Steam has confirmed the player in that slot. It's `false` for bots and empty slots, and `true` without waiting when `sv_lan` is on or `permissions.require_steam_auth` is off. See [Steam Verification](admin-api#steam-verification).
 
-**Coming soon:** `PlayerSteamId` can be set by plugins (to hand a disconnected player's controller to someone else), so don't use it to decide what a player is allowed to do. `Permissions.GetSteamId(controller.Slot)`, or `caller.SteamId64` in a command, returns the SteamID the player actually connected with. Most plugins don't need either: use [`caller.HasPermission`](permissions#the-caller-parameter) instead.
+**Coming soon:** `PlayerSteamId` can be set by plugins (to hand a disconnected player's controller to someone else), so don't use it to decide what a player is allowed to do. `Permissions.GetSteamId64(controller.Slot)`, or `caller.SteamId64` in a command, returns the SteamID the player actually connected with. Most plugins don't need either: use [`caller.HasPermission`](permissions#the-caller-parameter) instead.
 
 ### Properties
 

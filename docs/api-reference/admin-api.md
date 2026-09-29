@@ -18,24 +18,26 @@ Building blocks for admin plugins. The [Admin plugin](../guides/admin-plugin) th
 Bans, gags and mutes are stored and **enforced by Deadworks**. Your plugin only decides when to add or lift them.
 
 ```csharp
-var id = Permissions.GetSteamId(player.Slot);
+var id = Permissions.GetSteamId64(player.Slot);
 if (id == 0)
     throw new CommandException("Bots can't be banned.");
 if (!caller.CanTarget(player))
     throw new CommandException("You can't ban them.");
 
 // caller is the command's Caller: the admin the ban is recorded against
-Penalties.Add(PenaltyType.Ban, id, TimeSpan.FromHours(1), "spamming", caller, player.PlayerName);
+Penalties.Add(PenaltyType.Ban, id, TimeSpan.FromHours(1), caller, "spamming", player.PlayerName);
 ```
 
 | Member | Description |
 |--------|-------------|
-| `Add(type, steamId64, duration, reason, by, playerName = null)` | Adds a penalty and returns it. `by` is the `Caller` issuing it (`Caller.Console` for the console). `duration: null` is permanent. Replaces an active penalty of the same type, even with a shorter one. A ban kicks the player if they're on the server. |
+| `Add(type, steamId64, duration, by, reason = "", playerName = null)` | Adds a penalty and returns it. `by` is the `Caller` issuing it (`Caller.Console` for the console). `duration: null` is permanent. Replaces an active penalty of the same type, even with a shorter one. A ban kicks the player if they're on the server. |
 | `WouldShorten(type, steamId64, duration)` | Returns the active penalty that adding this one would cut short, or `null`. Shortening partly lifts a penalty, so check this if that should need more than adding, as the Admin plugin's `ban` requires `admin.moderation.unban`. |
 | `Remove(type, steamId64, by, reason = "")` | Lifts the active penalty, keeping the reason in its history. Returns `false` if there wasn't one. |
-| `GetActive(type, steamId64)` / `GetActive(type?)` | Returns the active penalty, or every active one (of one type, or of all types). |
+| `GetActive(type, steamId64)` | Returns the player's active penalty of this type, or `null`. |
+| `GetAllActive(type = null)` | Returns every active penalty, or every active one of one type, oldest first. |
 | `IsBanned`, `IsGagged`, `IsMuted` | Return whether `GetActive(...) != null`. |
 | `GetHistoryAsync(steamId64)` | Returns everything the store has for a player, newest first, including lifted and expired ones. Faults while the penalty store is unavailable. |
+| `DescribeDuration(duration)` | Words a length the way the Admin plugin announces it: `"for 45 minutes"`, `"for 1h 5m"`, `"for 2d 4h"`, or `"permanently"` for `null`. |
 | `RegisterStore(this, name, store)` | Registers a penalty store (see [Custom Stores](#custom-stores)). |
 
 **What Deadworks enforces:**
@@ -66,7 +68,11 @@ public override void OnPenaltyAdded(Penalty penalty) { /* ... */ }
 public override void OnPenaltyRemoved(Penalty penalty) { /* lifted, replaced or expired */ }
 ```
 
-`OnPenaltyRemoved` gets the ended penalty. For an expired one, it's called within about a second of it running out. It isn't called for penalties that disappear because the store was reloaded.
+`OnPenaltyRemoved` gets the ended penalty. For an expired one, it's called within about a second of it running out.
+
+Both are also called when a reload finds a change made elsewhere: a penalty added or lifted by hand in `penalties.jsonc`, or by another server sharing a custom store. A penalty lifted elsewhere has `RemovedUtc` set, but who lifted it may be unknown.
+
+To post penalties to Discord, use these two hooks rather than `OnAdminAction`: the `Penalty` has every field, and when a penalty replaces another, `OnPenaltyRemoved` gets the old one, with `ReplacedBy` set to the new one's `Id`, just before `OnPenaltyAdded` gets the new one. Use `OnAdminAction` for everything else, such as kicks and map changes.
 
 **Immunity isn't checked by `Penalties`.** Check `caller.CanTarget(player)`, or `caller.CanTarget(steamId)` for someone who may not be on the server, before penalizing someone on another player's behalf. If it's `false` and `Permissions.IsLoaded(steamId)` is too, their entry is still loading from a custom store; try again shortly. A `Target` argument does this for you when the command has a permission.
 
@@ -146,10 +152,10 @@ The engine checks a player's Steam ticket when they connect, so the SteamID is a
 
 | Member | Description |
 |--------|-------------|
-| `Players.IsAuthenticated(slot)` | Returns whether Steam has confirmed the player. `false` for bots and empty slots; `true` straight away when `sv_lan` is on or `permissions.require_steam_auth` is off. |
-| `Permissions.GetSteamId(slot)` | Returns the SteamID the player connected with. |
+| `Players.IsAuthorized(slot)` | Returns whether Steam has confirmed the player. `false` for bots and empty slots; `true` straight away when `sv_lan` is on or `permissions.require_steam_auth` is off. |
+| `Permissions.GetSteamId64(slot)` | Returns the SteamID the player connected with. |
 
-To run code when Steam confirms a player, override `OnClientAuthorized`. It's called within about a second of the confirmation (or of connecting, when the wait is off), once per connection, and not again when the player reloads after a map change:
+To run code when Steam confirms a player, override `OnClientAuthorized`. It's called within about a second of the confirmation (or of connecting, when the wait is off), once per connection, and not again when the player reloads after a map change. A player who turns out to be banned is kicked instead:
 
 ```csharp
 public override void OnClientAuthorized(ClientAuthorizedEvent args)

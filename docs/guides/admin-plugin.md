@@ -60,12 +60,12 @@ Wherever a command takes a `<player>`, you can use:
 | `who [player]` | `admin.moderation.who` | Lists players with their slot, SteamID, team, roles, and whether they're gagged, muted or not yet verified by Steam. |
 | `penalties [player]` | anyone, for themselves | Shows your own bans, gags and mutes, past and present. Staff with `admin.moderation.who` can look up anyone, by name or by SteamID. |
 
-`ban`, `gag`, `mute` and their `un` commands all take a SteamID in place of `<player>`, for someone who has left, so an appeal can be settled without waiting for them to come back.
+`ban`, `gag`, `mute` and their `un` commands all take a SteamID in place of `<player>`, for someone who has left, so an appeal can be settled without waiting for them to come back. A penalty on a SteamID isn't announced; your reply links the account's Steam profile, so you can check you typed the right one.
 
 `penalties` shows each one, newest first, with how long it was given for and how it ended, which is what you need for an appeal:
 
 ```text
-Penalties for lapka (76561197960287931):
+Penalties for lapka (76561197960287931), dates in UTC:
   2026-09-28 mute permanently by wisp: mic spam; ACTIVE, permanent
   2026-09-26 ban for 1 day by wisp: cheating; lifted early by mastardy on 2026-09-27: appeal accepted
   2026-09-20 gag for 30 minutes by greeny: spam; ran out

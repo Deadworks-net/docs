@@ -280,7 +280,7 @@ Wherever a command takes `<player>`, you can give a SteamID in any format (onlin
 | `dw_reloadconfig [plugin]` | `deadworks.config.reload` | Reloads plugin configs. |
 | `dw_help` | none | Lists the commands you can run. |
 
-Changes are saved to `players.jsonc` right away. Add `--temp` to make a change that only lasts until the server restarts; `dw_perm_list` then says `Has --temp changes that will be lost on restart.` You can revoke a role even after it's been deleted from `roles.jsonc`, but you can only grant roles that exist.
+Changes are saved to `players.jsonc` right away. Add `--temp` to make a change that only lasts until the server restarts; `dw_perm_list` then says `Has --temp changes that will be lost on restart.` A `--temp` revoke only takes away something the player has, saved or temporary. You can revoke a role even after it's been deleted from `roles.jsonc`, but you can only grant roles that exist.
 
 When a player (not the server console) uses the grant and revoke commands, these rules apply. The quoted text is what they're told when a rule stops them.
 
