@@ -76,7 +76,7 @@ If `STEAM_PASSWORD` is empty, this command shows a QR code to scan with the Stea
 
 ## Files
 
-These folders are created next to `compose.yaml`. Together they are everything worth backing up; the Docker volumes can always be re-created.
+These folders are created next to `compose.yaml`. Back them up: they hold everything that is yours. The Docker volumes only hold the game and the saved Steam login, which can be downloaded and entered again.
 
 | Folder | Contents |
 | --- | --- |
@@ -109,7 +109,7 @@ Settings are read from `.env`. Run `docker compose up -d` to apply changes.
 | `EXTRA_ARGS` | `-ip 1.2.3.4` | Additional command-line parameters. |
 | `AUTO_UPDATE` | `1` | Check for game updates on start. `0` to disable. |
 | `DEADWORKS_VERSION` | `latest` | `latest`, a release such as `v0.4.16`, or `image` to use the version included in the image. |
-| `PUID`, `PGID` | `1000` | Owner of the files in `plugins` and `configs`. |
+| `PUID`, `PGID` | `1000` | Owner of the files in `plugins`, `configs`, `maps` and `logs`. |
 
 ### server.cfg
 

@@ -108,7 +108,7 @@ dw_role_list
 
 ## Step 2: Add Your Staff
 
-With them on the server, from the server console or as the owner:
+From the server console, or in game as the owner:
 
 ```text
 dw_role_grant greeny trialmod
@@ -116,7 +116,7 @@ dw_role_grant lapka moderator
 dw_role_grant mastardy admin
 ```
 
-You can use part of their name, `#slot`, or their SteamID, which also works when they're offline. This saves to `players.jsonc`, so it lasts across restarts.
+You can use part of their name or `#slot` while they're on the server. For someone who isn't, use their SteamID, or the exact name saved with their entry in `players.jsonc`. This saves to `players.jsonc`, so it lasts across restarts.
 
 **Promoting someone:** grant the new role and take away the old one.
 
@@ -125,7 +125,7 @@ dw_role_grant <player> moderator
 dw_role_revoke <player> trialmod
 ```
 
-Keeping the old role wouldn't give them anything extra, because it's inherited. It would just clutter `players.jsonc`.
+Keeping the old role wouldn't give them anything extra, because it's inherited. It would only clutter `players.jsonc`.
 
 **Trying someone out for a session:** add `--temp` and the role disappears when the server restarts.
 
@@ -236,7 +236,7 @@ A player's own entry is checked before any of their roles, so anything you put t
 
 ## Things to Avoid
 
-**Don't use a role to take something away from other roles.** Giving someone a `trial` role with `-admin.server.map` doesn't stop them changing map if another of their roles allows it: roles only add to each other. A deny only counts inside its own role, in roles that inherit it (unless they grant the permission back), and on player entries. To take something away from one person, deny it on their player entry.
+**Don't use a role to take something away from other roles.** Giving someone a `trial` role with `-admin.server.map` doesn't stop them changing map if another of their roles allows it: roles only add to each other. A deny only counts inside its own role, in roles that inherit it (unless they, or another role they inherit, allow it), and on player entries. To take something away from one person, deny it on their player entry.
 
 **Don't give `admin.server.rcon` to anyone you wouldn't make an owner.** Console commands skip permission checks, so `rcon` can do anything, including making someone an owner.
 

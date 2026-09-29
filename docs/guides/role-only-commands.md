@@ -71,13 +71,13 @@ public class MedicPlugin : DeadworksPluginBase
 
 ### What Each Part Does
 
-**`Permission = "medic.heal.self"`** is all it takes to lock a command. Before `CmdHeal` runs, Deadworks checks that the player has `medic.heal.self`. If they don't, they see `You don't have permission to use this command.` and your method never runs, so you don't need an `if` for it.
+**`Permission = "medic.heal.self"`** locks the command. Before `CmdHeal` runs, Deadworks checks that the player has `medic.heal.self`. If they don't, they see `You don't have permission to use this command.` and your method never runs, so you don't need an `if` for it.
 
-**Permission names** start with your plugin's name (`medic.`), then get more specific: `medic.heal.self`, `medic.heal.others`, `medic.heal.all`. This lets server owners grant everything at once with `medic.*`, or all healing with `medic.heal.*`. Notice there's no plain `medic.heal`: a name is never also the start of other names, so it's always clear whether something is a permission or a group.
+**Permission names** start with your plugin's name (`medic.`), then get more specific: `medic.heal.self`, `medic.heal.others`, `medic.heal.all`. This lets server owners grant everything at once with `medic.*`, or all healing with `medic.heal.*`. There's no plain `medic.heal`: don't make a permission name also the start of other names, so it's always clear whether something is a permission or a group.
 
-**`Caller caller`** is whoever ran the command: a player, or the server console. `caller.Player` is the player's controller (`null` for the console), `caller.Reply(...)` answers in their chat or the server console, and `caller.HasPermission(...)` is always `true` for the console. So the console can run `dw_heal lapka`, but `dw_heal` on its own tells it to name a player, since the console has no hero.
+**`Caller caller`** is whoever ran the command: a player, or the server console. `caller.Player` is the player's controller (`null` for the console, or once the player has left), `caller.Reply(...)` answers in their chat or the server console, and `caller.HasPermission(...)` is always `true` for the console. So the console can run `dw_heal lapka`, but `dw_heal` on its own tells it to name a player, since the console has no hero.
 
-**`caller.HasPermission("medic.heal.others")`** is for checks that depend on how the command is used. Anyone with `medic.heal.self` can run `!heal`, but only some of them may heal *other* players, so we check that inside the method. Throwing a `CommandException` sends the message back to the player.
+**`caller.HasPermission("medic.heal.others")`** is for checks that depend on how the command is used. Anyone with `medic.heal.self` can run `!heal`, but only some of them may heal *other* players, so we check that inside the method. Throwing a `CommandException` sends its message back to whoever ran the command.
 
 **`[DeclarePermission]`** lists `medic.heal.others` for server owners. Permissions on `[Command]` are listed automatically, but Deadworks can't see checks inside your code without this. Without it, the console would also warn that the plugin checks a permission nothing declares, which is how Deadworks catches typos.
 
@@ -87,7 +87,7 @@ public class MedicPlugin : DeadworksPluginBase
 
 ### Build and Install
 
-Build the plugin and copy the DLL into the server's plugins folder as usual. When it loads, Deadworks writes `configs/permissions/generated/MedicPlugin.jsonc` (named after the DLL), which lists the plugin's commands and permissions, sorted by name:
+Build the plugin and copy the DLL into the server's plugins folder as usual. When it loads, Deadworks writes `configs/permissions/generated/MedicPlugin.jsonc` (named after the DLL), which lists the plugin's commands and its permissions (sorted by name):
 
 ```jsonc
 // ============================================================================
@@ -201,7 +201,7 @@ dw_role_grant lapka medic
 dw_role_grant greeny headmedic
 ```
 
-You can use part of a player's name, their `#slot`, or their SteamID. A SteamID also works for players who aren't online. The roles are saved to `configs/permissions/players.jsonc`, which now contains:
+You can use part of a player's name, their `#slot`, or their SteamID. For players who aren't online, use their SteamID or the exact name saved in `players.jsonc`. The roles are saved to `configs/permissions/players.jsonc`, which now contains:
 
 ```jsonc
 // Players and the roles they hold. ...

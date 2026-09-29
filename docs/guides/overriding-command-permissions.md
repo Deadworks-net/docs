@@ -16,7 +16,7 @@ Plugins decide their own defaults. Some commands are open to everyone, others ne
 - A plugin lets **anyone** run a command you only want staff to use, like giving themselves souls.
 - A plugin **locks** a command you're happy for everyone to use.
 
-You can change either one in `configs/permissions/overrides.jsonc` without editing or rebuilding the plugin. This guide shows both, using the example plugins that ship with Deadworks.
+You can change either one in `configs/permissions/overrides.jsonc` without editing or rebuilding the plugin. This guide shows both, using two example plugins from the Deadworks repository (`examples/plugins/`).
 
 If you haven't set up admins yet, do [Making Yourself Admin](making-yourself-admin) first.
 
@@ -194,11 +194,13 @@ If you only want to open `ir_start` and not the other two, combine both steps: o
 ## Check Your Changes
 
 - The plugin's file in `generated/` shows each command's current `"permission"` and marks overridden ones with `OVERRIDDEN`.
-- `dw_perm_check <player> <permission>` shows whether a player has a permission and why:
+- `dw_perm_check <player> <permission>` shows whether a player has a permission and why. Give it a command name instead to see what that command needs:
 
   ```text
   ] dw_perm_check wisp itemtest.cheats
   wisp (76561197960287930): itemtest.cheats is allowed by "*" from role:admin
+  ] dw_perm_check wisp givesouls
+  wisp (76561197960287930): givesouls (Item Test) needs itemtest.cheats, which is allowed by "*" from role:admin
   ```
 
 - In game, `dw_help` in the console only lists the commands you're allowed to run.
@@ -208,12 +210,12 @@ If you only want to open `ir_start` and not the other two, combine both steps: o
 - **Use the command's name**, without `!`, `/` or `dw_`. `"givesouls"`, `"!givesouls"` and `"dw_givesouls"` all work and mean the same thing.
 - **One entry covers the aliases.** If a command has aliases (listed in `"aliases"`), overriding any of its names changes all of them.
 - **Same name in two plugins.** If two plugins both have a command called `ban`, an override for `ban` applies to both. To change only one, put the plugin's name in front: `"Admin:ban"`. Use the `"plugin"` name at the top of its generated file, or its DLL name (`"AdminPlugin:ban"`). A plugin-qualified entry beats a bare one.
-- **Built-in commands too.** `dw_plugin`, `dw_reloadconfig`, `dw_help` and the permission commands are listed in `generated/deadworks.jsonc` under the plugin name `Deadworks`, and can be overridden like anything else, e.g. `"Deadworks:plugin": ""`. Opening up `perm_grant`, `role_grant` and friends lets players hand out permissions, so think hard before you do.
+- **Built-in commands too.** `dw_plugin`, `dw_reloadconfig`, `dw_help`, `dw_penalties_reload` and the permission commands are listed in `generated/deadworks.jsonc` under the plugin name `Deadworks`, and can be overridden like anything else, e.g. `"Deadworks:plugin": ""`. Opening up `perm_grant`, `role_grant` and friends lets players hand out permissions, so think hard before you do.
 - **Typos are reported.** An entry that matches no command is listed in the server console at startup and on `dw_perm_reload`, e.g. `overrides.jsonc: 'givesoul' doesn't match any command. Check the name in generated/<Plugin>.jsonc.`
-- **Keep the file valid.** If `overrides.jsonc` can't be read when the server starts, players can't run any command until you fix it and run `dw_perm_reload` (the server console still can). The console says `[Permissions] ERROR: failed to parse overrides.jsonc: <reason>. Players can't run any commands until it's fixed and dw_perm_reload is run; the server console still can.` If it breaks later, `dw_perm_reload` replies with the file, line and column of the error, e.g. `Failed to reload permissions: overrides.jsonc line 4, column 3: ... The previous settings are still in use.`
+- **Keep the file valid.** If `overrides.jsonc` can't be read when the server starts, players can't run any command until you fix it and run `dw_perm_reload` (the server console still can). Players are told `Commands are unavailable until the server fixes an error in its permission settings.` The console says `[Permissions] ERROR: failed to parse overrides.jsonc: <reason>. Players can't run any commands until it's fixed and dw_perm_reload is run; the server console still can.` If it breaks later, `dw_perm_reload` replies with the file, line and column of the error, e.g. `Failed to reload permissions: overrides.jsonc line 4, column 3: ... The previous settings are still in use.`
 - **Overrides don't change immunity.** Whether a command can target players with higher immunity is up to the plugin: by default, commands the plugin locks behind a permission can't, and ones it makes public can. An override keeps that, so opening up `slay` to everyone still doesn't let anyone use it on your admins. The generated file's `"targetImmunity"` shows which applies.
 - **Server-console-only commands stay that way.** Some commands are marked `Server console only; players can never run it.` in the generated file. Overrides can't open those to players.
-- **Older plugins.** Commands that still use the old `[ChatCommand]` or `[ConCommand]` attributes aren't registered at all; the server console prints an `ERROR:` line naming each one when the plugin loads. Ask the author to update to `[Command]`, or disable the plugin with `dw_plugin disable <name>`.
+- **Older plugins.** Commands declared with `[ChatCommand]` or `[ConCommand]` aren't registered at all; the server console prints an `ERROR:` line naming each one when the plugin loads. Ask the author to update to `[Command]`, or disable the plugin with `dw_plugin disable <name>`.
 - **Removing an override** puts the command back to what the plugin chose. Delete the line and run `dw_perm_reload`.
 
 ## Next

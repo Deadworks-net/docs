@@ -17,7 +17,7 @@ It takes about a minute. There are two ways to do it; pick one.
 
 ## Option A: From the Server Console (easiest)
 
-You don't need to look up your SteamID for this. A new server reminds you in its console: `No admins yet. Join the server, then run this here: dw_role_grant <your name> admin`.
+You don't need to look up your SteamID for this. Until `players.jsonc` has anyone in it, the server reminds you at startup: `[Permissions] No admins yet. Join the server, then run this here: dw_role_grant <your name> admin`
 
 :::tip Where's the server console?
 - **Windows:** the window `deadworks.exe` runs in. Type straight into it.
@@ -33,7 +33,7 @@ You don't need to look up your SteamID for this. A new server reminds you in its
    dw_role_grant <your name> admin
    ```
 
-   Use your in-game name, or just part of it, for example `dw_role_grant wisp admin`. If the name matches more than one player, use your slot number instead, like `#0`.
+   Use your in-game name, or part of it, for example `dw_role_grant wisp admin`. If the name matches more than one player, use your slot number instead, like `#0`. A name with a space in it needs quotes: `dw_role_grant "Big Dave" admin`.
 
 3. The server replies with something like:
 
@@ -41,7 +41,7 @@ You don't need to look up your SteamID for this. A new server reminds you in its
    Gave wisp (76561197960287930) the role admin.
    ```
 
-That's it. The change is saved to `configs/permissions/players.jsonc`, so it's still there after a restart.
+The change is saved to `configs/permissions/players.jsonc`, so it's still there after a restart.
 
 ## Option B: By Editing the File
 
@@ -83,30 +83,31 @@ dw_perm_list <your name>
 
 You should see `Roles: admin` and `Immunity: 100`.
 
-In game, open your console and run `dw_help`. It now lists every command on the server, including admin-only ones. You can also just try an admin command in chat.
+In game, open your console and run `dw_help`. It lists every command on the server, including admin-only ones. You can also try an admin command in chat.
 
 ## What "admin" Gives You
 
 The `admin` role comes with every server. It has the permission `*`, which means **everything**: every command from every plugin, now and in the future, plus the built-in commands for managing plugins and permissions.
 
-It also has immunity 100, so staff you add later with lower immunity can't kick or ban you.
+It also has immunity 100, so staff you add later with lower immunity can't kick or ban you, or change your roles.
 
 ## If It Doesn't Work
 
 **"You don't have permission to use this command yet: your roles apply once Steam has confirmed your account"**
 
-- Wait a few seconds after joining and try again. Your permissions only apply once Steam has confirmed your identity, which happens shortly after you connect. If it never goes away, see the next point.
+- Wait a few seconds after joining and try again. Your permissions only apply once Steam has confirmed your account, which happens shortly after you connect. If the message never goes away, see the next point.
 
 **"You don't have permission to use this command."**
 
 - Run `dw_perm_check <your name> <command>` in the server console, e.g. `dw_perm_check wisp ban`. It says which permission the command needs and whether you have it, and why.
 - Run `dw_perm_list <your name>` in the server console. If it says **"Not validated by Steam yet"** and never changes, your server probably isn't logged into Steam, for example a LAN or offline setup. On a LAN server, set `sv_lan 1` and restart, and the wait is skipped; never do that on a server reachable from the internet, because then anyone can claim your SteamID. Otherwise you can set `"require_steam_auth": false` under `"permissions"` in `configs/deadworks.jsonc` and restart, but only on a server nobody untrusted can reach: without Steam checks, anyone can claim your SteamID and get your permissions. See [Steam Validation](admins-and-permissions#steam-validation).
 - If `dw_perm_list` says `Warning: permissions.store is '<name>', but no plugin has registered that store. ...`, then `permissions.store` in `configs/deadworks.jsonc` names a store from a plugin that isn't loaded. Until that plugin loads, nobody has permissions. Set it back to `"json"` to use the files from this guide.
+- If `dw_perm_list` says `Warning: deadworks.jsonc has an error, so Deadworks doesn't know which permission store to use. ...`, fix the error in `configs/deadworks.jsonc` and restart the server. The server console shows where the error is.
 - If it shows `Roles: none`, the SteamID in `players.jsonc` isn't yours. Compare it with the number `dw_perm_list` shows next to your name.
 
 **`dw_perm_reload` says "Failed to reload permissions"**
 
-There's a typo in one of the files. The server console shows which file and roughly where, for example a missing comma or quote. Your previous settings keep working until you fix it.
+There's a mistake in one of the files, for example a missing comma or quote. The reply says which file, and the line and column of the error. Your previous settings stay in use until you fix it and run `dw_perm_reload` again.
 
 **`dw_role_grant` says "No player matches"**
 

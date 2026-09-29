@@ -59,8 +59,8 @@ A few rules:
 - **Use `#slot` when names are similar.** If "lap" matches both "lapka" and "lapdog", you'll get a list back instead of hitting the wrong person.
 - **Groups only work for `kick`, `slay` and `who`.** Bans, gags and mutes are too serious to hand out to a whole team by accident, so they always take one player. `!kick @all` and `!kick @team` leave you out, but `!kick @me` or your own name kicks you.
 - **You can't act on higher-ranked staff.** A moderator can't kick an admin. With `@all` or `@enemy`, anyone you can't act on is skipped. See [immunity](admins-and-permissions#immunity).
-- **Bots can be kicked and slain, but not banned or gagged,** because they have no SteamID.
-- **Someone who has just joined can't be banned or gagged for a few seconds,** until Steam confirms who they are. You'll be told to try again in a moment. Kick and slay work straight away.
+- **Bots can be kicked and slain, but not banned, gagged or muted,** because they have no SteamID.
+- **Someone who has just joined can't be banned, gagged or muted for a few seconds,** until Steam confirms who they are. You'll be told to try again in a moment. Kick and slay work straight away.
 
 ## Common Situations
 
@@ -88,7 +88,7 @@ Kick them. They can rejoin straight away, so kicking is a warning.
 !kick #4 afk
 ```
 
-The reason is printed in their chat and console and sent with the disconnect.
+The reason goes in the announcement and the action log. Deadlock doesn't show it to the player you kick.
 
 ### Someone is cheating or keeps coming back
 
@@ -110,7 +110,7 @@ Use `ban` with their SteamID instead of a name. It works whether or not they're 
 !ban 76561197960287931 1440 ban evasion
 ```
 
-To find the SteamID of someone who's already gone, look in the admin log, `logs/admin/`. Every Admin plugin action names the target's SteamID, so a kick you gave earlier shows it. The server console also prints each player's SteamID as they connect. Next time, run `!who` while they're still there.
+To find the SteamID of someone who's already gone, look in the admin log, `logs/admin/`. Every Admin plugin action on a player records their SteamID, so a kick you gave earlier shows it. The server console also prints each player's SteamID as they connect. Next time, run `!who` while they're still there.
 
 ### Undoing a mistake
 
@@ -118,6 +118,7 @@ To find the SteamID of someone who's already gone, look in the admin log, `logs/
 |----------|---------|
 | `!unban 76561197960287931` | Lifts a ban. `unban` takes a SteamID. |
 | `!ungag lapka` | Lifts a gag |
+| `!unmute lapka` | Lifts a mute |
 | `!bans` | Lists every active ban |
 
 ### Checking a player's record
@@ -126,7 +127,7 @@ To find the SteamID of someone who's already gone, look in the admin log, `logs/
 !penalties 76561197960287931
 ```
 
-This shows their bans, gags and mutes: active, lifted and expired, with who gave them and why. Players can type `!penalties` with no SteamID to see their own record.
+This shows their bans, gags and mutes: active, lifted, replaced and expired, with who gave them and why. A name works too for someone who's on the server. Players can type `!penalties` on its own to see their own record.
 
 ## Running the Server
 
@@ -169,7 +170,7 @@ dw_rcon find bot
 ## Keeping Track
 
 - **Players see what staff do.** Players see `ADMIN: banned lapka for 1 hour: griefing`; other staff see who did it. The server owner can change this.
-- **Admin commands are logged.** Every Admin plugin command goes in `logs/admin/admin-YYYY-MM-DD.log` with the admin, the target's SteamID and the reason, including ones that aren't announced, like `rcon` and `unban`. So are staff changes (roles and permissions given or taken), and attempts by staff to use commands they don't have.
+- **Admin actions are logged.** Every Admin plugin action goes in `logs/admin/admin-YYYY-MM-DD.log` with the admin, the target's SteamID and the reason, including ones that aren't announced, like `rcon` and `unban`. So are staff changes (roles and permissions given or taken), and attempts by staff to use commands they don't have.
 
 ## Quick Reference
 
@@ -182,7 +183,7 @@ dw_rcon find bot
 | Cheating | `!ban <player> <minutes> [reason]`, `0` = permanent |
 | Already left | `!ban <steamid> <minutes> [reason]` |
 | Undo | `!unban <steamid> [reason]`, `!ungag <player>`, `!unmute <player>` |
-| Record | `!penalties <steamid>` |
+| Record | `!penalties <player>` |
 | Kill a hero | `!slay <player>`, `!slay @enemy` |
 | Change map | `!map <name>` |
 | Change a setting | `!cvar <name> <value>` |

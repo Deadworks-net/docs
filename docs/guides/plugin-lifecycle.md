@@ -5,50 +5,38 @@ sidebar_label: "Plugin Lifecycle"
 
 # Plugin Lifecycle
 
-This guide explains the complete lifecycle of a Deadworks plugin, from loading to unloading.
+This page explains when Deadworks calls each of a plugin's lifecycle methods, from loading to unloading, and what it cleans up for you.
 
 ## Lifecycle Flow
 
 ```
-Server Start
+Server start
     │
-    ├── OnPrecacheResources()     ← Precache particles, models, heroes
+    ├── OnLoad(isReload: false)     ← Plugin loaded
     │
-    ├── OnLoad(isReload: false)   ← Plugin first loaded
+    │   ┌──────── EVERY MAP ──────────────┐
+    │   │                                 │
+    │   │  OnStartupServer()              │ ← Map starting, set convars here
+    │   │  OnPrecacheResources()          │ ← Precache particles, models, heroes
+    │   │                                 │
+    │   │  OnClientConnect()              │
+    │   │  OnClientPutInServer()          │
+    │   │  OnGameFrame() every tick       │
+    │   │  ... other hooks ...            │
+    │   └─────────────────────────────────┘
     │
-    ├── OnStartupServer()         ← Server map loaded, set convars here
+    ├── OnUnload()                  ← Plugin disabled, or its DLL replaced
     │
-    │   ┌─────────────────────────────┐
-    │   │        SERVER RUNNING       │
-    │   │                             │
-    │   │  OnClientConnect()          │
-    │   │  OnClientPutInServer()      │
-    |   |  ... other hooks ...        |
-    │   └─────────────────────────────┘
-    │
-    ├── OnUnload()                ← Plugin unloaded
-    │
-    └── (Hot-reload) → OnLoad(isReload: true)
+    └── (Hot-reload) → OnLoad(isReload: true) on a new instance
 ```
 
 ## Startup Phase
 
-### OnPrecacheResources
-
-Called during map load. **Must** precache all resources (particles, models, etc.) here.
-
-```csharp
-public override void OnPrecacheResources()
-{
-    Precache.AddResource("particles/upgrades/mystical_piano_hit.vpcf");
-}
-```
-
-See [Precaching](../api-reference/precaching).
-
 ### OnLoad
 
-Called when the plugin is loaded. The `isReload` parameter is `true` during hot-reload.
+Called when the plugin is loaded: at server start, by `dw_plugin enable`, or when its DLL in `plugins/` changes while the server runs. `isReload` is `true` when the DLL was loaded because the file changed, including a DLL newly copied into `plugins/`.
+
+The plugin's config is loaded and `Timer` is ready before `OnLoad` runs. Its commands and attribute hooks are registered right after `OnLoad` returns.
 
 ```csharp
 public override void OnLoad(bool isReload)
@@ -62,9 +50,13 @@ public override void OnLoad(bool isReload)
 }
 ```
 
+:::note
+A plugin loaded while a map is already running (hot-reloaded or enabled with `dw_plugin enable`) doesn't get `OnStartupServer` or `OnPrecacheResources` until the next map loads.
+:::
+
 ### OnStartupServer
 
-Called when the server starts a new map. Ideal for setting game convars:
+Called each time a map starts, before `OnPrecacheResources`. Set game convars here:
 
 ```csharp
 public override void OnStartupServer()
@@ -74,53 +66,69 @@ public override void OnStartupServer()
 }
 ```
 
+### OnPrecacheResources
+
+Called during every map load. Precache all resources (particles, models, heroes) here: `Precache.AddResource` and `Precache.AddHero` do nothing when called at any other time.
+
+```csharp
+public override void OnPrecacheResources()
+{
+    Precache.AddResource("particles/upgrades/mystical_piano_hit.vpcf");
+}
+```
+
+See [Precaching](../api-reference/precaching).
+
 ## Runtime Phase
 
 During runtime, your plugin responds to events through hooks and registered commands.
 
-### Event Processing Order
-
-1. **Entity events** — creation, spawn, deletion, touch
-2. **Player events** — connect, disconnect, commands
-3. **Gameplay events** — damage, currency, chat
-4. **Frame events** — `OnGameFrame` every tick
-
 ### Hot-Reloading
 
-When a plugin is hot-reloaded:
+Deadworks watches the `plugins/` folder. When a plugin's DLL there is replaced while the server runs:
 
-1. `OnUnload()` is called on the old instance
-2. `OnLoad(isReload: true)` is called on the new instance
-3. All registered commands and hooks are re-registered
+1. The old instance's timers, commands and attribute hooks are removed.
+2. `OnUnload()` is called on the old instance.
+3. A new instance is created, its config is loaded, and `OnLoad(isReload: true)` is called on it.
+4. The new instance's commands and attribute hooks are registered.
 
-**Important:** Clean up timers and hooks in `OnUnload()` to avoid duplicates after reload.
+Anything your plugin registered in code rather than with an attribute is not removed for you. Cancel it in `OnUnload()`, or the old and new instances both keep running it.
 
 ## Shutdown Phase
 
 ### OnUnload
 
-Called when the plugin is unloaded (server shutdown, hot-reload, or manual unload).
+Called when the plugin is unloaded: by `dw_plugin disable`, or before a hot reload replaces it.
 
 ```csharp
+private readonly CancellationTokenSource _cts = new();
+
 public override void OnUnload()
 {
+    _cts.Cancel(); // stop background work started in OnLoad
     Console.WriteLine($"[{Name}] Unloaded!");
-    // Timers are automatically cleaned up per-plugin
-    // EntityData stores are automatically cleaned up
 }
 ```
 
-**What's cleaned up automatically:**
-- Per-plugin timers
-- `EntityData<T>` entries (on entity deletion)
-- Commands, game event handlers, net message hooks and entity I/O hooks the plugin registered
+:::note
+`OnUnload` isn't called when the server shuts down. Don't rely on it to save data.
+:::
+
+**What's cleaned up automatically** (before `OnUnload` runs):
+- Timers from `Timer.Once`, `Timer.Every` and `Timer.Sequence`
+- Commands and `[ConVar]` properties
+- `[GameEventHandler]`, `[NetMessageHandler]`, `[EntityInputHook]` and `[EntityOutputHook]` methods
+- `Zone`s the plugin created
 - Converters registered with `CommandConverters`, and permission and penalty stores it registered
-- Its `generated/<Plugin>.jsonc` permissions entry (the file is rewritten or removed)
+- The lifecycle overrides on this page stop being called
+
+`EntityData<T>` entries are removed when their entity is deleted.
 
 A hot reload runs `OnUnload` and then `OnLoad(isReload: true)` off the game thread; don't touch entities there, or defer it with `Timer.NextTick`.
 
 **What you should clean up manually:**
-- Dynamic game event listeners (via `IHandle.Cancel()`)
+- Handles returned by `GameEvents.AddListener`, `NetMessages.HookOutgoing`/`HookIncoming` and `EntityIO.HookInput`/`HookOutput` (call `IHandle.Cancel()`)
+- Subscriptions to static events, such as `UI.ClientResync`
 - Any external resources or connections
 
 ## Client Lifecycle
@@ -128,14 +136,20 @@ A hot reload runs `OnUnload` and then `OnLoad(isReload: true)` off the game thre
 ```
 Player connects
     │
-    ├── OnClientPutInServer()   ← Initial connection
+    ├── OnClientConnect()         ← Connecting; return false to refuse
     │
-    ├── OnClientFullConnect()   ← Fully in-game, can interact
+    ├── OnClientPutInServer()     ← Initial connection
+    │
+    ├── OnClientFullConnect()     ← Fully in-game, can interact
     │
     │   (player is active in-game)
     │
-    └── OnClientDisconnect()    ← Player leaves
+    ├── OnClientDisconnecting()   ← Leaving; controller and hero still intact
+    │
+    └── OnClientDisconnect()      ← Player has left
 ```
+
+A map change doesn't disconnect anyone, but every player goes through these events again: `OnClientDisconnecting` and `OnClientDisconnect` with `args.IsMapChange` set to `true`, then the connect events on the new map with `args.IsMapChangeReconnect` set to `true`. `OnClientFullConnect` is called each time a player finishes loading a map, and for bots too.
 
 ### Example: Player Tracking
 
@@ -166,12 +180,12 @@ public override void OnClientDisconnect(ClientDisconnectedEvent args)
 | `OnClientAuthorized(ClientAuthorizedEvent args)` | Steam confirms a player, once per connection (not again after a map change), a few seconds after they join. `args.Slot`, `args.SteamId64`, `args.Controller` (may be `null`). See [Steam Verification](../api-reference/admin-api#steam-verification). |
 | `OnPermissionsChanged(ulong? steamId64)` | After a permissions reload, any grant or revoke, when Steam confirms a player, and when a custom store's entry for a player arrives. `null` means everyone. See [Reacting to Changes](../api-reference/permissions#reacting-to-changes). |
 | `OnPenaltyAdded(Penalty penalty)` | A ban, gag or mute is added. See [Penalties](../api-reference/admin-api#penalties). |
-| `OnPenaltyRemoved(Penalty penalty)` | A penalty is lifted, replaced or expires |
+| `OnPenaltyRemoved(Penalty penalty)` | A penalty is lifted, replaced or expires. |
 | `OnAdminAction(AdminLogEntry entry)` | An admin action is logged through `AdminActivity` (the Admin plugin's commands, or any plugin that calls it). See [Admin Activity](../api-reference/admin-api#admin-activity). |
 
 ## Async Work — Get Back On the Game Thread
 
-After `await`, C# may resume on a thread-pool thread. Touching any game object off the main thread will corrupt memory or crash. **Always** wrap game-touching code in `Timer.NextTick(...)` after an `await`:
+After an `await`, C# may resume on a thread-pool thread. Touching entities or calling the engine from there can crash the server. After an `await`, run game-touching code through `Timer.NextTick(...)`, which can be called from any thread:
 
 ```csharp
 public override void OnLoad(bool isReload)
@@ -195,17 +209,20 @@ private async Task FetchAndAnnounceAsync()
 
 The same rule applies to `Task.Delay`, `Task.Run`, file I/O, anything that yields. If you're not sure whether the continuation is on the game thread, route it through `Timer.NextTick`.
 
+:::tip
+Inside a [`[Command]`](../api-reference/commands#when-a-command-fails) method, code after an `await` already continues on the game thread.
+:::
+
 ## Hot-Reload Gotchas
 
-Hot-reload replaces the plugin assembly while the server keeps running. This is very useful during development, but there are some pitfalls:
+Hot-reload replaces the plugin assembly while the server keeps running. This is useful during development, but there are some pitfalls:
 
-- **Cancel long-running work in `OnUnload`.** Per-plugin timers and `EntityData<T>` entries are cleaned up automatically. Anything else — `CancellationTokenSource`, `FileSystemWatcher`, sockets, `Timer.Sequence` handles you want to stop — has to be cancelled or disposed manually.
-- **Static state persists.** Types in a new load context have fresh statics, but if you've cached anything in a host assembly (shared `DeadworksManaged.Api` types, for example), it will still be there after a reload. Use `isReload` to decide whether to re-initialize.
-- **`Console.WriteLine` during `OnLoad` may vanish on first boot.** The console buffer can swallow the first batch of log lines before idling; a reload (hot-reload the plugin, or edit the DLL while the server runs) will make the logs appear. If you need reliable output from first boot, log through a file instead.
+- **Cancel long-running work in `OnUnload`.** Timers and attribute hooks are removed for you. Anything else, such as a `CancellationTokenSource`, `FileSystemWatcher`, socket or hook registered in code, has to be cancelled or disposed manually.
+- **Static state doesn't carry over.** The new DLL is loaded separately from the old one, so your plugin's static fields start empty after a reload.
 
 ## Console Output on Windows
 
-If you launch `deadworks.exe` from Windows Terminal or PowerShell and the console window keeps overwriting its own top line (showing only `N/31 on map dl_midtown` no matter how far up you scroll), that's a terminal compatibility issue with Deadlock's progress reporting. Launch from `cmd.exe` (the classic console host) instead and the problem goes away.
+If you launch `deadworks.exe` from Windows Terminal or PowerShell and the console window keeps overwriting its own top line (showing only `N/31 on map dl_midtown` no matter how far up you scroll), the terminal isn't compatible with Deadlock's progress output. Launch it from `cmd.exe` (the classic console host) instead.
 
 ## See Also
 

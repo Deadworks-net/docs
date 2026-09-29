@@ -11,7 +11,7 @@ This isn't in a Deadworks release yet. It describes features coming in an upcomi
 
 **Step 3 of 7** in [Admins & Permissions](/permissions). Before this: [administering your server](administering-your-server).
 
-Deadworks comes with an **Admin** plugin that has the commands every server needs to run a match and deal with problem players: kicking, banning, gagging, changing map and so on. It's enabled by default and does nothing for players who don't have its permissions, so a fresh server is exactly as open as before, apart from the server console.
+Deadworks comes with an **Admin** plugin that has the commands every server needs to run a match and deal with problem players: kicking, banning, gagging, changing map and so on. It's enabled by default. Every command except `penalties` needs a permission, so on a fresh server only the server console and players you've [made admin](making-yourself-admin) can use them.
 
 This page explains what's in it and how it behaves. To give people access to it, see [Setting Up Staff Roles](staff-roles).
 
@@ -40,13 +40,13 @@ Wherever a command takes a `<player>`, you can use:
 | `@me` | Yourself |
 | `@all`, `@team`, `@enemy` | Groups of players. Only `kick`, `slay` and `who` accept these. A group `kick` leaves you out, but `kick @me` or your own name kicks you. |
 
-**Immunity:** you can't use moderation commands on someone whose [immunity](admins-and-permissions#immunity) is higher than yours. A moderator can't kick an admin. The server console can target anyone.
+**Immunity:** you can't use moderation commands on someone whose [immunity](admins-and-permissions#immunity) is higher than yours. A moderator can't kick an admin. The server console can target anyone. Looking someone up with `penalties` isn't limited by immunity.
 
 ## Moderation Commands
 
 | Command | Permission | What it does |
 |---------|------------|--------------|
-| `kick <player> [reason]` | `admin.moderation.kick` | Disconnects the player. They can rejoin. The reason goes in the announcement and the action log. |
+| `kick <player> [reason]` | `admin.moderation.kick` | Disconnects the player. They can rejoin. The reason goes in the announcement and the action log; Deadlock doesn't show it to the kicked player. |
 | `ban <player> <minutes> [reason]` | `admin.moderation.ban` | Kicks the player and stops them rejoining for that many minutes. `<player>` can also be the SteamID of someone who isn't on the server. `addban` is another name for it. |
 | `unban <steamid> [reason]` | `admin.moderation.unban` | Lifts any ban, whoever gave it. The reason goes in the player's history. |
 | `bans` | `admin.moderation.ban` | Lists active bans. |
@@ -58,20 +58,20 @@ Wherever a command takes a `<player>`, you can use:
 | `mutes` | `admin.moderation.mute` | Lists active mutes. |
 | `slay <player>` | `admin.moderation.slay` | Kills the player's hero. |
 | `who [player]` | `admin.moderation.who` | Lists players with their slot, SteamID, team, roles, and whether they're gagged, muted or not yet verified by Steam. |
-| `penalties [steamid]` | anyone, for themselves | Shows your own bans, gags and mutes, past and present. Staff with `admin.moderation.who` can look up anyone. |
+| `penalties [player]` | anyone, for themselves | Shows your own bans, gags and mutes, past and present. Staff with `admin.moderation.who` can look up anyone, by name or by SteamID. |
 
 `ban`, `gag`, `mute` and their `un` commands all take a SteamID in place of `<player>`, for someone who has left, so an appeal can be settled without waiting for them to come back.
 
-`penalties` shows each one with how long it was given for and how it ended, which is what you need for an appeal:
+`penalties` shows each one, newest first, with how long it was given for and how it ended, which is what you need for an appeal:
 
 ```text
-Penalties for 76561197960287931:
-  2026-09-26 ban for 1 day by wisp: cheating; lifted early by lapka on 2026-09-27: appeal accepted
-  2026-09-20 gag for 30 minutes by greeny: spam; ran out
+Penalties for lapka (76561197960287931):
   2026-09-28 mute permanently by wisp: mic spam; ACTIVE, permanent
+  2026-09-26 ban for 1 day by wisp: cheating; lifted early by mastardy on 2026-09-27: appeal accepted
+  2026-09-20 gag for 30 minutes by greeny: spam; ran out
 ```
 
-Lists (`who`, `bans`, `gags`, `mutes`, `penalties`) are printed to your console, since they don't fit in chat. `penalties` may take a moment to load; if you leave before it arrives, it isn't shown to whoever takes your slot.
+Lists (`who`, `bans`, `gags`, `mutes`, `penalties`, and `map` with no name) are printed to your console, since they don't fit in chat.
 
 ### Gag vs Mute
 
@@ -110,11 +110,11 @@ Bans, gags and mutes are saved to `configs/penalties/penalties.jsonc`, so they s
 - **Gagged** players' messages never reach chat, or any plugin that reads chat. They're told they're gagged.
 - **Muted** players' voice is dropped by the server, so nobody hears them. When they talk they're told they're muted, at most every 30 seconds.
 
-Expired and lifted penalties stay in the file for 90 days (`penalties.history_days` in `configs/deadworks.jsonc`; `0` keeps them forever), so `penalties` can show someone's history.
+Expired, lifted and replaced penalties stay in the file for 90 days (`penalties.history_days` in `configs/deadworks.jsonc`; `0` keeps them forever), so `penalties` can show someone's history.
 
-If you edit `penalties.jsonc` by hand, run `dw_penalties_reload` (needs `deadworks.penalties.reload`) for your changes to take effect. Until then they're safe: a ban or unban in the meantime keeps your entries as you wrote them (comments aside), and while the file has an error, penalties can't be added or lifted, so nothing you wrote is overwritten.
+If you edit `penalties.jsonc` by hand, run `dw_penalties_reload` (needs `deadworks.penalties.reload`) for your changes to take effect. A ban or unban before then keeps your entries as you wrote them, but not your comments. While the file has an error, penalties can't be added or lifted, so nothing you wrote is overwritten.
 
-If the ban list can't be loaded when the server starts (for example `penalties.jsonc` has an error), Deadworks plays safe: new players are turned away, and bans and gags can't be added or lifted. Players already on the server stay, including through a map change. If the file breaks after it loaded, the bans already loaded keep working, but new ones are refused with `Penalties can't be changed right now: penalties.jsonc has an error. Fix it and run dw_penalties_reload.`
+If the ban list can't be loaded when the server starts (for example `penalties.jsonc` has an error), the server console prints an `ERROR:`, new players are turned away, and penalties can't be added or lifted. Players already on the server stay, including through a map change. If the file breaks after it loaded, the penalties already loaded keep working, but adding or lifting one is refused with `Penalties can't be changed right now: penalties.jsonc has an error. Fix it and run dw_penalties_reload. (...)`, with the error in brackets.
 
 ## Server Commands
 
@@ -156,7 +156,7 @@ You can change this in `configs/deadworks.jsonc`:
 
 ## The Action Log
 
-Every Admin plugin command, and anything other plugins record through Deadworks' [admin log](../api-reference/admin-api#admin-activity), is written to a daily file, `logs/admin/admin-YYYY-MM-DD.log`, whether or not it was announced. Times and file dates are UTC:
+Every action taken with the Admin plugin, and anything other plugins record through Deadworks' [admin log](../api-reference/admin-api#admin-activity), is written to a daily file, `logs/admin/admin-YYYY-MM-DD.log`, whether or not it was announced. Lists and lookups (`who`, `bans`, `penalties`, reading a cvar) aren't logged. Times and file dates are UTC:
 
 ```text
 2026-09-26T14:02:11Z wisp (76561197960287930) banned lapka for 1 hour: spamming mic [target=76561197960287931 penalty=3f2b8c1e-...]
@@ -166,7 +166,7 @@ Actions from the server console, including RCON, are logged as `Console`, with n
 
 Staff changes are logged too, though never announced: roles and permissions given or taken (`dw_role_*`, `dw_perm_*`), plugins enabled or disabled, and config, permission and penalty reloads.
 
-So are commands staff were refused, at most once a minute per person and command, so you can see a moderator trying something they weren't given: `2026-09-26T14:05:00Z greeny (76561197960287932) was refused dw_rcon (needs admin.server.rcon)`. The server console shows everyone's refusals, not only staff's.
+So are commands refused to players who hold a role, at most once a minute per player and command, so you can see a moderator trying something they weren't given: `2026-09-26T14:05:00Z greeny (76561197960287932) was refused dw_rcon (needs admin.server.rcon)`. The server console shows every player's refusals, with or without a role.
 
 Banning, gagging or muting a SteamID that isn't on the server is logged and confirmed to you, but not announced to the players, who wouldn't know who that is.
 
@@ -184,7 +184,7 @@ Use it to check what your staff have been doing, or to settle a ban appeal.
   "default_ban_reason": "Banned by an admin",
   "default_gag_reason": "Gagged by an admin",
   "default_mute_reason": "Muted by an admin",
-  "require_reason": false,          // true: ban, gag and mute refuse to run without a reason
+  "require_reason": false,          // true: kick, ban, gag and mute refuse to run without a reason
   "map_change_delay_seconds": 3    // 0 to 60
 }
 ```
@@ -207,7 +207,7 @@ To run a modified version, put your own `AdminPlugin.dll` in `plugins/`. It's us
 
 The Admin plugin sticks to what every server needs. These are left to other plugins:
 
-- announcements and admin-only chat (planned as a future `admin.chat` group)
+- announcements and admin-only chat
 - warnings
 - fun commands: teleporting, freezing, giving items or souls
 - votes and map voting

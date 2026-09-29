@@ -7,13 +7,13 @@ sidebar_label: "Commands"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Use `[Command]` when you want one method to work as both a chat command and a console command.
+The `[Command]` attribute registers a plugin method as a chat command and a console command at the same time.
 
-In most cases, one `[Command]` gives you:
+One `[Command("hello")]` gives you:
 
-- a slash chat command like `/hello`
-- a bang chat command like `!hello`
-- a console command like `dw_hello`
+- a slash chat command, `/hello`
+- a bang chat command, `!hello`
+- a console command, `dw_hello`
 
 ## Quick Start
 
@@ -38,19 +38,16 @@ public class HelloPlugin : DeadworksPluginBase
             DescriptionLocstring = "Welcome to Deadworks"
         };
 
-        NetMessages.Send(msg, RecipientFilter.Single(player.EntityIndex - 1));
+        NetMessages.Send(msg, RecipientFilter.Single(player.Slot));
     }
 }
 ```
 
-That single attribute registers three ways to run the same command:
+That single attribute registers three ways to run the same method:
 
-- `/hello` as a chat command
-  By default, slash commands are hidden from other players after they run.
-- `!hello` as a chat command
-  By default, bang commands are still shown in chat to other players.
-- `dw_hello` as a console command
-  This can be run from the server console, and sometimes from a player's console too.
+- `/hello` in chat. The typed message is hidden from other players.
+- `!hello` in chat. The typed message is shown to other players, unless you set `SuppressChat = true`.
+- `dw_hello` in a console. The server console can run it, and so can a player from their own game console unless the command is `ServerOnly` or needs a permission they don't have.
 
 ## How Invocation Works
 
@@ -58,8 +55,8 @@ If you write `[Command("heal")]`, Deadworks creates these command names for you:
 
 | Form | Where it runs | Notes |
 |------|---------------|-------|
-| `/heal` | Player chat | Hidden from normal chat after it runs |
-| `!heal` | Player chat | Still shows in chat unless `SuppressChat = true` |
+| `/heal` | Player chat | Hidden from chat |
+| `!heal` | Player chat | Shown in chat unless `SuppressChat = true` |
 | `dw_heal` | Console | Console version of the same command |
 
 If you add aliases, every alias gets the same chat and console versions:
@@ -74,11 +71,15 @@ public void CmdHeal(Caller caller)
 }
 ```
 
+:::note
+If two plugins register the same name, both methods run, and the console prints a warning when the second one loads. Rename one of them.
+:::
+
 ### When a Command Fails
 
-Throw `CommandException` to refuse: its message is the caller's answer, in chat or the console, wherever they typed the command. Any other exception is a bug in your plugin: the server console gets the plugin, command and stack trace, the caller is told `That command failed. The server console has details.`, and the typed command never ends up in public chat.
+Throw `CommandException` to refuse: its message is the caller's answer, in chat or the console, wherever they typed the command. Any other exception is treated as a bug in your plugin: the server console gets the plugin, command and stack trace, and the caller is told `That command failed. The server console has details.`
 
-A command can be `async` if it returns `Task` or `ValueTask`. Code after an `await` carries on on the game thread, on a later tick, so it can touch entities and call the engine as usual (unless you use `ConfigureAwait(false)`). Deadworks follows the command to the end: a `CommandException` thrown after an `await` still becomes the caller's answer, and other exceptions are reported as above.
+A command can be `async` if it returns `Task` or `ValueTask`. Code after an `await` continues on the game thread, on a later tick, so it can touch entities and call the engine as usual (unless you use `ConfigureAwait(false)`). Deadworks follows the command to the end: a `CommandException` thrown after an `await` still becomes the caller's answer, and other exceptions are reported as above.
 
 The player may have left by the time an `await` finishes. `Caller` remembers who ran the command, so it never mixes them up with someone who has joined since: `caller.IsConnected` turns false, `HasPermission` and `CanTarget` refuse, `caller.Player` is `null` and replies go nowhere. `caller.IsConsole` stays false, so a player who left is never mistaken for the console.
 
@@ -91,22 +92,22 @@ public async Task CmdStats(Caller caller)
 }
 ```
 
-`async void` commands aren't registered: an exception in one can't be caught and would take the whole server down. The server console says so when the plugin loads.
+`async void` commands aren't registered, because an exception in one can't be caught and would crash the server. The server console says so when the plugin loads.
 
 ## CommandAttribute
 
-`[Command]` tells Deadworks to register a method as a command.
+`[Command]` registers a method as a command. The first argument is the command's name; any further arguments are aliases.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `Description` | `string` | Short help text shown by `dw_help` |
-| `Permission` | `string` | **Coming soon.** Permission a player needs to run it, e.g. `admin.moderation.kick`. Empty means anyone. See [Permissions](permissions). |
-| `TargetImmunity` | `TargetImmunity` | **Coming soon.** Whether [`Target`](#target-arguments) arguments skip players the caller can't target. See [Immunity](permissions#immunity). |
-| `ServerOnly` | `bool` | Only let the server console run this command. If a player types it in chat, the message goes to chat unchanged. |
-| `ChatOnly` | `bool` | Only create `/name` and `!name`. Not even the server console can run it then. |
-| `ConsoleOnly` | `bool` | Only create `dw_name`. Players can still run it from their own game console, so it isn't a way to keep a command from them: use `Permission` or `ServerOnly` for that. |
-| `SuppressChat` | `bool` | Hide `!name` from chat after it runs |
-| `Hidden` | `bool` | Do not show this command in `dw_help` |
+| `Description` | `string` | Sets the help text shown by `dw_help`. |
+| `Permission` | `string` | **Coming soon.** Sets the permission a player needs to run it, e.g. `admin.moderation.kick`. Empty means anyone. See [Permissions](permissions). |
+| `TargetImmunity` | `TargetImmunity` | **Coming soon.** Sets whether [`Target`](#target-arguments) arguments skip players the caller can't target. See [Immunity](permissions#immunity). |
+| `ServerOnly` | `bool` | Lets only the server console run the command. A player who types it in chat sends an ordinary chat message; one who types it in their console gets no reply. |
+| `ChatOnly` | `bool` | Creates only `/name` and `!name`. Not even the server console can run it then. |
+| `ConsoleOnly` | `bool` | Creates only `dw_name`. Players can still run it from their own game console, so use `Permission` or `ServerOnly` to keep it from them. |
+| `SuppressChat` | `bool` | Hides `!name` from chat, like `/name`. |
+| `Hidden` | `bool` | Leaves the command out of `dw_help`. |
 
 ### Common Patterns
 
@@ -143,7 +144,7 @@ Write a normal C# method for your command, and Deadworks fills in the values for
 
 ### The `Caller` Parameter {#caller}
 
-`Caller` stands for whoever ran the command, a player or the server console. Make it your command's first parameter:
+`Caller` stands for whoever ran the command, a player or the server console (which includes RCON). Make it your command's first parameter:
 
 ```csharp
 [Command("status")]
@@ -167,17 +168,16 @@ Older plugins take the player's controller directly. It still works, but `Caller
 
 ### Typed Arguments
 
-Deadworks can read typed text arguments for these common types:
+Deadworks parses arguments of these types:
 
 - `string`
-- `bool`
+- `bool` (`true`, `false`, `1` or `0`)
 - `int`, `long`, `uint`, `ulong` (so a SteamID64 can be a number)
-- `float`
-- `double`
+- `float`, `double` (always with `.` as the decimal point, whatever the server's locale)
 - enums (by name, ignoring case; a number the enum doesn't have is refused)
 - any of these as nullable, e.g. `int?`
 
-A parameter of any other type needs a [converter](#custom-converters). Without one, Deadworks says so when the plugin loads, since the command could only ever print its usage.
+A parameter of any other type needs a [converter](#custom-converters). Without one, Deadworks warns when the plugin loads, since the command could only ever print its usage.
 
 Optional arguments work the same way they do in normal C#:
 
@@ -189,14 +189,14 @@ public void CmdGiveSouls(Caller caller, int amount = 50000)
 }
 ```
 
-If the player types too many arguments, Deadworks will reject the command unless you use one of the options below.
+If the caller types more arguments than the method takes, Deadworks prints the usage instead of running it, unless the method has a [`params`](#params-arguments) or [`rawArgs`](#rawargs) parameter.
 
 ### Target Arguments (Coming Soon) {#target-arguments}
 
 Use `Target` when the caller should pick one or more players:
 
 ```csharp
-[Command("kick", Permission = "admin.moderation.kick")]
+[Command("mykick", Permission = "myplugin.kick")]
 public void CmdKick(Caller caller, Target target)
 {
     foreach (var player in target)
@@ -204,11 +204,11 @@ public void CmdKick(Caller caller, Target target)
 }
 ```
 
-Callers can type `@me`, `@all`, `@team`, `@enemy`, `#slot`, a SteamID, or part of a player's name. Use `target.Single()` when the command works on exactly one player. See [Targeting Players and Immunity](permissions#targeting-players-and-immunity).
+Callers can type `@me`, `@all`, `@team`, `@enemy`, `#slot`, a SteamID, or part of a player's name. If nobody matches, the caller is told why and your method doesn't run, so a `Target` always holds at least one player. Use `target.Single()` when the command works on exactly one player. See [Targeting Players and Immunity](permissions#targeting-players-and-immunity).
 
 ### `params` Arguments
 
-Use `params T[]` when you want "everything left over":
+Use `params T[]` as the last parameter to collect every remaining argument:
 
 ```csharp
 [Command("sayas")]
@@ -220,7 +220,7 @@ public void CmdSayAs(Caller caller, string speaker, params string[] messageParts
 
 ### `rawArgs`
 
-Use a parameter literally named `rawArgs` with type `string[]` if you want the split-up arguments exactly as Deadworks sees them:
+Add a `string[]` parameter named `rawArgs` to get every argument as typed, including the ones bound to other parameters. With it, extra arguments aren't refused:
 
 ```csharp
 [Command("debugargs")]
@@ -233,7 +233,7 @@ public void CmdDebugArgs(string[] rawArgs)
 
 ### Custom Converters
 
-If you want to use your own custom type in a command, register a parser in `OnLoad`:
+To use your own type as a command argument, register a parser in `OnLoad`:
 
 ```csharp
 public override void OnLoad(bool isReload)
@@ -242,16 +242,16 @@ public override void OnLoad(bool isReload)
 }
 ```
 
-After that, `MyType` can be used like any other command argument type. If the text isn't valid, throw `CommandException` from the parser to tell the caller what's wrong; any other exception shows them the command's usage.
+After that, `MyType` can be used like any other argument type. If the text isn't valid, throw `CommandException` from the parser to tell the caller what's wrong; any other exception shows them the command's usage.
 
 Your converters are removed when your plugin unloads or hot-reloads, so there's nothing to unregister. Registering a converter for a type another plugin already has replaces theirs, with a warning in the console.
 
 ## Argument Parsing
 
-Most of the time, arguments work the way you would expect:
+Arguments are split like this:
 
 - Spaces split arguments.
-- Put text in double quotes if it should stay together.
+- Text in double quotes stays together as one argument.
 - In chat, inside quotes, `\"` means a quote character and `\\` means a backslash, and an empty `""` argument is dropped. Console commands are split up by the engine, which doesn't support these escapes.
 
 Examples:
@@ -260,17 +260,17 @@ Examples:
 - `dw_myrcon "sv_cheats 1"`
 - `/sayas announcer "match starts now"`
 
-If the player types the command wrong, Deadworks prints a usage message automatically. For example:
+If the arguments don't fit the method, Deadworks prints a usage line built from the parameter names and defaults. For example:
 
 ```text
 Usage: dw_givesouls [amount=50000]
 ```
 
-Chat commands send their errors back through chat. Console commands print their errors to console.
+Chat commands send their errors back through chat. Console commands print their errors to the console they were typed in.
 
-**Coming soon:** if the command has a `Permission` the player doesn't hold, they get `You don't have permission to use this command.` and your method doesn't run.
+**Coming soon:** if the command has a `Permission` the player doesn't hold, they get `You don't have permission to use this command.` and your method doesn't run. A player Steam hasn't confirmed yet gets `You don't have permission to use this command yet: your roles apply once Steam has confirmed your account, a few seconds after joining.` instead.
 
-Throw `CommandException` when you want to show a simple user-facing error message:
+Throw `CommandException` to show the caller a short error message:
 
 ```csharp
 if (commandParts.Length == 0)
@@ -279,7 +279,7 @@ if (commandParts.Length == 0)
 
 ## Older Attributes: `[ChatCommand]` and `[ConCommand]` {#chatcommand-and-concommand}
 
-**Coming soon:** the older `[ChatCommand]` and `[ConCommand]` attributes are removed. Code that uses them no longer compiles; switch each one to `[Command]` (with `ChatOnly = true` or `ConsoleOnly = true` if you only want one form).
+**Coming soon:** the older `[ChatCommand]` and `[ConCommand]` attributes are removed. Code that uses them doesn't compile; switch each one to `[Command]` (with `ChatOnly = true` or `ConsoleOnly = true` if you only want one form).
 
 A plugin DLL built against an older Deadworks that still uses them loads, but those commands aren't registered, and the server console prints an error for each one:
 
