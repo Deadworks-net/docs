@@ -183,44 +183,6 @@ mastardy (76561197960287933): admin.server.rcon is denied by "-admin.server.rcon
 
 Admin plugin actions are written to `logs/admin/`, one file per day. It's worth reading now and then, especially after adding new staff.
 
-## Other Roles You Might Want
-
-Roles don't have to be a ladder. A few common extras:
-
-**Event host**: runs events, but doesn't moderate.
-
-```jsonc
-"eventhost": {
-  "permissions": [
-    "admin.server.map",
-    "admin.moderation.slay",
-    "deadworks.admin.notify"
-  ]
-}
-```
-
-With no immunity, an event host can only slay players who also have none, never staff.
-
-**Server technician**: manages plugins and configs, never touches players.
-
-```jsonc
-"tech": {
-  "permissions": [
-    "admin.server.config",
-    "admin.server.cvar",
-    "deadworks.plugins.manage",
-    "deadworks.config.reload",
-    "deadworks.permissions.reload"
-  ]
-}
-```
-
-`admin.server.cvar` includes `sv_cheats` and `sv_password`, so only give this role to people you trust with those.
-
-**Supporters or VIPs** don't need anything from the Admin plugin. Give them permissions from whichever plugins provide perks on your server. Each plugin's permissions are listed in `configs/permissions/generated/`.
-
-A player can hold several roles. They get the permissions of all of them and the highest immunity among them. Roles only add: a deny in one role never takes away what another role gives.
-
 ## One Player, One Exception
 
 To give or take away a single permission for one person without making a new role, grant it directly:
@@ -233,14 +195,6 @@ dw_perm_grant mastardy -admin.server.map
 ```
 
 A player's own entry is checked before any of their roles, so anything you put there always wins.
-
-## Things to Avoid
-
-**Don't use a role to take something away from other roles.** Giving someone a `trial` role with `-admin.server.map` doesn't stop them changing map if another of their roles allows it: roles only add to each other. A deny only counts inside its own role, in roles that inherit it (unless they, or another role they inherit, allow it), and on player entries. To take something away from one person, deny it on their player entry.
-
-**Don't give `admin.server.rcon` to anyone you wouldn't make an owner.** Console commands skip permission checks, so `rcon` can do anything, including making someone an owner.
-
-**Don't hand out `*` casually.** It includes permissions from every plugin you'll ever install.
 
 ## Next
 
