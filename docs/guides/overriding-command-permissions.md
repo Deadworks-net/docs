@@ -1,6 +1,6 @@
 ---
 title: "Changing Who Can Use a Plugin's Commands"
-sidebar_label: "5. Changing Command Access"
+sidebar_label: "4. Changing Command Access"
 ---
 
 # Changing Who Can Use a Plugin's Commands
@@ -9,7 +9,7 @@ sidebar_label: "5. Changing Command Access"
 This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
 :::
 
-**Step 5 of 7** in [Admins & Permissions](/permissions). Before this: [staff roles](staff-roles).
+**Step 4 of 6** in [Admins & Permissions](/permissions). Before this: [staff roles](staff-roles).
 
 Plugins decide their own defaults. Some commands are open to everyone, others need a permission. You don't always agree with those choices:
 
@@ -220,4 +220,4 @@ If you only want to open `ir_start` and not the other two, combine both steps: o
 
 ## Next
 
-**[6. How Permissions Work](admins-and-permissions)**: the full reference for roles, wildcards, immunity and every console command.
+**[5. How Permissions Work](admins-and-permissions)**: the full reference for roles, wildcards, immunity and every console command.

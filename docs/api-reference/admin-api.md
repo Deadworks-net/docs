@@ -11,7 +11,7 @@ This isn't in a Deadworks release yet. It describes features coming in an upcomi
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Building blocks for admin plugins. The [Admin plugin](../guides/admin-plugin) that ships with Deadworks is built on these, and your plugin can use them too, so bans, announcements and logs behave the same whichever plugin issues them.
+Building blocks for admin plugins. The [Admin plugin](../guides/admin-commands) that ships with Deadworks is built on these, and your plugin can use them too, so bans, announcements and logs behave the same whichever plugin issues them.
 
 ## Penalties
 
@@ -188,5 +188,5 @@ Bots don't go through `OnClientConnect`, so a whitelist like this never refuses 
 
 ## See Also
 
-- [3. The Admin Plugin](../guides/admin-plugin): the shipped commands built on these APIs
+- [2. Admin Commands](../guides/admin-commands): the shipped commands built on these APIs
 - [Permissions API](permissions): `Caller`, `HasPermission`, `Target` and immunity

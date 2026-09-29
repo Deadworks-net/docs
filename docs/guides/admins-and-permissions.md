@@ -1,6 +1,6 @@
 ---
 title: "How Permissions Work"
-sidebar_label: "6. How Permissions Work"
+sidebar_label: "5. How Permissions Work"
 ---
 
 # How Permissions Work
@@ -9,7 +9,7 @@ sidebar_label: "6. How Permissions Work"
 This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
 :::
 
-**Step 6 of 7** in [Admins & Permissions](/permissions). This is the full reference; the earlier guides cover everything most servers need.
+**Step 5 of 6** in [Admins & Permissions](/permissions). This is the full reference; the earlier guides cover everything most servers need.
 
 Deadworks decides who can use which plugin commands with **roles** and **permissions**. Plugins say which permission each command needs; you decide who has it, without changing the plugin.
 
@@ -400,4 +400,4 @@ Deadworks doesn't fall back to the JSON files. If loading one player fails, they
 
 ## Next
 
-**[7. Commands for One Role](role-only-commands)**: for plugin developers, a plugin whose commands only some players can use.
+**[6. Commands for One Role](role-only-commands)**: for plugin developers, a plugin whose commands only some players can use.

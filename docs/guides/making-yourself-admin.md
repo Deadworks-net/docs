@@ -9,7 +9,7 @@ sidebar_label: "1. Make Yourself Admin"
 This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
 :::
 
-**Step 1 of 7** in [Admins & Permissions](/permissions). Start here.
+**Step 1 of 6** in [Admins & Permissions](/permissions). Start here.
 
 As the server owner you can already run every command from the **server console**. This guide gives your own Steam account the same access, so you can use admin commands from in-game chat and your game console as well.
 
@@ -151,4 +151,4 @@ dw_role_grant 76561197960287930 admin
 
 ## Next
 
-**[2. Administering Your Server](administering-your-server)**: using the admin commands in a match, and picking players with `@enemy`, `#slot` and more.
+**[2. Admin Commands](admin-commands)**: every admin command, and how to pick players with `@enemy`, `#slot` and more.

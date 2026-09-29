@@ -67,8 +67,7 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'guides/making-yourself-admin',
-        'guides/administering-your-server',
-        'guides/admin-plugin',
+        'guides/admin-commands',
         'guides/staff-roles',
         'guides/overriding-command-permissions',
         'guides/admins-and-permissions',

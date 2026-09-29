@@ -333,6 +333,6 @@ public override void OnLoad(bool isReload)
 
 ## See Also
 
-- [7. Commands for One Role](../guides/role-only-commands): step by step, a plugin with permissions and a role that can use it
+- [6. Commands for One Role](../guides/role-only-commands): step by step, a plugin with permissions and a role that can use it
 - [Penalties & Admin Tools API](admin-api): bans, gags, announcements and the admin log
 - [Commands](commands): `[Command]` and argument binding
