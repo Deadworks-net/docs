@@ -176,6 +176,10 @@ public override bool OnClientConnect(ClientConnectEvent e)
 
 Deadlock doesn't show the reason to the player, who is disconnected without explanation, so don't rely on it to explain anything to them.
 
+:::note
+Bots don't go through `OnClientConnect`, so a whitelist like this never refuses them. Their first event is `OnClientPutInServer`, with `IsBot` set to `true`.
+:::
+
 ## See Also
 
 - [3. The Admin Plugin](../guides/admin-plugin): the shipped commands built on these APIs

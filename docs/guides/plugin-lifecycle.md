@@ -136,9 +136,9 @@ A hot reload runs `OnUnload` and then `OnLoad(isReload: true)` off the game thre
 ```
 Player connects
     │
-    ├── OnClientConnect()         ← Connecting; return false to refuse
+    ├── OnClientConnect()         ← Connecting; return false to refuse (not called for bots)
     │
-    ├── OnClientPutInServer()     ← Initial connection
+    ├── OnClientPutInServer()     ← Initial connection; bots start here (args.IsBot)
     │
     ├── OnClientFullConnect()     ← Fully in-game, can interact
     │
