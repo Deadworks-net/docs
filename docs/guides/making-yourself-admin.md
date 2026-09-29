@@ -13,9 +13,9 @@ This isn't in a Deadworks release yet. It describes features coming in an upcomi
 
 As the server owner you can already run every command from the **server console**. This guide gives your own Steam account the same access, so you can use admin commands from in-game chat and your game console as well.
 
-It takes about a minute. There are two ways to do it; pick one.
+It takes about a minute.
 
-## Option A: From the Server Console (easiest)
+## From the Server Console
 
 You don't need to look up your SteamID for this. Until `players.jsonc` has anyone in it, the server reminds you at startup, and again with your SteamID when you join: `[Permissions] No admins yet. To make lapka one, run this in the server console or over RCON: dw_role_grant 76561197960287931 admin`
 
@@ -43,35 +43,9 @@ You don't need to look up your SteamID for this. Until `players.jsonc` has anyon
 
 The change is saved to `configs/permissions/players.jsonc`, so it's still there after a restart.
 
-## Option B: By Editing the File
+## Or Edit the Files Yourself
 
-Use this if you want to set things up before anyone joins.
-
-1. Find your SteamID64, the 17-digit number starting with `7656…`. You can get it by pasting your Steam profile link into a site like [steamid.io](https://steamid.io).
-2. Start the server once so Deadworks creates its config files, then open:
-
-   ```text
-   game/bin/win64/configs/permissions/players.jsonc
-   ```
-
-3. Add your SteamID with the `admin` role:
-
-   ```jsonc
-   {
-     "76561197960287930": { "roles": ["admin"] }
-   }
-   ```
-
-   To add more people, separate the entries with commas:
-
-   ```jsonc
-   {
-     "76561197960287930": { "roles": ["admin"] },
-     "76561197960287931": { "roles": ["admin"] }
-   }
-   ```
-
-4. Save the file and run `dw_perm_reload` in the server console, or restart the server.
+You can also make yourself admin, and set up everyone else, by editing the permission files directly, for example to do it before anyone joins. See [5. How Permissions Work](admins-and-permissions) to learn about the files.
 
 ## Check That It Worked
 
