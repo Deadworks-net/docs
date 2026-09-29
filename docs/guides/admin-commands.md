@@ -84,48 +84,6 @@ Durations are in minutes: `60` is an hour, `1440` a day, `10080` a week, `0` is 
 
 `cvar` can't touch `rcon_password`.
 
-:::danger `rcon` is full control of the server
-Console commands skip every permission check, so someone with `admin.server.rcon` can make themselves an owner. Only give it to people you'd give `*` to.
-:::
-
-## What Everyone Sees
-
-Players see what staff did, but not who: `ADMIN: banned lapka for 1 hour: griefing`. Staff with `deadworks.admin.notify` see `wisp: banned lapka for 1 hour: griefing`. `rcon`, `unban`, password cvars and penalties on a SteamID that isn't on the server are logged but not announced.
-
-Every action is written to `logs/admin/admin-YYYY-MM-DD.log`, with the admin, the target's SteamID and the reason. Use it to find the SteamID of someone who left, or to settle an appeal.
-
-## Settings
-
-In `configs/deadworks.jsonc`:
-
-```jsonc
-"admin": {
-  "show_activity": {
-    "players": "anonymous",   // named | anonymous | none
-    "notified": "named"
-  },
-  "log_dir": "logs/admin"
-},
-"penalties": {
-  "history_days": 90          // how long ended penalties are kept; 0 = forever
-}
-```
-
-In `configs/AdminPlugin/AdminPlugin.jsonc` (reload with `dw_reloadconfig AdminPlugin`):
-
-```jsonc
-{
-  "default_kick_reason": "Kicked by an admin",
-  "default_ban_reason": "Banned by an admin",
-  "default_gag_reason": "Gagged by an admin",
-  "default_mute_reason": "Muted by an admin",
-  "require_reason": false,        // true: kick, ban, gag and mute need a reason
-  "map_change_delay_seconds": 3   // 0 to 60
-}
-```
-
-To stop a command being used, don't give anyone its permission. To change what it requires, use [`overrides.jsonc`](overriding-command-permissions). To remove the plugin, run `dw_plugin disable AdminPlugin`; saved penalties are still enforced.
-
 ## Next
 
 **[3. Setting Up Staff Roles](staff-roles)**: give other people some of these commands.
