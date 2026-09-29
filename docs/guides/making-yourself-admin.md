@@ -15,7 +15,7 @@ As the server owner you can already run every command from the **server console*
 
 It takes about a minute.
 
-## From the Server Console
+## Make Yourself Admin
 
 1. Start your server and join it from the game.
 2. In the **server console** window, run:
