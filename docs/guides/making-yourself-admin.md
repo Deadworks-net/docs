@@ -9,7 +9,7 @@ sidebar_label: "1. Make Yourself Admin"
 This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
 :::
 
-**Step 1 of 6** in [Admins & Permissions](/permissions). Start here.
+**Step 1 of 4** in [Admins & Permissions](/permissions). Start here.
 
 As the server owner you can already run every command from the **server console**. This guide gives your own Steam account the same access, so you can use admin commands from in-game chat and your game console as well.
 
@@ -104,7 +104,7 @@ dw_role_grant 76561197960287930 admin
 
 ## Or Edit the Files Yourself
 
-You can also make yourself admin, and set up everyone else, by editing the permission files directly, for example to do it before anyone joins. See [5. How Permissions Work](admins-and-permissions) to learn about the files.
+You can also make yourself admin, and set up everyone else, by editing the permission files directly, for example to do it before anyone joins. See [3. How Permissions Work](admins-and-permissions) to learn about the files.
 
 ## Next
 

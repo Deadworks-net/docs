@@ -50,4 +50,4 @@ For plugin settings, see [ConVars](convars).
 | `dw_penalties_reload` (coming soon) | Server console or `deadworks.penalties.reload` | Re-reads bans, gags and mutes after you edit `penalties.jsonc` by hand. |
 | `dw_perm_*`, `dw_role_*` (coming soon) | See [How Permissions Work](../guides/admins-and-permissions#console-commands) | Manages roles and permissions. |
 
-**Coming soon:** the built-in commands are ordinary commands, so server owners can change who can run them in [`overrides.jsonc`](../guides/overriding-command-permissions), like any plugin's.
+**Coming soon:** the built-in commands are ordinary commands, so server owners can change who can run them in [`overrides.jsonc`](../guides/admins-and-permissions#overridesjsonc), like any plugin's.

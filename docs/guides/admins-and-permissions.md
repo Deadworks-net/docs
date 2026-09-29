@@ -1,6 +1,6 @@
 ---
 title: "How Permissions Work"
-sidebar_label: "5. How Permissions Work"
+sidebar_label: "3. How Permissions Work"
 ---
 
 # How Permissions Work
@@ -9,7 +9,7 @@ sidebar_label: "5. How Permissions Work"
 This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
 :::
 
-**Step 5 of 6** in [Admins & Permissions](/permissions). A reference for the permission files and commands.
+**Step 3 of 4** in [Admins & Permissions](/permissions). A reference for the permission files and commands.
 
 Plugins say which **permission** each command needs; you decide who has it with **roles**. Commands that don't need a permission work for everyone, and the server console can always run everything.
 
@@ -105,7 +105,7 @@ The `dw_role_*` and `dw_perm_*` commands edit this file for you. They keep your 
 }
 ```
 
-Use the command's name without `!`, `/` or `dw_`. See [Changing Command Access](overriding-command-permissions).
+Use the command's name without `!`, `/` or `dw_`.
 
 ## deadworks.jsonc
 
@@ -154,4 +154,4 @@ Players using the grant and revoke commands can only change players with lower i
 
 ## Next
 
-**[6. Commands for One Role](role-only-commands)**: for plugin developers, a plugin whose commands only some players can use.
+**[4. Setting Up Staff Roles](staff-roles)**: give other people some of the admin commands.

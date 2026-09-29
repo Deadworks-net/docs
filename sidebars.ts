@@ -63,14 +63,13 @@ const sidebars: SidebarsConfig = {
         title: 'Admins & Permissions (Coming Soon)',
         slug: '/permissions',
         description:
-          'Not released yet: these features are coming in an upcoming Deadworks release. Who can use which commands on your server. Read these in order: each guide builds on the one before, from making yourself admin to writing your own permission-aware plugins.',
+          'Not released yet: these features are coming in an upcoming Deadworks release. Who can use which commands on your server. Server owners: read the four numbered guides in order. Plugin developers: see Plugin Commands for a Role and the API pages.',
       },
       items: [
         'guides/making-yourself-admin',
         'guides/admin-commands',
-        'guides/staff-roles',
-        'guides/overriding-command-permissions',
         'guides/admins-and-permissions',
+        'guides/staff-roles',
         'guides/role-only-commands',
         'api-reference/permissions',
         'api-reference/admin-api',

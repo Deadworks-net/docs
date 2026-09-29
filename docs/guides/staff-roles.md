@@ -1,6 +1,6 @@
 ---
 title: "Setting Up Staff Roles"
-sidebar_label: "3. Staff Roles"
+sidebar_label: "4. Staff Roles"
 ---
 
 # Setting Up Staff Roles
@@ -9,7 +9,7 @@ sidebar_label: "3. Staff Roles"
 This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
 :::
 
-**Step 3 of 6** in [Admins & Permissions](/permissions). Before this: [admin commands](admin-commands).
+**Step 4 of 4** in [Admins & Permissions](/permissions). Before this: [how permissions work](admins-and-permissions).
 
 This guide sets up a typical staff team for the [Admin plugin](admin-commands): trial moderators, moderators, admins and an owner, where each rank can do a bit more than the one below it and can't act against the ranks above.
 
@@ -198,4 +198,4 @@ A player's own entry is checked before any of their roles, so anything you put t
 
 ## Next
 
-**[4. Changing Command Access](overriding-command-permissions)**: lock or unlock a specific plugin's commands.
+Writing a plugin? [Commands for One Role](role-only-commands) shows how to give its commands permissions.

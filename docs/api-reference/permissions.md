@@ -77,7 +77,7 @@ Wildcards and denies are for server owners to use in their config. Plugins alway
 | `Permission` | `string` | Sets the permission a player needs to run the command. Empty means anyone; the server console can always run it. |
 | `TargetImmunity` | `TargetImmunity` | Sets whether [`Target`](#targeting-players-and-immunity) arguments leave out players the caller can't target. Default `Auto`. |
 
-Server owners can change a command's permission in [`overrides.jsonc`](../guides/overriding-command-permissions) without touching your plugin, so don't rely on a command being public or private. The check always happens before your method runs, using the current value.
+Server owners can change a command's permission in [`overrides.jsonc`](../guides/admins-and-permissions#overridesjsonc) without touching your plugin, so don't rely on a command being public or private. The check always happens before your method runs, using the current value.
 
 ## The `Caller` Parameter
 
@@ -333,6 +333,6 @@ public override void OnLoad(bool isReload)
 
 ## See Also
 
-- [6. Commands for One Role](../guides/role-only-commands): step by step, a plugin with permissions and a role that can use it
+- [Commands for One Role](../guides/role-only-commands): step by step, a plugin with permissions and a role that can use it
 - [Penalties & Admin Tools API](admin-api): bans, gags, announcements and the admin log
 - [Commands](commands): `[Command]` and argument binding

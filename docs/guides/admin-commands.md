@@ -9,7 +9,7 @@ sidebar_label: "2. Admin Commands"
 This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
 :::
 
-**Step 2 of 6** in [Admins & Permissions](/permissions). Before this: [make yourself admin](making-yourself-admin).
+**Step 2 of 4** in [Admins & Permissions](/permissions). Before this: [make yourself admin](making-yourself-admin).
 
 These commands come with Deadworks' built-in **Admin** plugin. Every command can be typed three ways:
 
@@ -86,4 +86,4 @@ Durations are in minutes: `60` is an hour, `1440` a day, `10080` a week, `0` is 
 
 ## Next
 
-**[3. Setting Up Staff Roles](staff-roles)**: give other people some of these commands.
+**[3. How Permissions Work](admins-and-permissions)**: the permission files and commands.
