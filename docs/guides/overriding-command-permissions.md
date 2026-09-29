@@ -163,33 +163,7 @@ Leave the command as it is and give its permission to the `default` role in `rol
 }
 ```
 
-Run `dw_perm_reload`. Everyone can use `!ir_start`, and also `!ir_swap` and `!ir_reset`, which need the same permission. Because it's a permission rather than an open command, you can still take it away from one player:
-
-```text
-dw_perm_grant troublemaker -itemrotation.manage
-```
-
-The `-` makes it a deny. A player's own entry is checked before any of their roles, so it beats the `default` role's grant.
-
-If you only want to open `ir_start` and not the other two, combine both steps: override `ir_start` to a permission of its own, then give that to `default`.
-
-```jsonc
-// overrides.jsonc
-{
-  "commands": {
-    "ir_start": "itemrotation.start"
-  }
-}
-```
-
-```jsonc
-// roles.jsonc
-{
-  "default": {
-    "permissions": ["itemrotation.start"]
-  }
-}
-```
+Run `dw_perm_reload`. Everyone can use `!ir_start`, and also `!ir_swap` and `!ir_reset`, which need the same permission.
 
 ## Check Your Changes
 
@@ -204,19 +178,6 @@ If you only want to open `ir_start` and not the other two, combine both steps: o
   ```
 
 - In game, `dw_help` in the console only lists the commands you're allowed to run.
-
-## Good to Know
-
-- **Use the command's name**, without `!`, `/` or `dw_`. `"givesouls"`, `"!givesouls"` and `"dw_givesouls"` all work and mean the same thing.
-- **One entry covers the aliases.** If a command has aliases (listed in `"aliases"`), overriding any of its names changes all of them.
-- **Same name in two plugins.** If two plugins both have a command called `ban`, an override for `ban` applies to both. To change only one, put the plugin's name in front: `"Admin:ban"`. Use the `"plugin"` name at the top of its generated file, or its DLL name (`"AdminPlugin:ban"`). A plugin-qualified entry beats a bare one.
-- **Built-in commands too.** `dw_plugin`, `dw_reloadconfig`, `dw_help`, `dw_penalties_reload` and the permission commands are listed in `generated/deadworks.jsonc` under the plugin name `Deadworks`, and can be overridden like anything else, e.g. `"Deadworks:plugin": ""`. Opening up `perm_grant`, `role_grant` and friends lets players hand out permissions, so think hard before you do.
-- **Typos are reported.** An entry that matches no command is listed in the server console at startup and on `dw_perm_reload`, e.g. `overrides.jsonc: 'givesoul' doesn't match any command. Check the name in generated/<Plugin>.jsonc.`
-- **Keep the file valid.** If `overrides.jsonc` can't be read when the server starts, players can't run any command until you fix it and run `dw_perm_reload` (the server console still can). Players are told `Commands are unavailable until the server fixes an error in its permission settings.` The console says `[Permissions] ERROR: failed to parse overrides.jsonc: <reason>. Players can't run any commands until it's fixed and dw_perm_reload is run; the server console still can.` If it breaks later, `dw_perm_reload` replies with the file, line and column of the error, e.g. `Failed to reload permissions: overrides.jsonc line 4, column 3: ... The previous settings are still in use.`
-- **Overrides don't change immunity.** Whether a command can target players with higher immunity is up to the plugin: by default, commands the plugin locks behind a permission can't, and ones it makes public can. An override keeps that, so opening up `slay` to everyone still doesn't let anyone use it on your admins. The generated file's `"targetImmunity"` shows which applies.
-- **Server-console-only commands stay that way.** Some commands are marked `Server console only; players can never run it.` in the generated file. Overrides can't open those to players.
-- **Older plugins.** Commands declared with `[ChatCommand]` or `[ConCommand]` aren't registered at all; the server console prints an `ERROR:` line naming each one when the plugin loads. Ask the author to update to `[Command]`, or disable the plugin with `dw_plugin disable <name>`.
-- **Removing an override** puts the command back to what the plugin chose. Delete the line and run `dw_perm_reload`.
 
 ## Next
 
