@@ -17,23 +17,12 @@ It takes about a minute.
 
 ## From the Server Console
 
-You don't need to look up your SteamID for this. Until `players.jsonc` has anyone in it, the server reminds you at startup, and again with your SteamID when you join: `[Permissions] No admins yet. To make lapka one, run this in the server console or over RCON: dw_role_grant 76561197960287931 admin`
-
-:::tip Where's the server console?
-- **Windows:** the window `deadworks.exe` runs in. Type straight into it.
-- **Docker:** `docker compose exec deadworks console dw_role_grant <your name> admin` (see [Linux with Docker](linux-docker#console)).
-- **A rented server:** the console in your server's control panel.
-- **Anywhere with RCON:** send the same command over RCON.
-:::
-
 1. Start your server and join it from the game.
 2. In the **server console** window, run:
 
    ```text
    dw_role_grant <your name> admin
    ```
-
-   Use your in-game name, or part of it, for example `dw_role_grant wisp admin`. If the name matches more than one player, use your slot number instead, like `#0`. A name with a space in it needs quotes: `dw_role_grant "Big Dave" admin`.
 
 3. The server replies with something like:
 
@@ -42,10 +31,6 @@ You don't need to look up your SteamID for this. Until `players.jsonc` has anyon
    ```
 
 The change is saved to `configs/permissions/players.jsonc`, so it's still there after a restart.
-
-## Or Edit the Files Yourself
-
-You can also make yourself admin, and set up everyone else, by editing the permission files directly, for example to do it before anyone joins. See [5. How Permissions Work](admins-and-permissions) to learn about the files.
 
 ## Check That It Worked
 
@@ -58,12 +43,6 @@ dw_perm_list <your name>
 You should see `Roles: admin` and `Immunity: 100`.
 
 In game, open your console and run `dw_help`. It lists every command on the server, including admin-only ones. You can also try an admin command in chat.
-
-## What "admin" Gives You
-
-The `admin` role comes with every server. It has the permission `*`, which means **everything**: every command from every plugin, now and in the future, plus the built-in commands for managing plugins and permissions.
-
-It also has immunity 100, so staff you add later with lower immunity can't kick or ban you, or change your roles.
 
 ## FAQ
 
@@ -122,6 +101,10 @@ dw_role_grant 76561197960287930 admin
 ```
 
 </details>
+
+## Or Edit the Files Yourself
+
+You can also make yourself admin, and set up everyone else, by editing the permission files directly, for example to do it before anyone joins. See [5. How Permissions Work](admins-and-permissions) to learn about the files.
 
 ## Next
 
