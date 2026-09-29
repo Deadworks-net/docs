@@ -76,12 +76,14 @@ If `STEAM_PASSWORD` is empty, this command shows a QR code to scan with the Stea
 
 ## Files
 
-Two folders are created next to `compose.yaml`.
+These folders are created next to `compose.yaml`.
 
 | Folder | Contents |
 | --- | --- |
 | `plugins` | Plugin `.dll` files |
 | `configs` | `deadworks.jsonc`, plugin configs, `server.cfg` |
+| `maps` | Custom map `.vpk` files, loadable by name like the stock ones |
+| `logs` | Coming soon: the [admin action log](admin-commands#what-everyone-sees) |
 
 Paths used elsewhere in this documentation map as follows:
 
@@ -89,6 +91,7 @@ Paths used elsewhere in this documentation map as follows:
 | --- | --- |
 | `game/bin/win64/managed/plugins/` | `plugins/` |
 | `game/bin/win64/configs/` | `configs/` |
+| `game/bin/win64/logs/` | `logs/` |
 
 ## Settings
 

@@ -132,6 +132,8 @@ Player connects
     └── OnClientDisconnect()    ← Player leaves
 ```
 
+**Coming soon:** `OnClientAuthorized(ClientAuthorizedEvent)` is called once per connection when Steam confirms who the player is, usually a few seconds after they connect, so it can come before or after `OnClientFullConnect`. Their roles and permissions only apply from then on; see [Permissions](../api-reference/permissions#reacting-to-changes).
+
 ### Example: Player Tracking
 
 ```csharp
@@ -154,7 +156,7 @@ public override void OnClientDisconnect(ClientDisconnectedEvent args)
 
 ## Async Work — Get Back On the Game Thread
 
-After `await`, C# may resume on a thread-pool thread. Touching any game object off the main thread will corrupt memory or crash. **Always** wrap game-touching code in `Timer.NextTick(...)` after an `await`:
+After `await`, C# may resume on a thread-pool thread. Touching any game object off the main thread will corrupt memory or crash. **Always** wrap game-touching code in `Timer.NextTick(...)` after an `await` (**coming soon:** except inside a [command](../api-reference/commands#async-commands-coming-soon), where every `await` already comes back on the game thread):
 
 ```csharp
 public override void OnLoad(bool isReload)

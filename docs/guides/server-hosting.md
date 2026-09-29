@@ -86,7 +86,7 @@ connect your.public.ip:27067
 
 ## Admins (Coming Soon)
 
-To use admin commands in-game, give your Steam account the `admin` role. See [Making Yourself Admin](making-yourself-admin). For staff with limited access, see [How Permissions Work](admins-and-permissions).
+To use admin commands in-game, give your Steam account the `admin` role. See [Setting Up Admins](setting-up-admins), which also covers adding moderators.
 
 ## Finding Plugins
 

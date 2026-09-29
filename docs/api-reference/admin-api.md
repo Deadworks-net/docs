@@ -11,45 +11,52 @@ This isn't in a Deadworks release yet. It describes features coming in an upcomi
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Building blocks for admin plugins. The [Admin plugin](../guides/admin-plugin) that ships with Deadworks is built on these, and your plugin can use them too, so bans, announcements and logs behave the same whichever plugin issues them.
+The building blocks of the [Admin plugin](../guides/admin-commands). Use them in your own plugins and bans, announcements and logs behave the same whichever plugin issues them.
 
 ## Penalties
 
-Bans, gags and mutes are stored and **enforced by Deadworks**. Your plugin only decides when to add or lift them.
+Bans, gags and mutes are stored and **enforced by Deadworks**: banned players can't join, gagged players' chat never reaches chat or any plugin, and muted players' voice is dropped before anyone hears it. Each is told why and for how long. Your plugin only decides when to add or lift them.
 
 ```csharp
-var id = Permissions.GetSteamId(player.Slot);
-if (!caller.CanTarget(player))
-    throw new CommandException("You can't ban them.");
-
-Penalties.Add(PenaltyType.Ban, id, TimeSpan.FromHours(1), "spamming", caller, player.PlayerName);
+[Command("votekick", Description = "...")]
+public void CmdVoteKick(Caller caller, Target player)
+{
+    var target = player.Single();
+    var id = Permissions.GetSteamId64(target.Slot);
+    Penalties.Add(PenaltyType.Ban, id, TimeSpan.FromMinutes(30), Caller.Console, "Vote kicked", target.PlayerName);
+}
 ```
 
-| Member | Description |
-|--------|-------------|
-| `Add(type, steamId64, duration, reason, admin, playerName = null)` | Adds a penalty. `duration: null` is permanent. Replaces an active penalty of the same type. A ban kicks the player if they're on the server. |
-| `Remove(type, steamId64, admin)` | Lifts the active penalty. `false` if there wasn't one. |
-| `GetActive(type, steamId64)` / `GetActive(type?)` | The active penalty, or every active one |
+| Member | |
+|--------|---|
+| `Add(type, steamId64, duration, by, reason = "", playerName = null)` | Adds a penalty; `duration: null` is permanent. Replaces an active one of the same type, even with a shorter one. A ban kicks the player if they're on the server. |
+| `Remove(type, steamId64, by, reason = "")` | Lifts the active penalty. False if there wasn't one. |
+| `GetActive(type, steamId64)` | The active penalty, or null |
+| `GetAllActive(type = null)` | Every active penalty, oldest first |
 | `IsBanned`, `IsGagged`, `IsMuted` | Shortcuts for `GetActive(...) != null` |
-| `GetHistoryAsync(steamId64)` | Everything the store has for a player, newest first, including lifted and expired ones |
-| `Added`, `Removed` | Events. `Removed` also fires when a penalty runs out. |
-| `RegisterStore(this, name, store)` | Supply penalties from a database or web panel (see below) |
+| `WouldShorten(type, steamId64, duration)` | The active penalty a new one would cut short, if any. The Admin plugin asks for `unban` permission then. |
+| `GetHistoryAsync(steamId64)` | Everything the store has for them, newest first, including lifted and expired penalties |
+| `DescribeDuration(duration)` | `"for 45 minutes"`, `"for 1h 5m"`, `"permanently"`, as the Admin plugin words it |
+| `RegisterStore(this, name, store)` | See [Custom Stores](#custom-stores) |
 
-**What Deadworks enforces:**
+- **Immunity isn't checked for you.** When penalizing on another player's behalf, check `caller.CanTarget(player)`, or `caller.CanTarget(steamId64)` for someone who isn't online. A `Target` parameter does it for commands with a permission.
+- **`Add` throws `CommandException`** if the SteamID belongs to a player on the server whom Steam hasn't confirmed yet (unless `by` is the console), or if the store is unavailable. Let it reach the caller.
+- The penalty applies at once and is saved in the background. If saving fails it still applies until restart, and the server console prints an error.
 
-| Type | Enforced |
-|------|----------|
-| `Ban` | The player is refused at connect, and checked again once Steam has verified them |
-| `Gag` | Their chat is dropped before chat commands' broadcast and before any plugin's `OnChatMessage`. Their chat commands still run. |
-| `Mute` | Stored, but **not enforced yet**: voice blocking is still to come |
+`Penalty` is a record: `Id`, `Type`, `SteamId64`, `PlayerName`, `CreatedUtc`, `ExpiresUtc` (null = permanent), `Reason`, `AdminSteamId64` (0 = console), `AdminName`, `RemovedUtc`, `RemovedBySteamId64`, `RemovedByName`, `RemovalReason`, `ReplacedBy`, plus `IsPermanent`, `IsActiveAt(now)`, `HowEnded(now)` (`Lifted`, `Replaced`, `Expired` or null) and `DescribeRemaining(now)`.
 
-**Immunity isn't checked by `Penalties`.** Check `caller.CanTarget(player)`, or `Permissions.CanTarget(callerId, targetId)` for offline players, before penalizing someone on another player's behalf. A `Target` argument does this for you when the command has a permission.
+### Hearing About Penalties
 
-`Penalty` is a record with `Type`, `SteamId64`, `PlayerName`, `CreatedUtc`, `ExpiresUtc` (null = permanent), `Reason`, `AdminSteamId64` (0 = console), `AdminName`, `RemovedUtc`, `RemovedBySteamId64`, plus `IsActiveAt(now)` and `DescribeRemaining(now)` ("for 1h 5m", "permanently").
+```csharp
+public override void OnPenaltyAdded(Penalty penalty) { }
+public override void OnPenaltyRemoved(Penalty penalty) { }   // lifted, replaced or ran out
+```
+
+Both fire for penalties from any plugin, and for changes found when penalties are reloaded, such as a ban added by another server sharing the store.
 
 ### Custom Stores
 
-By default penalties live in `configs/penalties/penalties.jsonc`. To share bans across servers, implement `IPenaltyStore`:
+Penalties live in `configs/penalties/penalties.jsonc` by default. To share bans across servers, implement `IPenaltyStore`:
 
 ```csharp
 public interface IPenaltyStore
@@ -62,62 +69,50 @@ public interface IPenaltyStore
 }
 ```
 
-Register it in `OnLoad` with `Penalties.RegisterStore(this, "mysql", store)`. It's used when `penalties.store` in `configs/deadworks.jsonc` is `"mysql"`, and Deadworks falls back to the JSON store when your plugin unloads.
+Register it in `OnLoad` with `Penalties.RegisterStore(this, "mysql", store)`. It's used when `penalties.store` in `configs/deadworks.jsonc` is `"mysql"`, and dropped when your plugin unloads.
 
 ## Admin Activity
 
-Announce what an admin did and record it in the admin log:
+Announce an admin action and record it in the admin log:
 
 ```csharp
 AdminActivity.Show(caller, $"slayed {player.PlayerName}", details: $"target={id}");
 AdminActivity.Log(caller, $"ran rcon: {command}");   // logged, not announced
 ```
 
-| Member | Description |
-|--------|-------------|
-| `Show(admin, action, details = null)` | Announces `action` in chat and logs it. `details` goes in the log only. |
-| `Log(admin, action, details = null)` | Logs without announcing |
-| `Logged` | Event with every `AdminLogEntry`, e.g. to forward to Discord |
+`details` goes in the log only. Players see `ADMIN: slayed lapka`, and holders of `deadworks.admin.notify` see `wisp: slayed lapka`; owners can change both under `admin.show_activity` in `configs/deadworks.jsonc`. Every entry is written to `logs/admin/admin-YYYY-MM-DD.log`, and reaches every plugin's `OnAdminAction`, e.g. to forward it to Discord:
 
-Players see `ADMIN: slayed lapka`; players with `deadworks.admin.notify` see `wisp: slayed lapka`. Server owners can change both under `admin.show_activity` in `configs/deadworks.jsonc`. Every action is also written to `logs/admin/admin-YYYY-MM-DD.log`.
+```csharp
+public override void OnAdminAction(AdminLogEntry entry) => _discord.Post(entry.ToString());
+```
+
+`AdminLogEntry` has `TimeUtc`, `AdminSteamId64`, `AdminName`, `Action` and `Details`.
 
 ## Server Helpers
 
-| Member | Description |
-|--------|-------------|
-| `Server.Kick(slot, message)` / `controller.Kick(message)` | Disconnects a player, printing the message to their chat and console first and passing it to the engine as the reason |
-| `Server.ExecuteCommand(command, onOutput)` | Runs a server command and gives you what it printed. The callback comes on a later frame. |
-| `Server.IsMapValid(map)` | Whether a map exists. Names containing spaces, `;`, quotes or `..` are always rejected, so a valid name is safe to put in a command. |
+| Member | |
+|--------|---|
+| `controller.Kick(message)`, `Server.Kick(slot, message)` | Disconnects a player, showing them the message in chat and console and passing it to the engine as the reason |
+| `Server.ExecuteCommand(command, onOutput)` | Runs a server command and hands you what it printed, on a later frame |
 | `Server.GetMapList()` | The game's maps plus `serverbrowser.extra_maps` |
+| `Server.IsMapValid(map)` | Whether a map exists. Names with spaces, `;`, quotes or `..` are always rejected, so a valid name is safe to put in a command. |
 | `Server.ChangeMap(map)` | Changes map if `IsMapValid` accepts it |
 
-## Steam Verification
+## Refusing a Connection
 
-A player's SteamID isn't confirmed until Steam validates them, a few seconds after they connect.
-
-| Member | Description |
-|--------|-------------|
-| `Players.IsAuthenticated(slot)` | Whether Steam has validated the player (always true when `permissions.require_steam_auth` is off) |
-| `Players.ClientAuthorized` | Event `(slot, steamId64)`, once per connection when validation happens. Unsubscribe in `OnUnload`. |
-| `Permissions.GetSteamId(slot)` | The SteamID the player connected with |
-
-## Refusing a Connection With a Reason
-
-Return `false` from `OnClientConnect` and set `RejectReason` to tell the engine why:
+Return `false` from `OnClientConnect` and set `RejectReason` to tell the player why:
 
 ```csharp
 public override bool OnClientConnect(ClientConnectEvent e)
 {
-    if (!_whitelist.Contains(e.SteamId))
-    {
-        e.RejectReason = "This server is whitelisted.";
-        return false;
-    }
-    return true;
+    if (_whitelist.Contains(e.SteamId))
+        return true;
+    e.RejectReason = "This server is whitelisted.";
+    return false;
 }
 ```
 
 ## See Also
 
-- [3. The Admin Plugin](../guides/admin-plugin): the shipped commands built on these APIs
-- [Permissions API](permissions): `HasPermission`, `Target` and immunity
+- [Admin Commands](../guides/admin-commands): the shipped commands built on these APIs
+- [Permissions API](permissions): `Caller`, `Target`, `HasPermission` and immunity
