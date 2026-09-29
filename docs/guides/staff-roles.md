@@ -157,7 +157,7 @@ The same rules apply to single permissions with `dw_perm_grant`: an admin can't 
 Removing -admin.server.rcon would give lapka (76561197960287931) admin.server.rcon, which you don't hold yourself.
 ```
 
-When a rule stops someone, the reply says which one, for example `You can't change mastardy (76561197960287933): you need higher immunity than theirs (90).` See [How Permissions Work](admins-and-permissions#console-commands) for every message.
+When a rule stops someone, the reply says which one, for example `You can't change mastardy (76561197960287933): you need higher immunity than theirs (90).`
 
 Role and permission changes (`dw_role_*`, `dw_perm_*`) are written to the admin log in `logs/admin/`, with who made them, so you can always see who promoted whom.
 

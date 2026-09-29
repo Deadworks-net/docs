@@ -155,7 +155,7 @@ Deadworks warns in the server console, once per permission, when a plugin checks
 
 The warning comes on the tick after the check, so checking your own permissions in `OnLoad`, before your commands have registered, doesn't trigger it.
 
-Server owners get the matching warnings for grants in their own files; see [Warnings in the Console](../guides/admins-and-permissions#warnings-in-the-console).
+Server owners get the matching warnings for grants in their own files; the server console prints them after startup and on every `dw_perm_reload`.
 
 ### The `Permissions` Class
 
