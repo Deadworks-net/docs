@@ -91,8 +91,6 @@ Each key is a SteamID (SteamID64, `STEAM_0:…` or `[U:1:…]`).
 | `permissions` | Extra permissions, or `-denies`, for this player only. These beat their roles. |
 | `immunity` | Replaces the immunity their roles give |
 
-The `dw_role_*` and `dw_perm_*` commands edit this file for you. They keep your entries but not your comments.
-
 ## overrides.jsonc
 
 ```jsonc
@@ -104,8 +102,6 @@ The `dw_role_*` and `dw_perm_*` commands edit this file for you. They keep your 
   }
 }
 ```
-
-Use the command's name without `!`, `/` or `dw_`.
 
 ## deadworks.jsonc
 
@@ -121,19 +117,13 @@ In `configs/deadworks.jsonc`:
 | Field | Description |
 |-------|-------------|
 | `store` | Where roles and players come from. `json` is the files on this page; a plugin can add another, such as a database. |
-| `require_steam_auth` | See [Steam Validation](#steam-validation) |
-
-### Steam Validation
-
-A player's roles only apply once Steam confirms their account, a few seconds after they join. Until then they only have `default`, so nobody can fake an admin's SteamID.
-
-On a LAN server, set `sv_lan 1` to skip the wait, or set `require_steam_auth` to `false` and restart. Never do either on a server reachable from the internet.
+| `require_steam_auth` | A player's roles only apply once Steam confirms their account, a few seconds after they join; until then they only have `default`, so nobody can fake an admin's SteamID. On a LAN server, set this to `false` and restart, or set `sv_lan 1`, to skip the wait. Never do either on a server reachable from the internet. |
 
 ## Console Commands
 
 These work in the server console, and in a player's console if they have the permission.
 
-`<player>` can be part of a name, `#slot`, a SteamID, or the name saved in `players.jsonc`. Add `--temp` to a grant or revoke to undo it when the server restarts.
+`<player>` can be part of a name, `#slot`, a SteamID, or the name saved in `players.jsonc`.
 
 | Command | Permission | What it does |
 |---------|------------|--------------|

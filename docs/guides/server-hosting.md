@@ -88,7 +88,7 @@ connect your.public.ip:27067
 
 To use admin commands in-game, give your Steam account the `admin` role. See [Making Yourself Admin](making-yourself-admin). For staff with limited access, see [How Permissions Work](admins-and-permissions).
 
-Admin permissions apply a few seconds after a player joins, once Steam has confirmed who they are. On a LAN-only server, add `+sv_lan 1` to the launch options to skip that wait. Deadworks reads `sv_lan` when the first player joins, so changing it later needs a restart. Never do that on a server reachable from the internet: without the wait, anyone can claim an admin's SteamID. See [Steam Validation](admins-and-permissions#steam-validation).
+Admin permissions apply a few seconds after a player joins, once Steam has confirmed who they are. On a LAN-only server, add `+sv_lan 1` to the launch options to skip that wait. Deadworks reads `sv_lan` when the first player joins, so changing it later needs a restart. Never do that on a server reachable from the internet: without the wait, anyone can claim an admin's SteamID. See [Steam Validation](admins-and-permissions#deadworksjsonc).
 
 ## Finding Plugins
 

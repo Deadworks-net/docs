@@ -148,7 +148,7 @@ When the Admin plugin's `rcon` sets a password cvar (one the engine flags as pro
 
 ## Steam Verification
 
-The engine checks a player's Steam ticket when they connect, so the SteamID is already the right one. A few seconds later Steam confirms the ticket is still valid. Until then the player has only the `default` role, and only `Caller.Console` can ban, gag or mute them. Their immunity, though, is taken from their saved entry from the start, so an admin who just joined, or every admin while Steam is down, can't be kicked by someone with less immunity. See [Steam Validation](../guides/admins-and-permissions#steam-validation) for why.
+The engine checks a player's Steam ticket when they connect, so the SteamID is already the right one. A few seconds later Steam confirms the ticket is still valid. Until then the player has only the `default` role, and only `Caller.Console` can ban, gag or mute them. Their immunity, though, is taken from their saved entry from the start, so an admin who just joined, or every admin while Steam is down, can't be kicked by someone with less immunity. See [Steam Validation](../guides/admins-and-permissions#deadworksjsonc) for why.
 
 | Member | Description |
 |--------|-------------|
