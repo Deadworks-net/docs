@@ -83,7 +83,7 @@ public class MedicPlugin : DeadworksPluginBase
 
 **`Target? target = null`** lets the player optionally name someone: `!heal`, `!heal wisp`, `!heal #3`. With nothing typed, `target` is `null` and we heal the caller. `target.Single()` makes sure the name matched exactly one player.
 
-**`TargetImmunity = TargetImmunity.Ignore`**: by default, commands with a permission can't target players with higher [immunity](../api-reference/permissions#immunity), which is what you want for kick or ban. Healing doesn't hurt anyone, so a medic should be able to heal an admin too.
+**`TargetImmunity = TargetImmunity.Ignore`**: by default, commands with a permission can't target players with higher [immunity](../features/permissions#immunity), which is what you want for kick or ban. Healing doesn't hurt anyone, so a medic should be able to heal an admin too.
 
 ### Build and Install
 
@@ -283,5 +283,5 @@ dw_perm_grant greeny -medic.heal.all
 
 ## Next
 
-- [Permissions API](../api-reference/permissions): everything a plugin can do with permissions and targeting
-- [Penalties & Admin Tools API](../api-reference/admin-api): bans, gags, announcements and the admin log
+- [Permissions API](../features/permissions): everything a plugin can do with permissions and targeting
+- [Penalties & Admin Tools API](../features/admin-api): bans, gags, announcements and the admin log

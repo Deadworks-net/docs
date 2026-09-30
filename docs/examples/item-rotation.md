@@ -136,7 +136,7 @@ public class ItemRotationPlugin : DeadworksPluginBase {
 
 ## See Also
 
-- [Commands](../api-reference/commands)
-- [Players](../api-reference/players) - `AddItem` / `RemoveItem`
-- [Timers](../api-reference/timers) - `Timer.Every` and `IHandle.Cancel`
-- [Networking](../api-reference/networking) - HUD announcements
+- [Commands](../features/commands)
+- [Players](../features/players) - `AddItem` / `RemoveItem`
+- [Timers](../features/timers) - `Timer.Every` and `IHandle.Cancel`
+- [Networking](../features/networking) - HUD announcements

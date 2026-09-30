@@ -77,7 +77,7 @@ public override void OnPrecacheResources()
 }
 ```
 
-See [Precaching](../api-reference/precaching).
+See [Precaching](../features/precaching).
 
 ## Runtime Phase
 
@@ -169,7 +169,7 @@ public override void OnClientDisconnect(ClientDisconnectedEvent args)
 }
 ```
 
-> You may use [`Players`](../api-reference/players) instead to access all players
+> You may use [`Players`](../features/players) instead to access all players
 
 ## Permission and Admin Callbacks (Coming Soon)
 
@@ -177,11 +177,11 @@ public override void OnClientDisconnect(ClientDisconnectedEvent args)
 
 | Override | Called when |
 |----------|-------------|
-| `OnClientAuthorized(ClientAuthorizedEvent args)` | Steam confirms a player, once per connection (not again after a map change), a few seconds after they join. `args.Slot`, `args.SteamId64`, `args.Controller` (may be `null`). See [Steam Verification](../api-reference/admin-api#steam-verification). |
-| `OnPermissionsChanged(ulong? steamId64)` | After a permissions reload, any grant or revoke, when Steam confirms a player, and when a custom store's entry for a player arrives. `null` means everyone. See [Reacting to Changes](../api-reference/permissions#reacting-to-changes). |
-| `OnPenaltyAdded(Penalty penalty)` | A ban, gag or mute is added. See [Penalties](../api-reference/admin-api#penalties). |
+| `OnClientAuthorized(ClientAuthorizedEvent args)` | Steam confirms a player, once per connection (not again after a map change), a few seconds after they join. `args.Slot`, `args.SteamId64`, `args.Controller` (may be `null`). See [Steam Verification](../features/admin-api#steam-verification). |
+| `OnPermissionsChanged(ulong? steamId64)` | After a permissions reload, any grant or revoke, when Steam confirms a player, and when a custom store's entry for a player arrives. `null` means everyone. See [Reacting to Changes](../features/permissions#reacting-to-changes). |
+| `OnPenaltyAdded(Penalty penalty)` | A ban, gag or mute is added. See [Penalties](../features/admin-api#penalties). |
 | `OnPenaltyRemoved(Penalty penalty)` | A penalty is lifted, replaced or expires. |
-| `OnAdminAction(AdminLogEntry entry)` | An admin action is logged through `AdminActivity` (the Admin plugin's commands, or any plugin that calls it). See [Admin Activity](../api-reference/admin-api#admin-activity). |
+| `OnAdminAction(AdminLogEntry entry)` | An admin action is logged through `AdminActivity` (the Admin plugin's commands, or any plugin that calls it). See [Admin Activity](../features/admin-api#admin-activity). |
 
 ## Async Work — Get Back On the Game Thread
 
@@ -210,7 +210,7 @@ private async Task FetchAndAnnounceAsync()
 The same rule applies to `Task.Delay`, `Task.Run`, file I/O, anything that yields. If you're not sure whether the continuation is on the game thread, route it through `Timer.NextTick`.
 
 :::tip
-Inside a [`[Command]`](../api-reference/commands#when-a-command-fails) method, code after an `await` already continues on the game thread.
+Inside a [`[Command]`](../features/commands#when-a-command-fails) method, code after an `await` already continues on the game thread.
 :::
 
 ## Hot-Reload Gotchas
@@ -227,6 +227,6 @@ If you launch `deadworks.exe` from Windows Terminal or PowerShell and the consol
 ## See Also
 
 - [First Plugin](../getting-started/first-plugin) — Starting from `DeadworksPluginBase`
-- [Precaching](../api-reference/precaching) — Resource precaching
-- [ConVars](../api-reference/convars) — ConVar setup in `OnStartupServer`
+- [Precaching](../features/precaching) — Resource precaching
+- [ConVars](../features/convars) — ConVar setup in `OnStartupServer`
 - [Server Hosting](server-hosting) — Running a dedicated server

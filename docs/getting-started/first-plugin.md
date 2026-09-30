@@ -132,17 +132,17 @@ That is why the example saves the returned handle in `timer`, then uses `Timer.O
 | Concept | Description | Learn More |
 |---------|-------------|------------|
 | `DeadworksPluginBase` | Base class every plugin starts from | [Plugin Lifecycle](../guides/plugin-lifecycle) |
-| `ConVar.Find(...)` | Change built-in game settings when a map starts | [ConVars](../api-reference/convars) |
-| `[Command]` | Attribute to register chat and console commands | [Commands](../api-reference/commands) |
-| `NetMessages.Send` | Send protobuf messages to players | [Networking](../api-reference/networking) |
-| `RecipientFilter` | Target specific players for messages | [Networking](../api-reference/networking) |
-| `Timer` | Schedule delayed or repeating actions | [Timers](../api-reference/timers) |
+| `ConVar.Find(...)` | Change built-in game settings when a map starts | [ConVars](../features/convars) |
+| `[Command]` | Attribute to register chat and console commands | [Commands](../features/commands) |
+| `NetMessages.Send` | Send protobuf messages to players | [Networking](../features/networking) |
+| `RecipientFilter` | Target specific players for messages | [Networking](../features/networking) |
+| `Timer` | Schedule delayed or repeating actions | [Timers](../features/timers) |
 
 ## Next Steps
 
 - [Plugin Lifecycle](../guides/plugin-lifecycle) - Understand the full load/unload flow
-- [Commands](../api-reference/commands) - Add more chat and console commands
+- [Commands](../features/commands) - Add more chat and console commands
 - [Commands for One Role](../guides/role-only-commands) - Limit a command to some players (coming soon)
-- [ConVars](../api-reference/convars) - Add console settings to your plugin
-- [Timers](../api-reference/timers) - Run delayed and repeating logic
+- [ConVars](../features/convars) - Add console settings to your plugin
+- [Timers](../features/timers) - Run delayed and repeating logic
 - [Example Plugins](../examples/roll-the-dice) - See full real-world plugins

@@ -62,7 +62,7 @@ Two kinds of game-binary references live in `config/deadworks_mem.jsonc`:
 
 A lot of gameplay code lives on the client, and plugins cannot reach into it:
 
-- **HUD / Panorama UI** — renders client-side. The server can build and drive panels through the Deadworks launcher's client addon (see [UI Panels](../api-reference/ui)); a player without the launcher sees nothing.
+- **HUD / Panorama UI** — renders client-side. The server can build and drive panels through the Deadworks launcher's client addon (see [UI Panels](../features/ui)); a player without the launcher sees nothing.
 - **Camera** — client only. The server can only send certain messages to the client to manipulate the camera position and access limited angle data.
 - **Rich presence / Steam overlay** — client only.
 - **Rendering / particles** — the server can spawn entities such as particles, lights, etc., but visual effects are rendered on each client.

@@ -91,8 +91,8 @@ public class RollTheDicePlugin : DeadworksPluginBase {
 
 ## See Also
 
-- [Commands](../api-reference/commands)
-- [Modifiers](../api-reference/modifiers)
-- [Particles](../api-reference/particles)
-- [Timers](../api-reference/timers)
-- [Precaching](../api-reference/precaching)
+- [Commands](../features/commands)
+- [Modifiers](../features/modifiers)
+- [Particles](../features/particles)
+- [Timers](../features/timers)
+- [Precaching](../features/precaching)

@@ -17,7 +17,7 @@ Before diving in, the ceiling is worth knowing — it's asked about often:
 
 What you *can* do:
 
-- **Custom HUD panels** — build a layout in C#, or ship your own and drive it from the server. See [UI Panels](../api-reference/ui). Panorama runs client-side, so this needs the Deadworks launcher on each player; without it they see nothing.
+- **Custom HUD panels** — build a layout in C#, or ship your own and drive it from the server. See [UI Panels](../features/ui). Panorama runs client-side, so this needs the Deadworks launcher on each player; without it they see nothing.
 - **HUD announcements** (`CCitadelUserMsg_HudGameAnnouncement`) — a single title/description popup per-player
 - **Chat messages** (`CCitadelUserMsg_ChatMsg`) — supports per-recipient text by sending one message per player
 - **Console output** (`PrintToConsole`)
@@ -115,7 +115,7 @@ pawn.EmitSound("Mystical.Piano.AOE.Warning");
 pawn.EmitSound("Damage.Send.Crit", pitch: 100, volume: 0.1f, delay: 0f);
 ```
 
-For global or positional playback without an entity, see the `Sounds`/`SoundEvent` API in [Sound](../api-reference/sound).
+For global or positional playback without an entity, see the `Sounds`/`SoundEvent` API in [Sound](../features/sound).
 
 ## World Text
 
@@ -136,7 +136,7 @@ text.SetMessage("ROUND 2");
 text.Remove();
 ```
 
-See [World Text API](../api-reference/world-text).
+See [World Text API](../features/world-text).
 
 ## Targeting Players
 
@@ -179,6 +179,6 @@ NetMessages.Send(msg, filter);
 
 ## See Also
 
-- [Networking API](../api-reference/networking) — Full message sending reference
-- [World Text API](../api-reference/world-text) — 3D text panels
-- [Players API](../api-reference/players) — Player enumeration
+- [Networking API](../features/networking) — Full message sending reference
+- [World Text API](../features/world-text) — 3D text panels
+- [Players API](../features/players) — Player enumeration
