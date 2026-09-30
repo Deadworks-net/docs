@@ -107,7 +107,7 @@ The in-game physical representation of a player (the hero). Extends `CBasePlayer
 | `EyePosition` | `Vector3` | Eye position (AbsOrigin + ViewOffset) — where the camera sits |
 | `CameraAngles` | `Vector3` | Client camera angles for SourceTV/spectating |
 | `ViewAngles` | `Vector3` | Raw server-side view angles (full float precision, no quantization) |
-| `Health` | `int` | Current health, get/set (inherited from `CBaseEntity`, see [Health](entities#health)) |
+| `Health` | `int` | Current health, get/set (inherited from `CBaseEntity`, see [Entities](entities#cbaseentity)) |
 | `GetMaxHealth()` | `int` | Max health, including items and buffs (inherited from `CBaseEntity`) |
 | `Position` | `Vector3` | World position (inherited from `CBaseEntity`) |
 | `AbilityComponent` | `CCitadelAbilityComponent` | Access to stamina and ability resources |
