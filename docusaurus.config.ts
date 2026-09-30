@@ -27,6 +27,11 @@ const config: Config = {
 
   clientModules: isDev ? ['./src/dev-editor/index.ts'] : [],
 
+  customFields: {
+    // Must match the port scripts/edit-server.ts listens on.
+    editServerPort: Number(process.env.EDIT_SERVER_PORT ?? 3001),
+  },
+
   presets: [
     [
       'classic',

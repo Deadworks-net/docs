@@ -1,6 +1,7 @@
+import siteConfig from '@generated/docusaurus.config';
 import './editor.css';
 
-const API = 'http://127.0.0.1:3001';
+const API = `http://127.0.0.1:${siteConfig.customFields?.editServerPort ?? 3001}`;
 const STORAGE_KEY = '__dev_editor_mode';
 
 type EditableEl = HTMLElement & {dataset: {mdStart: string; mdEnd: string}};
