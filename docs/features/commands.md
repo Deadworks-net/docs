@@ -7,17 +7,13 @@ sidebar_label: "Commands"
 
 > **Namespace:** `DeadworksManaged.Api`
 
+A command runs a method in your plugin when someone types its name in chat or the console.
 
+## Add a command
 
-
-
-## Quick Start
+Put `[Command]` on a method.
 
 ```csharp
-using DeadworksManaged.Api;
-
-namespace MyPlugin;
-
 public class MyPlugin : DeadworksPluginBase
 {
     public override string Name => "My Plugin";
@@ -30,49 +26,51 @@ public class MyPlugin : DeadworksPluginBase
 }
 ```
 
-That gives you three ways to run the same method:
+That gives you three ways to run it:
 
 - `/hello` in chat. Other players don't see the typed message.
 - `!hello` in chat. Other players see the typed message.
 - `dw_hello` in the console.
 
-## CommandAttribute
+`Description` is the help text shown by `dw_help`.
 
-
-
-| Setting | Type | Description |
-|---------|------|-------------|
-| `Description` | `string` | Short help text shown by `dw_help` |
-| `ChatOnly` | `bool` | Only create `/name` and `!name` |
-| `ConsoleOnly` | `bool` | Only create `dw_name`. Players can still run it from their own console |
-| `ServerOnly` | `bool` | Only let the server console run it |
-| `SuppressChat` | `bool` | Hide the typed `!name` message from chat, like `/name` |
-| `Hidden` | `bool` | Leave the command out of `dw_help` |
-
-To limit a command to certain players, see [Permissions](permissions) (coming soon).
-
-## Caller
+## Reply to whoever ran it
 
 Make `Caller` the first parameter. It is whoever ran the command: a player, or the server console.
 
-| Member | Returns | Description |
-|--------|---------|-------------|
-| `Player` | `CCitadelPlayerController?` | The player, or `null` for the console |
-| `IsConsole` | `bool` | Whether the server console ran it |
-| `Name` | `string` | The player's name, or `"Console"` |
-| `Reply(string message)` | `void` | Answer in chat for a player, or in the server console |
+```csharp
+caller.Reply("Done.");
+```
 
-## Arguments
+A player sees the reply in chat. The server console sees it in the console.
 
-Add more parameters and Deadworks fills them in from what the caller typed.
+## Get the player who ran it
 
-Supported parameter types are:
+```csharp
+[Command("heal")]
+public void CmdHeal(Caller caller)
+{
+    var pawn = caller.Player?.GetHeroPawn();
+    if (pawn == null)
+        throw new CommandException("Only players can heal.");
 
-- `string`
-- `bool`
-- `int`, `long`, `uint`, `ulong`
-- `float`, `double`
-- enums
+    pawn.Heal(pawn.GetMaxHealth());
+}
+```
+
+`caller.Player` is `null` when the server console ran the command. See [Players](players) for what you can do with one.
+
+## Refuse with a message
+
+Throw `CommandException`. The caller sees your message wherever they typed the command, and the rest of your method doesn't run.
+
+```csharp
+throw new CommandException("You can't do that right now.");
+```
+
+## Take arguments
+
+Add more parameters, and Deadworks fills them in from what the caller typed.
 
 ```csharp
 [Command("givesouls", Description = "Give yourself souls")]
@@ -82,37 +80,80 @@ public void CmdGiveSouls(Caller caller, int amount = 50000)
 }
 ```
 
-A parameter with a default value is optional.
+```text
+/givesouls
+/givesouls 2500
+```
 
-For example:
+A parameter can be a `string`, a `bool`, a number or an enum. One with a default value is optional.
 
-- `/givesouls`
-- `/givesouls 2500`
-- `dw_givesouls 2500`
-
-If the arguments don't fit, Deadworks prints the usage instead of running your method:
+If what they typed doesn't fit, Deadworks shows them the usage and doesn't run your method:
 
 ```text
 Usage: dw_givesouls [amount=50000]
 ```
 
-To take any number of arguments, make the last parameter `params string[]`. The caller can put text with spaces in double quotes to keep it as one argument.
+## Take a whole sentence
 
-## When a Command Fails
-
-Throw `CommandException` to stop and tell the caller why. They see your message wherever they typed the command.
+Make the last parameter `params string[]` to collect everything else the caller typed.
 
 ```csharp
-[Command("heal")]
-public void CmdHeal(Caller caller)
+[Command("sayas")]
+public void CmdSayAs(Caller caller, string speaker, params string[] messageParts)
 {
-    if (caller.Player is not { } player)
-        throw new CommandException("Only players can heal.");
-
-    // ...
+    var text = string.Join(' ', messageParts);
 }
 ```
 
-Any other exception is logged to the server console, and the caller is told the command failed.
+```text
+/sayas announcer the match starts now
+```
 
-A command can be `async` if it returns `Task`. Code after an `await` continues on the game thread.
+## Give a command a second name
+
+Add more names after the first.
+
+```csharp
+[Command("heal", "h")]
+```
+
+Now `/h`, `!h` and `dw_h` work too.
+
+## Make a command chat only or console only
+
+```csharp
+[Command("hello", ChatOnly = true)]    // only /hello and !hello
+[Command("hello", ConsoleOnly = true)] // only dw_hello
+```
+
+Players can still run a `ConsoleOnly` command from their own game console.
+
+## Only let the server console run a command
+
+```csharp
+[Command("cvardump", ServerOnly = true)]
+```
+
+To limit a command to certain players instead, see [Permissions](permissions) (coming soon).
+
+## Hide a command
+
+```csharp
+[Command("secret", Hidden = true)]       // left out of dw_help
+[Command("secret", SuppressChat = true)] // typing !secret isn't shown in chat
+```
+
+## Wait for something slow
+
+A command can be `async` if it returns `Task`. Code after an `await` continues on the game thread, so it can touch the game as usual.
+
+```csharp
+[Command("stats")]
+public async Task CmdStats(Caller caller)
+{
+    var stats = await _database.LoadStatsAsync(caller.SteamId64);
+    caller.Reply($"You've played {stats.Matches} matches.");
+}
+```
+
+If the player has left by then, the reply does nothing.

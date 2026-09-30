@@ -7,90 +7,114 @@ sidebar_label: "Heroes"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Work with Deadlock hero identities, data, and selection.
+Every hero is a value of the `Heroes` enum, like `Heroes.Haze`.
 
-## Heroes Enum
+The enum uses the game's internal names, which are not always the names players see. Infernus is `Heroes.Inferno`, and Grey Talon is `Heroes.Orion`.
 
-Enum of all Deadlock hero identities. Use `HeroTypeExtensions` to convert between enum values and string names.
+## Find a hero
 
-```csharp
-Heroes hero = Heroes.Inferno;
-```
+The [hero database](https://deadworks.net/db/heroes) lists every hero with the name players see and the `Heroes` value to use in code.
 
-## HeroTypeExtensions
-
-Extension methods for the `Heroes` enum.
-
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `ToHeroName(Heroes)` | `string` | Converts to internal name (e.g. `"hero_inferno"`) |
-| `ToDisplayName(Heroes)` | `string` | Converts to localized display name (e.g. `"Grey Talon"` for `Orion`) |
-| `TryParse(string, out Heroes)` | `bool` | Parses name string back to enum |
-| `GetHeroData(Heroes)` | `CitadelHeroData?` | Gets native VData for the hero |
-
-### Examples
-
-```csharp
-// Enum to string
-string name = Heroes.Inferno.ToHeroName();  // "hero_inferno"
-
-// String to enum
-if (HeroTypeExtensions.TryParse("hero_inferno", out var hero))
-{
-    Console.WriteLine($"Found hero: {hero}");
-}
-
-// Get hero data
-var heroData = Heroes.Inferno.GetHeroData();
-```
-
-## CitadelHeroData
-
-Wrapper around native `CitadelHeroData_t` (VData). Obtain via `Heroes.GetHeroData()`.
-
-### Properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `IsValid` | `bool` | Whether the hero data pointer is valid |
-| `HeroID` | `int` | Internal hero ID |
-| `Disabled` | `bool` | Whether hero is disabled |
-| `PlayerSelectable` | `bool` | Whether players can select this hero |
-| `InDevelopment` | `bool` | Whether hero is still in development |
-| `Complexity` | `int` | Hero complexity rating |
-| `NewPlayerRecommended` | `bool` | Recommended for new players |
-| `AvailableInGame` | `bool` | Computed — true if selectable, not disabled, not development-only |
-
-### Methods
-
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `GetField<T>(ReadOnlySpan<byte> fieldName)` | `T` | Read any schema field by name at runtime |
-
-## Hero Selection
-
-Force a player to select a specific hero via [CCitadelPlayerController](players):
+## Make a player play a hero
 
 ```csharp
 controller.SelectHero(Heroes.Inferno);
 ```
 
-### Random Hero Assignment
+## Find out which hero a player is
 
 ```csharp
-var heroes = Enum.GetValues<Heroes>();
-var randomHero = heroes[Random.Shared.Next(heroes.Length)];
-controller.SelectHero(randomHero);
+var pawn = controller.GetHeroPawn();
+if (pawn == null) return;
+
+if (pawn.HeroID == Heroes.Inferno)
+{
+    // They are playing Infernus
+}
 ```
 
-## Precaching Heroes
+## Show a hero's name
 
-Heroes must be precached if you're swapping them at runtime. See [Precaching](precaching).
+Use `ToDisplayName()` to get the name players see.
 
-Deadworks currently automatically precaches all heroes.
+```csharp
+string name = Heroes.Orion.ToDisplayName(); // "Grey Talon"
 
-## See Also
+caller.Reply($"You are playing {pawn.HeroID.ToDisplayName()}.");
+```
 
-- [Players](players) — `SelectHero` on controllers
-- [Precaching](precaching) — Hero precaching
-- [Team & Hero Management Guide](../guides/team-and-hero-management) — Practical patterns
+## Give a player a random hero
+
+Not every hero in the enum can be played, so pick from the ones that can.
+
+```csharp
+var heroes = Enum.GetValues<Heroes>()
+    .Where(h => h.GetHeroData()?.AvailableInGame == true)
+    .ToArray();
+
+var hero = heroes[Random.Shared.Next(heroes.Length)];
+
+controller.SelectHero(hero);
+```
+
+## Check whether a hero can be played
+
+```csharp
+var data = Heroes.Inferno.GetHeroData();
+
+if (data?.AvailableInGame == true)
+{
+    // Players can pick this hero
+}
+```
+
+`GetHeroData()` also tells you more about the hero, such as `Complexity` and `NewPlayerRecommended`.
+
+## Run code once a player's new hero is ready
+
+`SelectHero` doesn't change the hero straight away. To do something to the new hero, such as giving it items, wait for it with `OnceHeroInitialized`.
+
+```csharp
+var pawn = controller.GetHeroPawn();
+if (pawn == null) return;
+
+pawn.OnceHeroInitialized(() =>
+{
+    pawn.AddItem("upgrade_sprint_booster");
+});
+
+controller.SelectHero(Heroes.Inferno);
+```
+
+## Reset a player's hero
+
+```csharp
+pawn.ResetHero();
+```
+
+This removes their items, puts back their starting abilities and resets their level.
+
+## Stop players changing hero
+
+Block the `selecthero` command.
+
+```csharp
+public override HookResult OnClientConCommand(ClientConCommandEvent e)
+{
+    if (e.Command == "selecthero")
+        return HookResult.Stop;
+
+    return HookResult.Continue;
+}
+```
+
+## Turn a hero into its internal name, or back
+
+```csharp
+string name = Heroes.Inferno.ToHeroName(); // "hero_inferno"
+
+if (HeroTypeExtensions.TryParse("hero_inferno", out var hero))
+{
+    // hero is Heroes.Inferno
+}
+```
