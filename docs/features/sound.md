@@ -7,128 +7,94 @@ sidebar_label: "Sound"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Deadlock plays sounds through **soundevents** — named entries in the game's audio manifest (e.g. `Mystical.Piano.AOE.Explode`, `Male.AnnTemp.Core_Damaged`). You cannot play raw `.vsnd` files directly.
+Deadlock plays sounds by name. Each sound the game knows is a **soundevent**, such as `Mystical.Piano.AOE.Explode`. You can play any of them, but you can't play a sound file directly.
 
-There are two ways to trigger a soundevent from a plugin:
-
-- **`CBaseEntity.EmitSound`** — plays a sound attached to an entity, for everyone in range.
-- **`Sounds` / `SoundEvent`** (namespace `DeadworksManaged.Api.Sounds`) — sends the soundevent directly to chosen recipients, with per-player targeting and GUID-based stop/update.
-
-## Playing a Soundevent on an Entity
-
-The simplest case — play a sound on a pawn, NPC, or world entity:
+## Play a sound on a player
 
 ```csharp
 pawn.EmitSound("Mystical.Piano.AOE.Warning");
+```
+
+The sound comes from the player, and everyone nearby hears it. It works on any [entity](entities), not just players.
+
+To change how it sounds:
+
+```csharp
 pawn.EmitSound("Damage.Send.Crit", pitch: 100, volume: 0.5f, delay: 0f);
 ```
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `soundName` | `string` | — | Full soundevent name |
-| `pitch` | `int` | `100` | 100 = normal pitch |
-| `volume` | `float` | `1.0` | 0.0–1.0 |
-| `delay` | `float` | `0.0` | Seconds before the sound actually starts |
+`pitch` is 100 for normal. `volume` goes from 0 to 1. `delay` is how many seconds to wait before it starts.
 
-The sound plays in 3D space attached to the entity. Nearby players hear it with positional falloff.
+## Play a sound to everyone
 
-## Sounds (Static Helpers)
-
-For playback without an entity — or targeted at specific players — use the `Sounds` class (namespace `DeadworksManaged.Api.Sounds`):
+Use `Sounds.Play`. Each player hears it as if it were right next to them, wherever they are.
 
 ```csharp
 using DeadworksManaged.Api.Sounds;
 
-// Non-positional, heard by everyone (plays at each listener's own position)
+Sounds.Play("Mystical.Piano.AOE.Warning", RecipientFilter.All);
+```
+
+## Play a sound only one player can hear
+
+```csharp
+Sounds.Play("Damage.Send.Crit", RecipientFilter.Single(controller.Slot));
+```
+
+To make it come from an entity, but still only for that player, use `PlayAt`:
+
+```csharp
+Sounds.PlayAt("Damage.Send.Crit", pawn.EntityIndex, RecipientFilter.Single(controller.Slot));
+```
+
+Both take a `volume` and a `pitch` too. Here, 1 is normal for both.
+
+```csharp
+Sounds.Play("Damage.Send.Crit", RecipientFilter.All, volume: 0.5f, pitch: 1.2f);
+```
+
+## Stop a sound
+
+`Sounds.Play` and `Sounds.PlayAt` give you back an id. Keep it, and use it to stop the sound.
+
+```csharp
 uint guid = Sounds.Play("Mystical.Piano.AOE.Warning", RecipientFilter.All);
 
-// Anchored to an entity's position, sent to one player only
-Sounds.PlayAt("Damage.Send.Crit", pawn.EntityIndex, RecipientFilter.Single(slot), volume: 0.5f);
-
-// Stop a playing sound by GUID
 SoundEvent.Stop(guid, RecipientFilter.All);
 ```
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `Play(string name, RecipientFilter recipients, float volume = 1, float pitch = 1)` | `uint` | Plays at each listener's own position (non-positional) |
-| `PlayAt(string name, int sourceEntityIndex, RecipientFilter recipients, float volume = 1, float pitch = 1)` | `uint` | Plays anchored to an entity's world position |
-
-Both return the soundevent **GUID**, which you can use to stop or update the sound later.
-
-## SoundEvent (Builder)
-
-`Sounds.Play`/`PlayAt` are shortcuts over the full `SoundEvent` builder:
+To stop every copy of a sound coming from one entity:
 
 ```csharp
-uint guid = new SoundEvent("UI.SomeSoundName")
-{
-    Volume = 0.8f,
-    Pitch = 1.2f,
-    SourceEntityIndex = pawn.EntityIndex,  // -1 (default) = listener's own position
-}
-.SetFloat("public.custom_param", 2f)
-.Emit(RecipientFilter.All);
+SoundEvent.StopByName("Mystical.Piano.AOE.Warning", pawn.EntityIndex, RecipientFilter.All);
+```
 
-// Update a playing sound's params
-new SoundEvent("UI.SomeSoundName") { Volume = 0.2f }
+## Change a sound while it plays
+
+```csharp
+new SoundEvent("Mystical.Piano.AOE.Warning") { Volume = 0.2f }
     .SetParams(guid, RecipientFilter.All);
-
-// Stop by GUID, or stop all instances by name for a source entity
-SoundEvent.Stop(guid, RecipientFilter.All);
-SoundEvent.StopByName("UI.SomeSoundName", pawn.EntityIndex, RecipientFilter.All);
 ```
 
-| Member | Description |
-|--------|-------------|
-| `SoundEvent(string name)` | Create a builder for the named soundevent |
-| `Name` | Soundevent name from the `.vsndevts` manifest |
-| `SourceEntityIndex` | Entity the sound emits from; `-1` plays at the listener's own position |
-| `StartTime` | Optional start-time offset |
-| `Volume` / `Pitch` | Write-only shortcuts for `SetFloat("public.volume"/"public.pitch", ...)` |
-| `SetBool/SetInt32/SetUInt32/SetUInt64/SetFloat/SetFloat3(field, value)` | Set a typed field (chainable) |
-| `HasField` / `TryGetFloat` / `TryGetInt32` / `TryGetBool` | Inspect fields already set on the builder |
-| `Emit(RecipientFilter)` | Sends the sound; returns its GUID |
-| `SetParams(uint guid, RecipientFilter)` | Updates a playing sound's params with this builder's fields |
-| `Stop(uint guid, RecipientFilter)` | *Static* — stops a specific playing sound |
-| `StopByName(string name, int sourceEntityIndex, RecipientFilter)` | *Static* — stops all instances of a soundevent on a source entity |
+## Play a sound at a place in the world
 
-## Playing from a World Position (point_soundevent)
-
-`EmitSound` and `PlayAt` both anchor to an entity. For a sound that plays from an arbitrary world position, spawn a `point_soundevent` and let it clean itself up:
+Create a `point_soundevent` entity where you want the sound.
 
 ```csharp
-void PlayAt(string soundName, Vector3 position)
-{
-    var sound = CBaseEntity.CreateByDesignerName("point_soundevent");
-    if (sound == null) return;
+var sound = CBaseEntity.CreateByDesignerName("point_soundevent");
+if (sound == null) return;
 
-    var ekv = new CEntityKeyValues();
-    ekv.SetString("soundName", soundName);
-    ekv.SetBool("startOnSpawn", true);
-    ekv.SetVector("origin", position);
+var ekv = new CEntityKeyValues();
+ekv.SetString("soundName", "Mystical.Piano.AOE.Explode");
+ekv.SetBool("startOnSpawn", true);
+ekv.SetVector("origin", position);
 
-    // Auto-remove after playback finishes so we don't leak entities.
-    sound.AcceptInput("addoutput", value: "OnSoundFinished>!self>Kill>>0>-1");
-    sound.Spawn(ekv);
-}
+// Remove the entity when the sound finishes
+sound.AcceptInput("addoutput", value: "OnSoundFinished>!self>Kill>>0>-1");
+sound.Spawn(ekv);
 ```
 
-## Silent Soundevent Problems
+## Find a sound to play
 
-If `EmitSound` appears to return success but you hear nothing:
-
-- **Check the volume on the soundevent itself.** Some internal soundevents are authored at very low dB (`Music.Base.Attack` is `-6` dB). The `volume` parameter multiplies an already-quiet source.
-- **Verify with `soundinfo <soundname>` in the console** — it will tell you whether the soundevent resolved to a playable sound and at what volume.
-- **Soundevents that are 3D-positional are inaudible when the listener is far from the entity.** Attach to the player pawn or use the global recipe above.
-
-## Finding Soundevent Names
-
-- `soundinfo <name>` in the server console — tests whether a name resolves and prints its sound file
-- Extract `soundevents_*.vsndevts_c` with [source2viewer-cli](https://github.com/ValveResourceFormat/ValveResourceFormat) or browse via [s2v.app](https://s2v.app/)
-- In-game community references sometimes list popular ones (announcer lines, hero abilities)
-
-## See Also
-
-- [Entities](entities) — `EmitSound` is defined on `CBaseEntity`
-- [Precaching](precaching) — Soundevents usually don't need precaching, but the underlying `.vsnd` files sometimes do
+- Browse the game's files with [Source2Viewer](https://s2v.app/). Sounds are listed in the `soundevents_*.vsndevts_c` files.
+- Type `soundinfo <name>` in the server console to check that a name is real.

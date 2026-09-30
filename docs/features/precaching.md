@@ -7,74 +7,48 @@ sidebar_label: "Precaching"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Resources (particles, models, heroes) must be precached during map load before they can be used at runtime.
+Precaching tells the game to load a file while the map is loading, so it is ready when your plugin uses it. Models and particle effects need it.
 
-## When to Precache
+## Precache a model or particle effect
 
-Override `OnPrecacheResources()` in your plugin — it is called during map load:
+Override `OnPrecacheResources` and list each file with `Precache.AddResource`.
 
 ```csharp
 public override void OnPrecacheResources()
 {
+    Precache.AddResource("models/hideout/hideout_sandbox_ball.vmdl");
     Precache.AddResource("particles/upgrades/mystical_piano_hit.vpcf");
-    Precache.AddResource("particles/abilities/bull_drain.vpcf");
 }
 ```
 
-**Important:** All `Precache` methods must be called inside `OnPrecacheResources()`. Calling them at other times has no effect.
+This is the only place it works. Calling `Precache.AddResource` anywhere else does nothing.
 
-## Precache Methods
+## Write the path the right way
 
-| Method | Description |
-|--------|-------------|
-| `AddResource(string path)` | Precache a resource by path (particles, models, etc.) |
-| `AddHero(string heroName)` | Precache a hero by internal name (e.g. `"hero_inferno"`) |
-| `AddHero(Heroes hero)` | Precache a hero by enum value (calls `hero.ToHeroName()` internally) |
-
-## Resource Paths
-
-Resources use Valve's VPK path format:
+Use the file's plain name, not the compiled one ending in `_c`.
 
 ```csharp
-// Particle effects
-Precache.AddResource("particles/upgrades/mystical_piano_hit.vpcf");
-Precache.AddResource("particles/abilities/bull_drain.vpcf");
-
-// Models (if needed)
-Precache.AddResource("models/props/my_model.vmdl");
-```
-
-## What Happens If You Skip Precaching
-
-If a resource isn't precached before you try to use it, the symptoms are:
-
-- **Models** — the entity spawns with the purple-checkerboard error model
-- **Particles** — nothing renders, or silent fallback to a generic particle
-
-If you see error models after adding a prop spawn, the first thing to check is whether you listed the model in `OnPrecacheResources`.
-
-## File Path Format
-
-Use the uncompiled path (`.vmdl`, `.vpcf`, `.vmat`), **not** the compiled variant (`.vmdl_c`, `.vpcf_c`). The engine resolves precache requests by the source path; passing `_c` suffixes silently fails or crashes on spawn.
-
-```csharp
-// Correct
+// Right
 Precache.AddResource("models/abilities/viscous_cube.vmdl");
 
-// Wrong — will not precache, may crash on use
+// Wrong. It won't load, and may crash when you use it
 Precache.AddResource("models/abilities/viscous_cube.vmdl_c");
 ```
 
-## Custom Content For Clients
+Browse the game's files with [Source2Viewer](https://s2v.app/) to find paths.
 
-Deadworks runs on the server, but the **client still has to own the files** — models, sounds, custom maps. Deadlock's client has no built-in "download from server" path, unlike Source 1 games. This means:
+## Precache a hero
 
-- If you want a custom map, **every player must install it** (such as via the Deadworks Launcher)
-- Custom skins, fonts in `.vmat`, and custom sounds all require client-side installation
-- `point_worldtext` fonts come from the player's **operating system** font library — you can't ship a font via the server. Stick to common Windows fonts (Arial, Segoe UI, Comic Sans MS, Consolas…)
+If your plugin switches players to a hero, precache that hero.
 
-## See Also
+```csharp
+public override void OnPrecacheResources()
+{
+    Precache.AddHero(Heroes.Warden);
+    Precache.AddHero(Heroes.Astro);
+}
+```
 
-- [Particles](particles) — Particle effects require precaching
-- [World Text](world-text) — Fonts are resolved from the client's OS
-- [Heroes](heroes) — Hero precaching for dynamic selection
+## Use your own models, sounds or maps
+
+Precaching only loads files the player already has. To get your own files onto players' computers, see [Uploading Content](../guides/uploading-content).

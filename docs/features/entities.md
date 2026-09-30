@@ -7,100 +7,79 @@ sidebar_label: "Entities"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-An entity is anything in the game world: a player, a trooper, a prop, a particle effect. Every entity is a `CBaseEntity`.
+An entity is anything in the game world: a player's hero, a trooper, a boss, a prop, a particle effect. In code, every one of them is a `CBaseEntity`.
 
-## What You Can Create
+## See what you can create
 
 The [entity database](https://deadworks.net/db/entities) lists every entity the Deadlock server can create.
 
-Each entity has its own page, such as [`prop_dynamic`](https://deadworks.net/db/entities/prop_dynamic), that tells you what you can do with it:
+Each entity has its own page, such as [`prop_dynamic`](https://deadworks.net/db/entities/prop_dynamic), that shows:
 
-| On the page | Use it with |
-|-------------|-------------|
-| Name | `CBaseEntity.CreateByDesignerName(name)` |
-| Keyvalues | `CEntityKeyValues`, with the `Set...` method shown next to each one |
-| Inputs | `entity.AcceptInput(name)` |
-| Outputs | [Entity I/O](entity-io) |
+- its **name**, which you pass to `CreateByDesignerName`
+- its **keyvalues**, the settings you give it when it spawns
+- its **inputs**, the things you can tell it to do
+- its **outputs**, the things it tells you about
 
-## Quick Start
+## Create an entity
+
+Create it, fill in its keyvalues, then spawn it.
+
+```csharp
+var prop = CBaseEntity.CreateByDesignerName("prop_dynamic");
+if (prop == null) return;
+
+var ekv = new CEntityKeyValues();
+ekv.SetString("model", "models/hideout/hideout_sandbox_ball.vmdl");
+ekv.SetVector("origin", new Vector3(100, 200, 300));
+prop.Spawn(ekv);
+```
+
+The database shows which `Set...` method to use for each keyvalue.
+
+A model has to be loaded before you can use it. List it in `OnPrecacheResources`, and use the `.vmdl` path, not `.vmdl_c`:
 
 ```csharp
 public override void OnPrecacheResources()
 {
     Precache.AddResource("models/hideout/hideout_sandbox_ball.vmdl");
 }
-
-[Command("ball")]
-public void CmdBall(Caller caller)
-{
-    var pos = caller.Player?.GetHeroPawn()?.Position ?? Vector3.Zero;
-
-    var prop = CBaseEntity.CreateByDesignerName("prop_dynamic");
-    if (prop == null) return;
-
-    var ekv = new CEntityKeyValues();
-    ekv.SetString("model", "models/hideout/hideout_sandbox_ball.vmdl");
-    ekv.SetVector("origin", pos + new Vector3(0, 0, 128));
-    prop.Spawn(ekv);
-}
 ```
 
-That spawns a ball above the player who typed `/ball`.
-
-Set the model in the keyvalues before `Spawn()`. Use the `.vmdl` path, not `.vmdl_c`, and precache it first.
-
-## Creating and Finding
-
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `CBaseEntity.CreateByDesignerName(string name)` | `CBaseEntity?` | Create an entity. Use this one |
-| `CBaseEntity.CreateByName(string className)` | `CBaseEntity?` | Create by class name. Some entities crash when made this way |
-| `CBaseEntity.FromHandle<T>(uint handle)` | `T?` | Find by entity handle |
-| `CBaseEntity.FromIndex<T>(int index)` | `T?` | Find by entity index |
-| `Entities.All` | `IEnumerable<CBaseEntity>` | Every entity on the server |
-| `Entities.ByClass<T>()` | `IEnumerable<T>` | Every entity of one type |
-| `Entities.ByDesignerName(string name)` | `IEnumerable<CBaseEntity>` | Every entity with one name |
+## Find entities
 
 ```csharp
+// Every entity with one name
 foreach (var boss in Entities.ByDesignerName("npc_boss_tier3"))
+{
+    // ...
+}
+
+// Every entity of one type
+foreach (var pawn in Entities.ByClass<CCitadelPlayerPawn>())
+{
+    // ...
+}
+
+// Everything
+foreach (var entity in Entities.All)
 {
     // ...
 }
 ```
 
-## CBaseEntity
-
-Every entity has these, whether it is a player, a trooper or a prop.
-
-| Member | Description |
-|--------|-------------|
-| `Spawn(CEntityKeyValues)` | Put a created entity into the world |
-| `Remove()` | Delete the entity. Wait a tick after creating it |
-| `IsValid` | Whether the entity still exists. Check it before using one you kept |
-| `DesignerName` | The entity's name, like `"npc_boss_tier3"` |
-| `Position` | Where it is in the world |
-| `TeamNum` | Its team |
-| `IsAlive` | Whether it is alive |
-| `Health` | Its current health |
-| `GetMaxHealth()` | Its max health, including items and buffs |
-| `Heal(float amount)` | Heal it, up to max health. Returns the amount healed |
-| `AcceptInput(string name)` | Fire one of its inputs |
-| `SetParent(CBaseEntity)` | Attach it to another entity |
-| `Is<T>()` | Whether it is a `T` |
-| `As<T>()` | The entity as a `T`, or `null` |
+## Check what an entity is
 
 ```csharp
-foreach (var boss in Entities.ByDesignerName("npc_boss_tier3"))
+var pawn = entity.As<CCitadelPlayerPawn>();
+if (pawn != null)
 {
-    boss.Heal(boss.GetMaxHealth());
+    // It's a player's hero
 }
 ```
 
-To damage or kill an entity, use [`Hurt()`](damage#applying-damage) instead of setting `Health`.
+`entity.DesignerName` is its name, like `"npc_boss_tier3"`.
 
-## Transform
-
-Use `Teleport` to move an entity. Pass `null` for anything you want to leave alone.
+## Move an entity
 
 ```csharp
 entity.Teleport(
@@ -109,27 +88,72 @@ entity.Teleport(
     velocity: null);
 ```
 
-Read velocity with `entity.AbsVelocity`. Set it with `Teleport(velocity: ...)`.
+Pass `null` for anything you want to leave alone. `entity.Position` is where it is now.
 
-## EntityData
-
-Use `EntityData<T>` to keep a value for each entity. Entries are removed for you when the entity is deleted.
+## Remove an entity
 
 ```csharp
-private readonly EntityData<int> _kills = new();
+entity.Remove();
+```
 
-_kills[pawn] = 5;
+Don't remove an entity on the same tick you created it. Wait a tick:
 
-if (_kills.TryGet(pawn, out var kills))
+```csharp
+Timer.Once(1.Ticks(), () => entity.Remove());
+```
+
+## Tell an entity to do something
+
+Fire one of its inputs with `AcceptInput`. The inputs are listed on its database page.
+
+```csharp
+prop.AcceptInput("DisableCollision");
+```
+
+To run code when an entity fires an output, see [Entity I/O](entity-io).
+
+## Attach one entity to another
+
+```csharp
+entity.SetParent(parentEntity);
+entity.ClearParent();
+```
+
+An attached entity is removed when its parent is removed.
+
+## Heal or damage an entity
+
+```csharp
+entity.Heal(entity.GetMaxHealth()); // back to full
+entity.Hurt(100f);                  // take 100 damage
+```
+
+`entity.Health` is its current health. See [Damage](damage) to credit the damage to an attacker.
+
+## Keep an entity for later
+
+An entity can be removed at any time. If you keep one in a field or use it in a timer, check `IsValid` before you touch it.
+
+```csharp
+Timer.Once(5.Seconds(), () =>
+{
+    if (!entity.IsValid) return;
+
+    entity.Remove();
+});
+```
+
+## Store a value for each entity
+
+Use `EntityData<T>`. Entries are removed for you when the entity is removed.
+
+```csharp
+private readonly EntityData<int> _hits = new();
+
+_hits[entity] = 5;
+
+if (_hits.TryGet(entity, out var hits))
 {
     // ...
 }
 ```
-
-| Member | Description |
-|--------|-------------|
-| `this[entity]` | Set the value |
-| `TryGet(entity, out T)` | Get the value, if there is one |
-| `GetOrAdd(entity, defaultValue)` | Get the value, or add one |
-| `Has(entity)` | Whether there is a value |
-| `Remove(entity)` | Remove the value |

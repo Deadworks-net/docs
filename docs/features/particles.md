@@ -7,103 +7,110 @@ sidebar_label: "Particles"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Create and manage particle effects using the fluent `CParticleSystem` API.
+A particle effect is a visual effect in the world, like an explosion, a beam or a glow. The game's effects are `.vpcf` files, and you can play any of them.
 
-## CParticleSystem
+## Play a particle effect
 
-Represents a live `info_particle_system` entity.
-
-### Creating Particles
-
-Use the fluent builder pattern:
-
-```csharp
-var particle = CParticleSystem.Create("particles/upgrades/mystical_piano_hit.vpcf")
-    .AtPosition(pawn.Position + Vector3.UnitZ * 100)
-    .StartActive(true)
-    .Spawn();
-```
-
-### Instance Methods
-
-| Method | Description |
-|--------|-------------|
-| `Stop()` | Stops the particle effect without destroying the entity |
-| `Start()` | Starts or restarts the particle effect |
-| `Destroy()` | Removes this particle system entity from the world |
-| `AttachTo(CBaseEntity)` | Attaches particle to parent, inheriting its transform |
-| `Detach()` | Detaches particle from its current parent |
-
-### Static Methods
-
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `Create(string effectName)` | `Builder` | Begins building a new particle system entity |
-
-## Builder
-
-Fluent builder for spawning a `CParticleSystem` entity.
-
-### Builder Methods
-
-| Method | Description |
-|--------|-------------|
-| `AtPosition(Vector3 pos)` | Sets world-space spawn position |
-| `AtPosition(float x, float y, float z)` | Sets spawn position from components |
-| `WithAngles(Vector3 angles)` | Sets rotation (pitch, yaw, roll in degrees) |
-| `StartActive(bool active)` | Start playing immediately (default `true`) |
-| `WithTint(Color color, int controlPoint)` | Apply RGBA tint via control point |
-| `WithDataCP(int cp, Vector3 data)` | Set a data control point value |
-| `WithControlPoint(int cp, CBaseEntity entity)` | Bind entity to a control point |
-| `AttachedTo(CBaseEntity parent)` | Parent the spawned particle to another entity |
-| `Spawn()` | Creates the entity and returns `CParticleSystem` |
-
-### Full Example
-
-```csharp
-var particle = CParticleSystem.Create("particles/abilities/bull_drain.vpcf")
-    .AtPosition(targetPosition)
-    .WithAngles(new Vector3(0, 90, 0))
-    .StartActive(true)
-    .WithTint(Color.Red, 1)
-    .WithDataCP(2, new Vector3(100, 0, 0))
-    .AttachedTo(targetEntity)
-    .Spawn();
-
-// Later: control the particle
-particle.Stop();
-particle.Start();
-
-// Clean up
-particle.Destroy();
-```
-
-### Timed Particle with Cleanup
-
-```csharp
-var particle = CParticleSystem.Create("particles/upgrades/mystical_piano_hit.vpcf")
-    .AtPosition(pawn.Position + Vector3.UnitZ * 100)
-    .StartActive(true)
-    .Spawn();
-
-// Destroy after 5 seconds
-Timer.Once(5.Seconds(), () => particle.Destroy());
-```
-
-## Precaching
-
-Particle effects must be precached before use. See [Precaching](precaching).
+First, tell the game to load the effect. Use the `.vpcf` path, not `.vpcf_c`.
 
 ```csharp
 public override void OnPrecacheResources()
 {
     Precache.AddResource("particles/upgrades/mystical_piano_hit.vpcf");
-    Precache.AddResource("particles/abilities/bull_drain.vpcf");
 }
 ```
 
-## See Also
+Then create it where you want it.
 
-- [Precaching](precaching) — Resource precaching requirement
-- [Entities](entities) — Base entity operations
-- [Roll The Dice Example](../examples/roll-the-dice) — Particle effects in practice
+```csharp
+var particle = CParticleSystem.Create("particles/upgrades/mystical_piano_hit.vpcf")
+    .AtPosition(pawn.Position + Vector3.UnitZ * 100)
+    .Spawn();
+```
+
+This plays the effect just above the player. See [Precaching](precaching) for more on loading.
+
+## Find an effect to play
+
+Browse the game's files with [Source2Viewer](https://s2v.app/). Effects are under `particles/`.
+
+## Attach an effect to a player
+
+Use `AttachedTo`, and the effect follows them around.
+
+```csharp
+var particle = CParticleSystem.Create("particles/abilities/bull_drain.vpcf")
+    .AttachedTo(pawn)
+    .Spawn();
+```
+
+It works with any [entity](entities), not just players.
+
+To attach or let go of an effect that already exists:
+
+```csharp
+particle.AttachTo(pawn);
+particle.Detach();
+```
+
+## Remove an effect
+
+```csharp
+particle.Destroy();
+```
+
+To remove it after a while, use a [timer](timers):
+
+```csharp
+Timer.Once(5.Seconds(), () => particle.Destroy());
+```
+
+## Turn an effect off and on
+
+```csharp
+particle.Stop();
+particle.Start();
+```
+
+To create an effect that doesn't play until you call `Start()`, add `StartActive(false)`:
+
+```csharp
+var particle = CParticleSystem.Create("particles/abilities/bull_drain.vpcf")
+    .AtPosition(position)
+    .StartActive(false)
+    .Spawn();
+```
+
+## Rotate an effect
+
+```csharp
+var particle = CParticleSystem.Create("particles/abilities/bull_drain.vpcf")
+    .AtPosition(position)
+    .WithAngles(new Vector3(0, 90, 0))
+    .Spawn();
+```
+
+The angles are pitch, yaw and roll, in degrees.
+
+## Change an effect's colour
+
+```csharp
+var particle = CParticleSystem.Create("particles/abilities/bull_drain.vpcf")
+    .AtPosition(position)
+    .WithTint(Color.Red, 1)
+    .Spawn();
+```
+
+The number is the control point the effect reads its colour from. It depends on the effect, and not every effect has one.
+
+## Set an effect's control points
+
+Many effects read extra values, such as a size or an end point, from numbered control points. Which numbers an effect uses depends on the effect.
+
+```csharp
+var particle = CParticleSystem.Create("particles/abilities/bull_drain.vpcf")
+    .AtPosition(position)
+    .WithDataCP(2, new Vector3(100, 0, 0)) // give control point 2 a value
+    .WithControlPoint(1, targetEntity)     // make control point 1 follow an entity
+    .Spawn();
+```

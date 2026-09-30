@@ -7,157 +7,134 @@ sidebar_label: "World Text"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Display text in the 3D world or anchored to a player's screen.
+World text is text that sits in the world, like a sign. Players see it when they are near it. To put text on a player's screen instead, see [Chat](chat) or [UI Panels](ui).
 
-## CPointWorldText
+## Put text in the world
 
-Wraps the `point_worldtext` entity — a world-space text panel rendered in 3D.
+```csharp
+var text = CPointWorldText.Create("Hello World", new Vector3(100, 200, 300));
+```
 
-### Creating World Text
+`Create` returns `null` if the text couldn't be made, so check it before you use it.
+
+## Change the text
+
+```csharp
+text.SetMessage("ROUND 2");
+```
+
+## Write more than one line
+
+Put `\n` where you want a new line.
 
 ```csharp
 var text = CPointWorldText.Create(
-    message: "Hello World",
-    position: new Vector3(100, 200, 300),
-    fontSize: 100f,
-    worldUnitsPerPx: null,     // null = auto-calculated from fontSize
-    fontName: null,            // null = default font
-    r: 255, g: 255, b: 255, a: 255,  // RGBA color
-    reorientMode: 0            // 0 = no reorientation
-);
+    "Every minute, each team\nis assigned a random hero!",
+    new Vector3(100, 200, 300));
 ```
 
-### Parameters
+## Change the colour
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `message` | `string` | — | Text to display |
-| `position` | `Vector3` | — | World-space position |
-| `fontSize` | `float` | `100f` | Font size in pixels |
-| `worldUnitsPerPx` | `float?` | `null` | World units per pixel (`null` = auto-calculated as `0.25 / 1050 * fontSize`) |
-| `fontName` | `string?` | `null` | Font name (`null` = default, max 63 bytes UTF-8) |
-| `r, g, b, a` | `byte` | `255` | RGBA color components |
-| `reorientMode` | `int` | `0` | Reorientation mode (0 = none) |
-
-### Instance Properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `Enabled` | `bool` | Enable/disable the text entity |
-| `Fullbright` | `bool` | Whether text is fullbright (ignores lighting) |
-| `FontSize` | `float` | Font size in pixels |
-| `WorldUnitsPerPx` | `float` | World units per pixel |
-| `DepthOffset` | `float` | Depth offset for rendering |
-| `FontName` | `string` | Font name (max 63 bytes UTF-8) |
-| `ColorABGR` | `uint` | Color as ABGR uint32 |
-| `JustifyHorizontal` | `HorizontalJustify` | Horizontal text justification |
-| `JustifyVertical` | `VerticalJustify` | Vertical text justification |
-
-### Updating Text
+Give `Create` a red, green and blue value, each from 0 to 255.
 
 ```csharp
-text.SetMessage("Updated text!");
-text.SetColor(255, 0, 0);           // RGB (alpha defaults to 255)
-text.SetColor(255, 0, 0, 128);      // RGBA
+var text = CPointWorldText.Create("GAME OVER", new Vector3(100, 200, 300),
+    r: 255, g: 0, b: 0);
 ```
 
-### Cleanup
+To change it later:
 
 ```csharp
-text.Remove();  // Inherited from CBaseEntity
+text.SetColor(0, 255, 0);
 ```
 
-### Positioning Tips
+## Change the size
 
-| Parameter | Recommended Value | Notes |
-|-----------|-------------------|-------|
-| `fwdOffset` | `-50f` | Places text close to camera (behind eye position) |
-| `posX` | `2.341f` | Horizontal center (accounting for shoulder camera) |
-| `posY` | `2.6f` | Vertical center |
-| `PixelSize` | `50f` | Good size for pixel art blocks |
-| `SpacingX` | `0.023f` | Horizontal character spacing |
-| `SpacingY` | `0.06f` | Vertical character spacing (~2.6x taller than wide for "█") |
-
-:::tip Pixel Art
-Use the full block character `"█"` for pixel-art style displays. The `"."` character is invisible at small sizes. The block character is approximately 2.6x taller than wide, so adjust `SpacingX` and `SpacingY` accordingly for square pixels.
-:::
-
-## The EKV Workflow (Full Control)
-
-`CPointWorldText.Create` covers the common case. When you need access to keys the helper doesn't expose (reorientation, justify, depth offset, font name, fullbright), spawn the entity directly with `CEntityKeyValues`:
+`WorldUnitsPerPx` is how big the text is in the world. A larger number makes larger text.
 
 ```csharp
-var text = CBaseEntity.CreateByDesignerName("point_worldtext");
+var text = CPointWorldText.Create("DEADWORKS", new Vector3(100, 200, 300));
 if (text == null) return;
 
-var ekv = new CEntityKeyValues();
-ekv.SetString("message_text", controller.PlayerName);
-ekv.SetInt("font_size", 128);
-ekv.SetString("font_name", "Comic Sans MS");
-ekv.SetFloat("world_units_per_pixel", 0.15f);
-ekv.SetInt("enabled", 1);
-ekv.SetColor("color", 255, 255, 255, 255);
-ekv.SetFloat("depth_render_offset", 0.125f);
-ekv.SetInt("justify_horizontal", 1);   // 0 left, 1 center, 2 right
-ekv.SetInt("reorient_mode", 1);        // 1 = always face the camera (around up axis)
-ekv.SetInt("fullbright", 1);
-text.Spawn(ekv);
-
-// Belt and braces: also push the text via the SetMessage input after spawn,
-// which is what CPointWorldText.Create does internally.
-text.AcceptInput("SetMessage", value: controller.PlayerName);
-
-text.Teleport(pawn.Position + new Vector3(0, 0, 96), new Vector3(0, 180, 90));
-text.SetParent(pawn);
+text.WorldUnitsPerPx = 0.5f;
 ```
 
-A few gotchas worth knowing before you burn hours on them:
+## Change the font
 
-- **The EKV key is `message_text`, not `message`.** The SDK's own `Create` helper sets `message_text` and additionally fires `SetMessage` after spawn.
-- **The EKV key is `font_name`, not `font`.** Passing `font` silently does nothing.
-- **`fullbright: 1` is required for the color to show unfiltered** — without it, text is tinted by world lighting and often reads as dim gray indoors.
-- **`reorient_mode: 1`** rotates the text around its up axis so it faces each viewer's camera. Mode `0` is a fixed-orientation billboard.
-- **`depth_render_offset`** nudges the text toward the camera in world units — use a small positive value (`0.125`) to push text in front of geometry it would otherwise z-fight with.
-- **Fonts are looked up from the player's OS.** Deadlock does not ship fonts as usable by this entity. Stick to Windows 10 default fonts (Arial, Segoe UI, Consolas, Comic Sans MS, Verdana, …). Custom font files in the game's `pak01_dir` do **not** work.
+```csharp
+var text = CPointWorldText.Create("DEADWORKS", new Vector3(100, 200, 300),
+    fontName: "Reaver");
+```
 
-## Nametag Pattern
+## Centre the text
 
-Parent a worldtext to the pawn and it follows them around, bright side facing camera:
+By default the text starts at the position you gave and runs to the right. To centre it on that position:
+
+```csharp
+text.JustifyHorizontal = HorizontalJustify.Center;
+text.JustifyVertical = VerticalJustify.Center;
+```
+
+## Turn the text
+
+Text faces one way and can only be read from the front. Turn it with `Teleport`.
+
+```csharp
+text.Teleport(angles: new Vector3(180, 0, 270));
+```
+
+Getting the angles right takes some trial and error.
+
+## Make the text face whoever is looking
+
+Pass `reorientMode: 1`, and the text turns to face each player's camera.
+
+```csharp
+var text = CPointWorldText.Create("Hello World", new Vector3(100, 200, 300),
+    reorientMode: 1);
+```
+
+## Put a name above a player
+
+Create the text above the player's head, then attach it to their hero so it follows them.
 
 ```csharp
 public override void OnClientFullConnect(ClientFullConnectEvent args)
 {
-    var pawn = args.Controller?.GetHeroPawn();
-    if (pawn == null) return;
+    var controller = args.Controller;
+    var pawn = controller?.GetHeroPawn();
+    if (controller == null || pawn == null) return;
 
-    var text = CBaseEntity.CreateByDesignerName("point_worldtext");
-    var ekv = new CEntityKeyValues();
-    ekv.SetString("message_text", args.Controller.PlayerName);
-    ekv.SetInt("font_size", 128);
-    ekv.SetFloat("world_units_per_pixel", 0.12f);
-    ekv.SetInt("justify_horizontal", 1);
-    ekv.SetInt("reorient_mode", 1);
-    ekv.SetInt("fullbright", 1);
-    ekv.SetColor("color", 255, 255, 255, 255);
-    text.Spawn(ekv);
-    text.AcceptInput("SetMessage", value: args.Controller.PlayerName);
+    var text = CPointWorldText.Create(
+        controller.PlayerName,
+        pawn.Position + new Vector3(0, 0, 96),
+        reorientMode: 1);
+    if (text == null) return;
 
-    text.Teleport(pawn.Position + new Vector3(0, 0, 96), new Vector3(0, 180, 90));
+    text.JustifyHorizontal = HorizontalJustify.Center;
     text.SetParent(pawn);
-    // No need to track: when the pawn is removed, parented children die with it.
 }
 ```
 
-## Attaching to the Camera
+Attached text is removed along with the hero, so you don't need to keep track of it.
 
-You **can't** parent a worldtext to the player's camera directly. The camera is not a networked entity, and the player controller sits at `(0,0,0)` on the server. Common workarounds:
+## Hide and show the text
 
-- Attach to the pawn and accept that the text moves with the model (fine for nametags, timers, debug overlays)
-- Recompute position every tick in `OnGameFrame` based on `EyePosition + forward * distance` (visible stutter because client prediction can't help)
-- Use `CCitadelUserMsg_HudGameAnnouncement` for real HUD text (see [chat-and-hud](../guides/chat-and-hud))
+```csharp
+text.Enabled = false;
+text.Enabled = true;
+```
 
-## See Also
+## Remove the text
 
-- [Entities](entities) — Base entity operations (`Remove`, `SetParent`)
-- [Networking](networking) — HUD announcements as an alternative
-- [Chat & HUD Messaging](../guides/chat-and-hud) — When to use worldtext vs announcements
+```csharp
+text.Remove();
+```
+
+## Change something else
+
+World text is a `point_worldtext` [entity](entities). Its [database page](https://deadworks.net/db/entities/point_worldtext) lists every setting and input it has, such as a background behind the text.
+
+```csharp
+text.AcceptInput("Toggle"); // hide it if it's showing, show it if it's hidden
+```
