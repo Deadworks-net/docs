@@ -82,16 +82,6 @@ const sidebars: SidebarsConfig = {
         'features/admin-api',
       ],
     },
-    {
-      type: 'category',
-      label: 'Examples',
-      collapsed: false,
-      items: [
-        'examples/roll-the-dice',
-        'examples/item-rotation',
-        'examples/scourge',
-      ],
-    },
   ],
 };
 
