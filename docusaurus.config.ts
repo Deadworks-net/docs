@@ -58,22 +58,6 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'docsSidebar',
-          position: 'left',
-          label: 'Docs',
-        },
-        {
-          to: '/api-reference/commands',
-          label: 'Features',
-          position: 'left',
-        },
-        {
-          to: '/examples/roll-the-dice',
-          label: 'Examples',
-          position: 'left',
-        },
-        {
           href: 'https://deadworks.net/servers',
           label: 'Servers',
           position: 'right',
