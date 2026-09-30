@@ -1,0 +1,268 @@
+[
+  {
+    "type": "doc",
+    "id": "api-reference/index",
+    "label": "Overview"
+  },
+  {
+    "type": "category",
+    "label": "Plugin",
+    "collapsed": true,
+    "items": [
+      "api-reference/plugin/chat",
+      "api-reference/plugin/contentaddons",
+      "api-reference/plugin/deadworkspluginbase",
+      "api-reference/plugin/gamerules",
+      "api-reference/plugin/globalvars",
+      "api-reference/plugin/iteminfo",
+      "api-reference/plugin/keyvalues3",
+      "api-reference/plugin/playercamera",
+      "api-reference/plugin/precache",
+      "api-reference/plugin/server"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Entities",
+    "collapsed": true,
+    "items": [
+      "api-reference/entities/abilityresource",
+      "api-reference/entities/callbackhandle",
+      "api-reference/entities/cbaseentity",
+      "api-reference/entities/cbasemodifier",
+      "api-reference/entities/cbaseplayercontroller",
+      "api-reference/entities/cbaseplayerpawn",
+      "api-reference/entities/cbeam",
+      "api-reference/entities/cbodycomponent",
+      "api-reference/entities/ccitadel_ability_dash",
+      "api-reference/entities/ccitadel_ability_jump",
+      "api-reference/entities/ccitadelabilitycomponent",
+      "api-reference/entities/ccitadelbaseability",
+      "api-reference/entities/ccitadelherocomponent",
+      "api-reference/entities/ccitadelmodifiervdata",
+      "api-reference/entities/ccitadelplayercontroller",
+      "api-reference/entities/ccitadelplayerpawn",
+      "api-reference/entities/ccollisionproperty",
+      "api-reference/entities/centitykeyvalues",
+      "api-reference/entities/centitysubclassvdatabase",
+      "api-reference/entities/cgamescenenode",
+      "api-reference/entities/citadelherodata",
+      "api-reference/entities/citadelherospawndata",
+      "api-reference/entities/cmodifierproperty",
+      "api-reference/entities/cmodifiervdata",
+      "api-reference/entities/cparticlesystem",
+      "api-reference/entities/cparticlesystem-builder",
+      "api-reference/entities/cplayer_observerservices",
+      "api-reference/entities/cpointworldtext",
+      "api-reference/entities/ctakedamageinfo",
+      "api-reference/entities/entities",
+      "api-reference/entities/entitydata",
+      "api-reference/entities/herotypeextensions",
+      "api-reference/entities/nativeentity",
+      "api-reference/entities/playerdataglobal",
+      "api-reference/entities/players",
+      "api-reference/entities/schemaaccessor",
+      "api-reference/entities/schemaarrayaccessor",
+      "api-reference/entities/schemastringaccessor"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Events",
+    "collapsed": true,
+    "items": [
+      "api-reference/events/abilityattemptevent",
+      "api-reference/events/addmodifierevent",
+      "api-reference/events/chatcommandattribute",
+      "api-reference/events/chatcommandcontext",
+      "api-reference/events/chatmessage",
+      "api-reference/events/checktransmitevent",
+      "api-reference/events/clientconcommandevent",
+      "api-reference/events/clientconnectevent",
+      "api-reference/events/clientdisconnectedevent",
+      "api-reference/events/clientfullconnectevent",
+      "api-reference/events/clientputinserverevent",
+      "api-reference/events/entitycreatedevent",
+      "api-reference/events/entitydeletedevent",
+      "api-reference/events/entityinputevent",
+      "api-reference/events/entityinputhookattribute",
+      "api-reference/events/entityio",
+      "api-reference/events/entityiovalue",
+      "api-reference/events/entityoutputevent",
+      "api-reference/events/entityoutputhookattribute",
+      "api-reference/events/entityspawnedevent",
+      "api-reference/events/entitytouchevent",
+      "api-reference/events/gameevent",
+      "api-reference/events/gameeventhandler",
+      "api-reference/events/gameeventhandlerattribute",
+      "api-reference/events/gameevents",
+      "api-reference/events/gameeventwriter",
+      "api-reference/events/hasmodifierstateevent",
+      "api-reference/events/modifierabilityeventdata",
+      "api-reference/events/modifierdamageeventdata",
+      "api-reference/events/modifierevent",
+      "api-reference/events/modifycurrencyevent",
+      "api-reference/events/processusercmdsevent",
+      "api-reference/events/takedamageevent"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Commands",
+    "collapsed": true,
+    "items": [
+      "api-reference/commands/commandattribute",
+      "api-reference/commands/commandconverters",
+      "api-reference/commands/commandexception"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "ConVars",
+    "collapsed": true,
+    "items": [
+      "api-reference/convars/concommandattribute",
+      "api-reference/convars/concommandcontext",
+      "api-reference/convars/convar",
+      "api-reference/convars/convarattribute",
+      "api-reference/convars/fcvar"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Configuration",
+    "collapsed": true,
+    "items": [
+      "api-reference/config/configextensions",
+      "api-reference/config/iconfig",
+      "api-reference/config/pluginconfigattribute"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Timers",
+    "collapsed": true,
+    "items": [
+      "api-reference/timers/duration",
+      "api-reference/timers/durationextensions",
+      "api-reference/timers/ihandle",
+      "api-reference/timers/istep",
+      "api-reference/timers/itimer"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Networking",
+    "collapsed": true,
+    "items": [
+      "api-reference/networking/incomingmessagecontext",
+      "api-reference/networking/netmessagedirection",
+      "api-reference/networking/netmessagehandlerattribute",
+      "api-reference/networking/netmessageregistry",
+      "api-reference/networking/netmessages",
+      "api-reference/networking/outgoingmessagecontext",
+      "api-reference/networking/recipientfilter"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Sound",
+    "collapsed": true,
+    "items": [
+      "api-reference/sound/soundevent",
+      "api-reference/sound/sounds"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "UI",
+    "collapsed": true,
+    "items": [
+      "api-reference/ui/addonstate",
+      "api-reference/ui/flowdirection",
+      "api-reference/ui/ui",
+      "api-reference/ui/uibutton",
+      "api-reference/ui/uicontainer",
+      "api-reference/ui/uievent",
+      "api-reference/ui/uiimage",
+      "api-reference/ui/uilabel",
+      "api-reference/ui/uinode",
+      "api-reference/ui/uinodeextensions",
+      "api-reference/ui/uipanel",
+      "api-reference/ui/uiupdate"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Tracing",
+    "collapsed": true,
+    "items": [
+      "api-reference/tracing/bbox_t",
+      "api-reference/tracing/boundingbox",
+      "api-reference/tracing/capsuletrace",
+      "api-reference/tracing/cgametrace",
+      "api-reference/tracing/collisionfunctionmask_t",
+      "api-reference/tracing/collisiongroup",
+      "api-reference/tracing/ctracefilter",
+      "api-reference/tracing/ctransform",
+      "api-reference/tracing/hulltrace",
+      "api-reference/tracing/interactionlayer",
+      "api-reference/tracing/linetrace",
+      "api-reference/tracing/meshtrace",
+      "api-reference/tracing/namematchtype",
+      "api-reference/tracing/ray_t",
+      "api-reference/tracing/raytype_t",
+      "api-reference/tracing/rncollisionattr_t",
+      "api-reference/tracing/rnqueryobjectset",
+      "api-reference/tracing/rnqueryshapeattr_t",
+      "api-reference/tracing/spheretrace",
+      "api-reference/tracing/trace",
+      "api-reference/tracing/traceresult"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Zones and Helpers",
+    "collapsed": true,
+    "items": [
+      "api-reference/utils/pawnextensions",
+      "api-reference/utils/zone"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Enums",
+    "collapsed": true,
+    "items": [
+      "api-reference/enums/camerasetting",
+      "api-reference/enums/eabilityslot",
+      "api-reference/enums/ecitadeldamagetype",
+      "api-reference/enums/ecitadelgamemode",
+      "api-reference/enums/ecitadelmatchmode",
+      "api-reference/enums/ecurrencysource",
+      "api-reference/enums/ecurrencytype",
+      "api-reference/enums/egamestate",
+      "api-reference/enums/eknockdowntypes",
+      "api-reference/enums/emodifierevent",
+      "api-reference/enums/emodifierstate",
+      "api-reference/enums/entityflags",
+      "api-reference/enums/fieldtype",
+      "api-reference/enums/heroes",
+      "api-reference/enums/hookmode",
+      "api-reference/enums/hookresult",
+      "api-reference/enums/horizontaljustify",
+      "api-reference/enums/imbueeffects",
+      "api-reference/enums/imbueresult",
+      "api-reference/enums/inputbutton",
+      "api-reference/enums/lanecolor",
+      "api-reference/enums/lifestate",
+      "api-reference/enums/movetype",
+      "api-reference/enums/observermode_t",
+      "api-reference/enums/solidflags",
+      "api-reference/enums/solidtype",
+      "api-reference/enums/takedamageflags",
+      "api-reference/enums/upgradeflags",
+      "api-reference/enums/verticaljustify"
+    ]
+  }
+]

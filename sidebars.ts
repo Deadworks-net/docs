@@ -1,4 +1,6 @@
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+// Written by scripts/gen-api.ts along with the pages in docs/api-reference.
+import apiSidebar from './api/sidebar.json';
 
 const sidebars: SidebarsConfig = {
   docsSidebar: [
@@ -60,6 +62,13 @@ const sidebars: SidebarsConfig = {
         'guides/server-hosting',
         'guides/uploading-content',
       ],
+    },
+    {
+      type: 'category',
+      label: 'API Reference',
+      collapsed: true,
+      link: {type: 'doc', id: 'api-reference/index'},
+      items: (apiSidebar as any[]).slice(1),
     },
     {
       type: 'category',
