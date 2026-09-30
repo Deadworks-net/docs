@@ -386,9 +386,9 @@ code {
   border-radius: 0;
   padding: 1px 6px;
   font-size: 0.85em;
-  background-color: rgba(105, 232, 153, 0.08);
-  border: 1px solid rgba(105, 232, 153, 0.2);
-  color: #8fefb3;
+  background-color: rgba(247, 233, 213, 0.06);
+  border: 1px solid rgba(247, 233, 213, 0.14);
+  color: var(--dw-cream);
 }
 
 a code {
