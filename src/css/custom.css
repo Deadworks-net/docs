@@ -106,7 +106,6 @@
   --ifm-background-color: var(--dw-bg);
   --ifm-background-surface-color: var(--dw-ink);
   --ifm-navbar-background-color: var(--dw-ink);
-  --ifm-footer-background-color: var(--dw-ink);
   --ifm-color-emphasis-300: var(--dw-line);
   --ifm-toc-border-color: var(--dw-line);
   --ifm-font-color-base: var(--dw-cream);
@@ -498,35 +497,6 @@ blockquote p {
 .alert a {
   color: var(--dw-accent, var(--dw-primary));
   text-decoration-color: currentColor;
-}
-
-/* Footer */
-.footer {
-  border-top: 1px solid var(--dw-line-soft);
-  background: var(--dw-ink);
-}
-
-.footer__title {
-  font-family: var(--dw-font-label);
-  color: var(--dw-primary);
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
-}
-
-.footer__link-item {
-  color: var(--dw-cream-50);
-}
-
-.footer__link-item:hover {
-  color: var(--dw-cream);
-  text-decoration: none;
-}
-
-.footer__copyright {
-  color: var(--dw-cream-30);
-  font-size: 0.85rem;
 }
 
 /* Scrollbars */

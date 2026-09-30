@@ -93,37 +93,6 @@ const config: Config = {
         },
       ],
     },
-    footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Documentation',
-          items: [
-            { label: 'Getting Started', to: '/getting-started/setup' },
-            { label: 'Features', to: '/api-reference/commands' },
-            { label: 'Guides', to: '/guides/plugin-lifecycle' },
-          ],
-        },
-        {
-          title: 'Examples',
-          items: [
-            { label: 'Roll The Dice', to: '/examples/roll-the-dice' },
-            { label: 'Item Rotation', to: '/examples/item-rotation' },
-            { label: 'Scourge DOT', to: '/examples/scourge' },
-          ],
-        },
-        {
-          title: 'Resources',
-          items: [
-            {
-              label: 'Deadlock on Steam',
-              href: 'https://store.steampowered.com/app/1422450/Deadlock/',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} Deadworks. Built with Docusaurus.`,
-    },
     prism: {
       theme: prismThemes.oneDark,
       darkTheme: prismThemes.oneDark,
