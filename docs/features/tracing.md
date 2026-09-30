@@ -7,247 +7,49 @@ sidebar_label: "Tracing"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Cast rays and shapes through the world using the VPhys2 physics system. Useful for hit detection, line of sight, and collision checks.
+A trace draws an invisible line through the world and tells you the first thing it hits. Use it to find what a player is looking at, whether two players can see each other, or where the ground is.
 
-## Trace (Static Class)
-
-All methods are no-ops if the physics query system is not yet ready.
-
-### Simple Ray Cast
-
-Fire a line ray from start to end:
+## Trace a line between two points
 
 ```csharp
-var result = Trace.Ray(
-    start: pawn.EyePosition,
-    end: pawn.EyePosition + forwardDirection * 1000f,
-    mask: MaskTrace.Solid,
-    ignore: pawn  // skip the casting entity
-);
+var result = Trace.Ray(start, end);
 
 if (result.DidHit)
 {
-    Console.WriteLine($"Hit at {result.HitPosition}, fraction: {result.Fraction}");
+    Console.WriteLine($"Hit something at {result.HitPosition}");
 }
 ```
 
-### TraceShape (Advanced)
+`DidHit` is `false` when the line reached `end` without touching anything.
 
-Full control with custom ray shape and filter:
+## Find what a player is looking at
+
+Start at the player's eyes and trace in the direction they are facing. Pass the player as `ignore`, or the line hits them first.
 
 ```csharp
-var ray = new Ray_t();
-// Initialize ray shape...
-
-var filter = new CTraceFilter();
-// Configure filter...
-
-var trace = CGameTrace.Create();
-Trace.TraceShape(start, end, ray, filter, ref trace);
-
-if (trace.DidHit)
+[Command("lookat")]
+public void CmdLookAt(Caller caller)
 {
-    var hitEntity = trace.HitEntity;
-    Console.WriteLine($"Hit: {hitEntity?.Classname} at {trace.HitPoint}");
+    var pawn = caller.Player?.GetHeroPawn();
+    if (pawn == null)
+        throw new CommandException("You need a hero to do that.");
+
+    var start = pawn.EyePosition;
+    var end = start + ForwardFromAngles(pawn.EyeAngles) * 5000f;
+
+    var result = Trace.Ray(start, end, ignore: pawn);
+
+    if (result.DidHit)
+        caller.Reply($"You are looking at {result.HitPosition}");
+    else
+        caller.Reply("You are looking at nothing.");
 }
-```
 
-### SimpleTrace
-
-Convenience method that builds the filter and ray from parameters:
-
-```csharp
-var trace = CGameTrace.Create();
-Trace.SimpleTrace(
-    start, end,
-    RayType_t.Line,
-    RnQueryObjectSet.All,
-    interactWith: MaskTrace.Solid, interactExclude: MaskTrace.Empty, interactAs: MaskTrace.Empty,
-    CollisionGroup.Always,
-    ref trace,
-    filterEntity: pawn,
-    filterSecondEntity: null
-);
-```
-
-### SimpleTraceAngles
-
-Like `SimpleTrace` but uses pitch/yaw angles instead of an end point:
-
-```csharp
-var trace = CGameTrace.Create();
-Trace.SimpleTraceAngles(
-    origin, angles,
-    RayType_t.Line,
-    RnQueryObjectSet.All,
-    interactWith: MaskTrace.Solid, interactExclude: MaskTrace.Empty, interactAs: MaskTrace.Empty,
-    CollisionGroup.Always,
-    ref trace,
-    filterEntity: pawn,
-    filterSecondEntity: null,
-    maxDistance: 8192f  // default
-);
-```
-
-## Trace Methods Summary
-
-| Method | Description |
-|--------|-------------|
-| `Ray(Vector3 start, Vector3 end, MaskTrace mask = Solid\|Hitbox, CBaseEntity? ignore = null)` | Simple line ray, returns `TraceResult` |
-| `TraceShape(Vector3, Vector3, Ray_t, CTraceFilter, ref CGameTrace)` | Full shape trace with custom ray and filter |
-| `SimpleTrace(start, end, rayKind, objectQuery, interactWith, interactExclude, interactAs, collision, ref trace, filterEntity?, filterSecondEntity?)` | Convenience with individual parameters |
-| `SimpleTraceAngles(start, angles, rayKind, objectQuery, interactWith, interactExclude, interactAs, collision, ref trace, filterEntity?, filterSecondEntity?, maxDistance = 8192f)` | Like SimpleTrace but with angles and max distance |
-
-## TraceResult
-
-Simplified result from `Trace.Ray()`:
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `DidHit` | `bool` | Whether the ray hit something |
-| `HitPosition` | `Vector3` | World position of the hit |
-| `Fraction` | `float` | 0.0 (at start) to 1.0 (at end) — how far the ray traveled |
-| `Trace` | `CGameTrace` | Full trace data |
-
-## CGameTrace
-
-Full result of a VPhys2 shape trace:
-
-| Member | Type | Description |
-|--------|------|-------------|
-| `DidHit` | `bool` | Whether the trace hit something |
-| `HitPoint` | `Vector3` | World position of the hit |
-| `HitNormal` | `Vector3` | Surface normal at hit point |
-| `HitEntity` | `CBaseEntity?` | Entity that was hit |
-
-## Ray Shapes
-
-### RayType_t
-
-Shape type for trace queries:
-
-| Value | Description |
-|-------|-------------|
-| Line | Line ray (default) |
-| Sphere | Sphere shape |
-| Hull | AABB hull |
-| Capsule | Capsule shape |
-
-### Shape Data Structs
-
-| Struct | Description |
-|--------|-------------|
-| `LineTrace` | Line ray with optional radius (swept sphere) |
-| `SphereTrace` | Sphere at a fixed center point |
-| `HullTrace` | AABB hull swept along a ray |
-| `CapsuleTrace` | Capsule between two center points with radius |
-| `MeshTrace` | Convex mesh with bounds and vertices |
-
-## Collision Filtering
-
-### CollisionGroup
-
-Determines which objects interact in physics simulation.
-
-### InteractionLayer
-
-Individual content/interaction layers for building trace bitmasks.
-
-### MaskTrace
-
-Bitmask combining `InteractionLayer` values:
-
-| Value | Description |
-|-------|-------------|
-| `Solid` | Solid world geometry |
-| *(others)* | Various content layer combinations |
-
-### RnQueryObjectSet
-
-Controls which object sets are included:
-
-| Value | Description |
-|-------|-------------|
-| `All` | All object sets (static, dynamic, locatable) |
-
-### CTraceFilter
-
-Full trace filter with entity-aware filtering:
-
-```csharp
-var filter = new CTraceFilter(true) {
-    IterateEntities = true,
-    QueryShapeAttributes = new RnQueryShapeAttr_t {
-        ObjectSetMask = RnQueryObjectSet.All,
-        InteractsWith = MaskTrace.Solid,
-        InteractsExclude = MaskTrace.Empty,
-        InteractsAs = MaskTrace.Empty,
-        CollisionGroup = CollisionGroup.CitadelBullet,
-        HitSolid = true,
-    }
-};
-// Ignore specific entities by index (requires unsafe)
-unsafe {
-    filter.QueryShapeAttributes.EntityIdsToIgnore[0] = (uint)pawn.EntityIndex;
-}
-```
-
-### RnQueryShapeAttr_t
-
-Query attributes for shape traces:
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `ObjectSetMask` | `RnQueryObjectSet` | Which object sets to query |
-| `InteractsWith` | `MaskTrace` | What the ray interacts with |
-| `InteractsExclude` | `MaskTrace` | What to exclude from interaction |
-| `InteractsAs` | `MaskTrace` | What the ray acts as |
-| `CollisionGroup` | `CollisionGroup` | Collision group for filtering |
-| `HitSolid` | `bool` | Whether to hit solid objects |
-| `HitTrigger` | `bool` | Whether to hit trigger volumes |
-| `EntityIdsToIgnore` | `fixed uint[2]` | Up to 2 entity indices to skip (requires `unsafe`) |
-
-## Example: Line-of-Sight Check
-
-Bullet-style LOS check that ignores trigger volumes and specific entities:
-
-```csharp
-var trace = CGameTrace.Create();
-var ray = new Ray_t { Type = RayType_t.Line };
-var filter = new CTraceFilter(true) {
-    IterateEntities = true,
-    QueryShapeAttributes = new RnQueryShapeAttr_t {
-        ObjectSetMask = RnQueryObjectSet.All,
-        InteractsWith = MaskTrace.Solid,
-        InteractsExclude = MaskTrace.Empty,
-        InteractsAs = MaskTrace.Empty,
-        CollisionGroup = CollisionGroup.CitadelBullet,
-        HitSolid = true,
-    }
-};
-unsafe {
-    filter.QueryShapeAttributes.EntityIdsToIgnore[0] = (uint)sourcePawn.EntityIndex;
-    filter.QueryShapeAttributes.EntityIdsToIgnore[1] = (uint)targetPawn.EntityIndex;
-}
-Trace.TraceShape(sourcePawn.EyePosition, targetPawn.EyePosition, ray, filter, ref trace);
-
-bool hasLos = !trace.DidHit;
-// trace.HitEntity?.Classname tells you what blocked (e.g. "CWorld" for walls)
-```
-
-:::note
-`EntityIdsToIgnore` is a fixed-size buffer — accessing it requires `unsafe` code and `<AllowUnsafeBlocks>true</AllowUnsafeBlocks>` in your `.csproj`.
-:::
-
-## Computing a Forward Vector
-
-Deadworks doesn't ship a built-in angles-to-vector helper. Use this conversion — it matches the Source engine convention where pitch is negated because positive Z is up:
-
-```csharp
 static Vector3 ForwardFromAngles(Vector3 angles)
 {
     float pitch = angles.X * MathF.PI / 180f;
-    float yaw   = angles.Y * MathF.PI / 180f;
+    float yaw = angles.Y * MathF.PI / 180f;
+
     return new Vector3(
         MathF.Cos(pitch) * MathF.Cos(yaw),
         MathF.Cos(pitch) * MathF.Sin(yaw),
@@ -255,31 +57,77 @@ static Vector3 ForwardFromAngles(Vector3 angles)
 }
 ```
 
-## Example: Player Eye Trace
+`ForwardFromAngles` turns the angles a player is facing into a direction. Copy it into your plugin.
+
+## Find out what was hit
+
+`result.Trace.HitEntity` is the [entity](entities) the line hit.
 
 ```csharp
-[Command("trace")]
-public void CmdTrace(CCitadelPlayerController caller)
+var result = Trace.Ray(start, end, ignore: pawn);
+
+var target = result.Trace.HitEntity?.As<CCitadelPlayerPawn>();
+if (target != null)
 {
-    var pawn = caller.GetHeroPawn();
-    if (pawn == null) return;
-
-    var result = Trace.Ray(
-        pawn.EyePosition,
-        pawn.EyePosition + ForwardFromAngles(pawn.EyeAngles) * 5000f,
-        MaskTrace.Solid,
-        pawn
-    );
-
-    if (result.DidHit)
-    {
-        caller.PrintToConsole($"Hit at {result.HitPosition}");
-        caller.PrintToConsole($"Distance: {result.Fraction * 5000f} units");
-    }
+    // The line hit another player's hero
+    target.Hurt(50f, attacker: pawn);
 }
 ```
 
-## See Also
+## Find how far away something is
 
-- [Entities](entities) — Entity references in trace results
-- [Players](players) — `EyePosition`, `EyeAngles`, `ViewAngles`
+```csharp
+var result = Trace.Ray(start, end, ignore: pawn);
+
+if (result.DidHit)
+{
+    float distance = Vector3.Distance(start, result.HitPosition);
+}
+```
+
+## Find the ground below a point
+
+Trace straight down, and only let the line hit solid things.
+
+```csharp
+var start = pawn.Position;
+var end = start - Vector3.UnitZ * 10000f;
+
+var result = Trace.Ray(start, end, InteractionLayer.Solid, ignore: pawn);
+
+if (result.DidHit)
+{
+    Vector3 ground = result.HitPosition;
+}
+```
+
+## Choose what the line can hit
+
+The third argument says which kinds of thing stop the line. Join more than one with `|`.
+
+```csharp
+// Walls, floors and other solid things
+Trace.Ray(start, end, InteractionLayer.Solid);
+
+// Solid things, and the hitboxes of players and NPCs. This is the default
+Trace.Ray(start, end, InteractionLayer.Solid | InteractionLayer.Hitbox);
+```
+
+## Check whether one player can see another
+
+Trace from one player's eyes to the other's, ignoring both of them. If nothing is hit, there is nothing in the way.
+
+```csharp
+var trace = CGameTrace.Create();
+
+Trace.SimpleTrace(
+    a.EyePosition, b.EyePosition,
+    RayType_t.Line, RnQueryObjectSet.All,
+    InteractionLayer.Solid, InteractionLayer.None, InteractionLayer.None,
+    CollisionGroup.CitadelBullet, ref trace,
+    filterEntity: a, filterSecondEntity: b);
+
+bool canSee = !trace.DidHit;
+```
+
+`Trace.Ray` can only ignore one entity, so this uses `Trace.SimpleTrace`, which can ignore two.

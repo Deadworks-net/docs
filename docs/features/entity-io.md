@@ -7,142 +7,162 @@ sidebar_label: "Entity I/O"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Hook into the Valve entity I/O system to observe or intercept output firings and input dispatches by entity designer name.
+Entities in a map talk to each other with inputs and outputs.
 
-## EntityIO
+- An **output** is something an entity announces. A trigger fires `OnStartTouch` when something walks into it.
+- An **input** is something you tell an entity to do. A button takes `Kill` to remove itself.
 
-### Hooking Outputs
+Your plugin can listen for both, block them, and send inputs of its own.
 
-Subscribe to outputs fired by entities with a given designer name:
+## Find an entity's inputs and outputs
 
-```csharp
-var handle = EntityIO.HookOutput("trigger_multiple", "OnTrigger", ev =>
-{
-    Console.WriteLine($"Output {ev.OutputName} fired by {ev.CallerClass} (entity {ev.Caller?.EntityIndex})");
-    Console.WriteLine($"Activator: {ev.Activator?.Classname}");
-});
+The [entity database](https://deadworks.net/db/entities) lists the inputs and outputs of every entity. See [`trigger_multiple`](https://deadworks.net/db/entities/trigger_multiple) for an example.
 
-// Cancel later
-handle.Cancel();
-```
+## Run code when an entity fires an output
 
-### Hooking Inputs
-
-Subscribe to inputs dispatched to entities:
-
-```csharp
-var handle = EntityIO.HookInput("func_button", "Kill", ev =>
-{
-    Console.WriteLine($"Kill input received by {ev.Entity.Classname}");
-    Console.WriteLine($"Value: {ev.Value.AsString()}");
-});
-```
-
-### Blocking Inputs and Outputs
-
-Each hook has two overloads. Pass a handler that returns `HookResult` to run **pre** (before the original) — returning `HookResult.Stop` blocks the input/output entirely. Pass an `Action<...>` handler to run **post** (observe-only, after the original):
-
-```csharp
-// Pre hook: veto the Kill input so the button never kills its activator
-EntityIO.HookInput("func_button", "Kill", ev =>
-{
-    return HookResult.Stop;
-});
-
-// Post hook: observe only, cannot block
-EntityIO.HookInput("func_button", "Kill", ev =>
-{
-    Console.WriteLine("Kill input already processed");
-});
-```
-
-Class and input/output names support `"*"` as a wildcard. Hooks are matched against four keys in priority order: `(class, name)`, `(class, "*")`, `("*", name)`, `("*", "*")`.
-
-### Methods
-
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `HookOutput(string className, string outputName, Func<EntityOutputEvent, HookResult> handler, HookMode mode = HookMode.Pre)` | `IHandle` | Pre-mode hook; return `HookResult.Stop` to block the output |
-| `HookOutput(string className, string outputName, Action<EntityOutputEvent> handler)` | `IHandle` | Post-mode hook; observe-only |
-| `HookInput(string className, string inputName, Func<EntityInputEvent, HookResult> handler, HookMode mode = HookMode.Pre)` | `IHandle` | Pre-mode hook; return `HookResult.Stop` to block the input |
-| `HookInput(string className, string inputName, Action<EntityInputEvent> handler)` | `IHandle` | Post-mode hook; observe-only |
-
-All return an `IHandle` that cancels the hook when cancelled. Hooks are also auto-cancelled on plugin unload.
-
-### Attribute Registration
-
-Instead of calling `HookOutput`/`HookInput` in `OnLoad`, you can annotate plugin methods — they are auto-registered on load and dropped on unload. Pre handlers must return `HookResult`; post handlers must return `void`:
+Put `[EntityOutputHook]` on a method, with the entity's name and the output's name.
 
 ```csharp
 [EntityOutputHook("trigger_multiple", "OnStartTouch")]
 public HookResult OnTriggerTouched(EntityOutputEvent e)
 {
+    var pawn = e.Activator?.As<CCitadelPlayerPawn>();
+    if (pawn == null) return HookResult.Continue;
+
+    Console.WriteLine($"{pawn.Controller?.PlayerName} walked into a trigger");
+
     return HookResult.Continue;
 }
-
-[EntityInputHook("*", "Toggle", HookMode.Post)]
-public void OnToggleObserved(EntityInputEvent e) { /* observer only */ }
 ```
 
-:::caution Limited Entity I/O Support
-Entity I/O hooks work with map-placed entities that use the Source 2 I/O system (e.g. `trigger_multiple`, `func_button`). Player entities (`"player"`) do not fire standard I/O outputs like `"OnDeath"` — use `OnTakeDamage` or `GameEvents.AddListener("player_death")` instead for player death detection.
-:::
+`e.Activator` is whoever set it off, usually a player's hero. `e.Caller` is the entity that fired the output.
 
-## EntityOutputEvent
+## Block an output
 
-Data for a fired entity output.
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `CallerClass` | `string` | Designer name of the entity firing the output (e.g. `"trigger_multiple"`) |
-| `OutputName` | `string` | Name of the output being fired (e.g. `"OnTrigger"`) |
-| `Activator` | `CBaseEntity?` | The entity that triggered the output (typically a player pawn) |
-| `Caller` | `CBaseEntity?` | The entity that fired the output |
-| `Value` | `EntityIOValue` | The typed variant value carried by the output |
-| `Delay` | `float` | Delay (seconds) before the output's connected inputs fire |
-
-## EntityInputEvent
-
-Data for a received entity input.
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `Entity` | `CBaseEntity` | The entity receiving the input |
-| `ClassName` | `string` | Designer name of the receiving entity (cheaper than reading `Entity.DesignerName`) |
-| `InputName` | `string` | Name of the input (e.g. `"Kill"`) |
-| `Activator` | `CBaseEntity?` | The activating entity, if any |
-| `Caller` | `CBaseEntity?` | The calling entity, if any |
-| `Value` | `EntityIOValue` | The typed variant value carried by the input |
-
-## EntityIOValue
-
-Typed accessor for the variant value carried by an input or output. Call the accessor matching the value's type — or `AsString()`, which formats any variant type:
-
-| Member | Type / Returns | Description |
-|--------|----------------|-------------|
-| `Type` | `FieldType` | Source 2 field type of the variant (`FieldType.Void` for null) |
-| `IsNull` | `bool` | True if the variant is null or holds no value |
-| `AsString()` | `string` | Formats any variant type as a string |
-| `AsInt()` / `AsInt64()` / `AsUInt()` | `int` / `long` / `uint` | Integer conversions; `0` if unsupported |
-| `AsFloat()` / `AsDouble()` | `float` / `double` | Float conversions; `0` if unsupported |
-| `AsBool()` | `bool` | Boolean conversion |
-| `AsVector2()` / `AsVector3()` / `AsVector4()` | `Vector2/3/4` | Vector reads; zero for other types |
-| `AsColor()` | `Color` | RGBA color; transparent black for non-color variants |
-| `AsEntity()` | `CBaseEntity?` | Resolves ehandle variants; null otherwise |
-
-:::warning Do not retain past the callback
-`EntityIOValue` wraps a native pointer that is only valid for the duration of the hook callback. If you need the value later, call the typed accessor (e.g. `AsString()`) inside the callback and store the result.
-:::
-
-## AcceptInput
-
-You can also fire inputs directly on entities. See [Entities](entities):
+Return `HookResult.Stop`, and nothing connected to that output happens.
 
 ```csharp
-entity.AcceptInput("Start", activator: null, caller: null, value: "");
-entity.AcceptInput("Kill", activator: null, caller: null, value: "");
+[EntityOutputHook("trigger_multiple", "OnStartTouch")]
+public HookResult OnTriggerTouched(EntityOutputEvent e)
+{
+    return HookResult.Stop;
+}
 ```
 
-## See Also
+## Run code when an entity receives an input
 
-- [Entities](entities) — `AcceptInput` method
+Put `[EntityInputHook]` on a method, with the entity's name and the input's name.
+
+```csharp
+[EntityInputHook("func_button", "Kill")]
+public HookResult OnButtonKilled(EntityInputEvent e)
+{
+    Console.WriteLine($"{e.Entity.DesignerName} was told to remove itself");
+
+    return HookResult.Continue;
+}
+```
+
+`e.Entity` is the entity receiving the input.
+
+## Block an input
+
+Return `HookResult.Stop`, and the entity never receives it.
+
+```csharp
+[EntityInputHook("func_button", "Kill")]
+public HookResult OnButtonKilled(EntityInputEvent e)
+{
+    return HookResult.Stop;
+}
+```
+
+## Run code after an input or output
+
+Add `HookMode.Post` and return `void`. Your method runs once the input or output has already happened, so it can't block it.
+
+```csharp
+[EntityInputHook("func_button", "Kill", HookMode.Post)]
+public void OnButtonKilled(EntityInputEvent e)
+{
+    Console.WriteLine("The button is gone");
+}
+```
+
+## Listen to every entity
+
+Use `"*"` in place of the entity's name, the input or output's name, or both.
+
+```csharp
+[EntityOutputHook("*", "OnStartTouch")]
+public HookResult OnAnythingTouched(EntityOutputEvent e)
+{
+    Console.WriteLine($"{e.CallerClass} was touched");
+
+    return HookResult.Continue;
+}
+```
+
+`e.CallerClass` is the name of the entity that fired the output.
+
+## Read the value sent with an input or output
+
+Some inputs and outputs carry a value. Read it from `e.Value` with the method for its type.
+
+```csharp
+[EntityInputHook("*", "SetMessage")]
+public HookResult OnSetMessage(EntityInputEvent e)
+{
+    string text = e.Value.AsString();
+
+    Console.WriteLine($"{e.ClassName} was given the message: {text}");
+
+    return HookResult.Continue;
+}
+```
+
+There is an `AsInt`, `AsFloat`, `AsBool`, `AsVector3`, `AsColor` and `AsEntity` too. `AsString` works for any type.
+
+Read the value inside your method. `e.Value` stops working once your method returns, so don't keep it for later.
+
+## Start and stop listening from code
+
+Use `EntityIO.HookOutput` or `EntityIO.HookInput`. Each gives you a handle, and the hook stays until you cancel it.
+
+```csharp
+var hook = EntityIO.HookOutput("trigger_multiple", "OnStartTouch", e =>
+{
+    Console.WriteLine("Something walked into a trigger");
+});
+
+// Stop listening
+hook.Cancel();
+```
+
+Return a `HookResult` from the handler if you want to be able to block it.
+
+## Send an input to an entity
+
+```csharp
+entity.AcceptInput("Kill");
+```
+
+To send a value with it:
+
+```csharp
+entity.AcceptInput("SetMessage", value: "ROUND 2");
+```
+
+## Run code when a player dies
+
+Players don't fire outputs like `OnDeath`. Use the `player_death` [game event](game-events#run-code-when-a-player-dies) for that.
+
+```csharp
+[GameEventHandler("player_death")]
+public HookResult OnPlayerDeath(PlayerDeathEvent args)
+{
+    Console.WriteLine($"{args.UseridController?.PlayerName} died");
+
+    return HookResult.Continue;
+}
+```

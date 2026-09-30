@@ -7,184 +7,102 @@ sidebar_label: "Networking"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Send and intercept Source 2 network messages between server and clients.
+The server and each player's game talk to each other with net messages. Your plugin can send its own, and read or block the ones already being sent.
 
-## NetMessages
+## See what messages exist
 
-Entry point for sending and hooking protobuf network messages.
+The [protobuf database](https://deadworks.net/db/protobufs) lists every net message in the game and the fields each one has.
 
-### Sending Messages
+## Send a message to everyone
+
+Create the message, fill in its fields, and send it.
 
 ```csharp
-// Create a protobuf message
 var msg = new CCitadelUserMsg_HudGameAnnouncement
 {
     TitleLocstring = "GAME OVER",
     DescriptionLocstring = "The match has ended"
 };
 
-// Send to all players
 NetMessages.Send(msg, RecipientFilter.All);
-
-// Send to one player
-NetMessages.Send(msg, RecipientFilter.Single(playerSlot));
 ```
 
-### Hooking Outgoing Messages (Server → Client)
+This one shows a large announcement on the screen.
+
+## Send a message to one player
 
 ```csharp
-// Hook before a message is sent to clients
-NetMessages.HookOutgoing<CCitadelUserMsg_ChatMsg>(ctx =>
-{
-    // ctx.Message — the protobuf message
-    // ctx.Recipients — modifiable recipient set
-    // ctx.MessageId — numeric message ID
-
-    // Modify recipients. RecipientFilter is a struct, so mutate a copy
-    // and assign it back — calling Remove on ctx.Recipients directly
-    // would only change a temporary copy.
-    var recipients = ctx.Recipients;
-    recipients.Remove(someSlot);
-    ctx.Recipients = recipients;
-
-    return HookResult.Handled;
-});
+NetMessages.Send(msg, RecipientFilter.Single(controller.Slot));
 ```
 
-### Hooking Incoming Messages (Client → Server)
+## Send a message to some players
 
-```csharp
-// Hook when server receives a message from a client
-NetMessages.HookIncoming<CCitadelUserMsg_ChatMsg>(ctx =>
-{
-    // ctx.Message — the protobuf message from client
-    // ctx.SenderSlot — who sent it
-    // ctx.MessageId — numeric message ID
-
-    return HookResult.Handled;
-});
-```
-
-### Unhooking
-
-```csharp
-NetMessages.UnhookOutgoing<CCitadelUserMsg_ChatMsg>(myHandler);
-NetMessages.UnhookIncoming<CCitadelUserMsg_ChatMsg>(myHandler);
-```
-
-### Using the Attribute (Alternative)
-
-Any registered message type can also be hooked with the `[NetMessageHandler]` attribute — the direction is inferred from the parameter type (`OutgoingMessageContext<T>` or `IncomingMessageContext<T>`):
-
-```csharp
-[NetMessageHandler]
-public HookResult OnChatMsgOutgoing(OutgoingMessageContext<CCitadelUserMsg_ChatMsg> ctx)
-{
-    // Process outgoing chat
-    return HookResult.Handled;
-}
-```
-
-## RecipientFilter
-
-Bitmask of player slots that should receive a message.
-
-### Static Members
-
-| Member | Description |
-|--------|-------------|
-| `RecipientFilter.All` | A filter targeting all 64 possible player slots |
-| `RecipientFilter.Single(int slot)` | A filter targeting exactly one player |
-
-### Instance Methods
-
-| Method | Description |
-|--------|-------------|
-| `Add(int slot)` | Adds a player slot |
-| `Remove(int slot)` | Removes a player slot |
-| `HasRecipient(int slot)` | Returns `true` if slot is included |
-
-All slot parameters are **0-based player slots** (`controller.Slot`, which equals `EntityIndex - 1`) — not entity indices.
-
-### Properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `Mask` | `ulong` | Raw bitmask where bit i indicates slot i is included |
-
-### Example: Custom Recipient List
+Start with an empty `RecipientFilter` and add the players you want.
 
 ```csharp
 var filter = new RecipientFilter();
+
 foreach (var controller in Players.GetAll())
 {
-    if (ShouldReceive(controller))
+    if (controller.GetHeroPawn()?.TeamNum == 2)
         filter.Add(controller.Slot);
 }
+
 NetMessages.Send(msg, filter);
 ```
 
-## Message Contexts
+## Read a message the server is sending
 
-### OutgoingMessageContext\<T\>
-
-Carries a server→client message with destination recipients.
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `Message` | `T` | The protobuf message being sent |
-| `Recipients` | `RecipientFilter` | Target players (modifiable) |
-| `MessageId` | `int` | Numeric network message ID |
-
-### IncomingMessageContext\<T\>
-
-Carries a client→server message with sender info.
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `Message` | `T` | The protobuf message from client |
-| `SenderSlot` | `int` | Player slot of the sender |
-| `MessageId` | `int` | Numeric network message ID |
-
-## NetMessageRegistry
-
-Maps protobuf message types to network message IDs.
-
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `GetMessageId<T>()` | `int` | Message ID for type T, or `-1` |
-| `GetMessageId(Type)` | `int` | Message ID for protobuf type, or `-1` |
-| `RegisterManual<T>(int)` | `void` | Manually register type with specific ID |
-
-## Common Message Types
-
-### Set Client Camera Angles
-
-Forces a player's camera to look in a specific direction. This is the only confirmed working method for server-side camera control — schema writes and Teleport angles only affect the hero model, not the client camera.
+Put `[NetMessageHandler]` on a method that takes an `OutgoingMessageContext` for the message you want.
 
 ```csharp
-NetMessages.Send(new CCitadelUserMsg_SetClientCameraAngles {
-    PlayerSlot = slot,                    // target player slot (int)
-    CameraAngles = new CMsgQAngle {
-        X = pitch,                        // vertical angle (negative = look up)
-        Y = yaw,                          // horizontal angle
-        Z = 0                             // roll (usually 0)
-    }
-}, RecipientFilter.Single(slot));
-```
-
-### HUD Announcement Example
-
-```csharp
-var msg = new CCitadelUserMsg_HudGameAnnouncement
+[NetMessageHandler]
+public HookResult OnChatMsg(OutgoingMessageContext<CCitadelUserMsg_ChatMsg> ctx)
 {
-    TitleLocstring = "ANNOUNCEMENT TITLE",
-    DescriptionLocstring = "Description text here"
-};
-NetMessages.Send(msg, RecipientFilter.All);
+    Console.WriteLine(ctx.Message.Text);
+
+    return HookResult.Continue;
+}
 ```
 
-## See Also
+`ctx.Message` is the message, and `ctx.Recipients` is who it is going to.
 
-- [Commands](commands) — Command registration and chat-triggered actions
-- [Chat and HUD Guide](../guides/chat-and-hud) — Intercepting chat and sending HUD messages
+## Block a message
+
+Return `HookResult.Stop` and nobody receives it.
+
+```csharp
+[NetMessageHandler]
+public HookResult OnChatMsg(OutgoingMessageContext<CCitadelUserMsg_ChatMsg> ctx)
+{
+    return HookResult.Stop;
+}
+```
+
+To hide it from just one player, take them out of the recipients:
+
+```csharp
+var recipients = ctx.Recipients;
+recipients.Remove(controller.Slot);
+ctx.Recipients = recipients;
+```
+
+Copy `ctx.Recipients` into a variable, change it, and put it back, as above. Changing it in place does nothing.
+
+## Read a message a player sends
+
+Take an `IncomingMessageContext` instead.
+
+```csharp
+[NetMessageHandler]
+public HookResult OnChatMsgFromPlayer(IncomingMessageContext<CCitadelUserMsg_ChatMsg> ctx)
+{
+    var sender = Players.FromSlot(ctx.SenderSlot);
+
+    return HookResult.Continue;
+}
+```
+
+`ctx.SenderSlot` is the slot of the player who sent it.
+
+To read chat, [`OnChatMessage`](chat#read-what-players-say) is simpler.
