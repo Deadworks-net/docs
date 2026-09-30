@@ -200,6 +200,11 @@ body::before {
   box-shadow: 4px 4px 0 var(--dw-shadow);
 }
 
+/* Sidebar slabs are wide enough that any tilt looks crooked, so keep them flat */
+.menu__link--active:not(.menu__link--sublist)::before {
+  rotate: none;
+}
+
 .markdown mark {
   padding: 0 0.2em;
 }
