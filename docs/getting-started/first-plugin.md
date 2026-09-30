@@ -5,144 +5,106 @@ sidebar_label: "First Plugin"
 
 # Your First Plugin
 
-This guide shows the basic shape of a Deadworks plugin, then adds a command and a timer.
+This page builds a small plugin with two chat commands. It assumes you have already followed [Project Setup](setup).
 
-## Minimal Plugin
+## The smallest plugin
 
-Every plugin starts by inheriting from `DeadworksPluginBase`:
+A plugin is a class that inherits from `DeadworksPluginBase`. The only thing it must have is a `Name`.
 
 ```csharp
 using DeadworksManaged.Api;
 
 namespace MyFirstPlugin;
 
-public class HelloPlugin : DeadworksPluginBase
+public class MyFirstPlugin : DeadworksPluginBase
 {
-    public override string Name => "Hello World";
+    public override string Name => "My First Plugin";
 
     public override void OnLoad(bool isReload)
     {
-        Console.WriteLine($"[{Name}] Loaded! (reload={isReload})");
-    }
-
-    public override void OnUnload()
-    {
-        Console.WriteLine($"[{Name}] Unloaded!");
+        Console.WriteLine("My First Plugin loaded!");
     }
 }
 ```
 
-Build the project, copy the DLL to the plugins folder, and the plugin will load automatically.
+`OnLoad` runs when Deadworks loads your plugin. Build the project and copy the `.dll` into the `plugins` folder, and you should see the message in the server console. If you set up auto-deploy in [Project Setup](setup), building does the copy for you.
 
-`DeadworksPluginBase` gives your plugin the pieces most mods start with:
+You don't need to restart the server when you change your plugin. Replace the `.dll`, and Deadworks swaps in the new version.
 
-- `Name` tells Deadworks what your plugin is called
-- `OnLoad(bool isReload)` runs when the plugin loads or hot-reloads
-- `OnUnload()` runs when the plugin unloads or before a hot-reload
-- `OnStartupServer()` runs each time the server starts a new map
-- `Timer` lets you run code later or on a repeating loop
+## Add a command
 
-Most plugins only need those pieces at first.
-
-## Running Code on Map Start
-
-Use `OnStartupServer()` for setup that should happen every time a new map starts:
+Put `[Command]` on a method. `Caller` is whoever ran the command.
 
 ```csharp
-public override void OnStartupServer()
+[Command("hello", Description = "Say hello")]
+public void CmdHello(Caller caller)
 {
-    ConVar.Find("citadel_allow_duplicate_heroes")?.SetInt(1);
-    ConVar.Find("citadel_player_starting_gold")?.SetInt(0);
+    caller.Reply($"Hello, {caller.Name}!");
 }
 ```
 
-This is a good place to change game ConVars or reset plugin state for the new match.
+Join your server and type `/hello` in chat. The plugin replies to you.
 
-## Adding a Command
+## Do something to the player
 
-Use `[Command]` to register one handler for chat and console:
+`caller.Player` is the player who ran the command, and `GetHeroPawn()` is their hero in the world. Most of what you do to a player, you do to their hero.
+
+```csharp
+[Command("heal", Description = "Heal yourself to full")]
+public void CmdHeal(Caller caller)
+{
+    var pawn = caller.Player?.GetHeroPawn();
+    if (pawn == null)
+        throw new CommandException("You need a hero to do that.");
+
+    pawn.Heal(pawn.GetMaxHealth());
+
+    caller.Reply("You are back to full health.");
+}
+```
+
+Throwing `CommandException` stops the command and shows its message to the player.
+
+## The whole plugin
 
 ```csharp
 using DeadworksManaged.Api;
 
 namespace MyFirstPlugin;
 
-public class HelloPlugin : DeadworksPluginBase
+public class MyFirstPlugin : DeadworksPluginBase
 {
-    public override string Name => "Hello World";
+    public override string Name => "My First Plugin";
 
-    [Command("hello", Description = "Show a welcome message")]
-    public void CmdHello(CCitadelPlayerController caller)
+    public override void OnLoad(bool isReload)
     {
-        var pawn = caller.GetHeroPawn();
-        if (pawn == null)
-            return;
+        Console.WriteLine("My First Plugin loaded!");
+    }
 
-        // Send a HUD announcement to just this player
-        var msg = new CCitadelUserMsg_HudGameAnnouncement
-        {
-            TitleLocstring = "HELLO!",
-            DescriptionLocstring = "Welcome to Deadworks"
-        };
-        NetMessages.Send(msg, RecipientFilter.Single(caller.EntityIndex - 1));
+    [Command("hello", Description = "Say hello")]
+    public void CmdHello(Caller caller)
+    {
+        caller.Reply($"Hello, {caller.Name}!");
+    }
+
+    [Command("heal", Description = "Heal yourself to full")]
+    public void CmdHeal(Caller caller)
+    {
+        var pawn = caller.Player?.GetHeroPawn();
+        if (pawn == null)
+            throw new CommandException("You need a hero to do that.");
+
+        pawn.Heal(pawn.GetMaxHealth());
+
+        caller.Reply("You are back to full health.");
     }
 }
 ```
 
-This creates:
+## Next steps
 
-- `/hello` as a slash chat command
-- `!hello` as a bang chat command
-- `dw_hello` as the console version
-
-For most plugins, that is all you need.
-
-## Adding a Timed Effect
-
-`DeadworksPluginBase` already gives your plugin a `Timer` property, so you can schedule work directly:
-
-```csharp
-[Command("boost")]
-public void CmdBoost(CCitadelPlayerController caller)
-{
-    var pawn = caller.GetHeroPawn();
-    if (pawn == null)
-        return;
-
-    // Grant infinite stamina for 10 seconds
-    var stamina = pawn.AbilityComponent.ResourceStamina;
-    var timer = Timer.Every(1.Ticks(), () =>
-    {
-        if (pawn.Health <= 0) return;
-        stamina.LatchValue = stamina.MaxValue;
-        stamina.CurrentValue = stamina.MaxValue;
-    });
-
-    // Stop after 10 seconds
-    Timer.Once(10.Seconds(), () => timer.Cancel());
-}
-```
-
-`Timer.Every(...)` keeps running until you cancel it.
-
-That is why the example saves the returned handle in `timer`, then uses `Timer.Once(...)` to stop it 10 seconds later.
-
-## Key Concepts
-
-| Concept | Description | Learn More |
-|---------|-------------|------------|
-| `DeadworksPluginBase` | Base class every plugin starts from | [Plugin Lifecycle](../guides/plugin-lifecycle) |
-| `ConVar.Find(...)` | Change built-in game settings when a map starts | [ConVars](../features/convars) |
-| `[Command]` | Attribute to register chat and console commands | [Commands](../features/commands) |
-| `NetMessages.Send` | Send protobuf messages to players | [Networking](../features/networking) |
-| `RecipientFilter` | Target specific players for messages | [Networking](../features/networking) |
-| `Timer` | Schedule delayed or repeating actions | [Timers](../features/timers) |
-
-## Next Steps
-
-- [Plugin Lifecycle](../guides/plugin-lifecycle) - Understand the full load/unload flow
-- [Commands](../features/commands) - Add more chat and console commands
-- [Commands for One Role](../guides/role-only-commands) - Limit a command to some players (coming soon)
-- [ConVars](../features/convars) - Add console settings to your plugin
-- [Timers](../features/timers) - Run delayed and repeating logic
-- [Example Plugins](../examples/roll-the-dice) - See full real-world plugins
+- [Commands](../features/commands) to take arguments and limit who can run a command
+- [Players](../features/players) for more you can do to a player
+- [Chat](../features/chat) to send messages to everyone
+- [Plugin Lifecycle](../guides/plugin-lifecycle) for when each part of your plugin runs
+- [Example plugins](https://github.com/Deadworks-net/deadworks/tree/main/examples/plugins) in the Deadworks repository

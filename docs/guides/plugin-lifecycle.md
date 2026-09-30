@@ -5,228 +5,72 @@ sidebar_label: "Plugin Lifecycle"
 
 # Plugin Lifecycle
 
-This page explains when Deadworks calls each of a plugin's lifecycle methods, from loading to unloading, and what it cleans up for you.
+Deadworks calls methods on your plugin at set moments: when the plugin loads, when a map starts, and when a player joins or leaves. Override the ones you need.
 
-## Lifecycle Flow
+## Server lifecycle
 
-```
+```text
 Server start
     │
     ├── OnLoad(isReload: false)     ← Plugin loaded
     │
     │   ┌──────── EVERY MAP ──────────────┐
     │   │                                 │
-    │   │  OnStartupServer()              │ ← Map starting, set convars here
-    │   │  OnPrecacheResources()          │ ← Precache particles, models, heroes
+    │   │  OnStartupServer()              │ ← Map starting, set game settings here
+    │   │  OnPrecacheResources()          │ ← Precache models, particles, heroes
     │   │                                 │
-    │   │  OnClientConnect()              │
-    │   │  OnClientPutInServer()          │
+    │   │  Players join and leave         │ ← See the player lifecycle below
     │   │  OnGameFrame() every tick       │
-    │   │  ... other hooks ...            │
+    │   │                                 │
     │   └─────────────────────────────────┘
     │
-    ├── OnUnload()                  ← Plugin disabled, or its DLL replaced
-    │
-    └── (Hot-reload) → OnLoad(isReload: true) on a new instance
+    └── OnUnload()                  ← Plugin turned off, or its file replaced
 ```
 
-## Startup Phase
+- **`OnLoad`** runs once when your plugin loads. Your config and `Timer` are ready to use.
+- **`OnStartupServer`** runs every time a map starts. Change [game settings](../features/convars) here.
+- **`OnPrecacheResources`** runs while every map loads. It is the only place [precaching](../features/precaching) works.
+- **`OnGameFrame`** runs every tick.
+- **`OnUnload`** runs when your plugin is turned off or replaced. It does not run when the server shuts down, so don't rely on it to save data.
 
-### OnLoad
+## Player lifecycle
 
-Called when the plugin is loaded: at server start, by `dw_plugin enable`, or when its DLL in `plugins/` changes while the server runs. `isReload` is `true` when the DLL was loaded because the file changed, including a DLL newly copied into `plugins/`.
-
-The plugin's config is loaded and `Timer` is ready before `OnLoad` runs. Its commands and attribute hooks are registered right after `OnLoad` returns.
-
-```csharp
-public override void OnLoad(bool isReload)
-{
-    Console.WriteLine($"[{Name}] Loaded! (reload={isReload})");
-
-    if (!isReload)
-    {
-        // First-time initialization only
-    }
-}
-```
-
-:::note
-A plugin loaded while a map is already running (hot-reloaded or enabled with `dw_plugin enable`) doesn't get `OnStartupServer` or `OnPrecacheResources` until the next map loads.
-:::
-
-### OnStartupServer
-
-Called each time a map starts, before `OnPrecacheResources`. Set game convars here:
-
-```csharp
-public override void OnStartupServer()
-{
-    ConVar.Find("citadel_trooper_spawn_enabled")?.SetInt(0);
-    ConVar.Find("citadel_allow_duplicate_heroes")?.SetInt(1);
-}
-```
-
-### OnPrecacheResources
-
-Called during every map load. Precache all resources (particles, models, heroes) here: `Precache.AddResource` and `Precache.AddHero` do nothing when called at any other time.
-
-```csharp
-public override void OnPrecacheResources()
-{
-    Precache.AddResource("particles/upgrades/mystical_piano_hit.vpcf");
-}
-```
-
-See [Precaching](../features/precaching).
-
-## Runtime Phase
-
-During runtime, your plugin responds to events through hooks and registered commands.
-
-### Hot-Reloading
-
-Deadworks watches the `plugins/` folder. When a plugin's DLL there is replaced while the server runs:
-
-1. The old instance's timers, commands and attribute hooks are removed.
-2. `OnUnload()` is called on the old instance.
-3. A new instance is created, its config is loaded, and `OnLoad(isReload: true)` is called on it.
-4. The new instance's commands and attribute hooks are registered.
-
-Anything your plugin registered in code rather than with an attribute is not removed for you. Cancel it in `OnUnload()`, or the old and new instances both keep running it.
-
-## Shutdown Phase
-
-### OnUnload
-
-Called when the plugin is unloaded: by `dw_plugin disable`, or before a hot reload replaces it.
-
-```csharp
-private readonly CancellationTokenSource _cts = new();
-
-public override void OnUnload()
-{
-    _cts.Cancel(); // stop background work started in OnLoad
-    Console.WriteLine($"[{Name}] Unloaded!");
-}
-```
-
-:::note
-`OnUnload` isn't called when the server shuts down. Don't rely on it to save data.
-:::
-
-**What's cleaned up automatically** (before `OnUnload` runs):
-- Timers from `Timer.Once`, `Timer.Every` and `Timer.Sequence`
-- Commands and `[ConVar]` properties
-- `[GameEventHandler]`, `[NetMessageHandler]`, `[EntityInputHook]` and `[EntityOutputHook]` methods
-- `Zone`s the plugin created
-- Converters registered with `CommandConverters`, and permission and penalty stores it registered
-- The lifecycle overrides on this page stop being called
-
-`EntityData<T>` entries are removed when their entity is deleted.
-
-A hot reload runs `OnUnload` and then `OnLoad(isReload: true)` off the game thread; don't touch entities there, or defer it with `Timer.NextTick`.
-
-**What you should clean up manually:**
-- Handles returned by `GameEvents.AddListener`, `NetMessages.HookOutgoing`/`HookIncoming` and `EntityIO.HookInput`/`HookOutput` (call `IHandle.Cancel()`)
-- Subscriptions to static events, such as `UI.ClientResync`
-- Any external resources or connections
-
-## Client Lifecycle
-
-```
+```text
 Player connects
     │
-    ├── OnClientConnect()         ← Connecting; return false to refuse (not called for bots)
+    ├── OnClientConnect()         ← Connecting. Return false to refuse them
     │
-    ├── OnClientPutInServer()     ← Initial connection; bots start here (args.IsBot)
+    ├── OnClientPutInServer()     ← Put on the server. Bots start here
     │
-    ├── OnClientFullConnect()     ← Fully in-game, can interact
+    ├── OnClientFullConnect()     ← In the game. Safe to use their controller
     │
-    │   (player is active in-game)
+    │   (player is playing)
     │
-    ├── OnClientDisconnecting()   ← Leaving; controller and hero still intact
+    ├── OnClientDisconnecting()   ← Leaving. Their controller and hero still exist
     │
-    └── OnClientDisconnect()      ← Player has left
+    └── OnClientDisconnect()      ← Gone
 ```
 
-A map change doesn't disconnect anyone, but every player goes through these events again: `OnClientDisconnecting` and `OnClientDisconnect` with `args.IsMapChange` set to `true`, then the connect events on the new map with `args.IsMapChangeReconnect` set to `true`. `OnClientFullConnect` is called each time a player finishes loading a map, and for bots too.
+`OnClientFullConnect` is the one most plugins want. See [Players](../features/players#do-something-when-a-player-joins-or-leaves) for an example.
 
-### Example: Player Tracking
+When the map changes, players stay connected, but every player goes through the whole list again: the two disconnect methods, then the connect methods on the new map.
 
-```csharp
-private readonly HashSet<int> _activePlayers = new();
+## Reloading a plugin
 
-public override void OnClientFullConnect(ClientFullConnectEvent args)
-{
-    _activePlayers.Add(args.Slot);
-    Console.WriteLine($"Player connected: slot {args.Slot}");
-}
+Deadworks watches the `plugins/` folder. When you replace your plugin's file while the server is running, it swaps the plugin without a restart:
 
-public override void OnClientDisconnect(ClientDisconnectedEvent args)
-{
-    _activePlayers.Remove(args.Slot);
-    Console.WriteLine($"Player disconnected: slot {args.Slot}");
-}
-```
+1. `OnUnload()` runs on the old plugin.
+2. `OnLoad(isReload: true)` runs on the new one.
 
-> You may use [`Players`](../features/players) instead to access all players
+A plugin loaded this way doesn't get `OnStartupServer` or `OnPrecacheResources` until the next map starts.
 
-## Permission and Admin Callbacks (Coming Soon)
+## What Deadworks cleans up for you
 
-**Coming soon:** these overrides come with the permission system. Like the others on this page, they stop when your plugin unloads or hot-reloads, so there's nothing to unsubscribe.
+When your plugin unloads, Deadworks removes its:
 
-| Override | Called when |
-|----------|-------------|
-| `OnClientAuthorized(ClientAuthorizedEvent args)` | Steam confirms a player, once per connection (not again after a map change), a few seconds after they join. `args.Slot`, `args.SteamId64`, `args.Controller` (may be `null`). See [Steam Verification](../features/admin-api#steam-verification). |
-| `OnPermissionsChanged(ulong? steamId64)` | After a permissions reload, any grant or revoke, when Steam confirms a player, and when a custom store's entry for a player arrives. `null` means everyone. See [Reacting to Changes](../features/permissions#reacting-to-changes). |
-| `OnPenaltyAdded(Penalty penalty)` | A ban, gag or mute is added. See [Penalties](../features/admin-api#penalties). |
-| `OnPenaltyRemoved(Penalty penalty)` | A penalty is lifted, replaced or expires. |
-| `OnAdminAction(AdminLogEntry entry)` | An admin action is logged through `AdminActivity` (the Admin plugin's commands, or any plugin that calls it). See [Admin Activity](../features/admin-api#admin-activity). |
+- timers
+- commands and ConVars
+- methods marked with an attribute, such as `[GameEventHandler]` or `[EntityOutputHook]`
+- zones
 
-## Async Work — Get Back On the Game Thread
-
-After an `await`, C# may resume on a thread-pool thread. Touching entities or calling the engine from there can crash the server. After an `await`, run game-touching code through `Timer.NextTick(...)`, which can be called from any thread:
-
-```csharp
-public override void OnLoad(bool isReload)
-{
-    // OnLoad is not async — kick off the work and don't await
-    _ = FetchAndAnnounceAsync();
-}
-
-private async Task FetchAndAnnounceAsync()
-{
-    using var client = new HttpClient();
-    var response = await client.GetStringAsync("https://api.example.com/message");
-
-    // At this point we may be on a non-game thread.
-    Timer.NextTick(() =>
-    {
-        // Safe to interact with the game here.
-    });
-}
-```
-
-The same rule applies to `Task.Delay`, `Task.Run`, file I/O, anything that yields. If you're not sure whether the continuation is on the game thread, route it through `Timer.NextTick`.
-
-:::tip
-Inside a [`[Command]`](../features/commands#when-a-command-fails) method, code after an `await` already continues on the game thread.
-:::
-
-## Hot-Reload Gotchas
-
-Hot-reload replaces the plugin assembly while the server keeps running. This is useful during development, but there are some pitfalls:
-
-- **Cancel long-running work in `OnUnload`.** Timers and attribute hooks are removed for you. Anything else, such as a `CancellationTokenSource`, `FileSystemWatcher`, socket or hook registered in code, has to be cancelled or disposed manually.
-- **Static state doesn't carry over.** The new DLL is loaded separately from the old one, so your plugin's static fields start empty after a reload.
-
-## Console Output on Windows
-
-If you launch `deadworks.exe` from Windows Terminal or PowerShell and the console window keeps overwriting its own top line (showing only `N/31 on map dl_midtown` no matter how far up you scroll), the terminal isn't compatible with Deadlock's progress output. Launch it from `cmd.exe` (the classic console host) instead.
-
-## See Also
-
-- [First Plugin](../getting-started/first-plugin) — Starting from `DeadworksPluginBase`
-- [Precaching](../features/precaching) — Resource precaching
-- [ConVars](../features/convars) — ConVar setup in `OnStartupServer`
-- [Server Hosting](server-hosting) — Running a dedicated server
+Anything else you started yourself, you stop yourself in `OnUnload`. That means hooks you added in code, such as `EntityIO.HookOutput`, and things like open connections.
