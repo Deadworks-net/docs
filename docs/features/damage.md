@@ -7,19 +7,71 @@ sidebar_label: "Damage"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Intercept, modify, and apply damage to entities.
+You can deal damage to any [entity](entities), and you can watch, change or block damage as it happens.
 
-## OnTakeDamage Hook
+## Damage an entity
 
-Override in your plugin to intercept all damage on the server:
+```csharp
+pawn.Hurt(50f);
+```
+
+This takes 50 health from the player. It can kill them.
+
+## Give an attacker the credit
+
+```csharp
+target.Hurt(100f, attacker: shooter);
+```
+
+If this kills the target, the kill goes to `shooter` and shows in the kill feed.
+
+## Deal damage over time
+
+Use a [timer](timers#run-something-a-set-number-of-times) to deal a little damage again and again.
+
+```csharp
+Timer.Sequence(step =>
+{
+    if (step.Run > 10 || !target.IsValid)
+        return step.Done();
+
+    target.Hurt(10f, attacker: attacker);
+
+    return step.Wait(200.Milliseconds());
+});
+```
+
+This deals 10 damage every 200 milliseconds, and stops once `step.Run` passes 10 or the target is gone.
+
+## Run code when something takes damage
+
+Override `OnTakeDamage`. It runs for every hit on the server.
 
 ```csharp
 public override HookResult OnTakeDamage(TakeDamageEvent ev)
 {
-    // ev.Entity — the entity taking damage
-    // ev.Info — full damage descriptor
+    Console.WriteLine($"{ev.Entity.DesignerName} took {ev.Info.Damage} damage");
 
-    // Block damage to the Patrons
+    return HookResult.Continue;
+}
+```
+
+`ev.Entity` is whoever is being hurt. `ev.Info` describes the hit:
+
+- `ev.Info.Damage` is how much
+- `ev.Info.Attacker` is who did it
+- `ev.Info.Ability` is the ability or item that did it
+
+Both `Attacker` and `Ability` can be `null`.
+
+## Block damage
+
+Return `HookResult.Stop` and the hit does nothing.
+
+```csharp
+public override HookResult OnTakeDamage(TakeDamageEvent ev)
+{
+    // Patrons can't be hurt
     if (ev.Entity.DesignerName == "npc_boss_tier3")
         return HookResult.Stop;
 
@@ -27,126 +79,68 @@ public override HookResult OnTakeDamage(TakeDamageEvent ev)
 }
 ```
 
-### TakeDamageEvent
+## Change how much damage a hit does
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `Entity` | `CBaseEntity` | The entity taking damage |
-| `Info` | `CTakeDamageInfo` | Full damage descriptor (attacker, inflictor, amount, flags) |
-
-
-## Applying Damage
-
-### Simple: Hurt()
-
-Convenience wrapper for applying damage. All parameters except `damage` are optional:
+Set `ev.Info.Damage`.
 
 ```csharp
-// Minimal — damage is self-inflicted with no attacker credit
-pawn.Hurt(50f);
+public override HookResult OnTakeDamage(TakeDamageEvent ev)
+{
+    // Everything does double damage
+    ev.Info.Damage *= 2;
 
-// Attacker credited — shows in the kill feed
-target.Hurt(100f, attacker: shooter);
-
-// Full control
-entity.Hurt(
-    100f,           // damage amount
-    attacker,       // attacking entity
-    inflictor,      // entity that caused damage (weapon, projectile)
-    ability,        // ability entity
-    damageType: 0   // damage type bits (int, see below)
-);
+    return HookResult.Continue;
+}
 ```
 
-> If `attacker` is null, it falls back to the `inflictor`; if that is also null, the victim itself is credited (self-damage). `Hurt` always sets `TakeDamageFlags.AllowSuicide`, so self-damage can kill.
+## Only react to one ability or item
 
-### Advanced: CTakeDamageInfo
-
-For full control, create a `CTakeDamageInfo`:
+Check the name of `ev.Info.Ability`. The [abilities database](https://deadworks.net/db/abilities) lists every name.
 
 ```csharp
-using var damageInfo = new CTakeDamageInfo(
-    damage: 200f,
-    attacker: attackerEntity,
-    inflictor: inflictorEntity,
-    ability: abilityEntity,
-    damageType: 0
-);
+public override HookResult OnTakeDamage(TakeDamageEvent ev)
+{
+    if (ev.Info.Ability?.SubclassVData?.Name != "upgrade_discord")
+        return HookResult.Continue;
 
-targetEntity.TakeDamage(damageInfo);
-// damageInfo is disposed automatically via using
+    // This hit came from that item
+
+    return HookResult.Continue;
+}
 ```
 
-### CTakeDamageInfo
+## Kill an entity
 
-| Method/Constructor | Description |
-|-------------------|-------------|
-| `new CTakeDamageInfo(float damage, CBaseEntity? attacker, CBaseEntity? inflictor, CBaseEntity? ability, int damageType)` | Create new (must dispose) |
-| `FromExisting(nint)` | Wrap existing pointer (non-owning, e.g. from hook) — *internal* |
+`Hurt` can't promise a kill. Build the hit yourself and add the `ForceDeath` flag.
 
-**Important:** When creating via constructor, always use `using` or call `Dispose()`.
+```csharp
+using var info = new CTakeDamageInfo(
+    damage: 1f,
+    attacker: null,
+    inflictor: null,
+    ability: null,
+    damageType: 0);
 
-#### Properties (Verified)
+info.DamageFlags = TakeDamageFlags.ForceDeath | TakeDamageFlags.AllowSuicide;
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `Damage` | `float` | Damage amount (get/set) |
-| `TotalledDamage` | `float` | Totalled damage (mirrors Damage on creation) |
-| `DamageFlags` | `TakeDamageFlags` | Damage flags (get/set) |
-| `DamageType` | `int` | Damage type bits (get/set) |
-| `Attacker` | `CBaseEntity?` | The attacking entity |
-| `Inflictor` | `CBaseEntity?` | The inflictor entity |
-| `Ability` | `CBaseEntity?` | The ability entity |
-| `Originator` | `CBaseEntity?` | The originator (usually null on creation) |
+target.TakeDamage(info);
+```
 
-## TakeDamageFlags
+Always create a `CTakeDamageInfo` with `using`, as above, so it is cleaned up afterwards.
 
-Managed `[Flags]` enum (`TakeDamageFlags : ulong`) that modifies how damage is applied. Commonly used values:
+## Change how a hit behaves
 
-| Flag | Value | Description |
-|------|-------|-------------|
-| `None` | 0 | No flags |
-| `SuppressHealthChanges` | 0x1 | Don't change health |
-| `SuppressPhysicsForce` | 0x2 | No knockback |
-| `SuppressEffects` | 0x4 | No visual effects |
-| `PreventDeath` | 0x8 | Cannot kill (clamp to 1HP) |
-| `ForceDeath` | 0x10 | Guarantee kill |
-| `AlwaysGib` | 0x20 | Always gib on death |
-| `NeverGib` | 0x40 | Never gib on death |
-| `SuppressDamageModification` | 0x100 | Ignore armor/resist |
-| `RadiusDmg` | 0x400 | Area/splash damage |
-| `AllowSuicide` | 0x40000 | Allow self-kill |
-| `SuppressKillCredit` | 0x400000 | No kill credit |
-| `SuppressDeathCredit` | 0x800000 | No death credit |
-| `HeavyMelee` | 0x200000000 | Heavy melee hit |
-| `LightMelee` | 0x400000000 | Light melee hit |
+Build the hit the same way, with different flags.
 
-The enum has ~70 members in total (`IgnoreResistances`, `DoNotCrit`, `SuppressCritResistance`, `Ricochet`, `BonusDamage`, `IsHealthTransfer`, …) — see `TakeDamageFlags` in the SDK for the full list.
+```csharp
+info.DamageFlags = TakeDamageFlags.PreventDeath;
+```
 
-:::tip
-Combine `TakeDamageFlags.ForceDeath | TakeDamageFlags.AllowSuicide` for guaranteed kills.
-:::
+Some useful flags:
 
-## Damage Type Bits
-
-There is **no managed enum for damage types** — `Hurt(...)` and the `CTakeDamageInfo` constructor take the raw engine bits as an `int` (`damageType` parameter). Values from the game's `DamageTypes_t`, for reference:
-
-| Engine flag | Value | Description |
-|------|-------|-------------|
-| generic | 0 | Generic damage |
-| bullet | 2 | Bullet damage |
-| slash | 4 | Slash/melee |
-| burn | 8 | Fire/burn |
-| fall | 32 | Fall damage |
-| blast | 64 | Explosion |
-| shock | 256 | Shock/electric |
-| headshot | 524288 | Headshot |
-| crit | 1048576 | Critical hit |
-| dot | 4194304 | Damage over time |
-| lethal | 16777216 | Lethal flag |
-
-## See Also
-
-- [Entities](entities) — `Hurt()` and `TakeDamage()` on `CBaseEntity`
-- [Players](players) — Currency types and management
-- [Scourge Example](../examples/scourge) — Complete DOT implementation
+- `PreventDeath` leaves the target on 1 health at worst
+- `ForceDeath` always kills
+- `SuppressDamageModification` ignores armor and resistances
+- `SuppressPhysicsForce` deals no knockback
+- `SuppressEffects` shows no visual effects
+- `SuppressKillCredit` gives nobody the kill

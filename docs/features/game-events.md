@@ -7,142 +7,177 @@ sidebar_label: "Game Events"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Listen to and create Source 2 game events.
+A game event is a notice the game sends out when something happens: a player dies, picks a hero, or uses an ability. Your plugin can listen for any of them.
 
-## GameEventHandlerAttribute
+## Find an event
 
-Auto-register a method as a game event handler:
+The [event database](https://deadworks.net/db/events) lists every event in the game. Each event has its own page, such as [`player_death`](https://deadworks.net/db/events/player_death), that shows its fields.
+
+Some useful ones:
+
+- `player_death` when a hero dies
+- `player_respawned` when a player respawns
+- `player_hero_changed` when a player picks or changes hero
+- `player_used_ability` when a player uses an ability, shoots or melees
+- `ability_added` when a player gets an ability or an item
+
+## Run code when an event happens
+
+Put `[GameEventHandler]` on a method, with the event's name. Every event has a class to go with it.
 
 ```csharp
 [GameEventHandler("player_hero_changed")]
 public HookResult OnPlayerHeroChanged(PlayerHeroChangedEvent args)
 {
     var pawn = args.Userid?.As<CCitadelPlayerPawn>();
-    if (pawn != null)
-    {
-        // Do stuff
-    }
+    if (pawn == null) return HookResult.Continue;
+
+    // The player has a hero now
+
     return HookResult.Continue;
 }
 ```
 
-### Typed Event Classes
 
-For every event in the game's `.gameevents` schema, the SDK source-generates a typed class named after the event in PascalCase (`player_hero_changed` → `PlayerHeroChangedEvent`, `player_death` → `PlayerDeathEvent`), with one property per field. Your handler can take either the typed class or the untyped `GameEvent` (with `GetString`/`GetInt`/`GetFloat`/`GetBool`/`GetPlayerPawn`/`GetPlayerController`/`GetEHandle` accessors).
 
-Fields typed `player_controller_and_pawn` in the schema (e.g. `player_death.userid`/`attacker`) generate **split properties** — `UseridController`/`UseridPawn`, `AttackerController`/`AttackerPawn` — there is no single `Userid` property on those events. Fields typed `player_pawn` (like `player_hero_changed.userid`) generate a single pawn-typed property.
-
-You can also subscribe dynamically without an attribute via `GameEvents.AddListener(name, handler)` / `GameEvents.RemoveListener(...)`.
-
-## GameEventWriter
-
-Wraps a newly created game event for setting fields and firing.
+## Run code when a player dies
 
 ```csharp
-var ev = GameEvents.Create("my_custom_event");
-if (ev != null)
+[GameEventHandler("player_death")]
+public HookResult OnPlayerDeath(PlayerDeathEvent args)
 {
-    ev.SetInt("player_slot", 0);
-    ev.SetString("action", "test");
-    ev.Fire();
-    // After firing, the event is owned by the engine — do not use it again
+    var victim = args.UseridController;
+    var killer = args.AttackerController;
+
+    // killer is null when they weren't killed by a player
+    if (victim == null || killer == null) return HookResult.Continue;
+
+    Console.WriteLine($"{killer.PlayerName} killed {victim.PlayerName}");
+
+    if (args.Headshot)
+        Console.WriteLine("It was a headshot.");
+
+    return HookResult.Continue;
 }
 ```
 
-### Methods
+`args.UseridPawn` and `args.AttackerPawn` are their heroes.
 
-| Method | Returns | Description |
-|--------|---------|-------------|
-| `SetString(string key, string value)` | `GameEventWriter` | Set string field (chainable) |
-| `SetInt(string key, int value)` | `GameEventWriter` | Set int field (chainable) |
-| `SetFloat(string key, float value)` | `GameEventWriter` | Set float field (chainable) |
-| `SetBool(string key, bool value)` | `GameEventWriter` | Set bool field (chainable) |
-| `Fire(bool dontBroadcast)` | `bool` | Fires the event. Returns success. After firing, owned by engine — must not be used |
 
-## Common Game Events
 
-| Event Name | Typical fields | Notes |
-|------------|----------------|-------|
-| `player_death` | `userid`, `attacker` | Fires on hero death |
-| `player_spawn` | `userid` | See warning below — fires **before** the pawn is fully materialized on the first spawn |
-| `player_hero_changed` | `userid` | More reliable than `player_spawn` for post-hero-select logic |
-| `player_used_ability` | `player`, `caster`, `abilityname`, `annotation` | Fires for every ability activation including shots (`citadel_weapon_*`) and melee (`ability_melee_*`) |
-| `ability_added` | `userid`, `ability` (ehandle) | Fires when an ability/item is granted — use this to detect item purchases |
-| `game_state_changed` | `game_state_new` | Fires at major match transitions, including end-of-match |
+## Run code when a player spawns
 
-The full list of Source 2 events shipped by Deadlock is available at [SteamTracking-Deadlock/resource/core.gameevents](https://github.com/SteamTracking/GameTracking-Deadlock/blob/master/game/core/pak01_dir/resource/core.gameevents) and [game.gameevents](https://github.com/SteamTracking/GameTracking-Deadlock/blob/master/game/citadel/pak01_dir/resource/game.gameevents). These files list every event name and its field schema.
+Listen for `player_respawned`. It fires each time a player comes back to life.
 
-## Common Patterns
+```csharp
+[GameEventHandler("player_respawned")]
+public HookResult OnPlayerRespawned(PlayerRespawnedEvent args)
+{
+    var pawn = args.Userid?.As<CCitadelPlayerPawn>();
+    if (pawn == null) return HookResult.Continue;
 
-### Detecting a melee attack
+    pawn.Teleport(position: new Vector3(100, 200, 300));
+
+    return HookResult.Continue;
+}
+```
+
+Don't use `player_spawn` for this. The first time a player joins, it fires before their hero is ready.
+
+## Run code when a player uses an ability
+
+```csharp
+[GameEventHandler("player_used_ability")]
+public HookResult OnPlayerUsedAbility(PlayerUsedAbilityEvent args)
+{
+    var pawn = args.Player?.As<CCitadelPlayerPawn>();
+    if (pawn == null) return HookResult.Continue;
+
+    Console.WriteLine($"{pawn.Controller?.PlayerName} used {args.Abilityname}");
+
+    return HookResult.Continue;
+}
+```
+
+The [abilities database](https://deadworks.net/db/abilities) lists every ability name.
+
+## Run code when a player attacks
+
+`player_used_ability` also fires for gunshots and melee hits.
+
+```csharp
+[GameEventHandler("player_used_ability")]
+public HookResult OnPlayerAttacked(PlayerUsedAbilityEvent args)
+{
+    if (args.Abilityname.StartsWith("citadel_weapon_"))
+    {
+        // They fired their gun
+    }
+
+    if (args.Annotation == "heavy_melee")
+    {
+        // They did a heavy melee
+    }
+
+    if (args.Annotation == "light_melee")
+    {
+        // They did a light melee
+    }
+
+    return HookResult.Continue;
+}
+```
+
+## Run code when a player gets an item
+
+`ability_added` fires for abilities and items. Item names start with `upgrade_`.
+
+```csharp
+[GameEventHandler("ability_added")]
+public HookResult OnAbilityAdded(AbilityAddedEvent args)
+{
+    var pawn = args.Userid?.As<CCitadelPlayerPawn>();
+    var name = args.Ability?.SubclassVData?.Name;
+    if (pawn == null || name == null) return HookResult.Continue;
+
+    if (name == "upgrade_unstoppable")
+        Console.WriteLine($"{pawn.Controller?.PlayerName} got Unstoppable!");
+
+    return HookResult.Continue;
+}
+```
+
+## Read an event's fields by name
+
+You don't normally need to do this. The event's class already has a property for each field. Only do it when an event has no class, or its class has a field typed wrong.
+
+Take a `GameEvent` and read each field by its name. The names are on the event's database page, and capitals matter.
 
 ```csharp
 [GameEventHandler("player_used_ability")]
 public HookResult OnAbility(GameEvent ev)
 {
     var name = ev.GetString("abilityname", "");
-    if (!name.StartsWith("citadel_ability_melee")) return HookResult.Continue;
 
-    // annotation tells heavy vs light melee (event keys are case-sensitive)
-    var kind = ev.GetString("annotation", ""); // "heavy_melee" or "light_melee"
-    Console.WriteLine($"Melee attack: {kind}");
+    Console.WriteLine($"Someone used {name}");
+
     return HookResult.Continue;
 }
 ```
 
-You could also use `OnAbilityAttempt` with `InputButton.Weapon1`, but `player_used_ability` fires only on successful activation and gives you the heavy/light distinction for free.
+There is a `GetInt`, `GetFloat`, `GetBool`, `GetPlayerPawn`, `GetPlayerController` and `GetEHandle` too.
 
-### Detecting a weapon shot
+## Fire an event yourself
 
-Same event, different prefix check:
-
-```csharp
-if (name.StartsWith("citadel_weapon_")) { /* shot fired */ }
-```
-
-### Detecting an item purchase
+Create one of the game's events, fill in its fields, and fire it.
 
 ```csharp
-[GameEventHandler("ability_added")]
-public HookResult OnAbilityAdded(GameEvent ev)
+var ev = GameEvents.Create("player_hintmessage");
+if (ev != null)
 {
-    var pawn = ev.GetPlayerPawn("userid")?.As<CCitadelPlayerPawn>();
-    if (pawn == null) return HookResult.Continue;
-
-    // ability_added fires both for ability unlocks and for item purchases.
-    // Walk the pawn's abilities on the next tick to see what's actually there.
-    Timer.Once(1.Seconds(), () =>
-    {
-        foreach (var ab in pawn.AbilityComponent.Abilities)
-            if (ab.IsItem && ab.AbilityName == "upgrade_unstoppable")
-                Console.WriteLine("Bought Unstoppable!");
-    });
-    return HookResult.Continue;
+    ev.SetString("hintmessage", "Hello");
+    ev.Fire();
 }
 ```
 
-### Detecting match end
-
-The cleanest signal is `game_state_changed`.
-
-## player_spawn Is Racy on First Spawn
-
-The `player_spawn` event fires before the pawn is fully populated the first time a player connects. Subsequent spawns are fine. If your handler dereferences hero data (`GetHeroPawn`, `AbilityComponent`, etc.), either:
-
-- Subscribe to `player_hero_changed` instead — it fires after hero data is ready, and
-- Use `Timer.NextTick` or a short delay to re-check the pawn before touching it.
-
-```csharp
-[GameEventHandler("player_hero_changed")]
-public HookResult OnPlayerHeroChanged(PlayerHeroChangedEvent args)
-{
-    var pawn = args.Userid?.As<CCitadelPlayerPawn>();
-    if (pawn == null) return HookResult.Continue;
-    // safe to inspect pawn's hero-specific state here
-    return HookResult.Continue;
-}
-```
-
-## See Also
-
-- [Players](players) — Player pawn and controller access
+`Create` returns `null` when the game has no event with that name, so you can't make up new ones. Don't use `ev` again after `Fire()`.
