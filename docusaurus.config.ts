@@ -6,6 +6,14 @@ import remarkSourceLines from './scripts/remark-source-lines.mjs';
 
 const isDev = process.env.NODE_ENV === 'development';
 
+// Pages that used to live under /api-reference/ and are now under /features/.
+const movedToFeatures = [
+  'admin-api', 'chat-commands', 'commands', 'configuration', 'console-commands', 'convars',
+  'damage', 'entities', 'entity-io', 'game-events', 'heroes', 'modifiers', 'networking',
+  'particles', 'permissions', 'players', 'precaching', 'sound', 'timers', 'tracing', 'ui',
+  'world-text',
+];
+
 const config: Config = {
   title: 'Deadworks API',
   tagline: 'Server-side scripting API for Deadlock',
@@ -46,6 +54,23 @@ const config: Config = {
           customCss: './src/css/custom.css',
         },
       } satisfies Preset.Options,
+    ],
+  ],
+
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          ...movedToFeatures.map((page) => ({
+            from: `/api-reference/${page}`,
+            to: `/features/${page}`,
+          })),
+          // Guides that were folded into Features pages.
+          {from: '/guides/chat-and-hud', to: '/features/chat'},
+          {from: '/guides/team-and-hero-management', to: '/features/players'},
+        ],
+      },
     ],
   ],
 
