@@ -300,7 +300,6 @@ body::before {
 .markdown h1 {
   font-size: 3rem;
   line-height: 1.15;
-  text-shadow: 6px 6px 0 var(--dw-shadow);
   margin-bottom: 1.25rem;
 }
 
@@ -313,7 +312,6 @@ body::before {
   font-size: 2rem;
   line-height: 1.25;
   margin-top: 3rem;
-  text-shadow: 4px 4px 0 var(--dw-shadow);
 }
 
 .markdown h3 {
