@@ -125,8 +125,8 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} Deadworks. Built with Docusaurus.`,
     },
     prism: {
-      theme: prismThemes.vsDark,
-      darkTheme: prismThemes.vsDark,
+      theme: prismThemes.oneDark,
+      darkTheme: prismThemes.oneDark,
       additionalLanguages: ['csharp', 'json', 'bash', 'markup'],
     },
   } satisfies Preset.ThemeConfig,
