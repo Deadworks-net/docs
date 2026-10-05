@@ -5,10 +5,6 @@ sidebar_label: "Permissions API"
 
 # Permissions
 
-:::info Coming soon
-This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
-:::
-
 > **Namespace:** `DeadworksManaged.Api`
 
 Deadworks has one built-in permission system that every plugin shares. As a plugin developer you only decide **which permission each command needs**. Server owners decide **who has it**, using roles and player lists described in [How Permissions Work](../guides/admins-and-permissions).
@@ -74,7 +70,7 @@ Wildcards and denies are for server owners to use in their config. Plugins alway
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `Permission` | `string` | Sets the permission a player needs to run the command. Empty means anyone; the server console can always run it. |
+| `Permission` | `string` | Sets the permission a player needs to run the command. Empty means anyone. The server console can always run it, unless it's `ChatOnly`, which creates no `dw_` command. |
 | `TargetImmunity` | `TargetImmunity` | Sets whether [`Target`](#targeting-players-and-immunity) arguments leave out players the caller can't target. Default `Auto`. |
 
 Server owners can change a command's permission in [`overrides.jsonc`](../guides/admins-and-permissions#overridesjsonc) without touching your plugin, so don't rely on a command being public or private. The check always happens before your method runs, using the current value.
@@ -166,7 +162,7 @@ Server owners get the matching warnings for grants in their own files; the serve
 | `Has(ulong steamId64, string permission)` | `bool` | Returns whether the player holds the permission. An empty permission is always held. |
 | `Has(CCitadelPlayerController player, string permission)` | `bool` | Returns the same as `player.HasPermission(permission)`. `false` if `player` is `null`. |
 | `Explain(ulong steamId64, string permission)` | `PermissionExplanation` | Returns which grant decided `Has`'s answer, and where it came from. |
-| `CanTarget(ulong caller, ulong target)` | `bool` | Returns whether the caller's immunity is at least the target's. `false` while the target's entry is still loading from a custom store. |
+| `CanTarget(ulong callerSteamId64, ulong targetSteamId64)` | `bool` | Returns whether the caller's immunity is at least the target's. `false` while the target's entry is still loading from a custom store. |
 | `CanTarget(CCitadelPlayerController caller, CCitadelPlayerController target)` | `bool` | Returns the same as `caller.CanTarget(target)`. `false` if either is `null`. |
 | `IsLoaded(ulong steamId64)` | `bool` | Returns whether the store's answer for this SteamID has arrived, and starts loading it if nothing has asked yet. Always `true` for the JSON store. |
 | `GetImmunity(ulong steamId64)` | `int` | Returns the player's immunity, from their saved entry even before Steam confirms them. |
@@ -236,7 +232,7 @@ A `Target` is never empty. If nothing matches, or a name matches several players
 | `Single()` | Returns the one matched player, or throws a `CommandException` telling the caller to be more specific. |
 | `IsGroup` | Returns `true` for `@all`, `@team` and `@enemy`. |
 | `Input` | Returns the argument as typed. |
-| `Target.Resolve(caller, input, enforceImmunity = true)` | Resolves a string the same way, for commands that decide for themselves whether an argument is a player. Throws a `CommandException` with the usual message if nothing matches, or if the caller has left the server. |
+| `Target.Resolve(caller, input, enforceImmunity = true)` | Resolves a string the same way, for commands that decide for themselves whether an argument is a player. Throws a `CommandException` with the usual message if nothing matches, if a single-player pattern hits someone with higher immunity (unless `enforceImmunity` is `false`), or if the caller has left the server. |
 
 ```csharp
 [Command("goto", Permission = "teams.teleport")]
@@ -318,7 +314,7 @@ Register it in `OnLoad`:
 ```csharp
 public override void OnLoad(bool isReload)
 {
-    Permissions.RegisterStore(this, "mysql", new MySqlPermissionStore(Config.ConnectionString));
+    Permissions.RegisterStore(this, "mysql", new MySqlPermissionStore("Server=...;Database=deadworks"));
 }
 ```
 

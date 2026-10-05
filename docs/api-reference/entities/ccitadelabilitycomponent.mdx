@@ -17,7 +17,7 @@ public class CCitadelAbilityComponent : NativeEntity
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`NativeEntity`](/api-reference/entities/nativeentity)  
-**Source:** [Entities/CCitadelAbilityComponent.cs#L4](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L4)
+**Source:** [Entities/CCitadelAbilityComponent.cs#L4](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L4)
 
 ## Properties
 
@@ -29,7 +29,7 @@ public class CCitadelAbilityComponent : NativeEntity
 public AbilityResource ResourceStamina { get; }
 ```
 
-**Source:** [Entities/CCitadelAbilityComponent.cs#L8](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L8)
+**Source:** [Entities/CCitadelAbilityComponent.cs#L8](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L8)
 
 ### CCitadelAbilityComponent.ResourceAbility {#resourceability}
 
@@ -39,7 +39,7 @@ public AbilityResource ResourceStamina { get; }
 public AbilityResource ResourceAbility { get; }
 ```
 
-**Source:** [Entities/CCitadelAbilityComponent.cs#L11](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L11)
+**Source:** [Entities/CCitadelAbilityComponent.cs#L11](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L11)
 
 ### CCitadelAbilityComponent.Abilities {#abilities}
 
@@ -49,7 +49,7 @@ public AbilityResource ResourceAbility { get; }
 public IReadOnlyList<CCitadelBaseAbility> Abilities { get; }
 ```
 
-**Source:** [Entities/CCitadelAbilityComponent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L15)
+**Source:** [Entities/CCitadelAbilityComponent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L15)
 
 ## Methods
 
@@ -69,7 +69,7 @@ public int ExecuteAbilityBySlot(EAbilitySlot slot, bool altCast = false, byte fl
 - `altCast`: If true, uses alternate cast mode.
 - `flags`: Execution flags passed to the ability system.
 
-**Source:** [Entities/CCitadelAbilityComponent.cs#L35](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L35)
+**Source:** [Entities/CCitadelAbilityComponent.cs#L35](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L35)
 
 ### CCitadelAbilityComponent.ExecuteAbilityByID() {#executeabilitybyid}
 
@@ -81,7 +81,7 @@ Executes an ability by its runtime ability ID. Returns the execution result (0 =
 public int ExecuteAbilityByID(int abilityID, bool altCast = false, byte flags = 0)
 ```
 
-**Source:** [Entities/CCitadelAbilityComponent.cs#L40](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L40)
+**Source:** [Entities/CCitadelAbilityComponent.cs#L40](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L40)
 
 ### CCitadelAbilityComponent.ExecuteAbility() {#executeability}
 
@@ -93,7 +93,7 @@ Executes a specific ability entity. Returns the execution result (0 = success, n
 public int ExecuteAbility(CBaseEntity ability, bool altCast = false, byte flags = 0)
 ```
 
-**Source:** [Entities/CCitadelAbilityComponent.cs#L45](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L45)
+**Source:** [Entities/CCitadelAbilityComponent.cs#L45](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L45)
 
 ### CCitadelAbilityComponent.GetAbilityBySlot() {#getabilitybyslot}
 
@@ -105,7 +105,7 @@ Gets the ability entity in the given slot, or null if no ability occupies that s
 public CCitadelBaseAbility? GetAbilityBySlot(EAbilitySlot slot)
 ```
 
-**Source:** [Entities/CCitadelAbilityComponent.cs#L50](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L50)
+**Source:** [Entities/CCitadelAbilityComponent.cs#L50](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L50)
 
 ### CCitadelAbilityComponent.FindAbilityByName() {#findabilitybyname}
 
@@ -117,7 +117,7 @@ Finds an ability on this component by its internal name (e.g. "citadel_ability_p
 public CCitadelBaseAbility? FindAbilityByName(string abilityName)
 ```
 
-**Source:** [Entities/CCitadelAbilityComponent.cs#L56](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L56)
+**Source:** [Entities/CCitadelAbilityComponent.cs#L56](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L56)
 
 ### CCitadelAbilityComponent.ToggleActivate() {#toggleactivate}
 
@@ -129,4 +129,4 @@ Activates or deactivates an ability (toggle). This is the actual activation path
 public void ToggleActivate(CBaseEntity ability, bool activate = true)
 ```
 
-**Source:** [Entities/CCitadelAbilityComponent.cs#L65](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L65)
+**Source:** [Entities/CCitadelAbilityComponent.cs#L65](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelAbilityComponent.cs#L65)

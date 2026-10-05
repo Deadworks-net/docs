@@ -16,7 +16,7 @@ public sealed class AbilityAttemptEvent
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Events/AbilityAttemptEvent.cs#L7](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L7)
+**Source:** [Events/AbilityAttemptEvent.cs#L7](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L7)
 
 ## Properties
 
@@ -30,7 +30,7 @@ Player slot (0-63).
 public required int PlayerSlot { get; init; }
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L9](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L9)
+**Source:** [Events/AbilityAttemptEvent.cs#L9](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L9)
 
 ### AbilityAttemptEvent.HeldButtons {#heldbuttons}
 
@@ -42,7 +42,7 @@ Current held button state (CInButtonState[0]).
 public required InputButton HeldButtons { get; init; }
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L12)
+**Source:** [Events/AbilityAttemptEvent.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L12)
 
 ### AbilityAttemptEvent.ChangedButtons {#changedbuttons}
 
@@ -54,7 +54,7 @@ Changed button state (CInButtonState[1]).
 public required InputButton ChangedButtons { get; init; }
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L15)
+**Source:** [Events/AbilityAttemptEvent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L15)
 
 ### AbilityAttemptEvent.ScrollButtons {#scrollbuttons}
 
@@ -66,7 +66,7 @@ Scroll button state (CInButtonState[2]).
 public required InputButton ScrollButtons { get; init; }
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L18](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L18)
+**Source:** [Events/AbilityAttemptEvent.cs#L18](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L18)
 
 ### AbilityAttemptEvent.BlockedButtons {#blockedbuttons}
 
@@ -78,7 +78,7 @@ Set bits in this mask to block those buttons from being processed by the ability
 public InputButton BlockedButtons { get; set; }
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L24](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L24)
+**Source:** [Events/AbilityAttemptEvent.cs#L24](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L24)
 
 ### AbilityAttemptEvent.ForcedButtons {#forcedbuttons}
 
@@ -90,7 +90,7 @@ Set bits in this mask to force those buttons to be pressed, even if the player i
 public InputButton ForcedButtons { get; set; }
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L30](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L30)
+**Source:** [Events/AbilityAttemptEvent.cs#L30](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L30)
 
 ### AbilityAttemptEvent.Controller {#controller}
 
@@ -102,7 +102,7 @@ Gets the player controller for this player slot.
 public unsafe CCitadelPlayerController? Controller { get; }
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L34](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L34)
+**Source:** [Events/AbilityAttemptEvent.cs#L34](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L34)
 
 ### AbilityAttemptEvent.IsAnyAbilityHeld {#isanyabilityheld}
 
@@ -112,7 +112,7 @@ public unsafe CCitadelPlayerController? Controller { get; }
 public bool IsAnyAbilityHeld { get; }
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L48](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L48)
+**Source:** [Events/AbilityAttemptEvent.cs#L48](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L48)
 
 ### AbilityAttemptEvent.IsAnyItemHeld {#isanyitemheld}
 
@@ -122,7 +122,7 @@ public bool IsAnyAbilityHeld { get; }
 public bool IsAnyItemHeld { get; }
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L49](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L49)
+**Source:** [Events/AbilityAttemptEvent.cs#L49](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L49)
 
 ## Methods
 
@@ -136,7 +136,7 @@ True if the given button(s) are held this tick.
 public bool IsHeld(InputButton button)
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L44](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L44)
+**Source:** [Events/AbilityAttemptEvent.cs#L44](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L44)
 
 ### AbilityAttemptEvent.IsChanged() {#ischanged}
 
@@ -148,7 +148,7 @@ True if the given button(s) changed this tick.
 public bool IsChanged(InputButton button)
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L46](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L46)
+**Source:** [Events/AbilityAttemptEvent.cs#L46](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L46)
 
 ### AbilityAttemptEvent.Block() {#block}
 
@@ -160,7 +160,7 @@ Block the specified button(s) from being processed.
 public void Block(InputButton button)
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L52](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L52)
+**Source:** [Events/AbilityAttemptEvent.cs#L52](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L52)
 
 ### AbilityAttemptEvent.BlockAllAbilities() {#blockallabilities}
 
@@ -170,7 +170,7 @@ public void Block(InputButton button)
 public void BlockAllAbilities()
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L53](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L53)
+**Source:** [Events/AbilityAttemptEvent.cs#L53](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L53)
 
 ### AbilityAttemptEvent.BlockAllItems() {#blockallitems}
 
@@ -180,7 +180,7 @@ public void BlockAllAbilities()
 public void BlockAllItems()
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L54](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L54)
+**Source:** [Events/AbilityAttemptEvent.cs#L54](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L54)
 
 ### AbilityAttemptEvent.BlockAll() {#blockall}
 
@@ -190,7 +190,7 @@ public void BlockAllItems()
 public void BlockAll()
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L55](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L55)
+**Source:** [Events/AbilityAttemptEvent.cs#L55](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L55)
 
 ### AbilityAttemptEvent.Force() {#force}
 
@@ -202,7 +202,7 @@ Force the specified button(s) to be pressed.
 public void Force(InputButton button)
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L58](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L58)
+**Source:** [Events/AbilityAttemptEvent.cs#L58](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L58)
 
 ### AbilityAttemptEvent.ForceAllAbilities() {#forceallabilities}
 
@@ -212,7 +212,7 @@ public void Force(InputButton button)
 public void ForceAllAbilities()
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L59](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L59)
+**Source:** [Events/AbilityAttemptEvent.cs#L59](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L59)
 
 ### AbilityAttemptEvent.ForceAllItems() {#forceallitems}
 
@@ -222,4 +222,4 @@ public void ForceAllAbilities()
 public void ForceAllItems()
 ```
 
-**Source:** [Events/AbilityAttemptEvent.cs#L60](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L60)
+**Source:** [Events/AbilityAttemptEvent.cs#L60](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AbilityAttemptEvent.cs#L60)

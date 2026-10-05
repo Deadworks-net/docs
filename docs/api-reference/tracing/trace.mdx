@@ -16,7 +16,7 @@ public static class Trace
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Trace/TraceSystem.cs#L6](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Trace/TraceSystem.cs#L6)
+**Source:** [Trace/TraceSystem.cs#L6](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Trace/TraceSystem.cs#L6)
 
 ## Methods
 
@@ -30,7 +30,7 @@ Executes a raw VPhys2 trace using the provided ray shape and filter, writing res
 public static unsafe void TraceShape(Vector3 start, Vector3 end, Ray_t ray, CTraceFilter filter, ref CGameTrace trace)
 ```
 
-**Source:** [Trace/TraceSystem.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Trace/TraceSystem.cs#L12)
+**Source:** [Trace/TraceSystem.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Trace/TraceSystem.cs#L12)
 
 ### Trace.SimpleTrace() {#simpletrace}
 
@@ -42,7 +42,7 @@ Convenience trace that constructs a [`CTraceFilter`](/api-reference/tracing/ctra
 public static unsafe void SimpleTrace(Vector3 start, Vector3 end, RayType_t rayKind, RnQueryObjectSet objectQuery, InteractionLayer interactWith, InteractionLayer interactExclude, InteractionLayer interactAs, CollisionGroup collision, ref CGameTrace trace, CBaseEntity? filterEntity = null, CBaseEntity? filterSecondEntity = null)
 ```
 
-**Source:** [Trace/TraceSystem.cs#L23](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Trace/TraceSystem.cs#L23)
+**Source:** [Trace/TraceSystem.cs#L23](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Trace/TraceSystem.cs#L23)
 
 ### Trace.SimpleTraceAngles() {#simpletraceangles}
 
@@ -54,7 +54,7 @@ Like `SimpleTrace` but takes pitch/yaw angles instead of an end point, projectin
 public static void SimpleTraceAngles(Vector3 start, Vector3 angles, RayType_t rayKind, RnQueryObjectSet objectQuery, InteractionLayer interactWith, InteractionLayer interactExclude, InteractionLayer interactAs, CollisionGroup collision, ref CGameTrace trace, CBaseEntity? filterEntity = null, CBaseEntity? filterSecondEntity = null, float maxDistance = 8192f)
 ```
 
-**Source:** [Trace/TraceSystem.cs#L53](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Trace/TraceSystem.cs#L53)
+**Source:** [Trace/TraceSystem.cs#L53](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Trace/TraceSystem.cs#L53)
 
 ### Trace.Ray() {#ray}
 
@@ -66,4 +66,4 @@ Fires a simple line ray from `start` to `end`. Returns a [`TraceResult`](/api-re
 public static unsafe TraceResult Ray(Vector3 start, Vector3 end, InteractionLayer mask = InteractionLayer.Solid | InteractionLayer.Hitbox, CBaseEntity? ignore = null)
 ```
 
-**Source:** [Trace/TraceSystem.cs#L72](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Trace/TraceSystem.cs#L72)
+**Source:** [Trace/TraceSystem.cs#L72](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Trace/TraceSystem.cs#L72)

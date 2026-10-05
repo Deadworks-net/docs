@@ -17,7 +17,7 @@ public interface IHandle
 
 **Namespace:** `DeadworksManaged.Api`  
 **Derived types:** [`CallbackHandle`](/api-reference/entities/callbackhandle)  
-**Source:** [Timer/IHandle.cs#L8](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Timer/IHandle.cs#L8)
+**Source:** [Timer/IHandle.cs#L8](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Timer/IHandle.cs#L8)
 
 ## Properties
 
@@ -31,7 +31,7 @@ Whether this subscription has completed or been cancelled.
 bool IsFinished { get; }
 ```
 
-**Source:** [Timer/IHandle.cs#L14](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Timer/IHandle.cs#L14)
+**Source:** [Timer/IHandle.cs#L14](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Timer/IHandle.cs#L14)
 
 ## Methods
 
@@ -45,7 +45,7 @@ Cancel this subscription. If already finished or cancelled, this is a no-op.
 void Cancel()
 ```
 
-**Source:** [Timer/IHandle.cs#L11](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Timer/IHandle.cs#L11)
+**Source:** [Timer/IHandle.cs#L11](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Timer/IHandle.cs#L11)
 
 ### IHandle.CancelOnMapChange() {#cancelonmapchange}
 
@@ -57,4 +57,4 @@ Marks this subscription to be automatically cancelled on map change (when `OnSta
 IHandle CancelOnMapChange()
 ```
 
-**Source:** [Timer/IHandle.cs#L21](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Timer/IHandle.cs#L21)
+**Source:** [Timer/IHandle.cs#L21](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Timer/IHandle.cs#L21)

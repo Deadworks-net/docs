@@ -10,7 +10,7 @@ description: "Marks a plugin method as a handler for a chat command. Can be appl
 # ChatCommandAttribute
 
 :::warning Obsolete
-Use [Command] instead.
+Use [Command] instead. Commands with this attribute are no longer registered: they skipped permission checks.
 :::
 
 Marks a plugin method as a handler for a chat command. Can be applied multiple times.
@@ -21,7 +21,7 @@ public class ChatCommandAttribute : Attribute
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** `Attribute`  
-**Source:** [Events/ChatCommandAttribute.cs#L6](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ChatCommandAttribute.cs#L6)
+**Source:** [Events/ChatCommandAttribute.cs#L6](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ChatCommandAttribute.cs#L6)
 
 ## Constructors
 
@@ -37,7 +37,7 @@ public ChatCommandAttribute(string command)
 
 - `command`: The command string to match, including any prefix character.
 
-**Source:** [Events/ChatCommandAttribute.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ChatCommandAttribute.cs#L12)
+**Source:** [Events/ChatCommandAttribute.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ChatCommandAttribute.cs#L12)
 
 ## Properties
 
@@ -51,4 +51,4 @@ The chat command string this attribute matches, including the prefix (e.g. `"!my
 public string Command { get; }
 ```
 
-**Source:** [Events/ChatCommandAttribute.cs#L9](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ChatCommandAttribute.cs#L9)
+**Source:** [Events/ChatCommandAttribute.cs#L9](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ChatCommandAttribute.cs#L9)

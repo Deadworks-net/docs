@@ -5,10 +5,6 @@ sidebar_label: "4. Staff Roles"
 
 # Setting Up Staff Roles
 
-:::info Coming soon
-This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
-:::
-
 **Step 4 of 4** in [Admins & Permissions](/permissions). Before this: [how permissions work](admins-and-permissions).
 
 This guide sets up a typical staff team for the [Admin plugin](admin-commands): trial moderators, moderators, admins and an owner, where each rank can do a bit more than the one below it and can't act against the ranks above.
@@ -100,7 +96,7 @@ dw_role_list
 
 - **`inherits`** passes permissions up the ladder. A moderator gets everything a trial mod has, plus their own. An admin gets everything a moderator has.
 - **Immunity** is set on each role here. A role without an `immunity` would take the highest one among the roles it inherits.
-- **`deadworks.admin.notify`** lets staff see *who* did something when the server announces an admin action. Players only see "ADMIN: …". Because every other staff role inherits from `trialmod`, they all get it.
+- **`deadworks.admin.notify`** lets staff see *who* did something when the server announces an admin action. By default, players only see "ADMIN: …" (see `admin.show_activity` in [deadworks.jsonc](admins-and-permissions#deadworksjsonc)). Because every other staff role inherits from `trialmod`, they all get it.
 - **`admin.moderation.ban`** covers permanent bans and banning players who've left by SteamID, so moderators can do both. Keep `ban` for people you trust with that.
 - **The admin role** gets the whole server group except `rcon` and `cvar`, which leaves changing map and running configs. The denies (`-`) take those two out of the `admin.server.*` wildcard, because an exact entry beats a wildcard in the same role. `cvar` is left to the owner because it also covers `sv_cheats` and passwords like `sv_password`.
 - **`deadworks.permissions.manage`** lets admins add and remove staff. See [Step 3](#step-3-let-admins-manage-staff).
@@ -108,7 +104,7 @@ dw_role_list
 
 ## Step 2: Add Your Staff
 
-From the server console, or in game as the owner:
+From the server console, or from your game console as the owner (these commands don't work in chat):
 
 ```text
 dw_role_grant greeny trialmod
@@ -159,7 +155,7 @@ Removing -admin.server.rcon would give lapka (76561197960287931) admin.server.rc
 
 When a rule stops someone, the reply says which one, for example `You can't change mastardy (76561197960287933): you need higher immunity than theirs (90).`
 
-Role and permission changes (`dw_role_*`, `dw_perm_*`) are written to the admin log in `logs/admin/`, with who made them, so you can always see who promoted whom.
+Grants, revokes and reloads (`dw_role_grant`, `dw_role_revoke`, `dw_perm_grant`, `dw_perm_revoke`, `dw_perm_reload`) are written to the admin log in `logs/admin/`, with who made them, so you can always see who promoted whom.
 
 Want senior moderators who manage trial mods and nobody else? Give them a role that inherits `trialmod`, adds `deadworks.permissions.manage`, and has immunity above trial mods but below moderators, such as 30. They can hire and fire trial mods, but can't hand out their own role (its immunity isn't lower than theirs) or touch moderators.
 

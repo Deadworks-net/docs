@@ -17,7 +17,7 @@ public sealed class CallbackHandle : IHandle
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`IHandle`](/api-reference/timers/ihandle)  
-**Source:** [Entities/CallbackHandle.cs#L4](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CallbackHandle.cs#L4)
+**Source:** [Entities/CallbackHandle.cs#L4](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CallbackHandle.cs#L4)
 
 ## Constructors
 
@@ -29,7 +29,7 @@ public sealed class CallbackHandle : IHandle
 public CallbackHandle(Action cancel)
 ```
 
-**Source:** [Entities/CallbackHandle.cs#L8](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CallbackHandle.cs#L8)
+**Source:** [Entities/CallbackHandle.cs#L8](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CallbackHandle.cs#L8)
 
 ## Properties
 
@@ -43,7 +43,7 @@ Whether this subscription has completed or been cancelled.
 public bool IsFinished { get; }
 ```
 
-**Source:** [Entities/CallbackHandle.cs#L10](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CallbackHandle.cs#L10)
+**Source:** [Entities/CallbackHandle.cs#L10](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CallbackHandle.cs#L10)
 
 ## Methods
 
@@ -57,7 +57,7 @@ Cancel this subscription. If already finished or cancelled, this is a no-op.
 public void Cancel()
 ```
 
-**Source:** [Entities/CallbackHandle.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CallbackHandle.cs#L12)
+**Source:** [Entities/CallbackHandle.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CallbackHandle.cs#L12)
 
 ### CallbackHandle.CancelOnMapChange() {#cancelonmapchange}
 
@@ -69,4 +69,4 @@ Marks this subscription to be automatically cancelled on map change (when `OnSta
 public IHandle CancelOnMapChange()
 ```
 
-**Source:** [Entities/CallbackHandle.cs#L20](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CallbackHandle.cs#L20)
+**Source:** [Entities/CallbackHandle.cs#L20](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CallbackHandle.cs#L20)

@@ -5,10 +5,6 @@ sidebar_label: "Plugin Commands for a Role"
 
 # Commands for One Role
 
-:::info Coming soon
-This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
-:::
-
 For plugin developers. It assumes you know [how permissions work](admins-and-permissions).
 
 This guide walks through a small plugin whose commands only some players can use, then sets up a role on the server so that exactly those players can.

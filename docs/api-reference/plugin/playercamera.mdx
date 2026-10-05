@@ -16,7 +16,7 @@ public readonly struct PlayerCamera
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [PlayerCamera.cs#L35](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/PlayerCamera.cs#L35)
+**Source:** [PlayerCamera.cs#L35](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/PlayerCamera.cs#L35)
 
 ## Notes
 
@@ -48,7 +48,7 @@ The group your changes go in when you don't pass a context. `Clear` with no argu
 public const uint DefaultContext = 0x44570001;
 ```
 
-**Source:** [PlayerCamera.cs#L40](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/PlayerCamera.cs#L40)
+**Source:** [PlayerCamera.cs#L40](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/PlayerCamera.cs#L40)
 
 ### PlayerCamera.DefaultPriority {#defaultpriority}
 
@@ -60,7 +60,7 @@ The priority your changes get when you don't pass one. It's above the game's own
 public const uint DefaultPriority = 30;
 ```
 
-**Source:** [PlayerCamera.cs#L43](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/PlayerCamera.cs#L43)
+**Source:** [PlayerCamera.cs#L43](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/PlayerCamera.cs#L43)
 
 ## Methods
 
@@ -92,7 +92,7 @@ public void Lerp(CameraSetting setting, float from, float to, float duration, fl
 - `ArgumentException`: `setting` isn't [`CameraSetting.Target`](/api-reference/enums/camerasetting#target).
 - `ArgumentException`: `setting` is [`CameraSetting.Target`](/api-reference/enums/camerasetting#target).
 
-**Source:** [PlayerCamera.cs#L64](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/PlayerCamera.cs#L64), [PlayerCamera.cs#L97](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/PlayerCamera.cs#L97)
+**Source:** [PlayerCamera.cs#L64](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/PlayerCamera.cs#L64), [PlayerCamera.cs#L97](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/PlayerCamera.cs#L97)
 
 ### PlayerCamera.LerpTarget() {#lerptarget}
 
@@ -104,7 +104,7 @@ Moves the camera's look-at point from `from` to `to` over `duration` seconds, th
 public void LerpTarget(Vector3 from, Vector3 to, float duration, float delay = 0f, uint context = DefaultContext)
 ```
 
-**Source:** [PlayerCamera.cs#L114](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/PlayerCamera.cs#L114)
+**Source:** [PlayerCamera.cs#L114](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/PlayerCamera.cs#L114)
 
 ### PlayerCamera.LerpDistance() {#lerpdistance}
 
@@ -116,7 +116,7 @@ Pulls the camera back or pushes it in, from `from` to `to` units behind what it 
 public void LerpDistance(float from, float to, float duration, float delay = 0f, uint context = DefaultContext)
 ```
 
-**Source:** [PlayerCamera.cs#L121](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/PlayerCamera.cs#L121)
+**Source:** [PlayerCamera.cs#L121](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/PlayerCamera.cs#L121)
 
 ### PlayerCamera.LerpFov() {#lerpfov}
 
@@ -128,7 +128,7 @@ Zooms by changing the field of view from `from` to `to` degrees over `duration` 
 public void LerpFov(float from, float to, float duration, float delay = 0f, uint context = DefaultContext)
 ```
 
-**Source:** [PlayerCamera.cs#L125](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/PlayerCamera.cs#L125)
+**Source:** [PlayerCamera.cs#L125](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/PlayerCamera.cs#L125)
 
 ### PlayerCamera.Maintain() {#maintain}
 
@@ -148,7 +148,7 @@ public void Maintain(CameraSetting setting, float duration, float delay = 0f, ui
 - `context`: The group this change goes in, for `Clear`.
 - `priority`: Beats overlapping changes to the same setting that have a lower priority.
 
-**Source:** [PlayerCamera.cs#L138](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/PlayerCamera.cs#L138)
+**Source:** [PlayerCamera.cs#L138](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/PlayerCamera.cs#L138)
 
 ### PlayerCamera.Clear() {#clear}
 
@@ -160,7 +160,7 @@ Cancels every change in `context` and gives those settings back to the game. The
 public void Clear(uint context = DefaultContext)
 ```
 
-**Source:** [PlayerCamera.cs#L149](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/PlayerCamera.cs#L149)
+**Source:** [PlayerCamera.cs#L149](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/PlayerCamera.cs#L149)
 
 ### PlayerCamera.ClearAll() {#clearall}
 
@@ -172,4 +172,4 @@ Cancels every camera change on this player, the game's own included. Prefer `Cle
 public void ClearAll()
 ```
 
-**Source:** [PlayerCamera.cs#L161](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/PlayerCamera.cs#L161)
+**Source:** [PlayerCamera.cs#L161](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/PlayerCamera.cs#L161)

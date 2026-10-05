@@ -16,7 +16,7 @@ public static class NetMessageRegistry
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [NetMessages/NetMessageRegistry.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/NetMessages/NetMessageRegistry.cs#L12)
+**Source:** [NetMessages/NetMessageRegistry.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/NetMessages/NetMessageRegistry.cs#L12)
 
 ## Methods
 
@@ -35,7 +35,7 @@ public static int GetMessageId(Type type)
 
 - `type`: A protobuf message type.
 
-**Source:** [NetMessages/NetMessageRegistry.cs#L28](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/NetMessages/NetMessageRegistry.cs#L28), [NetMessages/NetMessageRegistry.cs#L36](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/NetMessages/NetMessageRegistry.cs#L36)
+**Source:** [NetMessages/NetMessageRegistry.cs#L28](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/NetMessages/NetMessageRegistry.cs#L28), [NetMessages/NetMessageRegistry.cs#L36](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/NetMessages/NetMessageRegistry.cs#L36)
 
 ### NetMessageRegistry.RegisterManual() {#registermanual}
 
@@ -51,4 +51,4 @@ public static void RegisterManual<T>(int messageId) where T : IMessage<T>, new()
 
 - `messageId`: The network message ID to associate with `T`.
 
-**Source:** [NetMessages/NetMessageRegistry.cs#L258](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/NetMessages/NetMessageRegistry.cs#L258)
+**Source:** [NetMessages/NetMessageRegistry.cs#L258](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/NetMessages/NetMessageRegistry.cs#L258)

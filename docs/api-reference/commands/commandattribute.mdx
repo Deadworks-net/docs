@@ -17,7 +17,7 @@ public sealed class CommandAttribute : Attribute
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** `Attribute`  
-**Source:** [Commands/CommandAttribute.cs#L5](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L5)
+**Source:** [Commands/CommandAttribute.cs#L5](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L5)
 
 ## Constructors
 
@@ -29,11 +29,18 @@ public sealed class CommandAttribute : Attribute
 public CommandAttribute(string name, params string[] aliases)
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L25](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L25)
+**Parameters**
+
+- `name`: The command's name, without a prefix: `"kick"` creates `/kick`, `!kick` and `dw_kick`.
+- `aliases`: Other names for the same command, created the same way.
+
+**Source:** [Commands/CommandAttribute.cs#L42](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L42)
 
 ## Properties
 
 ### CommandAttribute.Names {#names}
+
+The command's name followed by its aliases, without a prefix.
 
 **Signature**
 
@@ -41,9 +48,11 @@ public CommandAttribute(string name, params string[] aliases)
 public string[] Names { get; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L7](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L7)
+**Source:** [Commands/CommandAttribute.cs#L8](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L8)
 
 ### CommandAttribute.Description {#description}
+
+One line for `dw_help` and the generated permission files, e.g. "Kick a player: kick &lt;player&gt; [reason]".
 
 **Signature**
 
@@ -51,11 +60,35 @@ public string[] Names { get; }
 public string Description { get; set; } = "";
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L8](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L8)
+**Source:** [Commands/CommandAttribute.cs#L11](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L11)
+
+### CommandAttribute.Permission {#permission}
+
+Permission a player needs to run this command, e.g. `admin.moderation.ban`. Empty means anyone. The server console always may. Server owners can change it in `configs/permissions/overrides.jsonc`.
+
+**Signature**
+
+```csharp
+public string Permission { get; set; } = "";
+```
+
+**Source:** [Commands/CommandAttribute.cs#L17](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L17)
+
+### CommandAttribute.TargetImmunity {#targetimmunity}
+
+Whether [`Target`](/api-reference/commands/target) parameters leave out players the caller can't target.
+
+**Signature**
+
+```csharp
+public TargetImmunity TargetImmunity { get; set; } = TargetImmunity.Auto;
+```
+
+**Source:** [Commands/CommandAttribute.cs#L20](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L20)
 
 ### CommandAttribute.ServerOnly {#serveronly}
 
-Refuses execution from any player caller.
+Lets only the server console (and RCON) run the command, whatever permissions a player has.
 
 **Signature**
 
@@ -63,11 +96,11 @@ Refuses execution from any player caller.
 public bool ServerOnly { get; set; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L11](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L11)
+**Source:** [Commands/CommandAttribute.cs#L23](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L23)
 
 ### CommandAttribute.ChatOnly {#chatonly}
 
-Skip the `dw_name` console command.
+Creates only `/name` and `!name`. Not even the server console can run it then.
 
 **Signature**
 
@@ -75,11 +108,11 @@ Skip the `dw_name` console command.
 public bool ChatOnly { get; set; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L14](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L14)
+**Source:** [Commands/CommandAttribute.cs#L26](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L26)
 
 ### CommandAttribute.ConsoleOnly {#consoleonly}
 
-Skip the `/name` and `!name` chat commands.
+Creates only `dw_name`. Players can still run it from their own game console, so use `Permission` or `ServerOnly` to keep it from them.
 
 **Signature**
 
@@ -87,11 +120,11 @@ Skip the `/name` and `!name` chat commands.
 public bool ConsoleOnly { get; set; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L17](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L17)
+**Source:** [Commands/CommandAttribute.cs#L32](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L32)
 
 ### CommandAttribute.SuppressChat {#suppresschat}
 
-Force the `!name` invocation to be hidden from chat broadcast.
+Hides `!name` from chat, like `/name`.
 
 **Signature**
 
@@ -99,11 +132,11 @@ Force the `!name` invocation to be hidden from chat broadcast.
 public bool SuppressChat { get; set; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L20](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L20)
+**Source:** [Commands/CommandAttribute.cs#L35](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L35)
 
 ### CommandAttribute.Hidden {#hidden}
 
-Exclude from the `dw_help` listing.
+Leaves the command out of `dw_help`.
 
 **Signature**
 
@@ -111,4 +144,4 @@ Exclude from the `dw_help` listing.
 public bool Hidden { get; set; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L23](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L23)
+**Source:** [Commands/CommandAttribute.cs#L38](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L38)

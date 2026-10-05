@@ -16,7 +16,7 @@ public static class NetMessages
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [NetMessages/NetMessages.cs#L9](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L9)
+**Source:** [NetMessages/NetMessages.cs#L9](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L9)
 
 ## Methods
 
@@ -40,7 +40,7 @@ public static void Send<T>(T message, RecipientFilter recipients, bool reliable 
 
 - `InvalidOperationException`: Thrown if `T` has no registered message ID.
 
-**Source:** [NetMessages/NetMessages.cs#L31](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L31)
+**Source:** [NetMessages/NetMessages.cs#L31](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L31)
 
 ### NetMessages.HookOutgoing() {#hookoutgoing}
 
@@ -63,7 +63,7 @@ A handle that keeps the hook alive. Dispose or call `UnhookOutgoing&lt;T&gt;` to
 
 - `InvalidOperationException`: Thrown if `T` has no registered message ID.
 
-**Source:** [NetMessages/NetMessages.cs#L48](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L48)
+**Source:** [NetMessages/NetMessages.cs#L48](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L48)
 
 ### NetMessages.HookIncoming() {#hookincoming}
 
@@ -86,7 +86,7 @@ A handle that keeps the hook alive. Dispose or call `UnhookIncoming&lt;T&gt;` to
 
 - `InvalidOperationException`: Thrown if `T` has no registered message ID.
 
-**Source:** [NetMessages/NetMessages.cs#L65](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L65)
+**Source:** [NetMessages/NetMessages.cs#L65](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L65)
 
 ### NetMessages.UnhookOutgoing() {#unhookoutgoing}
 
@@ -102,7 +102,7 @@ public static void UnhookOutgoing<T>(Func<OutgoingMessageContext<T>, HookResult>
 
 - `handler`: The exact delegate instance that was passed to `HookOutgoing&lt;T&gt;`.
 
-**Source:** [NetMessages/NetMessages.cs#L78](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L78)
+**Source:** [NetMessages/NetMessages.cs#L78](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L78)
 
 ### NetMessages.UnhookIncoming() {#unhookincoming}
 
@@ -118,4 +118,4 @@ public static void UnhookIncoming<T>(Func<IncomingMessageContext<T>, HookResult>
 
 - `handler`: The exact delegate instance that was passed to `HookIncoming&lt;T&gt;`.
 
-**Source:** [NetMessages/NetMessages.cs#L89](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L89)
+**Source:** [NetMessages/NetMessages.cs#L89](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/NetMessages/NetMessages.cs#L89)

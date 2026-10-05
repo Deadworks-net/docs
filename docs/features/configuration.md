@@ -77,7 +77,19 @@ That reloads every plugin's config. To reload just one, add its name:
 dw_reloadconfig MyPlugin
 ```
 
-If the file has a mistake in it, the plugin keeps the settings it already had.
+If the file has a mistake in it, the plugin keeps the settings it already had, and the console says where the mistake is:
+
+```text
+[ConfigManager] Failed to reload MyPlugin.jsonc line 4, column 3: ... My Plugin keeps its previous settings.
+```
+
+If the file is broken when the server starts, the plugin uses its default settings and the console prints an `ERROR`. Fix the file and run `dw_reloadconfig MyPlugin`.
+
+A setting your config class doesn't have, such as a misspelled name, is ignored, and the console warns about it when the config loads:
+
+```text
+[ConfigManager] WARNING: MyPlugin.jsonc: 'IntervalSecond' (did you mean 'IntervalSeconds'?) isn't a setting My Plugin knows, so it's ignored.
+```
 
 ## Run code when the config is reloaded
 

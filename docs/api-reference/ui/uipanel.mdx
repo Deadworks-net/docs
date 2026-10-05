@@ -16,7 +16,7 @@ public sealed class UIPanel
 ```
 
 **Namespace:** `DeadworksManaged.Api.UI`  
-**Source:** [UI/UI.cs#L252](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L252)
+**Source:** [UI/UI.cs#L252](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L252)
 
 ## Properties
 
@@ -28,7 +28,7 @@ public sealed class UIPanel
 public string Id { get; }
 ```
 
-**Source:** [UI/UI.cs#L253](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L253)
+**Source:** [UI/UI.cs#L253](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L253)
 
 ## Methods
 
@@ -42,7 +42,7 @@ Reliable field update — eventually delivered, latest value wins.
 public void Set(RecipientFilter to, string key, object value)
 ```
 
-**Source:** [UI/UI.cs#L259](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L259)
+**Source:** [UI/UI.cs#L259](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L259)
 
 ### UIPanel.SetUnreliable() {#setunreliable}
 
@@ -54,7 +54,7 @@ Best-effort field update — dropped under bandwidth pressure, latest value wins
 public void SetUnreliable(RecipientFilter to, string key, object value)
 ```
 
-**Source:** [UI/UI.cs#L263](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L263)
+**Source:** [UI/UI.cs#L263](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L263)
 
 ### UIPanel.SetStyle() {#setstyle}
 
@@ -77,7 +77,7 @@ The client then interpolates at its own framerate, which is smoother than this c
 public void SetStyle(RecipientFilter to, string nodeId, string property, string value)
 ```
 
-**Source:** [UI/UI.cs#L286](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L286)
+**Source:** [UI/UI.cs#L286](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L286)
 
 ### UIPanel.SetStyles() {#setstyles}
 
@@ -89,7 +89,7 @@ Change several style properties on one node at once. Cheaper than separate `SetS
 public void SetStyles(RecipientFilter to, string nodeId, params (string Name, string Value)[] entries)
 ```
 
-**Source:** [UI/UI.cs#L293](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L293)
+**Source:** [UI/UI.cs#L293](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L293)
 
 ### UIPanel.Animate() {#animate}
 
@@ -105,7 +105,7 @@ Equivalent to declaring [`UINodeExtensions.WithTransition`](/api-reference/ui/ui
 public void Animate(RecipientFilter to, string nodeId, string property, string value, string duration, string timing = "linear")
 ```
 
-**Source:** [UI/UI.cs#L339](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L339)
+**Source:** [UI/UI.cs#L339](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L339)
 
 ### UIPanel.Clear() {#clear}
 
@@ -117,7 +117,7 @@ Tells the panel script to clear its state.
 public void Clear(RecipientFilter to)
 ```
 
-**Source:** [UI/UI.cs#L348](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L348)
+**Source:** [UI/UI.cs#L348](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L348)
 
 ### UIPanel.RequestCursor() {#requestcursor}
 
@@ -129,7 +129,7 @@ Frees the mouse cursor for each recipient so they can click this panel's buttons
 public void RequestCursor(RecipientFilter to)
 ```
 
-**Source:** [UI/UI.cs#L356](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L356)
+**Source:** [UI/UI.cs#L356](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L356)
 
 ### UIPanel.ReleaseCursor() {#releasecursor}
 
@@ -141,7 +141,7 @@ Gives back the cursor this panel asked for with `RequestCursor`.
 public void ReleaseCursor(RecipientFilter to)
 ```
 
-**Source:** [UI/UI.cs#L360](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L360)
+**Source:** [UI/UI.cs#L360](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L360)
 
 ### UIPanel.SendRaw() {#sendraw}
 
@@ -153,7 +153,7 @@ Sends an opaque text payload to the panel script's onRaw handler.
 public void SendRaw(RecipientFilter to, string text)
 ```
 
-**Source:** [UI/UI.cs#L364](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L364)
+**Source:** [UI/UI.cs#L364](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L364)
 
 ### UIPanel.BuildLayout() {#buildlayout}
 
@@ -165,7 +165,7 @@ Replace the panel's DOM tree on each recipient. The bootstrap creates a host pan
 public void BuildLayout(RecipientFilter to, UINode root)
 ```
 
-**Source:** [UI/UI.cs#L373](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L373)
+**Source:** [UI/UI.cs#L373](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L373)
 
 ### UIPanel.DestroyLayout() {#destroylayout}
 
@@ -177,7 +177,7 @@ Destroy the panel's host on each recipient and forget its registration.
 public void DestroyLayout(RecipientFilter to)
 ```
 
-**Source:** [UI/UI.cs#L379](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L379)
+**Source:** [UI/UI.cs#L379](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L379)
 
 ### UIPanel.Precache() {#precache}
 
@@ -189,7 +189,7 @@ Ship the layout to each recipient and let the bootstrap parse + cache it without
 public void Precache(RecipientFilter to, UINode root)
 ```
 
-**Source:** [UI/UI.cs#L389](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L389)
+**Source:** [UI/UI.cs#L389](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L389)
 
 ### UIPanel.Show() {#show}
 
@@ -201,7 +201,7 @@ Render a previously-precached panel on each recipient. No-op (and logs on the cl
 public void Show(RecipientFilter to)
 ```
 
-**Source:** [UI/UI.cs#L400](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L400)
+**Source:** [UI/UI.cs#L400](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L400)
 
 ### UIPanel.LoadXml() {#loadxml}
 
@@ -213,7 +213,7 @@ Tell the bootstrap to `BLoadLayout` an XML file from the client's mod tree under
 public void LoadXml(RecipientFilter to, string xmlPath)
 ```
 
-**Source:** [UI/UI.cs#L410](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L410)
+**Source:** [UI/UI.cs#L410](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L410)
 
 ### UIPanel.Reload() {#reload}
 
@@ -227,7 +227,7 @@ Exists for the edit loop: change an addon's .xml or .js and reload it without re
 public int Reload(RecipientFilter to)
 ```
 
-**Source:** [UI/UI.cs#L424](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L424)
+**Source:** [UI/UI.cs#L424](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L424)
 
 ### UIPanel.AppendChild() {#appendchild}
 
@@ -239,7 +239,7 @@ Append a subtree under an existing node in the panel's host. Far cheaper than `B
 public void AppendChild(RecipientFilter to, string parentId, UINode child)
 ```
 
-**Source:** [UI/UI.cs#L434](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L434)
+**Source:** [UI/UI.cs#L434](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L434)
 
 ### UIPanel.RemoveChild() {#removechild}
 
@@ -251,7 +251,7 @@ Remove a child node by id from the panel's host. Single-chunk wire op.
 public void RemoveChild(RecipientFilter to, string targetId)
 ```
 
-**Source:** [UI/UI.cs#L442](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L442)
+**Source:** [UI/UI.cs#L442](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L442)
 
 ### UIPanel.Build() {#build}
 
@@ -263,7 +263,7 @@ Begin building a multi-op message that ships in one logical send.
 public UIUpdate Build()
 ```
 
-**Source:** [UI/UI.cs#L449](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L449)
+**Source:** [UI/UI.cs#L449](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L449)
 
 ### UIPanel.On() {#on}
 
@@ -275,4 +275,4 @@ Register a handler for an event the panel fires client-side via `DW.send(panelId
 public UIPanel On(string eventName, Action<UIEvent> handler)
 ```
 
-**Source:** [UI/UI.cs#L455](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UI.cs#L455)
+**Source:** [UI/UI.cs#L455](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UI.cs#L455)

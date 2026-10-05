@@ -68,6 +68,8 @@ Throw `CommandException`. The caller sees your message wherever they typed the c
 throw new CommandException("You can't do that right now.");
 ```
 
+Any other exception is a bug in your plugin: the server console gets the full stack trace, and the caller only sees `That command failed. The server console has details.`
+
 ## Take arguments
 
 Add more parameters, and Deadworks fills them in from what the caller typed.
@@ -85,13 +87,55 @@ public void CmdGiveSouls(Caller caller, int amount = 50000)
 /givesouls 2500
 ```
 
-A parameter can be a `string`, a `bool`, a number or an enum. One with a default value is optional.
+A parameter can be a `string`, a `bool`, a number (`int`, `long`, `uint`, `ulong`, `float`, `double`) or an enum, or a nullable version of one. One with a default value is optional. An enum takes its value names (`red`, `blue`), not numbers.
 
 If what they typed doesn't fit, Deadworks shows them the usage and doesn't run your method:
 
 ```text
 Usage: dw_givesouls [amount=50000]
 ```
+
+## Pick players
+
+Take a `Target` to let the caller name one or more players:
+
+```csharp
+[Command("healplayer", Permission = "myplugin.heal")]
+public void CmdHealPlayer(Caller caller, Target target)
+{
+    foreach (var player in target)
+    {
+        var pawn = player.GetHeroPawn();
+        pawn?.Heal(pawn.GetMaxHealth());
+    }
+}
+```
+
+```text
+/healplayer lapka
+/healplayer #3
+/healplayer @team
+```
+
+A `Target` accepts part of a name, `#slot`, a SteamID, `@me`, `@team`, `@enemy` and `@all`. If nothing matches, the caller is told and your method doesn't run. Use `target.Single()` when the command only makes sense for one player. See [Targeting Players and Immunity](permissions#targeting-players-and-immunity).
+
+## Parse your own types
+
+For a type Deadworks doesn't parse, register a converter in `OnLoad`. Throw `CommandException` to tell the caller what's wrong with what they typed:
+
+```csharp
+public override void OnLoad(bool isReload)
+{
+    CommandConverters.Register<Coord>(text =>
+        text.Split(',') is [var x, var y] && int.TryParse(x, out var xi) && int.TryParse(y, out var yi)
+            ? new Coord(xi, yi)
+            : throw new CommandException($"'{text}' isn't x,y."));
+}
+```
+
+Your converters are removed when your plugin unloads. A converter applies to every plugin's commands, so register them for your own types. Registering one for a type Deadworks already parses, such as `int` or `Target`, throws `ArgumentException`.
+
+If a parameter's type can't be parsed at all, the console warns when the plugin loads, and the command only ever shows its usage.
 
 ## Take a whole sentence
 
@@ -134,7 +178,7 @@ Players can still run a `ConsoleOnly` command from their own game console.
 [Command("cvardump", ServerOnly = true)]
 ```
 
-To limit a command to certain players instead, see [Permissions](permissions) (coming soon).
+To limit a command to certain players instead, see [Permissions](permissions).
 
 ## Hide a command
 
@@ -156,4 +200,8 @@ public async Task CmdStats(Caller caller)
 }
 ```
 
-If the player has left by then, the reply does nothing.
+If the player has left by then, the reply does nothing. An exception thrown after an `await` is handled the same way as one thrown straight away.
+
+:::warning Don't use `async void`
+An exception in an `async void` method can't be caught and would crash the server, so Deadworks refuses to register such a command and says so in the console. Return `Task` instead.
+:::

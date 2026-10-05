@@ -57,6 +57,7 @@ const sidebars: SidebarsConfig = {
       label: 'Guides',
       collapsed: false,
       items: [
+        'guides/upgrading-permissions',
         'guides/how-deadworks-works',
         'guides/plugin-lifecycle',
         'guides/server-hosting',
@@ -65,21 +66,14 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'API Reference',
-      collapsed: true,
-      link: {type: 'doc', id: 'api-reference/index'},
-      items: (apiSidebar as any[]).slice(1),
-    },
-    {
-      type: 'category',
-      label: '(COMING SOON) Admins & Permissions',
-      collapsed: true,
+      label: 'Admins & Permissions',
+      collapsed: false,
       link: {
         type: 'generated-index',
-        title: 'Admins & Permissions (Coming Soon)',
+        title: 'Admins & Permissions',
         slug: '/permissions',
         description:
-          'Not released yet: these features are coming in an upcoming Deadworks release. Who can use which commands on your server. Server owners: read the four numbered guides in order. Plugin developers: see Plugin Commands for a Role and the API pages.',
+          'Who can use which commands on your server. Server owners: read the four numbered guides in order. Plugin developers: see Plugin Commands for a Role and the API pages.',
       },
       items: [
         'guides/making-yourself-admin',
@@ -90,6 +84,13 @@ const sidebars: SidebarsConfig = {
         'features/permissions',
         'features/admin-api',
       ],
+    },
+    {
+      type: 'category',
+      label: 'API Reference',
+      collapsed: true,
+      link: {type: 'doc', id: 'api-reference/index'},
+      items: (apiSidebar as any[]).slice(1),
     },
   ],
 };

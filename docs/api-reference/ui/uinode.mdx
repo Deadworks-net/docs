@@ -17,7 +17,7 @@ public abstract class UINode
 
 **Namespace:** `DeadworksManaged.Api.UI`  
 **Derived types:** [`UIButton`](/api-reference/ui/uibutton), [`UIContainer`](/api-reference/ui/uicontainer), [`UIImage`](/api-reference/ui/uiimage), [`UILabel`](/api-reference/ui/uilabel)  
-**Source:** [UI/UILayout.cs#L14](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L14)
+**Source:** [UI/UILayout.cs#L14](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L14)
 
 ## Properties
 
@@ -29,7 +29,7 @@ public abstract class UINode
 public string? Id { get; set; }
 ```
 
-**Source:** [UI/UILayout.cs#L15](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L15)
+**Source:** [UI/UILayout.cs#L15](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L15)
 
 ### UINode.Styles {#styles}
 
@@ -41,7 +41,7 @@ Styles applied to this node, in declaration order. Each entry is a `(property, v
 public List<(string Name, string Value)> Styles { get; }
 ```
 
-**Source:** [UI/UILayout.cs#L24](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L24)
+**Source:** [UI/UILayout.cs#L24](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L24)
 
 ### UINode.HoverStyles {#hoverstyles}
 
@@ -55,7 +55,7 @@ Declaring any of these makes the node hit-testable, since a node that ignores th
 public List<(string Name, string Value)> HoverStyles { get; }
 ```
 
-**Source:** [UI/UILayout.cs#L35](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L35)
+**Source:** [UI/UILayout.cs#L35](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L35)
 
 ### UINode.PressStyles {#pressstyles}
 
@@ -69,7 +69,7 @@ Hover and press are the only states the client has to own: the server rebuilds t
 public List<(string Name, string Value)> PressStyles { get; }
 ```
 
-**Source:** [UI/UILayout.cs#L46](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L46)
+**Source:** [UI/UILayout.cs#L46](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L46)
 
 ### UINode.Transitions {#transitions}
 
@@ -83,7 +83,7 @@ Kept apart from `Styles` because Panorama expresses several transitions as paral
 public List<(string Property, string Duration, string Timing)> Transitions { get; }
 ```
 
-**Source:** [UI/UILayout.cs#L58](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L58)
+**Source:** [UI/UILayout.cs#L58](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L58)
 
 ### UINode.Children {#children}
 
@@ -93,4 +93,4 @@ public List<(string Property, string Duration, string Timing)> Transitions { get
 public List<UINode> Children { get; }
 ```
 
-**Source:** [UI/UILayout.cs#L60](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L60)
+**Source:** [UI/UILayout.cs#L60](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L60)

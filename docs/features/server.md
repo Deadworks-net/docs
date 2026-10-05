@@ -18,10 +18,13 @@ string map = Server.MapName; // "dl_midtown"
 ## Change the map
 
 ```csharp
-Server.ChangeLevel("dl_midtown");
+if (!Server.ChangeMap(mapName))
+    throw new CommandException($"There's no map called {mapName}.");
 ```
 
-Everyone stays connected and loads into the new map.
+Everyone stays connected and loads into the new map. `ChangeMap` checks the name with `Server.IsMapValid` first and returns `false` if the map doesn't exist, so it's safe to pass a name a player typed. `Server.ChangeLevel(map)` changes map without checking.
+
+`Server.GetMapList()` returns the maps you can change to: the game's own maps, plus any listed under `serverbrowser.extra_maps` in `configs/deadworks.jsonc`, sorted by name.
 
 While the map is changing, `Server.IsChangingLevel` is `true`. Anything you do to players during that time is lost, so check it first.
 
@@ -48,6 +51,14 @@ Server.ExecuteCommand("sv_cheats 1");
 
 This runs the command as if it were typed in the server console. To change a setting, [ConVars](convars) are usually neater.
 
+To see what the command printed, pass a callback. It's called on a later frame, because console commands run on the next frame:
+
+```csharp
+Server.ExecuteCommand("status", output => caller.Reply(output));
+```
+
+Setting a cvar prints nothing, so its output is empty.
+
 ## Run a command on a player's game
 
 ```csharp
@@ -59,16 +70,20 @@ This runs the command in that player's own console.
 ## Kick a player
 
 ```csharp
-controller.Kick();
+controller.Kick("You were kicked for being idle.");
 ```
 
-The player is sent back to the main menu and isn't told why. Tell them first if they should know:
+The message is printed in the player's chat and console, then passed to the engine as the disconnect reason. Deadlock doesn't show the reason on the main menu, so the player only sees the message if they catch it before they're disconnected. To give them time to read it, warn them first:
 
 ```csharp
-Chat.PrintToChat(controller, "You are being kicked for being idle.");
+Chat.PrintToChat(controller, "You'll be kicked in 3 seconds for being idle.");
 
-Timer.Once(3.Seconds(), () => controller.Kick());
+Timer.Once(3.Seconds(), () => controller.Kick("You were kicked for being idle."));
 ```
+
+`Server.Kick(slot, message)` does the same for a slot. `controller.Kick()` with no message kicks without saying anything.
+
+To turn a player away while they're connecting, see [Refusing a Connection With a Reason](admin-api#refusing-a-connection-with-a-reason). To ban them, see [Penalties](admin-api#penalties).
 
 ## Add a bot
 

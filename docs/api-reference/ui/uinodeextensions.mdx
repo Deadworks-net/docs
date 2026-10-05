@@ -14,7 +14,7 @@ public static class UINodeExtensions
 ```
 
 **Namespace:** `DeadworksManaged.Api.UI`  
-**Source:** [UI/UILayout.cs#L123](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L123)
+**Source:** [UI/UILayout.cs#L123](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L123)
 
 ## Methods
 
@@ -26,7 +26,7 @@ public static class UINodeExtensions
 public static T WithId<T>(this T n, string id) where T : UINode
 ```
 
-**Source:** [UI/UILayout.cs#L124](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L124)
+**Source:** [UI/UILayout.cs#L124](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L124)
 
 ### UINodeExtensions.WithStyle() {#withstyle}
 
@@ -38,7 +38,7 @@ Append a single style entry. Chain multiple calls for several properties.
 public static T WithStyle<T>(this T n, string name, string value) where T : UINode
 ```
 
-**Source:** [UI/UILayout.cs#L133](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L133)
+**Source:** [UI/UILayout.cs#L133](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L133)
 
 ### UINodeExtensions.WithStyles() {#withstyles}
 
@@ -50,7 +50,7 @@ Append several style entries at once. Accepts either inline tuples or a pre-buil
 public static T WithStyles<T>(this T n, params (string Name, string Value)[] entries) where T : UINode
 ```
 
-**Source:** [UI/UILayout.cs#L143](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L143)
+**Source:** [UI/UILayout.cs#L143](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L143)
 
 ### UINodeExtensions.WithHoverStyle() {#withhoverstyle}
 
@@ -62,7 +62,7 @@ Append a style that applies only while the pointer is over the node. Reverted on
 public static T WithHoverStyle<T>(this T n, string name, string value) where T : UINode
 ```
 
-**Source:** [UI/UILayout.cs#L153](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L153)
+**Source:** [UI/UILayout.cs#L153](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L153)
 
 ### UINodeExtensions.WithHoverStyles() {#withhoverstyles}
 
@@ -74,7 +74,7 @@ Append several hover style entries at once.
 public static T WithHoverStyles<T>(this T n, params (string Name, string Value)[] entries) where T : UINode
 ```
 
-**Source:** [UI/UILayout.cs#L159](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L159)
+**Source:** [UI/UILayout.cs#L159](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L159)
 
 ### UINodeExtensions.WithPressStyle() {#withpressstyle}
 
@@ -86,7 +86,7 @@ Append a style that applies while the pointer is held down on the node, layered 
 public static T WithPressStyle<T>(this T n, string name, string value) where T : UINode
 ```
 
-**Source:** [UI/UILayout.cs#L168](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L168)
+**Source:** [UI/UILayout.cs#L168](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L168)
 
 ### UINodeExtensions.WithPressStyles() {#withpressstyles}
 
@@ -98,7 +98,7 @@ Append several press style entries at once.
 public static T WithPressStyles<T>(this T n, params (string Name, string Value)[] entries) where T : UINode
 ```
 
-**Source:** [UI/UILayout.cs#L174](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L174)
+**Source:** [UI/UILayout.cs#L174](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L174)
 
 ### UINodeExtensions.WithTransition() {#withtransition}
 
@@ -112,7 +112,7 @@ Call it once per property; several calls compose into the parallel lists Panoram
 public static T WithTransition<T>(this T n, string property, string duration, string timing = "linear") where T : UINode
 ```
 
-**Source:** [UI/UILayout.cs#L190](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L190)
+**Source:** [UI/UILayout.cs#L190](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L190)
 
 ### UINodeExtensions.WithTextStyle() {#withtextstyle}
 
@@ -124,7 +124,7 @@ Style the text inside a Button. Without this the text Label is created on the cl
 public static UIButton WithTextStyle(this UIButton b, string name, string value)
 ```
 
-**Source:** [UI/UILayout.cs#L200](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L200)
+**Source:** [UI/UILayout.cs#L200](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L200)
 
 ### UINodeExtensions.WithTextStyles() {#withtextstyles}
 
@@ -136,7 +136,7 @@ Apply several styles to a Button's text Label at once.
 public static UIButton WithTextStyles(this UIButton b, params (string Name, string Value)[] entries)
 ```
 
-**Source:** [UI/UILayout.cs#L206](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L206)
+**Source:** [UI/UILayout.cs#L206](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L206)
 
 ### UINodeExtensions.Add() {#add}
 
@@ -146,4 +146,4 @@ public static UIButton WithTextStyles(this UIButton b, params (string Name, stri
 public static T Add<T>(this T n, params UINode[] children) where T : UINode
 ```
 
-**Source:** [UI/UILayout.cs#L211](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/UI/UILayout.cs#L211)
+**Source:** [UI/UILayout.cs#L211](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/UI/UILayout.cs#L211)

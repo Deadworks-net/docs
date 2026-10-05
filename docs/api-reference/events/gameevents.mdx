@@ -16,7 +16,7 @@ public static class GameEvents
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Events/GameEvents.cs#L4](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/GameEvents.cs#L4)
+**Source:** [Events/GameEvents.cs#L4](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/GameEvents.cs#L4)
 
 ## Methods
 
@@ -30,7 +30,7 @@ Registers a dynamic listener for the named game event. Returns a handle that can
 public static IHandle AddListener(string eventName, GameEventHandler handler)
 ```
 
-**Source:** [Events/GameEvents.cs#L9](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/GameEvents.cs#L9)
+**Source:** [Events/GameEvents.cs#L9](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/GameEvents.cs#L9)
 
 ### GameEvents.RemoveListener() {#removelistener}
 
@@ -42,7 +42,7 @@ Removes a previously registered dynamic game event listener.
 public static void RemoveListener(string eventName, GameEventHandler handler)
 ```
 
-**Source:** [Events/GameEvents.cs#L14](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/GameEvents.cs#L14)
+**Source:** [Events/GameEvents.cs#L14](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/GameEvents.cs#L14)
 
 ### GameEvents.Create() {#create}
 
@@ -54,4 +54,4 @@ Creates a game event. Returns null if the event type doesn't exist. Must be fire
 public static unsafe GameEventWriter? Create(string name, bool force = true)
 ```
 
-**Source:** [Events/GameEvents.cs#L19](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/GameEvents.cs#L19)
+**Source:** [Events/GameEvents.cs#L19](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/GameEvents.cs#L19)

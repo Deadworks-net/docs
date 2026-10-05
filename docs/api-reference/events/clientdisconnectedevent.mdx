@@ -16,7 +16,7 @@ public sealed class ClientDisconnectedEvent
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Events/ClientDisconnectedEvent.cs#L6](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ClientDisconnectedEvent.cs#L6)
+**Source:** [Events/ClientDisconnectedEvent.cs#L6](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ClientDisconnectedEvent.cs#L6)
 
 ## Properties
 
@@ -30,7 +30,7 @@ The player's slot.
 public required int Slot { get; init; }
 ```
 
-**Source:** [Events/ClientDisconnectedEvent.cs#L8](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ClientDisconnectedEvent.cs#L8)
+**Source:** [Events/ClientDisconnectedEvent.cs#L8](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ClientDisconnectedEvent.cs#L8)
 
 ### ClientDisconnectedEvent.Reason {#reason}
 
@@ -42,7 +42,7 @@ Why they left, e.g. `ENetworkDisconnectionReason.NetworkDisconnectKicked`.
 public required ENetworkDisconnectionReason Reason { get; init; }
 ```
 
-**Source:** [Events/ClientDisconnectedEvent.cs#L11](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ClientDisconnectedEvent.cs#L11)
+**Source:** [Events/ClientDisconnectedEvent.cs#L11](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ClientDisconnectedEvent.cs#L11)
 
 ### ClientDisconnectedEvent.IsMapChange {#ismapchange}
 
@@ -54,7 +54,7 @@ True when the player isn't leaving: the map is changing, and every player gets t
 public bool IsMapChange { get; }
 ```
 
-**Source:** [Events/ClientDisconnectedEvent.cs#L18](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ClientDisconnectedEvent.cs#L18)
+**Source:** [Events/ClientDisconnectedEvent.cs#L18](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ClientDisconnectedEvent.cs#L18)
 
 ### ClientDisconnectedEvent.Controller {#controller}
 
@@ -66,4 +66,4 @@ The player's controller, or null if it's already gone.
 public unsafe CCitadelPlayerController? Controller { get; }
 ```
 
-**Source:** [Events/ClientDisconnectedEvent.cs#L22](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ClientDisconnectedEvent.cs#L22)
+**Source:** [Events/ClientDisconnectedEvent.cs#L22](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ClientDisconnectedEvent.cs#L22)

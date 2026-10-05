@@ -5,10 +5,6 @@ sidebar_label: "Penalties & Admin Tools API"
 
 # Penalties & Admin Tools
 
-:::info Coming soon
-This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
-:::
-
 > **Namespace:** `DeadworksManaged.Api`
 
 Building blocks for admin plugins. The [Admin plugin](../guides/admin-commands) that ships with Deadworks is built on these, and your plugin can use them too, so bans, announcements and logs behave the same whichever plugin issues them.
@@ -37,8 +33,8 @@ Penalties.Add(PenaltyType.Ban, id, TimeSpan.FromHours(1), caller, "spamming", pl
 | `GetAllActive(type = null)` | Returns every active penalty, or every active one of one type, oldest first. |
 | `IsBanned`, `IsGagged`, `IsMuted` | Return whether `GetActive(...) != null`. |
 | `GetHistoryAsync(steamId64)` | Returns everything the store has for a player, newest first, including lifted and expired ones. Faults while the penalty store is unavailable. |
-| `DescribeDuration(duration)` | Words a length the way the Admin plugin announces it: `"for 45 minutes"`, `"for 1h 5m"`, `"for 2d 4h"`, or `"permanently"` for `null`. |
-| `RegisterStore(this, name, store)` | Registers a penalty store (see [Custom Stores](#custom-stores)). |
+| `DescribeDuration(duration)` | Words a length the way the Admin plugin announces it: `"for less than a minute"`, `"for 45 minutes"`, `"for 1 hour"`, `"for 1h 5m"`, `"for 2d 4h"`, or `"permanently"` for `null`. |
+| `RegisterStore(owner, name, store)` | Registers a penalty store (see [Custom Stores](#custom-stores)). |
 
 **What Deadworks enforces:**
 
@@ -132,7 +128,7 @@ public override void OnAdminAction(AdminLogEntry entry)
 
 `AdminLogEntry` has `TimeUtc`, `AdminSteamId64` (0 = console), `AdminName`, `Action` and `Details`; its `ToString()` is the line written to the log file.
 
-Players see `ADMIN: slayed lapka`; players with `deadworks.admin.notify` see `wisp: slayed lapka`. Server owners can change both under `admin.show_activity` in `configs/deadworks.jsonc`. Every `Show` and `Log` is also printed to the server console and written to `logs/admin/admin-YYYY-MM-DD.log` (the folder is `admin.log_dir`), as `<time> <admin> (<steamid>) <action> [<details>]` in UTC. Only actions that go through `AdminActivity` are logged. Deadworks logs its own staff changes (role and permission changes, plugin enable and disable, reloads) and commands refused to players who hold a role the same way.
+Players see `ADMIN: slayed lapka`; players with `deadworks.admin.notify` see `wisp: slayed lapka`. Server owners can change both under `admin.show_activity` in `configs/deadworks.jsonc`. Every `Show` and `Log` is also printed to the server console and written to `logs/admin/admin-YYYY-MM-DD.log` (the folder is `admin.log_dir`), as `<time> <admin> (<steamid>) <action> [<details>]` in UTC, without the SteamID for the console or the details when there are none. Only actions that go through `AdminActivity` are logged. Deadworks logs its own staff changes (role and permission changes, plugin enable and disable, reloads) and commands refused to players who hold a role the same way.
 
 When the Admin plugin's `rcon` sets a password cvar (one the engine flags as protected) or `rcon_password`, the log and `OnAdminAction` get `ran rcon: sv_password (value hidden)` instead of the value. If you log commands yourself, leave secrets out.
 
@@ -140,9 +136,9 @@ When the Admin plugin's `rcon` sets a password cvar (one the engine flags as pro
 
 | Member | Description |
 |--------|-------------|
-| `Server.Kick(slot, message)` / `controller.Kick(message)` | Disconnects a player, passing the message to the engine as the reason. Deadlock doesn't show a disconnect reason to the player, so tell them anything they need to know before kicking them. |
+| `Server.Kick(slot, message)` / `controller.Kick(message)` | Prints the message in the player's chat and console, then disconnects them with it as the engine's reason. Deadlock doesn't show that reason itself, so the chat and console copies are what the player sees. An optional last argument sets the `ENetworkDisconnectionReason`. |
 | `Server.ExecuteCommand(command, onOutput)` | Runs a server console command and passes what it printed to `onOutput`. The callback comes on a later frame. |
-| `Server.IsMapValid(map)` | Returns whether a map exists. Names with anything other than letters, digits, `_`, `-`, `.` and `/`, or containing `..`, are always rejected, so a valid name is safe to put in a command. |
+| `Server.IsMapValid(map)` | Returns whether the engine knows the map, or it's in `GetMapList()`. Names longer than 128 characters, with anything other than ASCII letters, digits, `_`, `-`, `.` and `/`, or containing `..`, are always rejected, so a valid name is safe to put in a command. |
 | `Server.GetMapList()` | Returns the game's maps plus `serverbrowser.extra_maps`, sorted by name. |
 | `Server.ChangeMap(map)` | Changes map if `IsMapValid` accepts it. Returns `false` otherwise. |
 

@@ -18,7 +18,7 @@ If you only want the chat versions and do not want the `dw_name` console command
 
 ```csharp
 [Command("hello", ChatOnly = true)]
-public void CmdHello(CCitadelPlayerController caller)
+public void CmdHello(Caller caller)
 {
     // Respond to /hello and !hello, but do not register dw_hello
 }
