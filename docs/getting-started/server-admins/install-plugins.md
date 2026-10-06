@@ -53,7 +53,7 @@ The setting is remembered across restarts. To remove a plugin for good, delete i
 
 ## Limit who can use a plugin's commands
 
-A plugin's commands work for everyone unless the plugin gives them a permission. To require one yourself, see [Set up admins](set-up-admins#lock-down-a-plugins-commands).
+A plugin's commands work for everyone unless the plugin gives them a permission. To require one yourself, see [overrides.jsonc](../../guides/admins-and-permissions#overridesjsonc).
 
 ## Next
 

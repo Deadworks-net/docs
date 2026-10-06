@@ -48,20 +48,6 @@ dw_role_revoke lapka admin
 The `admin` role can do anything, including `rcon`. For moderators who can only kick, gag and ban, follow [Setting up staff roles](../../guides/staff-roles).
 :::
 
-## Lock down a plugin's commands
-
-Commands from a plugin without permissions work for everyone. To make one admin only, require a permission for it in `configs\permissions\overrides.jsonc`:
-
-```jsonc
-{
-  "commands": {
-    "givesouls": "myserver.cheats"
-  }
-}
-```
-
-Then run `dw_perm_reload`. The `admin` role has every permission, so admins can still use it. `configs\permissions\generated\` lists every plugin's commands.
-
 ## Next
 
 **[4. Use admin tools](use-admin-tools)**
