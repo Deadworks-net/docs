@@ -76,8 +76,11 @@ const config: Config = {
           // Getting started split into server admins and developers.
           // Guides removed in favor of Getting started.
           {from: '/guides/server-hosting', to: '/getting-started/server-admins/run-a-server'},
-          {from: '/guides/upgrading-permissions', to: '/permissions'},
+          {from: '/guides/upgrading-permissions', to: '/guides/admins-and-permissions'},
           {from: '/guides/how-deadworks-works', to: '/'},
+          {from: '/permissions', to: '/guides/admins-and-permissions'},
+          {from: '/guides/making-yourself-admin', to: '/getting-started/server-admins/set-up-admins'},
+          {from: '/guides/admin-commands', to: '/getting-started/server-admins/use-admin-tools'},
           {from: '/guides/plugin-lifecycle', to: '/api-reference/plugin/deadworkspluginbase'},
           {from: '/guides/linux-docker', to: '/getting-started/server-admins/run-a-server-docker'},
           {from: '/getting-started/setup', to: '/getting-started/developers/setup'},

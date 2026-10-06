@@ -1,11 +1,11 @@
 ---
 title: "How permissions work"
-sidebar_label: "3. How permissions work"
+sidebar_label: "How permissions work"
 ---
 
 # How permissions work
 
-**Step 3 of 4** in [Admins & Permissions](/permissions). A reference for the permission files and commands.
+A reference for the permission files and commands.
 
 Plugins say which **permission** each command needs. You decide who has it with roles. Commands that don't need a permission work for everyone. The server console can always run everything.
 
@@ -191,4 +191,4 @@ Removing a `-deny` from someone counts as giving them the permission. See [Let a
 
 ## Next
 
-**[4. Setting up staff roles](staff-roles)**: give other people some of the admin commands.
+**[Setting up staff roles](staff-roles)**: give other people some of the admin commands.

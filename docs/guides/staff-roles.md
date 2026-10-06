@@ -1,15 +1,13 @@
 ---
 title: "Setting up staff roles"
-sidebar_label: "4. Staff roles"
+sidebar_label: "Staff roles"
 ---
 
 # Setting up staff roles
 
-**Step 4 of 4** in [Admins & Permissions](/permissions). Before this: [how permissions work](admins-and-permissions).
+A typical staff team for the [Admin plugin](../getting-started/server-admins/use-admin-tools) has trial moderators, moderators, admins and an owner. Each rank can do more than the one below it, and can't act against the ranks above.
 
-A typical staff team for the [Admin plugin](admin-commands) has trial moderators, moderators, admins and an owner. Each rank can do more than the one below it, and can't act against the ranks above.
-
-Before you start, complete [Making yourself admin](making-yourself-admin). For how roles, wildcards and immunity work in general, see [How permissions work](admins-and-permissions).
+Before you start, complete [Set up admins](../getting-started/server-admins/set-up-admins). For how roles, wildcards and immunity work in general, see [How permissions work](admins-and-permissions).
 
 ## The plan
 

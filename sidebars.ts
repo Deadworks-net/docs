@@ -82,25 +82,9 @@ const sidebars: SidebarsConfig = {
       label: 'Guides',
       collapsed: false,
       items: [
-        'guides/uploading-content',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Admins & Permissions',
-      collapsed: false,
-      link: {
-        type: 'generated-index',
-        title: 'Admins & Permissions',
-        slug: '/permissions',
-        description:
-          'Who can use which commands on your server. Server owners: read the four numbered guides in order.',
-      },
-      items: [
-        'guides/making-yourself-admin',
-        'guides/admin-commands',
         'guides/admins-and-permissions',
         'guides/staff-roles',
+        'guides/uploading-content',
       ],
     },
     {
