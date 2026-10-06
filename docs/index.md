@@ -10,12 +10,12 @@ Deadworks is a .NET plugin framework for server-side mods for **Deadlock**, Valv
 
 ## Run a server
 
-For server admins who want to host Deadlock with plugins and admin tools.
+For server admins who want to host Deadlock with plugins and admin commands.
 
 1. [Run a server](getting-started/server-admins/run-a-server): install Deadlock and Deadworks, start the server and let players connect
 2. [Install plugins](getting-started/server-admins/install-plugins): add, configure and turn off plugins
 3. [Set up admins](getting-started/server-admins/set-up-admins): make yourself admin and add your staff
-4. [Use admin tools](getting-started/server-admins/use-admin-tools): kick, ban, gag, mute and change map
+4. [Use admin commands](getting-started/server-admins/use-admin-tools): kick, ban, gag, mute and change map
 
 ## Write plugins
 

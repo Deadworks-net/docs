@@ -42,12 +42,8 @@ For someone who isn't on the server, use their SteamID: `dw_role_grant 765611979
 dw_role_revoke lapka admin
 ```
 
-:::tip Give staff less than everything
-The `admin` role can do anything, including `rcon`. For moderators who can only kick, gag and ban, follow [Setting up staff roles](../../guides/staff-roles).
-:::
-
 ## Next
 
-**[4. Use admin tools](use-admin-tools)**
+**[4. Use admin commands](use-admin-tools)**
 
 For roles, immunity and every permission file, see [How permissions work](../../guides/admins-and-permissions).

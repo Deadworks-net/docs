@@ -1,9 +1,11 @@
 ---
-title: "Use admin tools"
-sidebar_label: "4. Use admin tools"
+title: "Use admin commands"
+sidebar_label: "4. Use admin commands"
 ---
 
-# Use admin tools
+# Use admin commands
+
+Deadworks ships with a simple Admin plugin that adds commands to kick, ban, gag and mute players, and to run the server. For more admin tools, see the plugins shared on the [Deadworks Discord](https://discord.gg/d3JHnVGA26).
 
 ## Type a command
 
@@ -27,32 +29,45 @@ Admin commands never show in public chat. `dw_help` lists the commands you can u
 | `76561197960287931` | A player by SteamID, even after they've left |
 | `@me`, `@team`, `@enemy`, `@all` | Yourself, your team, the other team, everyone |
 
-## Common commands
+## Moderation commands
 
-Times are in minutes. `0` is permanent.
+Times are in minutes: `60` is an hour, `1440` a day, `10080` a week. `0` is permanent.
 
 | Command | Does |
 |---------|------|
-| `who` | Lists players, with their slot and SteamID |
 | `kick <player> [reason]` | Kicks a player. They can rejoin. |
-| `ban <player> <minutes> [reason]` | Bans a player |
-| `unban <steamid>` | Lifts a ban |
-| `gag <player> <minutes> [reason]` | Stops a player typing in chat |
-| `mute <player> <minutes> [reason]` | Stops a player talking on voice chat |
-| `ungag <player>`, `unmute <player>` | Lifts a gag or mute |
+| `ban <player\|steamid> <minutes> [reason]` | Bans a player, on the server or not. Also `addban`. |
+| `unban <steamid> [reason]` | Lifts a ban |
+| `bans` | Lists active bans |
+| `gag <player\|steamid> <minutes> [reason]` | Stops a player typing in chat |
+| `ungag <player\|steamid> [reason]` | Lifts a gag |
+| `gags` | Lists active gags |
+| `mute <player\|steamid> <minutes> [reason]` | Stops a player talking on voice chat |
+| `unmute <player\|steamid> [reason]` | Lifts a mute |
+| `mutes` | Lists active mutes |
 | `slay <player>` | Kills a player's hero |
-| `map <name>` | Changes map. `map` on its own lists the maps. |
-| `penalties [player]` | Shows a player's bans, gags and mutes, past and present |
+| `who [player]` | Lists players, with their slot, SteamID, team and roles |
+| `penalties [player\|steamid]` | Shows a player's bans, gags and mutes, past and present. Anyone can look up their own. |
 
 ```text
 !gag lapka 30 spamming chat
 !ban lapka 1440 cheating
-!map dl_midtown
+!ban 76561197960287931 0 ban evasion
 ```
 
 The time comes before the reason: `!gag lapka spamming` doesn't work.
 
 Deadworks enforces bans, gags and mutes. They're saved in `configs\penalties\penalties.jsonc` and last across restarts and map changes.
+
+## Server commands
+
+| Command | Does |
+|---------|------|
+| `map [name\|cancel]` | Changes map after a short warning. On its own, lists the maps. `cancel` calls off a pending change. |
+| `cvar <name> [value]` | Shows or changes a server setting, such as `sv_cheats` or `sv_password` |
+| `resetcvar <name>` | Puts a setting back to its default |
+| `execcfg <file>` | Runs a config file from the server's `cfg\` folder |
+| `rcon <command>` | Runs any server console command and shows its output |
 
 ## See what admins did
 
