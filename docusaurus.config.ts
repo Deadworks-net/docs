@@ -8,9 +8,9 @@ const isDev = process.env.NODE_ENV === 'development';
 
 // Pages that used to live under /api-reference/ and are now under /features/.
 const movedToFeatures = [
-  'admin-api', 'chat-commands', 'commands', 'configuration', 'console-commands', 'convars',
+  'chat-commands', 'commands', 'configuration', 'console-commands', 'convars',
   'damage', 'entities', 'entity-io', 'game-events', 'heroes', 'modifiers', 'networking',
-  'particles', 'permissions', 'players', 'precaching', 'sound', 'timers', 'tracing', 'ui',
+  'particles', 'players', 'precaching', 'sound', 'timers', 'tracing', 'ui',
   'world-text',
 ];
 
@@ -69,6 +69,22 @@ const config: Config = {
           // Guides that were folded into Features pages.
           {from: '/guides/chat-and-hud', to: '/features/chat'},
           {from: '/guides/team-and-hero-management', to: '/features/players'},
+          // Plugin permission pages folded into the API reference.
+          {from: '/api-reference/permissions', to: '/api-reference/permissions/permissions'},
+          {from: ['/features/admin-api', '/api-reference/admin-api'], to: '/api-reference/admin/penalties'},
+          {from: '/guides/role-only-commands', to: '/features/permissions'},
+          // Getting started split into server admins and developers.
+          // Guides removed in favor of Getting started.
+          {from: '/guides/server-hosting', to: '/getting-started/server-admins/run-a-server'},
+          {from: '/guides/upgrading-permissions', to: '/guides/admins-and-permissions'},
+          {from: '/guides/how-deadworks-works', to: '/'},
+          {from: '/permissions', to: '/guides/admins-and-permissions'},
+          {from: '/guides/making-yourself-admin', to: '/getting-started/server-admins/set-up-admins'},
+          {from: '/guides/admin-commands', to: '/getting-started/server-admins/use-admin-tools'},
+          {from: '/guides/plugin-lifecycle', to: '/api-reference/plugin/deadworkspluginbase'},
+          {from: '/guides/linux-docker', to: '/getting-started/server-admins/run-a-server-docker'},
+          {from: '/getting-started/setup', to: '/getting-started/developers/setup'},
+          {from: '/getting-started/first-plugin', to: '/getting-started/developers/first-plugin'},
         ],
       },
     ],

@@ -17,7 +17,7 @@ public sealed class EntityData<T> : IEntityData, IEnumerable<KeyValuePair<CBaseE
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** `IEntityData`, `IEnumerable<KeyValuePair<CBaseEntity, T>>`  
-**Source:** [Entities/EntityData.cs#L6](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/EntityData.cs#L6)
+**Source:** [Entities/EntityData.cs#L6](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/EntityData.cs#L6)
 
 ## Constructors
 
@@ -29,7 +29,7 @@ public sealed class EntityData<T> : IEntityData, IEnumerable<KeyValuePair<CBaseE
 public EntityData()
 ```
 
-**Source:** [Entities/EntityData.cs#L11](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/EntityData.cs#L11)
+**Source:** [Entities/EntityData.cs#L11](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/EntityData.cs#L11)
 
 ## Properties
 
@@ -43,7 +43,7 @@ Number of entity→value entries currently stored.
 public int Count { get; }
 ```
 
-**Source:** [Entities/EntityData.cs#L16](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/EntityData.cs#L16)
+**Source:** [Entities/EntityData.cs#L16](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/EntityData.cs#L16)
 
 ### EntityData[] {#this}
 
@@ -53,7 +53,7 @@ public int Count { get; }
 public T? this[CBaseEntity entity] { get; set; }
 ```
 
-**Source:** [Entities/EntityData.cs#L18](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/EntityData.cs#L18)
+**Source:** [Entities/EntityData.cs#L18](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/EntityData.cs#L18)
 
 ## Methods
 
@@ -65,7 +65,7 @@ public T? this[CBaseEntity entity] { get; set; }
 public bool TryGet(CBaseEntity entity, out T value)
 ```
 
-**Source:** [Entities/EntityData.cs#L28](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/EntityData.cs#L28)
+**Source:** [Entities/EntityData.cs#L28](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/EntityData.cs#L28)
 
 ### EntityData.GetOrAdd() {#getoradd}
 
@@ -76,7 +76,7 @@ public T GetOrAdd(CBaseEntity entity, T defaultValue)
 public T GetOrAdd(CBaseEntity entity, Func<T> factory)
 ```
 
-**Source:** [Entities/EntityData.cs#L30](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/EntityData.cs#L30), [Entities/EntityData.cs#L39](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/EntityData.cs#L39)
+**Source:** [Entities/EntityData.cs#L30](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/EntityData.cs#L30), [Entities/EntityData.cs#L39](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/EntityData.cs#L39)
 
 ### EntityData.Has() {#has}
 
@@ -86,7 +86,7 @@ public T GetOrAdd(CBaseEntity entity, Func<T> factory)
 public bool Has(CBaseEntity entity)
 ```
 
-**Source:** [Entities/EntityData.cs#L48](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/EntityData.cs#L48)
+**Source:** [Entities/EntityData.cs#L48](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/EntityData.cs#L48)
 
 ### EntityData.Remove() {#remove}
 
@@ -96,7 +96,7 @@ public bool Has(CBaseEntity entity)
 public void Remove(CBaseEntity entity)
 ```
 
-**Source:** [Entities/EntityData.cs#L50](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/EntityData.cs#L50)
+**Source:** [Entities/EntityData.cs#L50](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/EntityData.cs#L50)
 
 ### EntityData.Clear() {#clear}
 
@@ -106,7 +106,7 @@ public void Remove(CBaseEntity entity)
 public void Clear()
 ```
 
-**Source:** [Entities/EntityData.cs#L54](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/EntityData.cs#L54)
+**Source:** [Entities/EntityData.cs#L54](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/EntityData.cs#L54)
 
 ### EntityData.GetEnumerator() {#getenumerator}
 
@@ -118,4 +118,4 @@ Enumerates stored entries as (entity, value) pairs. Do not add/remove entries wh
 public IEnumerator<KeyValuePair<CBaseEntity, T>> GetEnumerator()
 ```
 
-**Source:** [Entities/EntityData.cs#L57](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/EntityData.cs#L57)
+**Source:** [Entities/EntityData.cs#L57](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/EntityData.cs#L57)

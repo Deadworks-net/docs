@@ -1,17 +1,13 @@
 ---
-title: "How Permissions Work"
-sidebar_label: "3. How Permissions Work"
+title: "How permissions work"
+sidebar_label: "How permissions work"
 ---
 
-# How Permissions Work
+# How permissions work
 
-:::info Coming soon
-This isn't in a Deadworks release yet. It describes features coming in an upcoming version.
-:::
+A reference for the permission files and commands.
 
-**Step 3 of 4** in [Admins & Permissions](/permissions). A reference for the permission files and commands.
-
-Plugins say which **permission** each command needs; you decide who has it with **roles**. Commands that don't need a permission work for everyone, and the server console can always run everything.
+Plugins say which **permission** each command needs. You decide who has it with roles. Commands that don't need a permission work for everyone. The server console can always run everything.
 
 ## Files
 
@@ -19,12 +15,14 @@ Everything is in `game/bin/win64/configs/permissions/`. Run `dw_perm_reload` aft
 
 | File | What it's for |
 |------|---------------|
-| `roles.jsonc` | What each role can do |
-| `players.jsonc` | Which players hold which roles |
+| `roles.jsonc` | Defines what each role can do |
+| `players.jsonc` | Lists which players hold which roles |
 | `overrides.jsonc` | Changes what a command requires |
-| `generated/` | Every plugin's commands and permissions. Read-only: rewritten when the plugin loads. |
+| `generated/` | Lists every plugin's commands and permissions. Read-only: rewritten when plugins load and on `dw_perm_reload`. |
 
 ## roles.jsonc
+
+A new server's `roles.jsonc` has only `default` and `admin` (`*`, immunity `100`). Here it is with a `moderator` role added:
 
 ```jsonc
 {
@@ -44,13 +42,13 @@ Everything is in `game/bin/win64/configs/permissions/`. Run `dw_perm_reload` aft
 
 | Field | Description |
 |-------|-------------|
-| `permissions` | What the role can do. See [Writing Permissions](#writing-permissions). |
-| `inherits` | Other roles whose permissions this role also gets, e.g. `["moderator"]` |
-| `immunity` | See [Immunity](#immunity). Defaults to the highest of the roles it inherits, or 0. |
+| `permissions` | Lists what the role can do. See [Writing permissions](#writing-permissions). |
+| `inherits` | Lists other roles whose permissions this role also gets, e.g. `["moderator"]` |
+| `immunity` | Sets the role's [immunity](#immunity). Defaults to the highest of the roles it inherits, or `0`. |
 
 Every player has the `default` role.
 
-### Writing Permissions
+### Writing permissions
 
 | You write | It means |
 |-----------|----------|
@@ -59,11 +57,17 @@ Every player has the `default` role.
 | `*` | Everything |
 | `-admin.moderation.ban` | **Not** that permission |
 
-The most specific entry wins, so `["*", "-admin.moderation.ban"]` means everything except banning.
+Within one role, the most specific entry wins. A deny wins a tie, so `["*", "-admin.moderation.ban"]` means everything except banning. A role's own entries beat what it inherits.
+
+Across roles, a player has a permission if **any** of their roles gives it. A deny in one role doesn't take away what another role gives.
+
+:::note
+To take a permission away from one player, put the deny in their own entry in `players.jsonc`. A deny in one of their roles doesn't remove it if another role grants it.
+:::
 
 ### Immunity
 
-A player can't target anyone with **higher** immunity than their own, so a moderator (50) can't kick an admin (100). A player's immunity is the highest of their roles'.
+A player can't target anyone with **higher** immunity than their own, so a moderator (`50`) can't kick an admin (`100`). A player's immunity is the highest of their roles'.
 
 ## players.jsonc
 
@@ -86,9 +90,9 @@ Each key is a SteamID (SteamID64, `STEAM_0:…` or `[U:1:…]`).
 
 | Field | Description |
 |-------|-------------|
-| `name` | A note for you. The console commands accept it for players who aren't on the server. |
-| `roles` | Roles the player holds |
-| `permissions` | Extra permissions, or `-denies`, for this player only. These beat their roles. |
+| `name` | Holds a note for you. The console commands accept it for players who aren't on the server. |
+| `roles` | Lists the roles the player holds |
+| `permissions` | Adds permissions, or `-denies`, for this player only. These beat their roles. |
 | `immunity` | Replaces the immunity their roles give |
 
 ## overrides.jsonc
@@ -105,23 +109,52 @@ Each key is a SteamID (SteamID64, `STEAM_0:…` or `[U:1:…]`).
 
 ## deadworks.jsonc
 
-In `configs/deadworks.jsonc`:
+In `configs/deadworks.jsonc`, with their defaults:
 
 ```jsonc
 "permissions": {
   "store": "json",
   "require_steam_auth": true
+},
+"admin": {
+  "show_activity": {
+    "players": "anonymous",
+    "notified": "named"
+  },
+  "log_dir": "logs/admin"
+},
+"penalties": {
+  "store": "json",
+  "history_days": 90
 }
 ```
 
+A `deadworks.jsonc` from an older version doesn't have these sections. Missing settings use the defaults above. Add a section only to change a value.
+
 | Field | Description |
 |-------|-------------|
-| `store` | Where roles and players come from. `json` is the files on this page; a plugin can add another, such as a database. |
-| `require_steam_auth` | A player's roles only apply once Steam confirms their account, a few seconds after they join; until then they only have `default`, so nobody can fake an admin's SteamID. On a LAN server, set this to `false` and restart, or set `sv_lan 1`, to skip the wait. Never do either on a server reachable from the internet. |
+| `permissions.store` | Sets where roles and players come from. `json` is the files on this page. A plugin can add another, such as a database. |
+| `permissions.require_steam_auth` | Makes a player's roles apply only once Steam confirms their account, a few seconds after they join. Until then they only have `default`, so nobody can fake an admin's SteamID. |
+| `admin.show_activity.players` | Sets what players see when an admin does something: `named` (`wisp: slayed lapka`), `anonymous` (`ADMIN: slayed lapka`) or `none` |
+| `admin.show_activity.notified` | Sets the same, for players with `deadworks.admin.notify` |
+| `admin.log_dir` | Sets the folder for the daily admin log, relative to `game/bin/win64` |
+| `penalties.store` | Sets where bans, gags and mutes are kept. `json` is `configs/penalties/penalties.jsonc`. |
+| `penalties.history_days` | Sets how many days lifted and expired penalties are kept as history. `0` keeps them forever. |
 
-## Console Commands
+## When a file has a mistake
 
-These work in the server console, and in a player's console if they have the permission.
+Deadworks locks things down rather than guess, so a broken file can stop people doing things. The server console says which file, line and column is wrong.
+
+| Broken file | What happens | To fix |
+|-------------|--------------|--------|
+| `deadworks.jsonc` | Nobody has any permissions, new players can't join, and the server isn't listed. The server console still works. | Fix it and restart the server |
+| `roles.jsonc` or `players.jsonc` | When the server starts: nobody has any roles. On a reload: the previous roles are kept. | Fix it and run `dw_perm_reload` |
+| `overrides.jsonc` | When the server starts: players can't run any command, even public ones. On a reload: the previous overrides are kept. | Fix it and run `dw_perm_reload` |
+| `penalties.jsonc` | When the server starts: new players can't join, because bans can't be checked. Later: existing penalties stay enforced, but changes are refused. | Fix it and run `dw_penalties_reload` |
+
+## Console commands
+
+These work in the server console, and in a player's game console if they have the permission. They don't work in chat.
 
 `<player>` can be part of a name, `#slot`, a SteamID, or the name saved in `players.jsonc`.
 
@@ -140,8 +173,14 @@ These work in the server console, and in a player's console if they have the per
 | `dw_reloadconfig [plugin]` | `deadworks.config.reload` | Reloads plugin configs |
 | `dw_help` | none | Lists the commands you can use |
 
-Players using the grant and revoke commands can only change players with lower immunity than theirs, and can only give out roles and permissions they hold themselves.
+Players using the grant and revoke commands:
+
+- can only change players with lower immunity than theirs,
+- can only give out roles and permissions they hold themselves, and only roles with lower immunity than theirs,
+- can't change their own roles or permissions.
+
+Removing a `-deny` from someone counts as giving them the permission. See [Let senior mods manage staff](staff-roles#step-3-let-senior-mods-manage-staff).
 
 ## Next
 
-**[4. Setting Up Staff Roles](staff-roles)**: give other people some of the admin commands.
+**[Setting up staff roles](staff-roles)**: give other people some of the admin commands.

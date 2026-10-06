@@ -1,13 +1,13 @@
 ---
-title: "Game State"
-sidebar_label: "Game State"
+title: "Game state"
+sidebar_label: "Game state"
 ---
 
-# Game State
+# Game state
 
 > **Namespace:** `DeadworksManaged.Api`
 
-A match moves through stages: waiting for players, picking heroes, playing, and finishing. `GameRules` tells you which stage the match is at, and lets you change it.
+A match moves through stages: waiting for players, picking heroes, playing, and finishing. `GameRules` reports the current stage. It also changes it.
 
 ## Find out what stage the match is at
 
@@ -67,7 +67,9 @@ public override bool OnGameStateChanging(EGameState currentState, EGameState new
 }
 ```
 
-This only stops changes the game makes by itself. It doesn't stop `GameRules.ChangeGameState`.
+:::note
+`OnGameStateChanging` only blocks stage changes the game makes by itself. It doesn't block `GameRules.ChangeGameState`.
+:::
 
 ## Move the match to a stage yourself
 
@@ -77,7 +79,7 @@ GameRules.ChangeGameState(EGameState.GameInProgress);
 
 ## End the match with a winner
 
-Set `GameRules.WinningTeam` to the team that won. Team 2 is Amber and team 3 is Sapphire.
+Set `GameRules.WinningTeam` to the team that won. Team `2` is Amber. Team `3` is Sapphire.
 
 ```csharp
 GameRules.WinningTeam = 2;
@@ -115,7 +117,7 @@ if (GameRules.GameMode == ECitadelGameMode.Sandbox)
 
 ## Start every map with the countdown and ziplines
 
-By default only `dl_midtown` starts a match with a countdown in base and a ride down the zipline. Turn this on to give every map that start:
+By default only `dl_midtown` starts a match with a countdown in base and a ride down the zipline. Set `GameRules.MatchStartOnAnyMap` to `true` to give every map that start.
 
 ```csharp
 public override void OnLoad(bool isReload)
@@ -129,6 +131,10 @@ public override void OnUnload()
 }
 ```
 
-Turn it off again when your plugin unloads, because the setting stays on across map changes.
+:::warning
+`MatchStartOnAnyMap` stays on across map changes. Set it back to `false` in `OnUnload`, or it stays on after your plugin unloads.
+:::
 
-The countdown also needs the `citadel_match_intro_force_enabled` [ConVar](convars) set to `1`.
+:::note
+The countdown also needs the `citadel_match_intro_force_enabled` [cvar](convars) set to `1`.
+:::

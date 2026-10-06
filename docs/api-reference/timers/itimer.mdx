@@ -16,7 +16,7 @@ public interface ITimer
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Timer/ITimer.cs#L6](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Timer/ITimer.cs#L6)
+**Source:** [Timer/ITimer.cs#L6](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Timer/ITimer.cs#L6)
 
 ## Methods
 
@@ -30,7 +30,7 @@ Execute a callback once after the specified delay.
 IHandle Once(Duration delay, Action callback)
 ```
 
-**Source:** [Timer/ITimer.cs#L9](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Timer/ITimer.cs#L9)
+**Source:** [Timer/ITimer.cs#L9](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Timer/ITimer.cs#L9)
 
 ### ITimer.Every() {#every}
 
@@ -42,7 +42,7 @@ Execute a callback repeatedly at the specified interval.
 IHandle Every(Duration interval, Action callback)
 ```
 
-**Source:** [Timer/ITimer.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Timer/ITimer.cs#L12)
+**Source:** [Timer/ITimer.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Timer/ITimer.cs#L12)
 
 ### ITimer.Sequence() {#sequence}
 
@@ -54,7 +54,7 @@ Run a stateful sequence. The callback receives an [`IStep`](/api-reference/timer
 IHandle Sequence(Func<IStep, Pace> callback)
 ```
 
-**Source:** [Timer/ITimer.cs#L18](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Timer/ITimer.cs#L18)
+**Source:** [Timer/ITimer.cs#L18](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Timer/ITimer.cs#L18)
 
 ### ITimer.NextTick() {#nexttick}
 
@@ -66,4 +66,4 @@ Defer an action to the next tick. Thread-safe - can be called from any thread.
 void NextTick(Action callback)
 ```
 
-**Source:** [Timer/ITimer.cs#L23](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Timer/ITimer.cs#L23)
+**Source:** [Timer/ITimer.cs#L23](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Timer/ITimer.cs#L23)

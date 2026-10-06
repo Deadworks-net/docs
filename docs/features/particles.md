@@ -7,11 +7,11 @@ sidebar_label: "Particles"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-A particle effect is a visual effect in the world, like an explosion, a beam or a glow. The game's effects are `.vpcf` files, and you can play any of them.
+A particle effect is a visual effect in the world, like an explosion, a beam or a glow. The game's effects are `.vpcf` files. A plugin can play any of them.
 
 ## Play a particle effect
 
-First, tell the game to load the effect. Use the `.vpcf` path, not `.vpcf_c`.
+First, precache the effect. Use the `.vpcf` path, not `.vpcf_c`.
 
 ```csharp
 public override void OnPrecacheResources()
@@ -28,7 +28,7 @@ var particle = CParticleSystem.Create("particles/upgrades/mystical_piano_hit.vpc
     .Spawn();
 ```
 
-This plays the effect just above the player. See [Precaching](precaching) for more on loading.
+This plays the effect slightly above the player. See [Precaching](precaching) for more on loading.
 
 ## Find an effect to play
 
@@ -36,7 +36,7 @@ Browse the game's files with [Source2Viewer](https://s2v.app/). Effects are unde
 
 ## Attach an effect to a player
 
-Use `AttachedTo`, and the effect follows them around.
+Use `AttachedTo` to make the effect follow the player.
 
 ```csharp
 var particle = CParticleSystem.Create("particles/abilities/bull_drain.vpcf")
@@ -44,9 +44,9 @@ var particle = CParticleSystem.Create("particles/abilities/bull_drain.vpcf")
     .Spawn();
 ```
 
-It works with any [entity](entities), not just players.
+`AttachedTo` works with any [entity](entities), not only players.
 
-To attach or let go of an effect that already exists:
+To attach or detach an effect that already exists:
 
 ```csharp
 particle.AttachTo(pawn);
@@ -59,7 +59,7 @@ particle.Detach();
 particle.Destroy();
 ```
 
-To remove it after a while, use a [timer](timers):
+To remove it after a delay, use a [timer](timers):
 
 ```csharp
 Timer.Once(5.Seconds(), () => particle.Destroy());
@@ -101,7 +101,7 @@ var particle = CParticleSystem.Create("particles/abilities/bull_drain.vpcf")
     .Spawn();
 ```
 
-The number is the control point the effect reads its colour from. It depends on the effect, and not every effect has one.
+The number is the control point the effect reads its colour from. The control point depends on the effect. Not every effect has one.
 
 ## Set an effect's control points
 

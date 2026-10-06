@@ -18,7 +18,7 @@ public class CBaseEntity : NativeEntity, IEquatable<CBaseEntity>
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`NativeEntity`](/api-reference/entities/nativeentity), `IEquatable<CBaseEntity>`  
 **Derived types:** [`CBasePlayerController`](/api-reference/entities/cbaseplayercontroller), [`CBasePlayerPawn`](/api-reference/entities/cbaseplayerpawn), [`CBeam`](/api-reference/entities/cbeam), [`CCitadel_Ability_Dash`](/api-reference/entities/ccitadel_ability_dash), [`CCitadel_Ability_Jump`](/api-reference/entities/ccitadel_ability_jump), [`CCitadelBaseAbility`](/api-reference/entities/ccitadelbaseability), [`CParticleSystem`](/api-reference/entities/cparticlesystem), [`CPointWorldText`](/api-reference/entities/cpointworldtext)  
-**Source:** [Entities/CBaseEntity.cs#L7](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L7)
+**Source:** [Entities/CBaseEntity.cs#L7](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L7)
 
 ## Properties
 
@@ -32,7 +32,7 @@ Packed CEntityHandle (serial + index) captured at construction. Stable identity 
 public uint EntityHandle { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L12)
+**Source:** [Entities/CBaseEntity.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L12)
 
 ### CBaseEntity.Handle {#handle}
 
@@ -44,7 +44,7 @@ Resolves the native pointer through the entity system on every access. Returns 0
 public override nint Handle { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L15](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L15)
+**Source:** [Entities/CBaseEntity.cs#L15](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L15)
 
 ### CBaseEntity.IsValid {#isvalid}
 
@@ -56,7 +56,7 @@ True only if the entity still exists in the entity system. Returns false once th
 public override bool IsValid { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L18](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L18)
+**Source:** [Entities/CBaseEntity.cs#L18](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L18)
 
 ### CBaseEntity.EntityIndex {#entityindex}
 
@@ -68,7 +68,7 @@ Entity index (lower 14 bits of the handle).
 public int EntityIndex { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L21](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L21)
+**Source:** [Entities/CBaseEntity.cs#L21](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L21)
 
 ### CBaseEntity.DesignerName {#designername}
 
@@ -80,7 +80,7 @@ The designer/map name (e.g. "npc_boss_tier3", "player").
 public string DesignerName { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L125](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L125)
+**Source:** [Entities/CBaseEntity.cs#L125](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L125)
 
 ### CBaseEntity.Name {#name}
 
@@ -92,7 +92,7 @@ The entity name (targetname set in Hammer or via code).
 public string Name { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L136](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L136)
+**Source:** [Entities/CBaseEntity.cs#L136](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L136)
 
 ### CBaseEntity.Classname {#classname}
 
@@ -104,7 +104,7 @@ The C++ DLL class name (e.g. "CCitadelPlayerPawn", "CBaseEntity").
 public string Classname { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L146](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L146)
+**Source:** [Entities/CBaseEntity.cs#L146](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L146)
 
 ### CBaseEntity.BodyComponent {#bodycomponent}
 
@@ -114,7 +114,7 @@ public string Classname { get; }
 public CBodyComponent? BodyComponent { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L319](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L319)
+**Source:** [Entities/CBaseEntity.cs#L319](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L319)
 
 ### CBaseEntity.Position {#position}
 
@@ -124,7 +124,7 @@ public CBodyComponent? BodyComponent { get; }
 public Vector3 Position { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L326](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L326)
+**Source:** [Entities/CBaseEntity.cs#L326](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L326)
 
 ### CBaseEntity.Collision {#collision}
 
@@ -136,7 +136,7 @@ Collision property (OBB mins/maxs, bounding radius). Null for entities without a
 public CCollisionProperty? Collision { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L330](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L330)
+**Source:** [Entities/CBaseEntity.cs#L330](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L330)
 
 ### CBaseEntity.Health {#health}
 
@@ -146,7 +146,7 @@ public CCollisionProperty? Collision { get; }
 public int Health { get; set; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L347](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L347)
+**Source:** [Entities/CBaseEntity.cs#L347](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L347)
 
 ### CBaseEntity.MaxHealth {#maxhealth}
 
@@ -156,7 +156,7 @@ public int Health { get; set; }
 public int MaxHealth { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L350](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L350)
+**Source:** [Entities/CBaseEntity.cs#L350](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L350)
 
 ### CBaseEntity.TeamNum {#teamnum}
 
@@ -166,7 +166,7 @@ public int MaxHealth { get; }
 public int TeamNum { get; set; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L359](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L359)
+**Source:** [Entities/CBaseEntity.cs#L359](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L359)
 
 ### CBaseEntity.LifeState {#lifestate}
 
@@ -176,7 +176,7 @@ public int TeamNum { get; set; }
 public LifeState LifeState { get; set; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L362](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L362)
+**Source:** [Entities/CBaseEntity.cs#L362](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L362)
 
 ### CBaseEntity.IsAlive {#isalive}
 
@@ -186,7 +186,7 @@ public LifeState LifeState { get; set; }
 public bool IsAlive { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L363](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L363)
+**Source:** [Entities/CBaseEntity.cs#L363](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L363)
 
 ### CBaseEntity.Flags {#flags}
 
@@ -198,7 +198,7 @@ Engine flag bits (on-ground, ducking, client, in-vehicle, godmode, etc.). See [`
 public EntityFlags Flags { get; set; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L367](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L367)
+**Source:** [Entities/CBaseEntity.cs#L367](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L367)
 
 ### CBaseEntity.IsBot {#isbot}
 
@@ -210,7 +210,7 @@ True if this entity has the [`EntityFlags.FakeClient`](/api-reference/enums/enti
 public bool IsBot { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L370](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L370)
+**Source:** [Entities/CBaseEntity.cs#L370](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L370)
 
 ### CBaseEntity.GroundEntity {#groundentity}
 
@@ -222,7 +222,7 @@ The entity this entity is standing on, or null if airborne.
 public CBaseEntity? GroundEntity { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L374](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L374)
+**Source:** [Entities/CBaseEntity.cs#L374](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L374)
 
 ### CBaseEntity.IsOnGround {#isonground}
 
@@ -234,7 +234,7 @@ Returns true if this entity is on the ground (has a valid ground entity).
 public bool IsOnGround { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L376](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L376)
+**Source:** [Entities/CBaseEntity.cs#L376](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L376)
 
 ### CBaseEntity.AbsVelocity {#absvelocity}
 
@@ -246,7 +246,7 @@ The entity's absolute velocity.
 public Vector3 AbsVelocity { get; set; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L380](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L380)
+**Source:** [Entities/CBaseEntity.cs#L380](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L380)
 
 ### CBaseEntity.Friction {#friction}
 
@@ -256,7 +256,7 @@ public Vector3 AbsVelocity { get; set; }
 public float Friction { get; set; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L383](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L383)
+**Source:** [Entities/CBaseEntity.cs#L383](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L383)
 
 ### CBaseEntity.MoveType {#movetype}
 
@@ -271,7 +271,7 @@ public MoveType MoveType { get; }
 **Notes**
 This can differ from what you set: the `noclip` cheat command and abilities or items that change movement win while they're active, and an entity attached to another one usually reads `Api.MoveType.None`.
 
-**Source:** [Entities/CBaseEntity.cs#L392](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L392)
+**Source:** [Entities/CBaseEntity.cs#L392](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L392)
 
 ### CBaseEntity.GravityScale {#gravityscale}
 
@@ -286,7 +286,7 @@ public float GravityScale { get; }
 **Notes**
 Abilities and items that change gravity multiply on top of this, so it isn't always the gravity the entity actually feels.
 
-**Source:** [Entities/CBaseEntity.cs#L414](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L414)
+**Source:** [Entities/CBaseEntity.cs#L414](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L414)
 
 ### CBaseEntity.IsModelEntity {#ismodelentity}
 
@@ -298,7 +298,7 @@ True for entities that can have a model, such as heroes, NPCs, props, beams and 
 public bool IsModelEntity { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L426](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L426)
+**Source:** [Entities/CBaseEntity.cs#L426](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L426)
 
 ### CBaseEntity.RenderColor {#rendercolor}
 
@@ -317,7 +317,7 @@ public Color RenderColor { get; set; }
 **Notes**
 Only entities with a model have one (see `IsModelEntity`). On anything else, like a player controller, reading or setting it throws.
 
-**Source:** [Entities/CBaseEntity.cs#L444](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L444)
+**Source:** [Entities/CBaseEntity.cs#L444](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L444)
 
 ### CBaseEntity.Rotation {#rotation}
 
@@ -329,7 +329,7 @@ Which way the entity faces, as (pitch, yaw, roll) in degrees. Change it with `Se
 public Vector3 Rotation { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L460](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L460)
+**Source:** [Entities/CBaseEntity.cs#L460](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L460)
 
 ### CBaseEntity.ModifierProp {#modifierprop}
 
@@ -339,7 +339,7 @@ public Vector3 Rotation { get; }
 public CModifierProperty? ModifierProp { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L469](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L469)
+**Source:** [Entities/CBaseEntity.cs#L469](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L469)
 
 ### CBaseEntity.SubclassVData {#subclassvdata}
 
@@ -349,7 +349,7 @@ public CModifierProperty? ModifierProp { get; }
 public CEntitySubclassVDataBase? SubclassVData { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L478](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L478)
+**Source:** [Entities/CBaseEntity.cs#L478](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L478)
 
 ### CBaseEntity.ModelName {#modelname}
 
@@ -361,7 +361,7 @@ The current model path for this entity (e.g. "models/heroes_wip/werewolf/werewol
 public string ModelName { get; }
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L533](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L533)
+**Source:** [Entities/CBaseEntity.cs#L533](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L533)
 
 ## Fields
 
@@ -375,7 +375,7 @@ Sentinel value for an invalid CEntityHandle.
 public const uint InvalidEntityHandle = 0xFFFFFFFF;
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L9](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L9)
+**Source:** [Entities/CBaseEntity.cs#L9](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L9)
 
 ## Methods
 
@@ -387,7 +387,7 @@ public const uint InvalidEntityHandle = 0xFFFFFFFF;
 public override string ToString()
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L32](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L32)
+**Source:** [Entities/CBaseEntity.cs#L32](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L32)
 
 ### CBaseEntity.Equals() {#equals}
 
@@ -400,7 +400,7 @@ public bool Equals(CBaseEntity? other)
 public override bool Equals(object? obj)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L38](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L38), [Entities/CBaseEntity.cs#L40](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L40)
+**Source:** [Entities/CBaseEntity.cs#L38](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L38), [Entities/CBaseEntity.cs#L40](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L40)
 
 ### CBaseEntity.GetHashCode() {#gethashcode}
 
@@ -410,7 +410,7 @@ public override bool Equals(object? obj)
 public override int GetHashCode()
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L42](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L42)
+**Source:** [Entities/CBaseEntity.cs#L42](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L42)
 
 ### CBaseEntity.CreateByName() {#createbyname}
 
@@ -422,7 +422,7 @@ Creates a new entity by class name (e.g. "info_particle_system"). Returns null o
 public static CBaseEntity? CreateByName(string className)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L53](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L53)
+**Source:** [Entities/CBaseEntity.cs#L53](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L53)
 
 ### CBaseEntity.CreateByDesignerName() {#createbydesignername}
 
@@ -434,7 +434,7 @@ Creates an entity by its designer/subclass name (e.g. "npc_boss_tier2"). Resolve
 public static CBaseEntity? CreateByDesignerName(string designerName)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L67](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L67)
+**Source:** [Entities/CBaseEntity.cs#L67](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L67)
 
 ### CBaseEntity.FromHandle() {#fromhandle}
 
@@ -447,7 +447,7 @@ public static CBaseEntity? FromHandle(uint handle)
 public static T? FromHandle<T>(uint handle) where T : CBaseEntity
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L95](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L95), [Entities/CBaseEntity.cs#L108](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L108)
+**Source:** [Entities/CBaseEntity.cs#L95](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L95), [Entities/CBaseEntity.cs#L108](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L108)
 
 ### CBaseEntity.FromIndex() {#fromindex}
 
@@ -460,7 +460,7 @@ public static CBaseEntity? FromIndex(int index)
 public static T? FromIndex<T>(int index) where T : CBaseEntity
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L102](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L102), [Entities/CBaseEntity.cs#L117](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L117)
+**Source:** [Entities/CBaseEntity.cs#L102](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L102), [Entities/CBaseEntity.cs#L117](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L117)
 
 ### CBaseEntity.Is() {#is}
 
@@ -472,7 +472,7 @@ Check if this entity's native type matches T's class name.
 public bool Is<T>() where T : CBaseEntity
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L154](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L154)
+**Source:** [Entities/CBaseEntity.cs#L154](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L154)
 
 ### CBaseEntity.As() {#as}
 
@@ -484,7 +484,7 @@ Cast this entity to T if the native type matches, otherwise null.
 public T? As<T>() where T : CBaseEntity
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L159](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L159)
+**Source:** [Entities/CBaseEntity.cs#L159](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L159)
 
 ### CBaseEntity.Remove() {#remove}
 
@@ -496,7 +496,7 @@ Marks this entity for removal at the end of the current frame (UTIL_Remove).
 public void Remove()
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L164](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L164)
+**Source:** [Entities/CBaseEntity.cs#L164](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L164)
 
 ### CBaseEntity.Spawn() {#spawn}
 
@@ -510,7 +510,7 @@ public void Spawn(void* ekv)
 public void Spawn(CEntityKeyValues ekv)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L167](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L167), [Entities/CBaseEntity.cs#L173](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L173), [Entities/CBaseEntity.cs#L179](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L179)
+**Source:** [Entities/CBaseEntity.cs#L167](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L167), [Entities/CBaseEntity.cs#L173](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L173), [Entities/CBaseEntity.cs#L179](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L179)
 
 ### CBaseEntity.Teleport() {#teleport}
 
@@ -522,7 +522,7 @@ Teleports this entity. Pass null for any parameter to leave it unchanged.
 public void Teleport(Vector3? position = null, Vector3? angles = null, Vector3? velocity = null)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L185](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L185)
+**Source:** [Entities/CBaseEntity.cs#L185](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L185)
 
 ### CBaseEntity.AcceptInput() {#acceptinput}
 
@@ -534,7 +534,7 @@ Fires an entity input (e.g. "Start", "Stop", "SetParent").
 public void AcceptInput(string inputName, CBaseEntity? activator = null, CBaseEntity? caller = null, string? value = null)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L196](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L196)
+**Source:** [Entities/CBaseEntity.cs#L196](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L196)
 
 ### CBaseEntity.SetParent() {#setparent}
 
@@ -546,7 +546,7 @@ Sets this entity's parent via AcceptInput("SetParent", activator: parent, value:
 public void SetParent(CBaseEntity parent)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L215](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L215)
+**Source:** [Entities/CBaseEntity.cs#L215](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L215)
 
 ### CBaseEntity.ClearParent() {#clearparent}
 
@@ -558,7 +558,7 @@ Clears this entity's parent.
 public void ClearParent()
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L218](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L218)
+**Source:** [Entities/CBaseEntity.cs#L218](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L218)
 
 ### CBaseEntity.AddModifier() {#addmodifier}
 
@@ -574,7 +574,7 @@ public CBaseModifier? AddModifier(string name, Dictionary<string, float> ability
 **Example**
 pawn.AddModifier("ability_doorman_bomb/debuff", kv: kv, abilityValues: new() \{ ["SlowPercent"] = 100.0f \});
 
-**Source:** [Entities/CBaseEntity.cs#L221](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L221), [Entities/CBaseEntity.cs#L245](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L245)
+**Source:** [Entities/CBaseEntity.cs#L221](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L221), [Entities/CBaseEntity.cs#L245](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L245)
 
 ### CBaseEntity.RemoveModifier() {#removemodifier}
 
@@ -587,7 +587,7 @@ public bool RemoveModifier(CBaseModifier modifier)
 public bool RemoveModifier(string name)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L295](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L295), [Entities/CBaseEntity.cs#L300](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L300)
+**Source:** [Entities/CBaseEntity.cs#L295](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L295), [Entities/CBaseEntity.cs#L300](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L300)
 
 ### CBaseEntity.EmitSound() {#emitsound}
 
@@ -599,7 +599,7 @@ Plays a sound event on this entity.
 public void EmitSound(string soundName, int pitch = 100, float volume = 1.0f, float delay = 0.0f)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L311](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L311)
+**Source:** [Entities/CBaseEntity.cs#L311](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L311)
 
 ### CBaseEntity.DisableCollisionsWith() {#disablecollisionswith}
 
@@ -611,7 +611,7 @@ Stops this entity and `other` colliding with each other. Everything else still c
 public void DisableCollisionsWith(CBaseEntity other)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L341](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L341)
+**Source:** [Entities/CBaseEntity.cs#L341](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L341)
 
 ### CBaseEntity.EnableCollisionsWith() {#enablecollisionswith}
 
@@ -623,7 +623,7 @@ Lets this entity and `other` collide again.
 public void EnableCollisionsWith(CBaseEntity other)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L344](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L344)
+**Source:** [Entities/CBaseEntity.cs#L344](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L344)
 
 ### CBaseEntity.GetMaxHealth() {#getmaxhealth}
 
@@ -635,7 +635,7 @@ Gets the effective max health through the engine virtual call (accounts for modi
 public int GetMaxHealth()
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L353](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L353)
+**Source:** [Entities/CBaseEntity.cs#L353](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L353)
 
 ### CBaseEntity.Heal() {#heal}
 
@@ -647,7 +647,7 @@ Heals the entity by the specified amount (clamped to max health). Returns the ac
 public int Heal(float amount)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L356](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L356)
+**Source:** [Entities/CBaseEntity.cs#L356](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L356)
 
 ### CBaseEntity.SetMoveType() {#setmovetype}
 
@@ -662,7 +662,7 @@ public void SetMoveType(MoveType moveType)
 **Notes**
 The `noclip` cheat command and abilities or items that change movement override your value while they're active. It applies again once they end.
 
-**Source:** [Entities/CBaseEntity.cs#L403](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L403)
+**Source:** [Entities/CBaseEntity.cs#L403](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L403)
 
 ### CBaseEntity.SetGravityScale() {#setgravityscale}
 
@@ -674,7 +674,7 @@ Changes this entity's gravity multiplier: 1 is normal, 0.5 is half gravity, 2 is
 public void SetGravityScale(float scale)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L420](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L420)
+**Source:** [Entities/CBaseEntity.cs#L420](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L420)
 
 ### CBaseEntity.SetRotation() {#setrotation}
 
@@ -686,7 +686,7 @@ Turns the entity to face `rotation` (pitch, yaw, roll in degrees) without moving
 public void SetRotation(Vector3 rotation)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L466](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L466)
+**Source:** [Entities/CBaseEntity.cs#L466](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L466)
 
 ### CBaseEntity.Hurt() {#hurt}
 
@@ -698,7 +698,7 @@ Applies damage to this entity (convenience wrapper around `TakeDamage`).
 public void Hurt(float damage, CBaseEntity? attacker = null, CBaseEntity? inflictor = null, CBaseEntity? ability = null, int damageType = 0)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L486](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L486)
+**Source:** [Entities/CBaseEntity.cs#L486](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L486)
 
 ### CBaseEntity.ApplyDamage() {#applydamage}
 
@@ -717,7 +717,7 @@ The final amount is written back into `info`, so use a new [`CTakeDamageInfo`](/
 
 Calling this from inside an `IDeadworksPlugin.OnTakeDamage` handler triggers that handler again, so guard against loops (for example when reflecting damage back at the attacker).
 
-**Source:** [Entities/CBaseEntity.cs#L511](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L511)
+**Source:** [Entities/CBaseEntity.cs#L511](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L511)
 
 ### CBaseEntity.TakeDamage() {#takedamage}
 
@@ -729,7 +729,7 @@ Deals exactly the damage in `info`, ignoring the target's resistances and other 
 public void TakeDamage(CTakeDamageInfo info)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L520](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L520)
+**Source:** [Entities/CBaseEntity.cs#L520](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L520)
 
 ### CBaseEntity.SetModel() {#setmodel}
 
@@ -741,7 +741,7 @@ Sets the model for this entity (e.g. "models/heroes_wip/werewolf/werewolf.vmdl")
 public void SetModel(string modelName)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L525](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L525)
+**Source:** [Entities/CBaseEntity.cs#L525](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L525)
 
 ### CBaseEntity.SetScale() {#setscale}
 
@@ -753,7 +753,7 @@ Sets this entity's model scale (1.0 = default).
 public void SetScale(float scale)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L541](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L541)
+**Source:** [Entities/CBaseEntity.cs#L541](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L541)
 
 ### CBaseEntity.GetField() {#getfield}
 
@@ -765,7 +765,7 @@ Read any schema field by class and field name. For repeated access, prefer a sta
 public T GetField<T>(ReadOnlySpan<byte> className, ReadOnlySpan<byte> fieldName) where T : unmanaged
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L546](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L546)
+**Source:** [Entities/CBaseEntity.cs#L546](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L546)
 
 ### CBaseEntity.SetField() {#setfield}
 
@@ -777,7 +777,7 @@ Write any schema field by class and field name. For repeated access, prefer a st
 public void SetField<T>(ReadOnlySpan<byte> className, ReadOnlySpan<byte> fieldName, T value) where T : unmanaged
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L550](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L550)
+**Source:** [Entities/CBaseEntity.cs#L550](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L550)
 
 ## Operators
 
@@ -789,7 +789,7 @@ public void SetField<T>(ReadOnlySpan<byte> className, ReadOnlySpan<byte> fieldNa
 public static bool operator ==(CBaseEntity? a, CBaseEntity? b)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L44](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L44)
+**Source:** [Entities/CBaseEntity.cs#L44](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L44)
 
 ### CBaseEntity operator != {#operator}
 
@@ -799,4 +799,4 @@ public static bool operator ==(CBaseEntity? a, CBaseEntity? b)
 public static bool operator !=(CBaseEntity? a, CBaseEntity? b)
 ```
 
-**Source:** [Entities/CBaseEntity.cs#L50](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L50)
+**Source:** [Entities/CBaseEntity.cs#L50](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBaseEntity.cs#L50)

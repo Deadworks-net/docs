@@ -16,7 +16,7 @@ public sealed class EntityOutputEvent
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Events/EntityOutputEvent.cs#L4](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L4)
+**Source:** [Events/EntityOutputEvent.cs#L4](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L4)
 
 ## Properties
 
@@ -30,7 +30,7 @@ Designer name of the entity firing the output (e.g. `"trigger_multiple"`).
 public required string CallerClass { get; init; }
 ```
 
-**Source:** [Events/EntityOutputEvent.cs#L6](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L6)
+**Source:** [Events/EntityOutputEvent.cs#L6](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L6)
 
 ### EntityOutputEvent.OutputName {#outputname}
 
@@ -42,7 +42,7 @@ The name of the output being fired (e.g. `"OnStartTouch"`).
 public required string OutputName { get; init; }
 ```
 
-**Source:** [Events/EntityOutputEvent.cs#L9](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L9)
+**Source:** [Events/EntityOutputEvent.cs#L9](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L9)
 
 ### EntityOutputEvent.Activator {#activator}
 
@@ -54,7 +54,7 @@ The entity that triggered this output (typically a player pawn).
 public CBaseEntity? Activator { get; init; }
 ```
 
-**Source:** [Events/EntityOutputEvent.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L12)
+**Source:** [Events/EntityOutputEvent.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L12)
 
 ### EntityOutputEvent.Caller {#caller}
 
@@ -66,7 +66,7 @@ The entity that fired the output. Usually equivalent to looking up an entity wit
 public CBaseEntity? Caller { get; init; }
 ```
 
-**Source:** [Events/EntityOutputEvent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L15)
+**Source:** [Events/EntityOutputEvent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L15)
 
 ### EntityOutputEvent.Value {#value}
 
@@ -78,7 +78,7 @@ The typed variant value carried by the output. Pointer is only valid for the dur
 public required EntityIOValue Value { get; init; }
 ```
 
-**Source:** [Events/EntityOutputEvent.cs#L19](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L19)
+**Source:** [Events/EntityOutputEvent.cs#L19](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L19)
 
 ### EntityOutputEvent.Delay {#delay}
 
@@ -90,4 +90,4 @@ Delay (seconds) before the output's connected inputs will fire. Read-only.
 public required float Delay { get; init; }
 ```
 
-**Source:** [Events/EntityOutputEvent.cs#L22](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L22)
+**Source:** [Events/EntityOutputEvent.cs#L22](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputEvent.cs#L22)

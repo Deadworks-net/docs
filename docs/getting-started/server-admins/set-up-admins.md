@@ -1,0 +1,49 @@
+---
+title: "Set up admins"
+sidebar_label: "3. Set up admins"
+---
+
+# Set up admins
+
+The server console can always run every command. Nobody else can use admin commands until you give them a role.
+
+## Make yourself admin
+
+1. Start the server and join it from the game.
+2. In the server console, run:
+
+   ```text
+   dw_role_grant <your name> admin
+   ```
+
+   Put quotes around a name with spaces: `dw_role_grant "Big Dave" admin`.
+
+3. The server replies:
+
+   ```text
+   Gave wisp (76561197960287930) the role admin.
+   ```
+
+Your role applies once Steam confirms your account, a few seconds after you join. It is saved in `configs\permissions\players.jsonc` and lasts across restarts.
+
+To check, run `dw_perm_list <your name>`. It shows `Roles: admin` and `Immunity: 100`.
+
+## Add other admins
+
+Run the same command for each person while they're on the server:
+
+```text
+dw_role_grant lapka admin
+```
+
+For someone who isn't on the server, use their SteamID: `dw_role_grant 76561197960287931 admin`. To take the role away:
+
+```text
+dw_role_revoke lapka admin
+```
+
+## Next
+
+**[4. Use admin commands](use-admin-tools)**
+
+For roles, immunity and every permission file, see [How permissions work](../../guides/admins-and-permissions).

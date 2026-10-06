@@ -16,7 +16,7 @@ public sealed class AddModifierEvent
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Events/AddModifierEvent.cs#L7](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L7)
+**Source:** [Events/AddModifierEvent.cs#L7](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L7)
 
 ## Properties
 
@@ -30,7 +30,7 @@ The CModifierProperty that the modifier is being added to.
 public required CModifierProperty ModifierProperty { get; init; }
 ```
 
-**Source:** [Events/AddModifierEvent.cs#L9](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L9)
+**Source:** [Events/AddModifierEvent.cs#L9](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L9)
 
 ### AddModifierEvent.Caster {#caster}
 
@@ -42,7 +42,7 @@ The entity casting the modifier. Can be reassigned to change the caster.
 public required CBaseEntity Caster { get; set; }
 ```
 
-**Source:** [Events/AddModifierEvent.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L12)
+**Source:** [Events/AddModifierEvent.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L12)
 
 ### AddModifierEvent.AbilityHandle {#abilityhandle}
 
@@ -54,7 +54,7 @@ The ability entity handle (CHandle). 0xFFFFFFFF if no ability.
 public required uint AbilityHandle { get; set; }
 ```
 
-**Source:** [Events/AddModifierEvent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L15)
+**Source:** [Events/AddModifierEvent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L15)
 
 ### AddModifierEvent.Team {#team}
 
@@ -66,7 +66,7 @@ The team number. Can be reassigned.
 public required int Team { get; set; }
 ```
 
-**Source:** [Events/AddModifierEvent.cs#L18](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L18)
+**Source:** [Events/AddModifierEvent.cs#L18](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L18)
 
 ### AddModifierEvent.ModifierVData {#modifiervdata}
 
@@ -78,7 +78,7 @@ The modifier VData being applied.
 public required CCitadelModifierVData ModifierVData { get; init; }
 ```
 
-**Source:** [Events/AddModifierEvent.cs#L21](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L21)
+**Source:** [Events/AddModifierEvent.cs#L21](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L21)
 
 ### AddModifierEvent.ModifierParams {#modifierparams}
 
@@ -90,7 +90,7 @@ Modifier parameters (KeyValues3). May be null if none were provided.
 public KeyValues3? ModifierParams { get; init; }
 ```
 
-**Source:** [Events/AddModifierEvent.cs#L24](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L24)
+**Source:** [Events/AddModifierEvent.cs#L24](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L24)
 
 ### AddModifierEvent.KeyValues {#keyvalues}
 
@@ -102,7 +102,7 @@ Key values (KeyValues3). May be null if none were provided.
 public KeyValues3? KeyValues { get; init; }
 ```
 
-**Source:** [Events/AddModifierEvent.cs#L27](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L27)
+**Source:** [Events/AddModifierEvent.cs#L27](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L27)
 
 ### AddModifierEvent.Ability {#ability}
 
@@ -114,4 +114,4 @@ The ability entity resolved from AbilityHandle, or null if invalid.
 public CBaseEntity? Ability { get; }
 ```
 
-**Source:** [Events/AddModifierEvent.cs#L30](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L30)
+**Source:** [Events/AddModifierEvent.cs#L30](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/AddModifierEvent.cs#L30)

@@ -35,7 +35,7 @@ public HookResult OnTriggerTouched(EntityOutputEvent e)
 }
 ```
 
-`e.Activator` is whoever set it off, usually a player's hero. `e.Caller` is the entity that fired the output.
+`e.Activator` is the entity that triggered the output, usually a player's hero. `e.Caller` is the entity that fired the output.
 
 ## Block an output
 
@@ -121,13 +121,15 @@ public HookResult OnSetMessage(EntityInputEvent e)
 }
 ```
 
-There is an `AsInt`, `AsFloat`, `AsBool`, `AsVector3`, `AsColor` and `AsEntity` too. `AsString` works for any type.
+`e.Value` also has `AsInt`, `AsFloat`, `AsBool`, `AsVector3`, `AsColor` and `AsEntity`. `AsString` works for any type.
 
-Read the value inside your method. `e.Value` stops working once your method returns, so don't keep it for later.
+:::warning
+`e.Value` stops working once your method returns. Read it inside your method, and don't store it for later.
+:::
 
 ## Start and stop listening from code
 
-Use `EntityIO.HookOutput` or `EntityIO.HookInput`. Each gives you a handle, and the hook stays until you cancel it.
+Use `EntityIO.HookOutput` or `EntityIO.HookInput`. Each returns a handle. The hook stays active until you call `Cancel` on the handle.
 
 ```csharp
 var hook = EntityIO.HookOutput("trigger_multiple", "OnStartTouch", e =>
@@ -139,7 +141,7 @@ var hook = EntityIO.HookOutput("trigger_multiple", "OnStartTouch", e =>
 hook.Cancel();
 ```
 
-Return a `HookResult` from the handler if you want to be able to block it.
+To block the input or output, return a `HookResult` from the handler.
 
 ## Send an input to an entity
 
@@ -166,3 +168,8 @@ public HookResult OnPlayerDeath(PlayerDeathEvent args)
     return HookResult.Continue;
 }
 ```
+
+## See also
+
+- [Game events](game-events): events the game fires, such as `player_death`.
+- [Entities](entities): find, create and remove entities.

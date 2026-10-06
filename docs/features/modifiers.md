@@ -7,7 +7,7 @@ sidebar_label: "Modifiers"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-A modifier is a buff or debuff on an entity: a stun, a slow, a shield, a burn. The game already has hundreds of them, and you can put any of them on a player.
+A modifier is a buff or debuff on an entity: a stun, a slow, a shield, a burn. The game has hundreds of them. A plugin can add any of them to a player.
 
 ## Find a modifier
 
@@ -21,7 +21,7 @@ Each modifier has its own page, such as [`modifier_citadel_knockdown`](https://d
 pawn.AddModifier("modifier_citadel_knockdown");
 ```
 
-This knocks the player down. It works on any [entity](entities), not just players.
+`modifier_citadel_knockdown` knocks the player down. `AddModifier` works on any [entity](entities), not only players.
 
 ## Make a modifier last a set time
 
@@ -34,7 +34,7 @@ kv.SetFloat("duration", 3.0f);
 pawn.AddModifier("modifier_citadel_knockdown", kv);
 ```
 
-Always create a `KeyValues3` with `using`, as above, so it is cleaned up afterwards.
+Always create a `KeyValues3` with `using`, as above, so it's disposed after use.
 
 ## Remove a modifier
 
@@ -42,7 +42,7 @@ Always create a `KeyValues3` with `using`, as above, so it is cleaned up afterwa
 pawn.RemoveModifier("modifier_citadel_knockdown");
 ```
 
-`AddModifier` also gives you back the modifier it added. Keep that to remove exactly that one later:
+`AddModifier` also returns the modifier it added. Keep it to remove that exact modifier later.
 
 ```csharp
 var modifier = pawn.AddModifier("modifier_citadel_knockdown", kv);
@@ -79,7 +79,7 @@ The modifier's database page shows the values it uses.
 
 ## Turn a state on or off
 
-A state is a simple on or off switch on an entity, like "has unlimited air jumps". You can set one without adding a modifier.
+A state is an on/off switch on an entity, like "has unlimited air jumps". You can set one without adding a modifier.
 
 ```csharp
 pawn.ModifierProp.SetModifierState(EModifierState.UnlimitedAirJumps, true);
@@ -92,11 +92,11 @@ To check one:
 bool on = pawn.ModifierProp.HasModifierState(EModifierState.UnlimitedAirJumps);
 ```
 
-Some useful states:
+Common states:
 
-- `Immobilized` stops all movement
-- `UnlimitedAirJumps` and `UnlimitedAirDashes`
-- `InfiniteClip` gives infinite ammo with no reloading
-- `VisibleToEnemy` shows the player on the enemy's minimap
-- `UnitStatusHealthHidden` hides the health bar above the hero
-- `FriendlyFireEnabled` lets bullets hurt teammates
+- `Immobilized`: stops all movement.
+- `UnlimitedAirJumps`, `UnlimitedAirDashes`: remove the limit on air jumps and air dashes.
+- `InfiniteClip`: gives infinite ammo with no reloading.
+- `VisibleToEnemy`: shows the player on the enemy's minimap.
+- `UnitStatusHealthHidden`: hides the health bar above the hero.
+- `FriendlyFireEnabled`: lets bullets hurt teammates.

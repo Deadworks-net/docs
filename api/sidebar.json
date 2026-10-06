@@ -77,6 +77,7 @@
       "api-reference/events/chatcommandcontext",
       "api-reference/events/chatmessage",
       "api-reference/events/checktransmitevent",
+      "api-reference/events/clientauthorizedevent",
       "api-reference/events/clientconcommandevent",
       "api-reference/events/clientconnectevent",
       "api-reference/events/clientdisconnectedevent",
@@ -111,9 +112,12 @@
     "label": "Commands",
     "collapsed": true,
     "items": [
+      "api-reference/commands/caller",
       "api-reference/commands/commandattribute",
       "api-reference/commands/commandconverters",
-      "api-reference/commands/commandexception"
+      "api-reference/commands/commandexception",
+      "api-reference/commands/target",
+      "api-reference/commands/targetimmunity"
     ]
   },
   {
@@ -227,6 +231,35 @@
     "items": [
       "api-reference/utils/pawnextensions",
       "api-reference/utils/zone"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Permissions",
+    "collapsed": true,
+    "items": [
+      "api-reference/permissions/declarepermissionattribute",
+      "api-reference/permissions/ipermissionstore",
+      "api-reference/permissions/permissionexplanation",
+      "api-reference/permissions/permissionextensions",
+      "api-reference/permissions/permissions",
+      "api-reference/permissions/playerentry",
+      "api-reference/permissions/roledefinition",
+      "api-reference/permissions/steamids"
+    ]
+  },
+  {
+    "type": "category",
+    "label": "Admin",
+    "collapsed": true,
+    "items": [
+      "api-reference/admin/adminactivity",
+      "api-reference/admin/adminlogentry",
+      "api-reference/admin/ipenaltystore",
+      "api-reference/admin/penalties",
+      "api-reference/admin/penalty",
+      "api-reference/admin/penaltyend",
+      "api-reference/admin/penaltytype"
     ]
   },
   {

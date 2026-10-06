@@ -16,7 +16,7 @@ public sealed class ConVar
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [ConVar.cs#L8](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L8)
+**Source:** [ConVar.cs#L8](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L8)
 
 ## Notes
 
@@ -32,7 +32,7 @@ Unlike typing a value in the console, the Set methods here also work on cheat-pr
 public bool IsValid { get; }
 ```
 
-**Source:** [ConVar.cs#L13](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L13)
+**Source:** [ConVar.cs#L13](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L13)
 
 ## Methods
 
@@ -46,7 +46,7 @@ Looks up an existing ConVar by name. Returns null if not found.
 public static ConVar? Find(string name)
 ```
 
-**Source:** [ConVar.cs#L16](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L16)
+**Source:** [ConVar.cs#L16](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L16)
 
 ### ConVar.Create() {#create}
 
@@ -58,7 +58,7 @@ Creates a new ConVar registered with the engine. Returns null if creation fails.
 public static ConVar? Create(string name, string defaultValue, string description = "", bool serverOnly = false)
 ```
 
-**Source:** [ConVar.cs#L25](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L25)
+**Source:** [ConVar.cs#L25](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L25)
 
 ### ConVar.GetInt() {#getint}
 
@@ -70,7 +70,7 @@ Gets the cvar's value as an integer.
 public int GetInt()
 ```
 
-**Source:** [ConVar.cs#L39](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L39)
+**Source:** [ConVar.cs#L39](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L39)
 
 ### ConVar.GetFloat() {#getfloat}
 
@@ -82,7 +82,7 @@ Gets the cvar's value as a float.
 public float GetFloat()
 ```
 
-**Source:** [ConVar.cs#L41](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L41)
+**Source:** [ConVar.cs#L41](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L41)
 
 ### ConVar.GetBool() {#getbool}
 
@@ -94,7 +94,7 @@ Gets the cvar's value as true or false. Any non-zero number counts as true.
 public bool GetBool()
 ```
 
-**Source:** [ConVar.cs#L43](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L43)
+**Source:** [ConVar.cs#L43](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L43)
 
 ### ConVar.GetString() {#getstring}
 
@@ -106,7 +106,7 @@ Gets the cvar's value as a string.
 public string GetString()
 ```
 
-**Source:** [ConVar.cs#L45](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L45)
+**Source:** [ConVar.cs#L45](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L45)
 
 ### ConVar.SetInt() {#setint}
 
@@ -118,7 +118,7 @@ Sets the cvar's value as an integer.
 public void SetInt(int value)
 ```
 
-**Source:** [ConVar.cs#L51](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L51)
+**Source:** [ConVar.cs#L51](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L51)
 
 ### ConVar.SetFloat() {#setfloat}
 
@@ -130,7 +130,7 @@ Sets the cvar's value as a float.
 public void SetFloat(float value)
 ```
 
-**Source:** [ConVar.cs#L53](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L53)
+**Source:** [ConVar.cs#L53](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L53)
 
 ### ConVar.SetBool() {#setbool}
 
@@ -142,7 +142,7 @@ Sets the cvar's value to true or false (1 or 0 on a number cvar).
 public void SetBool(bool value)
 ```
 
-**Source:** [ConVar.cs#L55](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L55)
+**Source:** [ConVar.cs#L55](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L55)
 
 ### ConVar.SetString() {#setstring}
 
@@ -157,7 +157,7 @@ public bool SetString(string value)
 **Notes**
 A value outside the cvar's allowed range is clamped to that range.
 
-**Source:** [ConVar.cs#L63](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L63)
+**Source:** [ConVar.cs#L63](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L63)
 
 ### ConVar.SetValue() {#setvalue}
 
@@ -178,4 +178,4 @@ foreach (var (name, value) in settings) {
 }
 ```
 
-**Source:** [ConVar.cs#L84](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConVar.cs#L84)
+**Source:** [ConVar.cs#L84](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConVar.cs#L84)

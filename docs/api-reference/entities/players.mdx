@@ -16,7 +16,7 @@ public static class Players
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Entities/Players.cs#L4](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/Players.cs#L4)
+**Source:** [Entities/Players.cs#L4](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/Players.cs#L4)
 
 ## Fields
 
@@ -30,7 +30,7 @@ Maximum number of player slots on the server.
 public const int MaxSlot = 31;
 ```
 
-**Source:** [Entities/Players.cs#L6](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/Players.cs#L6)
+**Source:** [Entities/Players.cs#L6](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/Players.cs#L6)
 
 ## Methods
 
@@ -44,7 +44,19 @@ Whether the player in `slot` is reloading after a map change, rather than joinin
 public static bool IsMapChangeReconnect(int slot)
 ```
 
-**Source:** [Entities/Players.cs#L61](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/Players.cs#L61)
+**Source:** [Entities/Players.cs#L61](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/Players.cs#L61)
+
+### Players.IsAuthorized() {#isauthorized}
+
+Whether Steam has confirmed the player in `slot`, so their roles and permissions apply. Always true when `sv_lan` is on or `permissions.require_steam_auth` is off in `deadworks.jsonc`. `IDeadworksPlugin.OnClientAuthorized` fires when it becomes true.
+
+**Signature**
+
+```csharp
+public static bool IsAuthorized(int slot)
+```
+
+**Source:** [Entities/Players.cs#L76](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/Players.cs#L76)
 
 ### Players.IsConnected() {#isconnected}
 
@@ -56,7 +68,7 @@ Returns whether the given slot is marked as fully connected.
 public static bool IsConnected(int slot)
 ```
 
-**Source:** [Entities/Players.cs#L70](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/Players.cs#L70)
+**Source:** [Entities/Players.cs#L79](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/Players.cs#L79)
 
 ### Players.GetAllControllers() {#getallcontrollers}
 
@@ -68,7 +80,7 @@ Returns all player controllers that exist in the entity system.
 public static unsafe IEnumerable<CCitadelPlayerController> GetAllControllers()
 ```
 
-**Source:** [Entities/Players.cs#L73](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/Players.cs#L73)
+**Source:** [Entities/Players.cs#L82](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/Players.cs#L82)
 
 ### Players.GetAll() {#getall}
 
@@ -80,7 +92,7 @@ Returns all player controllers for fully connected players.
 public static unsafe IEnumerable<CCitadelPlayerController> GetAll()
 ```
 
-**Source:** [Entities/Players.cs#L84](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/Players.cs#L84)
+**Source:** [Entities/Players.cs#L93](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/Players.cs#L93)
 
 ### Players.GetAllPawns() {#getallpawns}
 
@@ -92,7 +104,7 @@ Returns the hero pawn for every connected player that has one.
 public static unsafe IEnumerable<CCitadelPlayerPawn> GetAllPawns()
 ```
 
-**Source:** [Entities/Players.cs#L96](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/Players.cs#L96)
+**Source:** [Entities/Players.cs#L105](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/Players.cs#L105)
 
 ### Players.FromSlot() {#fromslot}
 
@@ -104,4 +116,4 @@ Returns the player controller in the given slot, or null if the slot is empty.
 public static unsafe CCitadelPlayerController? FromSlot(int slot)
 ```
 
-**Source:** [Entities/Players.cs#L110](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/Players.cs#L110)
+**Source:** [Entities/Players.cs#L119](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/Players.cs#L119)

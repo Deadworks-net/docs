@@ -1,5 +1,5 @@
 {
-  "commit": "76f73b504d7b811b678d092a1e762a8e08b5d2d9",
+  "commit": "2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61",
   "types": [
     {
       "namespace": "DeadworksManaged.Api",
@@ -484,6 +484,109 @@
     },
     {
       "namespace": "DeadworksManaged.Api",
+      "name": "AdminActivity",
+      "kind": "static class",
+      "folder": "Admin",
+      "declaration": "public static class AdminActivity",
+      "file": "managed/DeadworksManaged.Api/Admin/AdminActivity.cs",
+      "line": 23,
+      "doc": {
+        "summary": "Announces admin actions to players and records them in the admin log, so every admin plugin behaves the same. Players see \u0022ADMIN: kicked lapka\u0022; holders of \u0060deadworks.admin.notify\u0060 see who did it. Both are configurable under \u0060admin.show_activity\u0060 in \u0060configs/deadworks.jsonc\u0060. Every entry also reaches {@cref IDeadworksPlugin.OnAdminAction}.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "method",
+          "name": "Show",
+          "signature": "public static void Show(Caller admin, string action, string? details = null)",
+          "parameters": [
+            "admin",
+            "action",
+            "details"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/AdminActivity.cs",
+          "line": 31,
+          "doc": {
+            "summary": "Announces \u0060action\u0060 (e.g. \u0022kicked lapka: spam\u0022) and logs it. \u0060details\u0060, such as the target\u0027s SteamID, goes in the log only.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "Log",
+          "signature": "public static void Log(Caller admin, string action, string? details = null)",
+          "parameters": [
+            "admin",
+            "action",
+            "details"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/AdminActivity.cs",
+          "line": 34,
+          "doc": {
+            "summary": "Logs \u0060action\u0060 without announcing it, e.g. for rcon or unban.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "AdminLogEntry",
+      "kind": "record",
+      "folder": "Admin",
+      "declaration": "public sealed record AdminLogEntry(DateTime TimeUtc, ulong AdminSteamId64, string AdminName, string Action, string? Details = null)",
+      "file": "managed/DeadworksManaged.Api/Admin/AdminActivity.cs",
+      "line": 9,
+      "doc": {
+        "summary": "One line of the admin action log.",
+        "params": {
+          "TimeUtc": "When it happened.",
+          "AdminSteamId64": "Who did it, or 0 for the server console.",
+          "AdminName": "The admin\u0027s name, or \u0022Console\u0022.",
+          "Action": "What they did, as announced, e.g. \u0060kicked lapka: spam\u0060.",
+          "Details": "Extra detail for the log only, e.g. the target\u0027s SteamID."
+        },
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "method",
+          "name": "ToString",
+          "signature": "public override string ToString()",
+          "parameters": [],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/AdminActivity.cs",
+          "line": 12,
+          "doc": {
+            "summary": "The line as written to the log file.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
       "name": "BBox_t",
       "kind": "struct",
       "folder": "Trace",
@@ -618,6 +721,252 @@
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CallbackHandle.cs",
           "line": 20
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "Caller",
+      "kind": "class",
+      "folder": "Commands",
+      "declaration": "public sealed class Caller",
+      "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+      "line": 13,
+      "doc": {
+        "summary": "Who ran a command: a player, or the server console (which includes rcon). Take it as the first parameter of a {@cref CommandAttribute} method. Unlike a nullable controller, the console is explicit here, so a failed player lookup can never be mistaken for it.",
+        "remarks": "A player caller remembers who ran the command. Controllers outlive disconnects, so after an \u0060await\u0060 the same controller may belong to someone who joined since; once the player has left, {@cref IsConnected} is false, {@cref HasPermission} and {@cref CanTarget} refuse, and replies go nowhere.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "property",
+          "name": "Console",
+          "signature": "public static Caller Console { get; }",
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 16,
+          "doc": {
+            "summary": "The server console. It holds every permission and can target anyone.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "Of",
+          "signature": "public static Caller Of(CCitadelPlayerController player)",
+          "parameters": [
+            "player"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 19,
+          "doc": {
+            "summary": "A player caller.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "IsConsole",
+          "signature": "public bool IsConsole { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 34,
+          "doc": {
+            "summary": "True for the server console (and rcon).",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "IsConnected",
+          "signature": "public bool IsConnected { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 40,
+          "doc": {
+            "summary": "Whether the player who ran the command is still on the server. Always true for the console. Check it after an \u0060await\u0060 before acting for them.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Player",
+          "signature": "public CCitadelPlayerController? Player { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 44,
+          "doc": {
+            "summary": "The player who ran the command, or null for the console, or once they\u0027ve left the server.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Name",
+          "signature": "public string Name { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 47,
+          "doc": {
+            "summary": "The player\u0027s name when they ran the command, or \u0022Console\u0022.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "SteamId64",
+          "signature": "public ulong SteamId64 { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 50,
+          "doc": {
+            "summary": "The SteamID the player connected with (see {@cref Permissions.GetSteamId64}), or 0 for the console.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "HasPermission",
+          "signature": "public bool HasPermission(string permission)",
+          "parameters": [
+            "permission"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 53,
+          "doc": {
+            "summary": "Whether the caller holds \u0060permission\u0060. The console holds everything; a player who has left, nothing.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "CanTarget",
+          "signature": "public bool CanTarget(CCitadelPlayerController target)",
+          "parameters": [
+            "target"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 56,
+          "doc": {
+            "summary": "Whether the caller may act on \u0060target\u0060 given both players\u0027 immunity. The console may target anyone.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "CanTarget",
+          "signature": "public bool CanTarget(ulong steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 62,
+          "doc": {
+            "summary": "Whether the caller may act on this SteamID, on the server or not, by immunity. The console always may. False while the target\u0027s entry is still loading; {@cref Permissions.IsLoaded} tells the two apart.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "Reply",
+          "signature": "public void Reply(string message)",
+          "parameters": [
+            "message"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 65,
+          "doc": {
+            "summary": "A short reply: the player\u0027s chat, or the server console. Nothing if the player has left.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "PrintToConsole",
+          "signature": "public void PrintToConsole(string message)",
+          "parameters": [
+            "message"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 74,
+          "doc": {
+            "summary": "Output that doesn\u0027t fit in chat: the player\u0027s console, or the server console. Nothing if the player has left.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "ToString",
+          "signature": "public override string ToString()",
+          "parameters": [],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Caller.cs",
+          "line": 83,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         }
       ]
     },
@@ -2092,13 +2441,33 @@
           }
         },
         {
+          "kind": "method",
+          "name": "Kick",
+          "signature": "public void Kick(string message, ENetworkDisconnectionReason reason = ENetworkDisconnectionReason.NetworkDisconnectKicked)",
+          "parameters": [
+            "message",
+            "reason"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs",
+          "line": 25,
+          "doc": {
+            "summary": "Disconnects this player and tells them why. See {@cref Server.Kick}.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
           "kind": "property",
           "name": "PlayerName",
           "signature": "public string PlayerName { get; set; }",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs",
-          "line": 27,
+          "line": 31,
           "doc": {
             "summary": "The player\u0027s display name (char[128] inline buffer).",
             "params": {},
@@ -2114,7 +2483,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs",
-          "line": 48,
+          "line": 52,
           "doc": {
             "summary": "The player\u0027s SteamID64. A player who disconnects leaves their controller (team, hero, stats) in their slot, and gets it back if they rejoin into it. To give it to someone else, set this to their SteamID in {@cref IDeadworksPlugin.OnClientConnect} as they join into that slot.",
             "params": {},
@@ -2130,7 +2499,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs",
-          "line": 53,
+          "line": 57,
           "doc": {
             "summary": "The controller\u0027s current pawn (hero, observer, or any other), or null if none.",
             "params": {},
@@ -2153,7 +2522,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs",
-          "line": 66,
+          "line": 70,
           "doc": {
             "summary": "Assigns a new pawn to this controller, optionally transferring team and movement state.",
             "params": {},
@@ -3431,7 +3800,7 @@
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs",
           "line": 113,
           "doc": {
-            "summary": "Sends a message to this player\u0027s console via \u0022echo\u0022 client command.",
+            "summary": "Prints a message in this player\u0027s console, one \u0060echo\u0060 per line.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -3449,7 +3818,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs",
-          "line": 118,
+          "line": 126,
           "doc": {
             "summary": "Displays a HUD game announcement banner to this player with the given title and description.",
             "params": {},
@@ -3465,7 +3834,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs",
-          "line": 129,
+          "line": 137,
           "doc": {
             "summary": "Moves this player\u0027s camera without moving their hero: pull it back, zoom, point it somewhere else and hold it there. See {@cref PlayerCamera}.",
             "params": {},
@@ -3484,7 +3853,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs",
-          "line": 141,
+          "line": 149,
           "doc": {
             "summary": "Turns this player\u0027s camera to face \u0060angles\u0060 (pitch, yaw, roll in degrees).",
             "remarks": "{@cref CBaseEntity.Teleport} can\u0027t turn a player\u0027s camera (its \u0060angles\u0060 are ignored for players), so call this after moving someone to control which way they end up facing, or use {@cref CCitadelPlayerPawn.TeleportWithView} to do both at once. To restore a view you saved earlier, save {@cref CCitadelPlayerPawn.CameraAngles}. {@cref CCitadelPlayerPawn.EyeAngles} is where the crosshair aims, which can be far off from where the camera points.",
@@ -3506,7 +3875,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs",
-          "line": 149,
+          "line": 157,
           "doc": {
             "params": {},
             "typeParams": {},
@@ -3524,7 +3893,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs",
-          "line": 152,
+          "line": 160,
           "doc": {
             "summary": "Sends a message to all connected players\u0027 consoles.",
             "params": {},
@@ -5353,7 +5722,7 @@
         "exceptions": [],
         "seeAlso": []
       },
-      "obsolete": "Use [Command] instead.",
+      "obsolete": "Use [Command] instead. Commands with this attribute are no longer registered: they skipped permission checks.",
       "bases": [
         "Attribute"
       ],
@@ -6043,6 +6412,73 @@
     },
     {
       "namespace": "DeadworksManaged.Api",
+      "name": "ClientAuthorizedEvent",
+      "kind": "class",
+      "folder": "Events",
+      "declaration": "public sealed class ClientAuthorizedEvent",
+      "file": "managed/DeadworksManaged.Api/Events/ClientAuthorizedEvent.cs",
+      "line": 7,
+      "doc": {
+        "summary": "Fired once per connection when Steam confirms who a player is, usually a few seconds after they connect. Passed to {@cref IDeadworksPlugin.OnClientAuthorized}.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "property",
+          "name": "Slot",
+          "signature": "public required int Slot { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Events/ClientAuthorizedEvent.cs",
+          "line": 9,
+          "doc": {
+            "summary": "The player\u0027s slot.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "SteamId64",
+          "signature": "public required ulong SteamId64 { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Events/ClientAuthorizedEvent.cs",
+          "line": 11,
+          "doc": {
+            "summary": "The SteamID the player connected with, now confirmed by Steam.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Controller",
+          "signature": "public CCitadelPlayerController? Controller { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Events/ClientAuthorizedEvent.cs",
+          "line": 15,
+          "doc": {
+            "summary": "The player\u0027s controller, or null if they\u0027ve already left.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
       "name": "ClientConCommandEvent",
       "kind": "class",
       "folder": "Events",
@@ -6159,6 +6595,22 @@
           "line": 16,
           "doc": {
             "summary": "True for a player who was already in the game and is reloading after a map change, rather than joining. A map change doesn\u0027t disconnect anyone, but everyone goes through the connect events again on the new map; this tells them apart from new arrivals. {@cref ClientPutInServerEvent} and {@cref ClientFullConnectEvent} carry the same value for the same connection. Always false for bots, which a map change removes.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "RejectReason",
+          "signature": "public string? RejectReason { get; set; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs",
+          "line": 22,
+          "doc": {
+            "summary": "Why the connection is being refused, when a plugin returns false from {@cref IDeadworksPlugin.OnClientConnect}. It\u0027s passed to the engine as the reject reason. Ignored when the connection is allowed.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -6982,7 +7434,14 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandAttribute.cs",
-          "line": 7
+          "line": 8,
+          "doc": {
+            "summary": "The command\u0027s name followed by its aliases, without a prefix.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "property",
@@ -6991,7 +7450,46 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandAttribute.cs",
-          "line": 8
+          "line": 11,
+          "doc": {
+            "summary": "One line for \u0060dw_help\u0060 and the generated permission files, e.g. \u0022Kick a player: kick \u003Cplayer\u003E [reason]\u0022.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Permission",
+          "signature": "public string Permission { get; set; } = \u0022\u0022;",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/CommandAttribute.cs",
+          "line": 17,
+          "doc": {
+            "summary": "Permission a player needs to run this command, e.g. \u0060admin.moderation.ban\u0060. Empty means anyone. The server console always may. Server owners can change it in \u0060configs/permissions/overrides.jsonc\u0060.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "TargetImmunity",
+          "signature": "public TargetImmunity TargetImmunity { get; set; } = TargetImmunity.Auto;",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/CommandAttribute.cs",
+          "line": 20,
+          "doc": {
+            "summary": "Whether {@cref Target} parameters leave out players the caller can\u0027t target.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "property",
@@ -7000,9 +7498,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandAttribute.cs",
-          "line": 11,
+          "line": 23,
           "doc": {
-            "summary": "Refuses execution from any player caller.",
+            "summary": "Lets only the server console (and RCON) run the command, whatever permissions a player has.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -7016,9 +7514,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandAttribute.cs",
-          "line": 14,
+          "line": 26,
           "doc": {
-            "summary": "Skip the \u0060dw_name\u0060 console command.",
+            "summary": "Creates only \u0060/name\u0060 and \u0060!name\u0060. Not even the server console can run it then.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -7032,9 +7530,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandAttribute.cs",
-          "line": 17,
+          "line": 32,
           "doc": {
-            "summary": "Skip the \u0060/name\u0060 and \u0060!name\u0060 chat commands.",
+            "summary": "Creates only \u0060dw_name\u0060. Players can still run it from their own game console, so use {@cref Permission} or {@cref ServerOnly} to keep it from them.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -7048,9 +7546,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandAttribute.cs",
-          "line": 20,
+          "line": 35,
           "doc": {
-            "summary": "Force the \u0060!name\u0060 invocation to be hidden from chat broadcast.",
+            "summary": "Hides \u0060!name\u0060 from chat, like \u0060/name\u0060.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -7064,9 +7562,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandAttribute.cs",
-          "line": 23,
+          "line": 38,
           "doc": {
-            "summary": "Exclude from the \u0060dw_help\u0060 listing.",
+            "summary": "Leaves the command out of \u0060dw_help\u0060.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -7084,7 +7582,16 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandAttribute.cs",
-          "line": 25
+          "line": 42,
+          "doc": {
+            "params": {
+              "name": "The command\u0027s name, without a prefix: \u0060\u0022kick\u0022\u0060 creates \u0060/kick\u0060, \u0060!kick\u0060 and \u0060dw_kick\u0060.",
+              "aliases": "Other names for the same command, created the same way."
+            },
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         }
       ]
     },
@@ -7095,9 +7602,9 @@
       "folder": "Commands",
       "declaration": "public static class CommandConverters",
       "file": "managed/DeadworksManaged.Api/Commands/CommandConverters.cs",
-      "line": 6,
+      "line": 13,
       "doc": {
-        "summary": "Per-type string parsers for {@cref CommandAttribute}. Register from \u0060OnLoad\u0060.",
+        "summary": "Per-type string parsers for {@cref CommandAttribute} parameters, for types Deadworks doesn\u0027t parse itself. Register from \u0060OnLoad\u0060; a plugin\u0027s converters are dropped automatically when it unloads. A parser may throw {@cref CommandException} to tell the caller what\u0027s wrong with their input; anything else shows the usage line. A converter applies to every plugin\u0027s commands, so prefer registering one for your own types; one for a shared type such as {@cref TimeSpan} replaces any other plugin\u0027s.",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -7115,12 +7622,17 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandConverters.cs",
-          "line": 11,
+          "line": 25,
           "doc": {
-            "summary": "Registers a parser for \u0060T\u0060. Overwrites any prior registration.",
+            "summary": "Registers a parser for \u0060T\u0060, replacing any earlier one (with a warning if another plugin\u0027s).",
             "params": {},
             "typeParams": {},
-            "exceptions": [],
+            "exceptions": [
+              {
+                "type": "ArgumentException",
+                "text": "Deadworks parses \u0060T\u0060 itself: numbers, {@cref bool}, {@cref string}, enums, {@cref Caller}, {@cref Target} and {@cref CCitadelPlayerController}. Take a {@cref string} parameter and parse it in the command instead."
+              }
+            ],
             "seeAlso": []
           }
         },
@@ -7132,7 +7644,14 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandConverters.cs",
-          "line": 14
+          "line": 38,
+          "doc": {
+            "summary": "Removes the parser for \u0060T\u0060. Returns false if there wasn\u0027t one.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         }
       ]
     },
@@ -7143,9 +7662,9 @@
       "folder": "Commands",
       "declaration": "public sealed class CommandException : Exception",
       "file": "managed/DeadworksManaged.Api/Commands/CommandException.cs",
-      "line": 4,
+      "line": 8,
       "doc": {
-        "summary": "Thrown from a {@cref CommandAttribute} handler to send {@cref Exception.Message} to the caller.",
+        "summary": "Thrown from a {@cref CommandAttribute} handler, or a {@cref CommandConverters} parser, to stop the command and send {@cref Exception.Message} to the caller. Nothing is logged: it\u0027s an answer, not an error. Any other exception is logged with its stack trace, and the caller only hears that the command failed.",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -7165,7 +7684,15 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandException.cs",
-          "line": 6
+          "line": 11,
+          "doc": {
+            "params": {
+              "message": "What the caller sees, e.g. \u0022lapka isn\u0027t alive.\u0022"
+            },
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "constructor",
@@ -7178,7 +7705,16 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Commands/CommandException.cs",
-          "line": 7
+          "line": 15,
+          "doc": {
+            "params": {
+              "message": "What the caller sees.",
+              "inner": "The exception that caused it, kept for debugging; the caller doesn\u0027t see it."
+            },
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         }
       ]
     },
@@ -7197,7 +7733,7 @@
         "exceptions": [],
         "seeAlso": []
       },
-      "obsolete": "Use [Command] instead.",
+      "obsolete": "Use [Command] instead. Commands with this attribute are no longer registered: they skipped permission checks.",
       "bases": [
         "Attribute"
       ],
@@ -8725,7 +9261,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 8
+          "line": 9,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8737,7 +9279,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 13
+          "line": 15,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8747,7 +9295,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 14
+          "line": 17,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "property",
@@ -8756,7 +9310,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 17,
+          "line": 20,
           "doc": {
             "summary": "Per-plugin timer service.",
             "params": {},
@@ -8772,7 +9326,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 20,
+          "line": 23,
           "doc": {
             "summary": "Content addons this plugin needs connecting clients to download.",
             "params": {},
@@ -8789,7 +9343,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 22
+          "line": 26,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8799,7 +9359,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 23
+          "line": 28,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8813,7 +9379,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 24
+          "line": 30,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8825,7 +9397,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 25
+          "line": 32,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8837,7 +9415,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 26
+          "line": 34,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8849,7 +9433,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 27
+          "line": 36,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8861,7 +9451,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 28
+          "line": 38,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8873,7 +9469,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 29
+          "line": 40,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8885,7 +9487,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 30
+          "line": 42,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8897,7 +9505,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 31
+          "line": 44,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8909,7 +9523,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 32
+          "line": 46,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8921,7 +9541,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 33
+          "line": 48,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8933,7 +9559,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 34
+          "line": 50,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8945,7 +9577,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 35
+          "line": 52,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8957,7 +9595,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 36
+          "line": 54,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8969,7 +9613,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 37
+          "line": 56,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8981,7 +9631,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 38
+          "line": 58,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -8993,7 +9649,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 39
+          "line": 60,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -9005,7 +9667,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 40
+          "line": 62,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -9017,7 +9685,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 41
+          "line": 64,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -9029,7 +9703,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 42
+          "line": 66,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -9039,7 +9719,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 43
+          "line": 68,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -9051,7 +9737,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 44
+          "line": 70,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -9063,7 +9755,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 45
+          "line": 72,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -9075,7 +9773,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 46
+          "line": 74,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -9088,7 +9792,175 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
-          "line": 47
+          "line": 76,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "OnClientAuthorized",
+          "signature": "public virtual void OnClientAuthorized(ClientAuthorizedEvent args)",
+          "parameters": [
+            "args"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
+          "line": 78,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "OnPermissionsChanged",
+          "signature": "public virtual void OnPermissionsChanged(ulong? steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
+          "line": 80,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "OnPenaltyAdded",
+          "signature": "public virtual void OnPenaltyAdded(Penalty penalty)",
+          "parameters": [
+            "penalty"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
+          "line": 82,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "OnPenaltyRemoved",
+          "signature": "public virtual void OnPenaltyRemoved(Penalty penalty)",
+          "parameters": [
+            "penalty"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
+          "line": 84,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "OnAdminAction",
+          "signature": "public virtual void OnAdminAction(AdminLogEntry entry)",
+          "parameters": [
+            "entry"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/DeadworksPluginBase.cs",
+          "line": 86,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "DeclarePermissionAttribute",
+      "kind": "class",
+      "folder": "Permissions",
+      "declaration": "public sealed class DeclarePermissionAttribute : Attribute",
+      "file": "managed/DeadworksManaged.Api/Permissions/DeclarePermissionAttribute.cs",
+      "line": 8,
+      "doc": {
+        "summary": "Lists a permission that is only checked in code (with {@cref PermissionExtensions.HasPermission}) in the plugin\u0027s generated permissions file, so server owners can find it. Permissions on {@cref CommandAttribute} are listed automatically.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [
+        "Attribute"
+      ],
+      "members": [
+        {
+          "kind": "property",
+          "name": "Permission",
+          "signature": "public string Permission { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/DeclarePermissionAttribute.cs",
+          "line": 11,
+          "doc": {
+            "summary": "The permission, e.g. \u0060medic.heal.others\u0060. Like any permission, it shouldn\u0027t also be the parent of another.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Description",
+          "signature": "public string Description { get; set; } = \u0022\u0022;",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/DeclarePermissionAttribute.cs",
+          "line": 13,
+          "doc": {
+            "summary": "What holding it allows, shown to server owners.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "constructor",
+          "name": "DeclarePermissionAttribute",
+          "signature": "public DeclarePermissionAttribute(string permission)",
+          "parameters": [
+            "permission"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/DeclarePermissionAttribute.cs",
+          "line": 16,
+          "doc": {
+            "summary": "Lists \u0060permission\u0060 in the plugin\u0027s generated permissions file.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         }
       ]
     },
@@ -14503,8 +15375,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "RatkingHoldingBanner",
-          "signature": "RatkingHoldingBanner = 0x14a",
+          "name": "ItemsIgnoreCombatAbilitiesDisabled",
+          "signature": "ItemsIgnoreCombatAbilitiesDisabled = 0x14a",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -14512,8 +15384,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "DoormanLuggageDragged",
-          "signature": "DoormanLuggageDragged = 0x14b",
+          "name": "RatkingHoldingBanner",
+          "signature": "RatkingHoldingBanner = 0x14b",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -14521,8 +15393,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "BabaBenchrun",
-          "signature": "BabaBenchrun = 0x14c",
+          "name": "DoormanLuggageDragged",
+          "signature": "DoormanLuggageDragged = 0x14c",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -14530,8 +15402,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "DisplayDamageBlockText",
-          "signature": "DisplayDamageBlockText = 0x14d",
+          "name": "BabaBenchrun",
+          "signature": "BabaBenchrun = 0x14d",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -14539,8 +15411,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "InCorruptedItemShop",
-          "signature": "InCorruptedItemShop = 0x14e",
+          "name": "DisplayDamageBlockText",
+          "signature": "DisplayDamageBlockText = 0x14e",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -14548,8 +15420,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "HideoutGame",
-          "signature": "HideoutGame = 0x14f",
+          "name": "InCorruptedItemShop",
+          "signature": "InCorruptedItemShop = 0x14f",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -14557,12 +15429,21 @@
         },
         {
           "kind": "enumValue",
-          "name": "Count",
-          "signature": "Count = 0x150",
+          "name": "HideoutGame",
+          "signature": "HideoutGame = 0x150",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
           "line": 341
+        },
+        {
+          "kind": "enumValue",
+          "name": "Count",
+          "signature": "Count = 0x151",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
+          "line": 342
         },
         {
           "kind": "enumValue",
@@ -14571,7 +15452,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 342
+          "line": 343
         }
       ]
     },
@@ -17677,7 +18558,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/GlobalVars.cs",
-          "line": 39,
+          "line": 38,
           "doc": {
             "summary": "Whether the global vars pointer is currently available.",
             "params": {},
@@ -17693,7 +18574,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/GlobalVars.cs",
-          "line": 42,
+          "line": 41,
           "doc": {
             "summary": "Absolute time (per frame, not high-precision). Use for render-related timing.",
             "params": {},
@@ -17709,7 +18590,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/GlobalVars.cs",
-          "line": 45,
+          "line": 44,
           "doc": {
             "summary": "Absolute frame counter - continues to increase even if game is paused.",
             "params": {},
@@ -17725,7 +18606,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/GlobalVars.cs",
-          "line": 48,
+          "line": 47,
           "doc": {
             "summary": "Non-paused frame time.",
             "params": {},
@@ -17741,7 +18622,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/GlobalVars.cs",
-          "line": 51,
+          "line": 50,
           "doc": {
             "summary": "Maximum number of connected clients.",
             "params": {},
@@ -17757,7 +18638,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/GlobalVars.cs",
-          "line": 54,
+          "line": 53,
           "doc": {
             "summary": "Current server simulation time.",
             "params": {},
@@ -17773,7 +18654,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/GlobalVars.cs",
-          "line": 57,
+          "line": 56,
           "doc": {
             "summary": "Time spent on the last server frame.",
             "params": {},
@@ -17789,7 +18670,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/GlobalVars.cs",
-          "line": 60,
+          "line": 59,
           "doc": {
             "summary": "Whether the engine is currently in simulation (not rendering).",
             "params": {},
@@ -17805,7 +18686,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/GlobalVars.cs",
-          "line": 63,
+          "line": 62,
           "doc": {
             "summary": "Simulation tick count - does not increase when game is paused.",
             "params": {},
@@ -17821,7 +18702,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/GlobalVars.cs",
-          "line": 66,
+          "line": 65,
           "doc": {
             "summary": "Subtick fraction for the current movement processing.",
             "params": {},
@@ -17837,7 +18718,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/GlobalVars.cs",
-          "line": 69,
+          "line": 68,
           "doc": {
             "summary": "Simulation tick interval (seconds per tick).",
             "params": {},
@@ -19421,6 +20302,101 @@
             "exceptions": [],
             "seeAlso": []
           }
+        },
+        {
+          "kind": "method",
+          "name": "OnClientAuthorized",
+          "signature": "void OnClientAuthorized(ClientAuthorizedEvent args)",
+          "parameters": [
+            "args"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
+          "line": 174,
+          "doc": {
+            "summary": "Called once per connection when Steam confirms who a player is, usually a few seconds after they connect. Until then they only have the \u0060default\u0060 role. Not called for a player who turns out to be banned: they are kicked instead.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "OnPermissionsChanged",
+          "signature": "void OnPermissionsChanged(ulong? steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
+          "line": 181,
+          "doc": {
+            "summary": "Called after permissions change: a reload (\u0060steamId64\u0060 is null, meaning everyone), a grant or revoke for one player, or Steam validating a player, when their own roles replace \u0060default\u0060. Use it to refresh anything that depends on who can do what, such as admin menus.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "OnPenaltyAdded",
+          "signature": "void OnPenaltyAdded(Penalty penalty)",
+          "parameters": [
+            "penalty"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
+          "line": 187,
+          "doc": {
+            "summary": "Called after a ban, gag or mute is added, by any plugin, or found when penalties are reloaded (added by hand, or by another server sharing the store).",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "OnPenaltyRemoved",
+          "signature": "void OnPenaltyRemoved(Penalty penalty)",
+          "parameters": [
+            "penalty"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
+          "line": 194,
+          "doc": {
+            "summary": "Called after a penalty ends: lifted, replaced by a newer one, or run out. The penalty passed is the ended one. When a reload finds a penalty lifted elsewhere, {@cref Penalty.RemovedUtc} is set, but who lifted it may be unknown.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "OnAdminAction",
+          "signature": "void OnAdminAction(AdminLogEntry entry)",
+          "parameters": [
+            "entry"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
+          "line": 197,
+          "doc": {
+            "summary": "Called for every action written to the admin log, e.g. to forward it to Discord.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         }
       ]
     },
@@ -20872,6 +21848,215 @@
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Trace/InteractionLayer.cs",
           "line": 77
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "IPenaltyStore",
+      "kind": "interface",
+      "folder": "Admin",
+      "declaration": "public interface IPenaltyStore",
+      "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+      "line": 177,
+      "doc": {
+        "summary": "Where penalties are kept. The built-in store is \u0060configs/penalties/penalties.jsonc\u0060; register another with {@cref Penalties.RegisterStore} to share bans between servers or with a web panel.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "method",
+          "name": "LoadActiveAsync",
+          "signature": "Task\u003CIReadOnlyList\u003CPenalty\u003E\u003E LoadActiveAsync(CancellationToken ct)",
+          "parameters": [
+            "ct"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 180,
+          "doc": {
+            "summary": "Every penalty that may still be active. Called at startup and when the store is selected.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "AddAsync",
+          "signature": "Task AddAsync(Penalty penalty, CancellationToken ct)",
+          "parameters": [
+            "penalty",
+            "ct"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 183,
+          "doc": {
+            "summary": "Saves a new penalty.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "UpdateAsync",
+          "signature": "Task UpdateAsync(Penalty penalty, CancellationToken ct)",
+          "parameters": [
+            "penalty",
+            "ct"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 186,
+          "doc": {
+            "summary": "Saves a penalty that was lifted or replaced (its {@cref Penalty.RemovedUtc} is now set).",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "LoadHistoryAsync",
+          "signature": "Task\u003CIReadOnlyList\u003CPenalty\u003E\u003E LoadHistoryAsync(ulong steamId64, CancellationToken ct)",
+          "parameters": [
+            "steamId64",
+            "ct"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 189,
+          "doc": {
+            "summary": "Every penalty the store has for one player, newest first.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "event",
+          "name": "Changed",
+          "signature": "event Action? Changed;",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 192,
+          "doc": {
+            "summary": "Raise when penalties changed outside Deadworks, e.g. a ban added on another server. Deadworks reloads them.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "IPermissionStore",
+      "kind": "interface",
+      "folder": "Permissions",
+      "declaration": "public interface IPermissionStore",
+      "file": "managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs",
+      "line": 8,
+      "doc": {
+        "summary": "Where roles and player entries come from. The built-in store reads \u0060configs/permissions/*.jsonc\u0060; register another with {@cref Permissions.RegisterStore} to keep them in a database or web panel. Wildcards, immunity and every other rule are evaluated by Deadworks, so they behave the same on every store.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "method",
+          "name": "LoadRolesAsync",
+          "signature": "Task\u003CIReadOnlyDictionary\u003Cstring, RoleDefinition\u003E\u003E LoadRolesAsync(CancellationToken ct)",
+          "parameters": [
+            "ct"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs",
+          "line": 11,
+          "doc": {
+            "summary": "Every role by name. Called at startup and on \u0060dw_perm_reload\u0060.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "LoadPlayerAsync",
+          "signature": "Task\u003CPlayerEntry?\u003E LoadPlayerAsync(ulong steamId64, CancellationToken ct)",
+          "parameters": [
+            "steamId64",
+            "ct"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs",
+          "line": 14,
+          "doc": {
+            "summary": "Called when a player connects, and on demand for offline checks. Null means no entry.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "SavePlayerAsync",
+          "signature": "Task SavePlayerAsync(ulong steamId64, PlayerEntry? entry, CancellationToken ct)",
+          "parameters": [
+            "steamId64",
+            "entry",
+            "ct"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs",
+          "line": 17,
+          "doc": {
+            "summary": "Persists a change made with the \u0060dw_role_*\u0060/\u0060dw_perm_*\u0060 commands. A null entry deletes the player.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "event",
+          "name": "Changed",
+          "signature": "event Action\u003Culong?\u003E? Changed;",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs",
+          "line": 20,
+          "doc": {
+            "summary": "Raise when data changed outside Deadworks. Pass the affected SteamID64, or null to reload everything.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         }
       ]
     },
@@ -23023,6 +24208,1022 @@
     },
     {
       "namespace": "DeadworksManaged.Api",
+      "name": "Penalties",
+      "kind": "static class",
+      "folder": "Admin",
+      "declaration": "public static class Penalties",
+      "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+      "line": 93,
+      "doc": {
+        "summary": "Bans, gags and mutes. Deadworks stores and enforces all three: banned players can\u0027t join, gagged players\u0027 chat never reaches chat or any plugin, and muted players\u0027 voice is dropped before anyone hears it or any plugin sees it. Plugins only decide when to add or remove them, and hear about changes through {@cref IDeadworksPlugin.OnPenaltyAdded} and {@cref IDeadworksPlugin.OnPenaltyRemoved}. Immunity is not checked here; check {@cref Caller.CanTarget} or {@cref Permissions.CanTarget} before penalizing someone on another player\u0027s behalf.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "method",
+          "name": "DescribeDuration",
+          "signature": "public static string DescribeDuration(TimeSpan? duration)",
+          "parameters": [
+            "duration"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 104,
+          "doc": {
+            "summary": "A penalty length worded like an admin announcement, rounded up to the minute: \u0022permanently\u0022 for null, \u0022for 45 minutes\u0022, \u0022for 1 hour\u0022, \u0022for 1h 5m\u0022, \u0022for 3 days\u0022, \u0022for 2d 4h\u0022. The Admin plugin words every length this way, so a plugin that announces penalties matches it.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "Add",
+          "signature": "public static Penalty Add(PenaltyType type, ulong steamId64, TimeSpan? duration, Caller by, string reason = \u0022\u0022, string? playerName = null)",
+          "parameters": [
+            "type",
+            "steamId64",
+            "duration",
+            "by",
+            "reason",
+            "playerName"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 131,
+          "doc": {
+            "summary": "Adds a penalty on behalf of \u0060by\u0060. A null \u0060duration\u0060 is permanent. An active penalty of the same type on the same player is replaced, even by a shorter one: check {@cref WouldShorten} first if shortening should need more than adding. Adding a ban kicks the player if they\u0027re connected.",
+            "remarks": "The penalty applies at once and is saved in the background. If that save fails, it still applies until the server restarts, and the console prints an ERROR; this method has already returned by then.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [
+              {
+                "type": "ArgumentOutOfRangeException",
+                "text": "\u0060duration\u0060 is zero or negative; use null for permanent."
+              },
+              {
+                "type": "CommandException",
+                "text": "The SteamID belongs to a player on the server whom Steam hasn\u0027t confirmed yet, so it can\u0027t be trusted to penalize (the server console may anyway); or the penalty store is unavailable or its file has an error."
+              }
+            ],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "Remove",
+          "signature": "public static bool Remove(PenaltyType type, ulong steamId64, Caller by, string reason = \u0022\u0022)",
+          "parameters": [
+            "type",
+            "steamId64",
+            "by",
+            "reason"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 138,
+          "doc": {
+            "summary": "Lifts the player\u0027s active penalty of this type on behalf of \u0060by\u0060, with an optional reason kept in its history. Returns false if they had none.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "GetActive",
+          "signature": "public static Penalty? GetActive(PenaltyType type, ulong steamId64)",
+          "parameters": [
+            "type",
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 141,
+          "doc": {
+            "summary": "The player\u0027s active penalty of this type, or null.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "WouldShorten",
+          "signature": "public static Penalty? WouldShorten(PenaltyType type, ulong steamId64, TimeSpan? duration)",
+          "parameters": [
+            "type",
+            "steamId64",
+            "duration"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 148,
+          "doc": {
+            "summary": "The active penalty that adding one of \u0060duration\u0060 (null = permanent) would cut short, or null if there is none or the new one lasts at least as long. Replacing a penalty with a shorter one partly lifts it, so a command may want the lifting permission for that, as the Admin plugin\u0027s ban does.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "GetAllActive",
+          "signature": "public static IReadOnlyList\u003CPenalty\u003E GetAllActive(PenaltyType? type = null)",
+          "parameters": [
+            "type"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 151,
+          "doc": {
+            "summary": "Every active penalty, optionally only those of one type, oldest first.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "GetHistoryAsync",
+          "signature": "public static Task\u003CIReadOnlyList\u003CPenalty\u003E\u003E GetHistoryAsync(ulong steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 157,
+          "doc": {
+            "summary": "Every penalty the store still has for this player, newest first, including removed and expired ones. Faults while the store is unavailable, rather than answering with an empty history.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "IsBanned",
+          "signature": "public static bool IsBanned(ulong steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 160,
+          "doc": {
+            "summary": "Whether the player has an active ban.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "IsGagged",
+          "signature": "public static bool IsGagged(ulong steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 162,
+          "doc": {
+            "summary": "Whether the player has an active gag.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "IsMuted",
+          "signature": "public static bool IsMuted(ulong steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 164,
+          "doc": {
+            "summary": "Whether the player has an active mute.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "RegisterStore",
+          "signature": "public static void RegisterStore(IDeadworksPlugin owner, string name, IPenaltyStore store)",
+          "parameters": [
+            "owner",
+            "name",
+            "store"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 170,
+          "doc": {
+            "summary": "Offers a store for penalties. It becomes active when \u0060penalties.store\u0060 in \u0060configs/deadworks.jsonc\u0060 names it, and is dropped automatically when \u0060owner\u0060 unloads.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "Penalty",
+      "kind": "record",
+      "folder": "Admin",
+      "declaration": "public sealed record Penalty",
+      "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+      "line": 28,
+      "doc": {
+        "summary": "A ban, gag or mute on one SteamID. Removed and expired penalties are kept as history.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "property",
+          "name": "Id",
+          "signature": "public Guid Id { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 31,
+          "doc": {
+            "summary": "Identifies this penalty in its store.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Type",
+          "signature": "public required PenaltyType Type { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 33,
+          "doc": {
+            "summary": "What it stops the player doing.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "SteamId64",
+          "signature": "public required ulong SteamId64 { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 35,
+          "doc": {
+            "summary": "The penalized player.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "PlayerName",
+          "signature": "public string? PlayerName { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 37,
+          "doc": {
+            "summary": "The player\u0027s name when the penalty was added, for display only.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "CreatedUtc",
+          "signature": "public DateTime CreatedUtc { get; init; } = DateTime.UtcNow;",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 39,
+          "doc": {
+            "summary": "When it was added.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "ExpiresUtc",
+          "signature": "public DateTime? ExpiresUtc { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 41,
+          "doc": {
+            "summary": "When it runs out, or null for permanent.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Reason",
+          "signature": "public string Reason { get; init; } = \u0022\u0022;",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 43,
+          "doc": {
+            "summary": "Why it was added.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "AdminSteamId64",
+          "signature": "public ulong AdminSteamId64 { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 45,
+          "doc": {
+            "summary": "Who added it, or 0 for the server console.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "AdminName",
+          "signature": "public string? AdminName { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 47,
+          "doc": {
+            "summary": "The admin\u0027s name at the time, for display only.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "RemovedUtc",
+          "signature": "public DateTime? RemovedUtc { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 49,
+          "doc": {
+            "summary": "When it was lifted early (unban, ungag, ...), or replaced by a newer penalty of the same type.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "RemovedBySteamId64",
+          "signature": "public ulong RemovedBySteamId64 { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 51,
+          "doc": {
+            "summary": "Who lifted or replaced it, or 0 for the server console.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "RemovedByName",
+          "signature": "public string? RemovedByName { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 53,
+          "doc": {
+            "summary": "The name of who lifted or replaced it, for display only; null if it hasn\u0027t been.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "RemovalReason",
+          "signature": "public string? RemovalReason { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 55,
+          "doc": {
+            "summary": "Why it was lifted, if the admin said.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "ReplacedBy",
+          "signature": "public Guid? ReplacedBy { get; init; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 57,
+          "doc": {
+            "summary": "The penalty that replaced this one, if it was replaced rather than lifted.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "IsPermanent",
+          "signature": "public bool IsPermanent { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 61,
+          "doc": {
+            "summary": "True for a penalty with no end date.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "HowEnded",
+          "signature": "public PenaltyEnd? HowEnded(DateTime nowUtc)",
+          "parameters": [
+            "nowUtc"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 64,
+          "doc": {
+            "summary": "How it stopped applying by \u0060nowUtc\u0060, or null if it still applies.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "IsActiveAt",
+          "signature": "public bool IsActiveAt(DateTime nowUtc)",
+          "parameters": [
+            "nowUtc"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 75,
+          "doc": {
+            "summary": "Whether it applies at \u0060nowUtc\u0060: not lifted and not expired.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "DescribeRemaining",
+          "signature": "public string DescribeRemaining(DateTime nowUtc)",
+          "parameters": [
+            "nowUtc"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 81,
+          "doc": {
+            "summary": "\u0022permanently\u0022, or how long is left, rounded up to the minute and worded like an admin announcement: \u0022for 45 minutes\u0022, \u0022for 1 hour\u0022, \u0022for 1h 5m\u0022, \u0022for 3 days\u0022, \u0022for 2d 4h\u0022.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "PenaltyEnd",
+      "kind": "enum",
+      "folder": "Admin",
+      "declaration": "public enum PenaltyEnd",
+      "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+      "line": 17,
+      "doc": {
+        "summary": "How a penalty stopped applying.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "enumValue",
+          "name": "Lifted",
+          "signature": "Lifted",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 20,
+          "doc": {
+            "summary": "Lifted early by an admin: unban, ungag, unmute.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "enumValue",
+          "name": "Replaced",
+          "signature": "Replaced",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 22,
+          "doc": {
+            "summary": "Replaced by a newer penalty of the same type, e.g. a ban extended or shortened. The player is still penalized.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "enumValue",
+          "name": "Expired",
+          "signature": "Expired",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 24,
+          "doc": {
+            "summary": "Ran out.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "PenaltyType",
+      "kind": "enum",
+      "folder": "Admin",
+      "declaration": "public enum PenaltyType",
+      "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+      "line": 6,
+      "doc": {
+        "summary": "What a {@cref Penalty} stops a player doing.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "enumValue",
+          "name": "Ban",
+          "signature": "Ban",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 9,
+          "doc": {
+            "summary": "Joining the server.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "enumValue",
+          "name": "Gag",
+          "signature": "Gag",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 11,
+          "doc": {
+            "summary": "Typing in chat.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "enumValue",
+          "name": "Mute",
+          "signature": "Mute",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Admin/Penalties.cs",
+          "line": 13,
+          "doc": {
+            "summary": "Talking on voice chat.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "PermissionExplanation",
+      "kind": "record",
+      "folder": "Permissions",
+      "declaration": "public sealed record PermissionExplanation(bool Allowed, string? Grant, string? Source)",
+      "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+      "line": 46,
+      "doc": {
+        "summary": "Why {@cref Permissions.Has} answered the way it did.",
+        "params": {
+          "Allowed": "The answer.",
+          "Grant": "The grant that decided it, as written (e.g. \u0060-admin.moderation.ban\u0060), or null when nothing matched.",
+          "Source": "\u0060player\u0060, \u0060role:\u003Cname\u003E\u0060 (with \u0060(via \u003Crole\u003E)\u0060 when inherited), or \u0060unauthenticated\u0060; null when nothing matched."
+        },
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "method",
+          "name": "ToString",
+          "signature": "public override string ToString()",
+          "parameters": [],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+          "line": 49,
+          "doc": {
+            "summary": "e.g. \u0060denied by \u0022-admin.moderation.ban\u0022 from role:moderator\u0060.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "PermissionExtensions",
+      "kind": "static class",
+      "folder": "Permissions",
+      "declaration": "public static class PermissionExtensions",
+      "file": "managed/DeadworksManaged.Api/Permissions/PermissionExtensions.cs",
+      "line": 4,
+      "doc": {
+        "summary": "Permission checks on a player controller.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "method",
+          "name": "HasPermission",
+          "signature": "public static bool HasPermission(this CCitadelPlayerController player, string permission)",
+          "parameters": [
+            "player",
+            "permission"
+          ],
+          "isStatic": true,
+          "isExtension": true,
+          "file": "managed/DeadworksManaged.Api/Permissions/PermissionExtensions.cs",
+          "line": 7,
+          "doc": {
+            "summary": "Whether this player holds \u0060permission\u0060. A null player holds nothing; see {@cref Caller}.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "CanTarget",
+          "signature": "public static bool CanTarget(this CCitadelPlayerController caller, CCitadelPlayerController target)",
+          "parameters": [
+            "caller",
+            "target"
+          ],
+          "isStatic": true,
+          "isExtension": true,
+          "file": "managed/DeadworksManaged.Api/Permissions/PermissionExtensions.cs",
+          "line": 11,
+          "doc": {
+            "summary": "Whether this player may act on \u0060target\u0060 given both players\u0027 immunity. A null player can\u0027t target anyone.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "Permissions",
+      "kind": "static class",
+      "folder": "Permissions",
+      "declaration": "public static class Permissions",
+      "file": "managed/DeadworksManaged.Api/Permissions/Permissions.cs",
+      "line": 8,
+      "doc": {
+        "summary": "Checks against the server\u0027s roles and players. Most plugins only need {@cref CommandAttribute.Permission} and {@cref Caller.HasPermission}; this class covers offline players and custom stores. A null controller has no permissions: use {@cref Caller} for code that runs for the console or a player.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "method",
+          "name": "Has",
+          "signature": "public static bool Has(ulong steamId64, string permission)",
+          "parameters": [
+            "steamId64",
+            "permission"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/Permissions.cs",
+          "line": 15,
+          "doc": {
+            "summary": "Whether the player holds \u0060permission\u0060. An empty permission is always held.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "Has",
+          "signature": "public static bool Has(CCitadelPlayerController player, string permission)",
+          "parameters": [
+            "player",
+            "permission"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/Permissions.cs",
+          "line": 21,
+          "doc": {
+            "summary": "Whether the player in this controller holds \u0060permission\u0060. A null controller holds nothing, so a failed lookup can\u0027t act as the console; use {@cref Caller.HasPermission} when the console is possible.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "Explain",
+          "signature": "public static PermissionExplanation Explain(ulong steamId64, string permission)",
+          "parameters": [
+            "steamId64",
+            "permission"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/Permissions.cs",
+          "line": 25,
+          "doc": {
+            "summary": "Which grant decided {@cref Has}. This is what \u0060dw_perm_check\u0060 prints.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "CanTarget",
+          "signature": "public static bool CanTarget(ulong callerSteamId64, ulong targetSteamId64)",
+          "parameters": [
+            "callerSteamId64",
+            "targetSteamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/Permissions.cs",
+          "line": 31,
+          "doc": {
+            "summary": "Whether the caller may act on the target: the target\u0027s immunity is not above the caller\u0027s. False while the target\u0027s entry is still loading from the store, since their immunity isn\u0027t known yet; see {@cref IsLoaded}.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "IsLoaded",
+          "signature": "public static bool IsLoaded(ulong steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/Permissions.cs",
+          "line": 38,
+          "doc": {
+            "summary": "Whether the store\u0027s answer for this SteamID has arrived: its entry, or that it has none. Checks by SteamID start loading it; until it arrives they answer as \u0060default\u0060, and {@cref CanTarget} refuses. Always true for the JSON store.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "CanTarget",
+          "signature": "public static bool CanTarget(CCitadelPlayerController caller, CCitadelPlayerController target)",
+          "parameters": [
+            "caller",
+            "target"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/Permissions.cs",
+          "line": 44,
+          "doc": {
+            "summary": "Whether the caller may act on the target given both players\u0027 immunity. A null caller or target is refused; use {@cref Caller.CanTarget} when the console is possible.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "GetImmunity",
+          "signature": "public static int GetImmunity(ulong steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/Permissions.cs",
+          "line": 51,
+          "doc": {
+            "summary": "The player\u0027s immunity: the highest of their roles\u0027, or their own if set. Taken from their saved entry even before Steam confirms them, since immunity protects them rather than letting them do anything.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "GetRoles",
+          "signature": "public static IReadOnlyList\u003Cstring\u003E GetRoles(ulong steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/Permissions.cs",
+          "line": 57,
+          "doc": {
+            "summary": "Roles assigned to the player, not counting \u0060default\u0060 or inherited roles. Like {@cref Has}, none while the player is on the server but not yet confirmed by Steam. For access checks prefer a permission.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "GetSteamId64",
+          "signature": "public static ulong GetSteamId64(int slot)",
+          "parameters": [
+            "slot"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/Permissions.cs",
+          "line": 63,
+          "doc": {
+            "summary": "The SteamID64 the player in \u0060slot\u0060 connected with, or 0 for an empty slot or a bot. Unlike {@cref CBasePlayerController.PlayerSteamId}, plugins can\u0027t change it.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "RegisterStore",
+          "signature": "public static void RegisterStore(IDeadworksPlugin owner, string name, IPermissionStore store)",
+          "parameters": [
+            "owner",
+            "name",
+            "store"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/Permissions.cs",
+          "line": 69,
+          "doc": {
+            "summary": "Offers a store for roles and players. It becomes active when \u0060permissions.store\u0060 in \u0060configs/deadworks.jsonc\u0060 names it, and is dropped automatically when \u0060owner\u0060 unloads.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
       "name": "PlayerCamera",
       "kind": "struct",
       "folder": "",
@@ -23549,6 +25750,106 @@
     },
     {
       "namespace": "DeadworksManaged.Api",
+      "name": "PlayerEntry",
+      "kind": "class",
+      "folder": "Permissions",
+      "declaration": "public sealed class PlayerEntry",
+      "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+      "line": 17,
+      "doc": {
+        "summary": "A player\u0027s entry in \u0060players.jsonc\u0060 (or a custom {@cref IPermissionStore}).",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "property",
+          "name": "Name",
+          "signature": "public string? Name { get; set; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+          "line": 20,
+          "doc": {
+            "summary": "A note for humans. Never used for matching.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Roles",
+          "signature": "public List\u003Cstring\u003E Roles { get; set; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+          "line": 23,
+          "doc": {
+            "summary": "Names of roles in \u0060roles.jsonc\u0060. Everyone also has \u0060default\u0060.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Permissions",
+          "signature": "public List\u003Cstring\u003E Permissions { get; set; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+          "line": 26,
+          "doc": {
+            "summary": "Grants on this player alone. They are checked before any role, so a deny here beats every role.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Immunity",
+          "signature": "public int? Immunity { get; set; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+          "line": 29,
+          "doc": {
+            "summary": "Replaces the immunity the player\u0027s roles would give them.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "Clone",
+          "signature": "public PlayerEntry Clone()",
+          "parameters": [],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+          "line": 32,
+          "doc": {
+            "summary": "A copy whose lists can be changed without touching this entry.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
       "name": "Players",
       "kind": "static class",
       "folder": "Entities",
@@ -23601,6 +25902,25 @@
         },
         {
           "kind": "method",
+          "name": "IsAuthorized",
+          "signature": "public static bool IsAuthorized(int slot)",
+          "parameters": [
+            "slot"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Entities/Players.cs",
+          "line": 76,
+          "doc": {
+            "summary": "Whether Steam has confirmed the player in \u0060slot\u0060, so their roles and permissions apply. Always true when \u0060sv_lan\u0060 is on or \u0060permissions.require_steam_auth\u0060 is off in \u0060deadworks.jsonc\u0060. {@cref IDeadworksPlugin.OnClientAuthorized} fires when it becomes true.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
           "name": "IsConnected",
           "signature": "public static bool IsConnected(int slot)",
           "parameters": [
@@ -23609,7 +25929,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/Players.cs",
-          "line": 70,
+          "line": 79,
           "doc": {
             "summary": "Returns whether the given slot is marked as fully connected.",
             "params": {},
@@ -23626,7 +25946,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/Players.cs",
-          "line": 73,
+          "line": 82,
           "doc": {
             "summary": "Returns all player controllers that exist in the entity system.",
             "params": {},
@@ -23643,7 +25963,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/Players.cs",
-          "line": 84,
+          "line": 93,
           "doc": {
             "summary": "Returns all player controllers for fully connected players.",
             "params": {},
@@ -23660,7 +25980,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/Players.cs",
-          "line": 96,
+          "line": 105,
           "doc": {
             "summary": "Returns the hero pawn for every connected player that has one.",
             "params": {},
@@ -23679,7 +25999,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/Players.cs",
-          "line": 110,
+          "line": 119,
           "doc": {
             "summary": "Returns the player controller in the given slot, or null if the slot is empty.",
             "params": {},
@@ -24721,6 +27041,73 @@
     },
     {
       "namespace": "DeadworksManaged.Api",
+      "name": "RoleDefinition",
+      "kind": "class",
+      "folder": "Permissions",
+      "declaration": "public sealed class RoleDefinition",
+      "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+      "line": 4,
+      "doc": {
+        "summary": "A role from \u0060roles.jsonc\u0060 (or a custom {@cref IPermissionStore}).",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "property",
+          "name": "Permissions",
+          "signature": "public List\u003Cstring\u003E Permissions { get; set; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+          "line": 7,
+          "doc": {
+            "summary": "Grants such as \u0060admin.moderation.kick\u0060, \u0060admin.moderation.*\u0060, \u0060*\u0060, or \u0060-admin.moderation.ban\u0060 to deny.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Inherits",
+          "signature": "public List\u003Cstring\u003E Inherits { get; set; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+          "line": 10,
+          "doc": {
+            "summary": "Roles whose permissions this role also gets. The role\u0027s own permissions beat inherited ones.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Immunity",
+          "signature": "public int? Immunity { get; set; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/PermissionModels.cs",
+          "line": 13,
+          "doc": {
+            "summary": "Immunity for holders of this role. Null means the highest immunity of the roles it inherits, or 0.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
       "name": "SchemaAccessor\u003CT\u003E",
       "kind": "class",
       "folder": "Entities",
@@ -25217,6 +27604,102 @@
         },
         {
           "kind": "method",
+          "name": "Kick",
+          "signature": "public static void Kick(int slot, string message, ENetworkDisconnectionReason reason = ENetworkDisconnectionReason.NetworkDisconnectKicked)",
+          "parameters": [
+            "slot",
+            "message",
+            "reason"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Server.cs",
+          "line": 191,
+          "doc": {
+            "summary": "Disconnects the player in \u0060slot\u0060 with a message. The message is printed to their chat and console first, then passed to the engine as the disconnect reason.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "GetMapList",
+          "signature": "public static IReadOnlyList\u003Cstring\u003E GetMapList()",
+          "parameters": [],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Server.cs",
+          "line": 222,
+          "doc": {
+            "summary": "Maps the server can change to: the game\u0027s own \u0060.vpk\u0060 maps plus \u0060extra_maps\u0060 from \u0060deadworks.jsonc\u0060, sorted by name.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "IsMapValid",
+          "signature": "public static bool IsMapValid(string map)",
+          "parameters": [
+            "map"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Server.cs",
+          "line": 240,
+          "doc": {
+            "summary": "Whether \u0060map\u0060 can be loaded: the engine knows it, or it\u0027s in {@cref GetMapList}. Names with spaces, quotes, \u0060;\u0060 or path tricks are always rejected, so a valid name is safe to put in a command.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "ChangeMap",
+          "signature": "public static bool ChangeMap(string map)",
+          "parameters": [
+            "map"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Server.cs",
+          "line": 259,
+          "doc": {
+            "summary": "Changes to \u0060map\u0060 if {@cref IsMapValid} accepts it. Returns false otherwise.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "ExecuteCommand",
+          "signature": "public static void ExecuteCommand(string command, Action\u003Cstring\u003E onOutput)",
+          "parameters": [
+            "command",
+            "onOutput"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Server.cs",
+          "line": 273,
+          "doc": {
+            "summary": "Runs a server console command and passes what it printed to \u0060onOutput\u0060. Commands run on the next frame, so the callback always comes later. Setting a cvar prints nothing, so the output is empty.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
           "name": "HasCommandLineParm",
           "signature": "public static bool HasCommandLineParm(string parm)",
           "parameters": [
@@ -25225,7 +27708,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Server.cs",
-          "line": 188,
+          "line": 281,
           "doc": {
             "summary": "Returns true if the given parameter is present on the engine command line (e.g. \u0022-nomaster\u0022).",
             "params": {},
@@ -25521,6 +28004,102 @@
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Trace/SphereTrace.cs",
           "line": 10
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "SteamIds",
+      "kind": "static class",
+      "folder": "Permissions",
+      "declaration": "public static class SteamIds",
+      "file": "managed/DeadworksManaged.Api/Permissions/SteamIds.cs",
+      "line": 7,
+      "doc": {
+        "summary": "Helpers for parsing and formatting Steam2, Steam3, and SteamID64 identifiers.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "method",
+          "name": "TryParse",
+          "signature": "public static bool TryParse(string value, out ulong steamId64)",
+          "parameters": [
+            "value",
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/SteamIds.cs",
+          "line": 15,
+          "doc": {
+            "summary": "Attempts to parse Steam2, bracketed Steam3, or SteamID64 text into a SteamID64. Only IDs of individual Steam accounts parse, so a mistyped leading digit is refused rather than read as a different account.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "ToPermissionKey",
+          "signature": "public static string ToPermissionKey(ulong steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/SteamIds.cs",
+          "line": 57,
+          "doc": {
+            "summary": "Formats a SteamID64 as the canonical permission-file key.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "ToSteam2",
+          "signature": "public static string ToSteam2(ulong steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/SteamIds.cs",
+          "line": 60,
+          "doc": {
+            "summary": "Formats a SteamID64 as a Steam2 ID.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "ToSteam3",
+          "signature": "public static string ToSteam3(ulong steamId64)",
+          "parameters": [
+            "steamId64"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Permissions/SteamIds.cs",
+          "line": 67,
+          "doc": {
+            "summary": "Formats a SteamID64 as a bracketed Steam3 ID.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         }
       ]
     },
@@ -26155,6 +28734,220 @@
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/TakeDamageFlags.cs",
           "line": 69
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "Target",
+      "kind": "class",
+      "folder": "Commands",
+      "declaration": "public sealed class Target : IReadOnlyList\u003CCCitadelPlayerController\u003E",
+      "file": "managed/DeadworksManaged.Api/Commands/Target.cs",
+      "line": 11,
+      "doc": {
+        "summary": "Players picked by a {@cref CommandAttribute} argument. Accepts \u0060@me\u0060, \u0060@all\u0060, \u0060@team\u0060, \u0060@enemy\u0060, \u0060#slot\u0060, a SteamID (64, Steam2 or Steam3), or part of a player\u0027s name. Players the caller can\u0027t target are left out according to {@cref CommandAttribute.TargetImmunity}. Never empty: a pattern that matches nobody is a usage error before the command runs.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [
+        "IReadOnlyList\u003CCCitadelPlayerController\u003E"
+      ],
+      "members": [
+        {
+          "kind": "property",
+          "name": "Input",
+          "signature": "public string Input { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Target.cs",
+          "line": 16,
+          "doc": {
+            "summary": "The argument as typed.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "IsGroup",
+          "signature": "public bool IsGroup { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Target.cs",
+          "line": 19,
+          "doc": {
+            "summary": "True for \u0060@all\u0060, \u0060@team\u0060 and \u0060@enemy\u0060, which may match several players.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "Resolve",
+          "signature": "public static Target Resolve(Caller caller, string input, bool enforceImmunity = true)",
+          "parameters": [
+            "caller",
+            "input",
+            "enforceImmunity"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Target.cs",
+          "line": 34,
+          "doc": {
+            "summary": "Resolves \u0060input\u0060 the way a {@cref Target} parameter is bound, for commands that decide for themselves whether an argument is a player, e.g. \u0022a player, or a SteamID that isn\u0027t online\u0022. Players the caller can\u0027t target are left out unless \u0060enforceImmunity\u0060 is false.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [
+              {
+                "type": "CommandException",
+                "text": "Nobody matches, or a single-player pattern hits someone the caller can\u0027t target."
+              }
+            ],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "Single",
+          "signature": "public CCitadelPlayerController Single()",
+          "parameters": [],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Target.cs",
+          "line": 45,
+          "doc": {
+            "summary": "The one player matched, or a {@cref CommandException} telling the caller to be more specific.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
+          "name": "Count",
+          "signature": "public int Count { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Target.cs",
+          "line": 51,
+          "doc": {
+            "summary": "How many players matched; at least one.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "indexer",
+          "name": "this[]",
+          "signature": "public CCitadelPlayerController this[int index] { get; }",
+          "parameters": [
+            "index"
+          ],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Target.cs",
+          "line": 53,
+          "doc": {
+            "summary": "The matched player at \u0060index\u0060.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "GetEnumerator",
+          "signature": "public IEnumerator\u003CCCitadelPlayerController\u003E GetEnumerator()",
+          "parameters": [],
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/Target.cs",
+          "line": 55,
+          "doc": {
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "TargetImmunity",
+      "kind": "enum",
+      "folder": "Commands",
+      "declaration": "public enum TargetImmunity",
+      "file": "managed/DeadworksManaged.Api/Commands/TargetImmunity.cs",
+      "line": 4,
+      "doc": {
+        "summary": "Whether a command\u0027s {@cref Target} parameters skip players the caller can\u0027t target.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "enumValue",
+          "name": "Auto",
+          "signature": "Auto",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/TargetImmunity.cs",
+          "line": 10,
+          "doc": {
+            "summary": "Enforce when the command declares a permission; ignore when it declares none. Decided by the declaration, so a server making the command public in \u0060overrides.jsonc\u0060 doesn\u0027t switch immunity off.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "enumValue",
+          "name": "Enforce",
+          "signature": "Enforce",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/TargetImmunity.cs",
+          "line": 12,
+          "doc": {
+            "summary": "Always leave out players with higher immunity than the caller.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "enumValue",
+          "name": "Ignore",
+          "signature": "Ignore",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Commands/TargetImmunity.cs",
+          "line": 14,
+          "doc": {
+            "summary": "Never consider immunity, e.g. for a stats or spectate command.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         }
       ]
     },

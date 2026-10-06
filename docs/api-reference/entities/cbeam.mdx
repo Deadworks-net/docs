@@ -17,7 +17,7 @@ public sealed class CBeam : CBaseEntity
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`CBaseEntity`](/api-reference/entities/cbaseentity)  
-**Source:** [Entities/CBeam.cs#L22](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBeam.cs#L22)
+**Source:** [Entities/CBeam.cs#L22](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBeam.cs#L22)
 
 ## Notes
 
@@ -37,7 +37,7 @@ Where the beam starts, which is also its [`CBaseEntity.Position`](/api-reference
 public Vector3 StartPosition { get; }
 ```
 
-**Source:** [Entities/CBeam.cs#L35](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBeam.cs#L35)
+**Source:** [Entities/CBeam.cs#L35](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBeam.cs#L35)
 
 ### CBeam.EndPosition {#endposition}
 
@@ -49,7 +49,7 @@ Where the beam ends.
 public Vector3 EndPosition { get; set; }
 ```
 
-**Source:** [Entities/CBeam.cs#L38](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBeam.cs#L38)
+**Source:** [Entities/CBeam.cs#L38](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBeam.cs#L38)
 
 ### CBeam.Width {#width}
 
@@ -61,7 +61,7 @@ How thick the beam is, from 0 up to `MaxWidth`.
 public float Width { get; set; }
 ```
 
-**Source:** [Entities/CBeam.cs#L44](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBeam.cs#L44)
+**Source:** [Entities/CBeam.cs#L44](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBeam.cs#L44)
 
 ## Fields
 
@@ -75,7 +75,7 @@ The widest a beam can be. `Width` caps anything wider to this.
 public const float MaxWidth = 102.3f;
 ```
 
-**Source:** [Entities/CBeam.cs#L26](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBeam.cs#L26)
+**Source:** [Entities/CBeam.cs#L26](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBeam.cs#L26)
 
 ## Methods
 
@@ -89,7 +89,7 @@ Moves the start of the beam, leaving the end where it is.
 public void SetStartPosition(Vector3 position)
 ```
 
-**Source:** [Entities/CBeam.cs#L50](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBeam.cs#L50)
+**Source:** [Entities/CBeam.cs#L50](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBeam.cs#L50)
 
 ### CBeam.SetEndpoints() {#setendpoints}
 
@@ -101,7 +101,7 @@ Moves both ends of the beam at once.
 public void SetEndpoints(Vector3 start, Vector3 end)
 ```
 
-**Source:** [Entities/CBeam.cs#L53](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBeam.cs#L53)
+**Source:** [Entities/CBeam.cs#L53](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBeam.cs#L53)
 
 ### CBeam.Create() {#create}
 
@@ -123,7 +123,7 @@ public static CBeam? Create(Vector3 start, Vector3 end, float width = 1f, Color?
 **Returns**
 The new beam, or `null` if the game couldn't create it.
 
-**Source:** [Entities/CBeam.cs#L64](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBeam.cs#L64)
+**Source:** [Entities/CBeam.cs#L64](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBeam.cs#L64)
 
 ### CBeam.CreateBox() {#createbox}
 
@@ -145,7 +145,7 @@ public static List<CBeam> CreateBox(Vector3 mins, Vector3 maxs, float width = 1f
 **Returns**
 The beams, to remove later with `RemoveAll`. Any that failed to spawn are left out.
 
-**Source:** [Entities/CBeam.cs#L90](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBeam.cs#L90)
+**Source:** [Entities/CBeam.cs#L90](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBeam.cs#L90)
 
 ### CBeam.CreatePolyline() {#createpolyline}
 
@@ -167,7 +167,7 @@ public static List<CBeam> CreatePolyline(IReadOnlyList<Vector3> points, float wi
 **Returns**
 The beams, to remove later with `RemoveAll`. Any that failed to spawn are left out.
 
-**Source:** [Entities/CBeam.cs#L120](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBeam.cs#L120)
+**Source:** [Entities/CBeam.cs#L120](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBeam.cs#L120)
 
 ### CBeam.RemoveAll() {#removeall}
 
@@ -179,4 +179,4 @@ Removes every beam in `beams` that still exists, then empties the list.
 public static void RemoveAll(List<CBeam> beams)
 ```
 
-**Source:** [Entities/CBeam.cs#L134](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBeam.cs#L134)
+**Source:** [Entities/CBeam.cs#L134](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBeam.cs#L134)

@@ -17,7 +17,7 @@ public sealed class CCitadelPlayerController : CBasePlayerController
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`CBasePlayerController`](/api-reference/entities/cbaseplayercontroller)  
-**Source:** [Entities/CCitadelPlayerController.cs#L7](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L7)
+**Source:** [Entities/CCitadelPlayerController.cs#L7](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L7)
 
 ## Properties
 
@@ -29,7 +29,7 @@ public sealed class CCitadelPlayerController : CBasePlayerController
 public PlayerDataGlobal PlayerDataGlobal { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L11](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L11)
+**Source:** [Entities/CCitadelPlayerController.cs#L11](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L11)
 
 ### CCitadelPlayerController.AssignedLane {#assignedlane}
 
@@ -41,7 +41,7 @@ Which lane's zipline this player rides if the match starts with the zipline laun
 public LaneColor AssignedLane { get; set; }
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L19](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L19)
+**Source:** [Entities/CCitadelPlayerController.cs#L19](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L19)
 
 ### CCitadelPlayerController.OriginalLaneAssignment {#originallaneassignment}
 
@@ -53,7 +53,7 @@ The lane this player was first assigned, before any lane swap.
 public LaneColor OriginalLaneAssignment { get; set; }
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L23](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L23)
+**Source:** [Entities/CCitadelPlayerController.cs#L23](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L23)
 
 ### CCitadelPlayerController.Camera {#camera}
 
@@ -65,7 +65,7 @@ Moves this player's camera without moving their hero: pull it back, zoom, point 
 public PlayerCamera Camera { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L129](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L129)
+**Source:** [Entities/CCitadelPlayerController.cs#L137](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L137)
 
 ## Methods
 
@@ -79,7 +79,7 @@ Returns the player's current hero pawn, or null if they have none.
 public CCitadelPlayerPawn? GetHeroPawn()
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L29](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L29)
+**Source:** [Entities/CCitadelPlayerController.cs#L29](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L29)
 
 ### CCitadelPlayerController.TakeOverHero() {#takeoverhero}
 
@@ -94,7 +94,7 @@ public bool TakeOverHero(CCitadelPlayerController from)
 **Returns**
 False if `from` has no hero.
 
-**Source:** [Entities/CCitadelPlayerController.cs#L42](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L42)
+**Source:** [Entities/CCitadelPlayerController.cs#L42](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L42)
 
 ### CCitadelPlayerController.ChangeTeam() {#changeteam}
 
@@ -106,7 +106,7 @@ Moves this player to the specified team, keeping the pawn's hero, abilities and 
 public void ChangeTeam(int teamNum, bool keepHero = true)
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L68](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L68)
+**Source:** [Entities/CCitadelPlayerController.cs#L68](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L68)
 
 ### CCitadelPlayerController.RemoveWithPawns() {#removewithpawns}
 
@@ -120,7 +120,7 @@ By default a player who leaves keeps their controller and hero, so they can reco
 public void RemoveWithPawns()
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L81](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L81)
+**Source:** [Entities/CCitadelPlayerController.cs#L81](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L81)
 
 ### CCitadelPlayerController.MakeObserver() {#makeobserver}
 
@@ -132,7 +132,7 @@ Forcibly removes the player's current pawn, spawns an observer pawn, and attache
 public void MakeObserver()
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L93](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L93)
+**Source:** [Entities/CCitadelPlayerController.cs#L93](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L93)
 
 ### CCitadelPlayerController.SelectHero() {#selecthero}
 
@@ -144,11 +144,11 @@ Forces the player to select the specified hero.
 public void SelectHero(Heroes hero)
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L104](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L104)
+**Source:** [Entities/CCitadelPlayerController.cs#L104](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L104)
 
 ### CCitadelPlayerController.PrintToConsole() {#printtoconsole}
 
-Sends a message to this player's console via "echo" client command.
+Prints a message in this player's console, one `echo` per line.
 
 **Signature**
 
@@ -156,7 +156,7 @@ Sends a message to this player's console via "echo" client command.
 public void PrintToConsole(string message)
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L113](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L113)
+**Source:** [Entities/CCitadelPlayerController.cs#L113](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L113)
 
 ### CCitadelPlayerController.HudAnnounce() {#hudannounce}
 
@@ -168,7 +168,7 @@ Displays a HUD game announcement banner to this player with the given title and 
 public void HudAnnounce(string title = "", string description = "")
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L118](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L118)
+**Source:** [Entities/CCitadelPlayerController.cs#L126](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L126)
 
 ### CCitadelPlayerController.SetCameraAngles() {#setcameraangles}
 
@@ -184,7 +184,7 @@ public void SetCameraAngles(float pitch, float yaw, float roll = 0f)
 **Notes**
 [`CBaseEntity.Teleport`](/api-reference/entities/cbaseentity#teleport) can't turn a player's camera (its `angles` are ignored for players), so call this after moving someone to control which way they end up facing, or use [`CCitadelPlayerPawn.TeleportWithView`](/api-reference/entities/ccitadelplayerpawn#teleportwithview) to do both at once. To restore a view you saved earlier, save [`CCitadelPlayerPawn.CameraAngles`](/api-reference/entities/ccitadelplayerpawn#cameraangles). [`CCitadelPlayerPawn.EyeAngles`](/api-reference/entities/ccitadelplayerpawn#eyeangles) is where the crosshair aims, which can be far off from where the camera points.
 
-**Source:** [Entities/CCitadelPlayerController.cs#L141](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L141), [Entities/CCitadelPlayerController.cs#L149](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L149)
+**Source:** [Entities/CCitadelPlayerController.cs#L149](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L149), [Entities/CCitadelPlayerController.cs#L157](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L157)
 
 ### CCitadelPlayerController.PrintToConsoleAll() {#printtoconsoleall}
 
@@ -196,4 +196,4 @@ Sends a message to all connected players' consoles.
 public static void PrintToConsoleAll(string message)
 ```
 
-**Source:** [Entities/CCitadelPlayerController.cs#L152](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L152)
+**Source:** [Entities/CCitadelPlayerController.cs#L160](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CCitadelPlayerController.cs#L160)

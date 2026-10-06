@@ -10,7 +10,7 @@ description: "Marks a method as a console command handler with signature `void H
 # ConCommandAttribute
 
 :::warning Obsolete
-Use [Command] instead.
+Use [Command] instead. Commands with this attribute are no longer registered: they skipped permission checks.
 :::
 
 Marks a method as a console command handler with signature `void Handler(ConCommandContext ctx)`.
@@ -21,7 +21,7 @@ public sealed class ConCommandAttribute : Attribute
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** `Attribute`  
-**Source:** [ConCommands/ConCommandAttribute.cs#L6](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConCommands/ConCommandAttribute.cs#L6)
+**Source:** [ConCommands/ConCommandAttribute.cs#L6](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConCommands/ConCommandAttribute.cs#L6)
 
 ## Constructors
 
@@ -33,7 +33,7 @@ public sealed class ConCommandAttribute : Attribute
 public ConCommandAttribute(string name)
 ```
 
-**Source:** [ConCommands/ConCommandAttribute.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConCommands/ConCommandAttribute.cs#L12)
+**Source:** [ConCommands/ConCommandAttribute.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConCommands/ConCommandAttribute.cs#L12)
 
 ## Properties
 
@@ -45,7 +45,7 @@ public ConCommandAttribute(string name)
 public string Name { get; }
 ```
 
-**Source:** [ConCommands/ConCommandAttribute.cs#L8](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConCommands/ConCommandAttribute.cs#L8)
+**Source:** [ConCommands/ConCommandAttribute.cs#L8](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConCommands/ConCommandAttribute.cs#L8)
 
 ### ConCommandAttribute.Description {#description}
 
@@ -55,7 +55,7 @@ public string Name { get; }
 public string Description { get; set; } = "";
 ```
 
-**Source:** [ConCommands/ConCommandAttribute.cs#L9](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConCommands/ConCommandAttribute.cs#L9)
+**Source:** [ConCommands/ConCommandAttribute.cs#L9](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConCommands/ConCommandAttribute.cs#L9)
 
 ### ConCommandAttribute.ServerOnly {#serveronly}
 
@@ -65,4 +65,4 @@ public string Description { get; set; } = "";
 public bool ServerOnly { get; set; }
 ```
 
-**Source:** [ConCommands/ConCommandAttribute.cs#L10](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/ConCommands/ConCommandAttribute.cs#L10)
+**Source:** [ConCommands/ConCommandAttribute.cs#L10](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/ConCommands/ConCommandAttribute.cs#L10)

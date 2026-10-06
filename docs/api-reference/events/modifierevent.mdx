@@ -16,7 +16,7 @@ public sealed class ModifierEvent
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Events/ModifierEvent.cs#L10](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L10)
+**Source:** [Events/ModifierEvent.cs#L10](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L10)
 
 ## Notes
 
@@ -34,7 +34,7 @@ Which event this is.
 public required EModifierEvent Event { get; init; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L12)
+**Source:** [Events/ModifierEvent.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L12)
 
 ### ModifierEvent.Caster {#caster}
 
@@ -46,7 +46,7 @@ The entity that raised the event, if any.
 public CBaseEntity? Caster { get; init; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L15)
+**Source:** [Events/ModifierEvent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L15)
 
 ### ModifierEvent.Target {#target}
 
@@ -58,7 +58,7 @@ The target of the event, if any.
 public CBaseEntity? Target { get; init; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L18](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L18)
+**Source:** [Events/ModifierEvent.cs#L18](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L18)
 
 ### ModifierEvent.CastEntity {#castentity}
 
@@ -70,7 +70,7 @@ The entity spawned by the event (projectile, bullet, ...), if any. Meaning depen
 public CBaseEntity? CastEntity { get; init; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L21](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L21)
+**Source:** [Events/ModifierEvent.cs#L21](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L21)
 
 ### ModifierEvent.EventData {#eventdata}
 
@@ -82,7 +82,7 @@ Raw pointer to the event-specific payload. Only valid inside the callback. Use `
 public required nint EventData { get; init; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L27](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L27)
+**Source:** [Events/ModifierEvent.cs#L27](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L27)
 
 ### ModifierEvent.Damage {#damage}
 
@@ -94,7 +94,7 @@ Damage details for `PreDamageTaken`, `DamageTaken` and `HealthTaken`; null for o
 public ModifierDamageEventData? Damage { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L30](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L30)
+**Source:** [Events/ModifierEvent.cs#L30](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L30)
 
 ### ModifierEvent.Ability {#ability}
 
@@ -106,7 +106,7 @@ Ability details for `AbilityCastStarted`, `AbilityPreExecuted` and `AbilityExecu
 public ModifierAbilityEventData? Ability { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L35](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L35)
+**Source:** [Events/ModifierEvent.cs#L35](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L35)
 
 ## Methods
 
@@ -120,7 +120,7 @@ Reads a value at `offset` bytes into `EventData`. Unchecked.
 public unsafe T Read<T>(int offset) where T : unmanaged
 ```
 
-**Source:** [Events/ModifierEvent.cs#L40](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L40)
+**Source:** [Events/ModifierEvent.cs#L40](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L40)
 
 ### ModifierEvent.ReadEntity() {#readentity}
 
@@ -132,4 +132,4 @@ Reads an entity handle at `offset` bytes into `EventData`, or null if invalid.
 public CBaseEntity? ReadEntity(int offset)
 ```
 
-**Source:** [Events/ModifierEvent.cs#L43](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L43)
+**Source:** [Events/ModifierEvent.cs#L43](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L43)

@@ -17,7 +17,7 @@ public class CPlayer_ObserverServices : NativeEntity
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`NativeEntity`](/api-reference/entities/nativeentity)  
-**Source:** [Entities/CPlayer_ObserverServices.cs#L6](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L6)
+**Source:** [Entities/CPlayer_ObserverServices.cs#L6](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L6)
 
 ## Properties
 
@@ -31,7 +31,7 @@ The current networked observer mode.
 public ObserverMode_t ObserverMode { get; }
 ```
 
-**Source:** [Entities/CPlayer_ObserverServices.cs#L14](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L14)
+**Source:** [Entities/CPlayer_ObserverServices.cs#L14](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L14)
 
 ### CPlayer_ObserverServices.ObserverLastMode {#observerlastmode}
 
@@ -43,7 +43,7 @@ The previous non-zero observer mode, restored when re-entering observer state.
 public ObserverMode_t ObserverLastMode { get; set; }
 ```
 
-**Source:** [Entities/CPlayer_ObserverServices.cs#L17](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L17)
+**Source:** [Entities/CPlayer_ObserverServices.cs#L17](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L17)
 
 ### CPlayer_ObserverServices.ObserverTarget {#observertarget}
 
@@ -55,7 +55,7 @@ The currently observed entity, or null if no target.
 public CBaseEntity? ObserverTarget { get; }
 ```
 
-**Source:** [Entities/CPlayer_ObserverServices.cs#L23](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L23)
+**Source:** [Entities/CPlayer_ObserverServices.cs#L23](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L23)
 
 ## Methods
 
@@ -69,7 +69,7 @@ Validates a candidate observer target. Checks that the target is alive and conne
 public bool IsValidObserverTarget(CBaseEntity? target)
 ```
 
-**Source:** [Entities/CPlayer_ObserverServices.cs#L34](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L34)
+**Source:** [Entities/CPlayer_ObserverServices.cs#L34](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L34)
 
 ### CPlayer_ObserverServices.SetObserverMode() {#setobservermode}
 
@@ -81,7 +81,7 @@ Sets the observer mode.
 public void SetObserverMode(ObserverMode_t mode)
 ```
 
-**Source:** [Entities/CPlayer_ObserverServices.cs#L44](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L44)
+**Source:** [Entities/CPlayer_ObserverServices.cs#L44](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L44)
 
 ### CPlayer_ObserverServices.SetObserverTarget() {#setobservertarget}
 
@@ -93,4 +93,4 @@ Sets the observed entity. Pass null to clear.
 public bool SetObserverTarget(CBaseEntity? target)
 ```
 
-**Source:** [Entities/CPlayer_ObserverServices.cs#L51](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L51)
+**Source:** [Entities/CPlayer_ObserverServices.cs#L51](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CPlayer_ObserverServices.cs#L51)

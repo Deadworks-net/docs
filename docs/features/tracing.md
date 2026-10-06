@@ -115,7 +115,7 @@ Trace.Ray(start, end, InteractionLayer.Solid | InteractionLayer.Hitbox);
 
 ## Check whether one player can see another
 
-Trace from one player's eyes to the other's, ignoring both of them. If nothing is hit, there is nothing in the way.
+Trace from one player's eyes to the other's, ignoring both of them. If the line hits nothing, nothing is in the way.
 
 ```csharp
 var trace = CGameTrace.Create();
@@ -131,3 +131,7 @@ bool canSee = !trace.DidHit;
 ```
 
 `Trace.Ray` can only ignore one entity, so this uses `Trace.SimpleTrace`, which can ignore two.
+
+## See also
+
+- [Entities](entities): the things a trace can hit.

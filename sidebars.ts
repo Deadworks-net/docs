@@ -11,11 +11,37 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Getting Started',
+      label: 'Getting started for developers',
       collapsed: false,
+      link: {
+        type: 'generated-index',
+        title: 'Getting started for developers',
+        slug: '/getting-started/developers',
+        description: 'Set up a plugin project and write your first Deadworks plugin.',
+      },
       items: [
-        'getting-started/setup',
-        'getting-started/first-plugin',
+        'getting-started/developers/setup',
+        'getting-started/developers/first-plugin',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Getting started for server admins',
+      collapsed: false,
+      link: {
+        type: 'generated-index',
+        title: 'Getting started for server admins',
+        slug: '/getting-started/server-admins',
+        description:
+          'Run a Deadworks server, install plugins, set up admins and use the admin tools. Read the four pages in order.',
+      },
+      items: [
+        'getting-started/server-admins/run-a-server',
+        'getting-started/server-admins/run-a-server-docker',
+        'getting-started/server-admins/install-plugins',
+        'getting-started/server-admins/set-up-admins',
+        'getting-started/server-admins/use-admin-tools',
+        'getting-started/server-admins/custom-content',
       ],
     },
     {
@@ -25,6 +51,7 @@ const sidebars: SidebarsConfig = {
       items: [
         // The basics: most plugins use these
         'features/commands',
+        'features/permissions',
         'features/chat',
         'features/players',
         'features/heroes',
@@ -57,9 +84,8 @@ const sidebars: SidebarsConfig = {
       label: 'Guides',
       collapsed: false,
       items: [
-        'guides/how-deadworks-works',
-        'guides/plugin-lifecycle',
-        'guides/server-hosting',
+        'guides/admins-and-permissions',
+        'guides/staff-roles',
         'guides/uploading-content',
       ],
     },
@@ -69,27 +95,6 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       link: {type: 'doc', id: 'api-reference/index'},
       items: (apiSidebar as any[]).slice(1),
-    },
-    {
-      type: 'category',
-      label: '(COMING SOON) Admins & Permissions',
-      collapsed: true,
-      link: {
-        type: 'generated-index',
-        title: 'Admins & Permissions (Coming Soon)',
-        slug: '/permissions',
-        description:
-          'Not released yet: these features are coming in an upcoming Deadworks release. Who can use which commands on your server. Server owners: read the four numbered guides in order. Plugin developers: see Plugin Commands for a Role and the API pages.',
-      },
-      items: [
-        'guides/making-yourself-admin',
-        'guides/admin-commands',
-        'guides/admins-and-permissions',
-        'guides/staff-roles',
-        'guides/role-only-commands',
-        'features/permissions',
-        'features/admin-api',
-      ],
     },
   ],
 };

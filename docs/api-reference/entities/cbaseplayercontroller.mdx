@@ -18,7 +18,7 @@ public class CBasePlayerController : CBaseEntity
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`CBaseEntity`](/api-reference/entities/cbaseentity)  
 **Derived types:** [`CCitadelPlayerController`](/api-reference/entities/ccitadelplayercontroller)  
-**Source:** [Entities/CBasePlayerController.cs#L7](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L7)
+**Source:** [Entities/CBasePlayerController.cs#L7](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L7)
 
 ## Properties
 
@@ -32,7 +32,7 @@ The 0-based player slot index for this controller ([`CBaseEntity.EntityIndex`](/
 public int Slot { get; }
 ```
 
-**Source:** [Entities/CBasePlayerController.cs#L11](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L11)
+**Source:** [Entities/CBasePlayerController.cs#L11](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L11)
 
 ### CBasePlayerController.Recipients {#recipients}
 
@@ -44,7 +44,7 @@ A [`RecipientFilter`](/api-reference/networking/recipientfilter) targeting just 
 public RecipientFilter Recipients { get; }
 ```
 
-**Source:** [Entities/CBasePlayerController.cs#L14](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L14)
+**Source:** [Entities/CBasePlayerController.cs#L14](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L14)
 
 ### CBasePlayerController.PlayerName {#playername}
 
@@ -56,7 +56,7 @@ The player's display name (char[128] inline buffer).
 public string PlayerName { get; set; }
 ```
 
-**Source:** [Entities/CBasePlayerController.cs#L27](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L27)
+**Source:** [Entities/CBasePlayerController.cs#L31](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L31)
 
 ### CBasePlayerController.PlayerSteamId {#playersteamid}
 
@@ -68,7 +68,7 @@ The player's SteamID64. A player who disconnects leaves their controller (team, 
 public ulong PlayerSteamId { get; set; }
 ```
 
-**Source:** [Entities/CBasePlayerController.cs#L48](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L48)
+**Source:** [Entities/CBasePlayerController.cs#L52](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L52)
 
 ### CBasePlayerController.Pawn {#pawn}
 
@@ -80,7 +80,7 @@ The controller's current pawn (hero, observer, or any other), or null if none.
 public CBasePlayerPawn? Pawn { get; }
 ```
 
-**Source:** [Entities/CBasePlayerController.cs#L53](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L53)
+**Source:** [Entities/CBasePlayerController.cs#L57](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L57)
 
 ## Methods
 
@@ -94,7 +94,7 @@ Plays a soundevent to just this player at their listener position. Returns the s
 public uint PlaySound(string name, float volume = 1f, float pitch = 1f)
 ```
 
-**Source:** [Entities/CBasePlayerController.cs#L17](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L17)
+**Source:** [Entities/CBasePlayerController.cs#L17](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L17)
 
 ### CBasePlayerController.Kick() {#kick}
 
@@ -104,9 +104,10 @@ Disconnects this player. See [`Server.Kick`](/api-reference/plugin/server#kick).
 
 ```csharp
 public void Kick(ENetworkDisconnectionReason reason = ENetworkDisconnectionReason.NetworkDisconnectKicked)
+public void Kick(string message, ENetworkDisconnectionReason reason = ENetworkDisconnectionReason.NetworkDisconnectKicked)
 ```
 
-**Source:** [Entities/CBasePlayerController.cs#L21](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L21)
+**Source:** [Entities/CBasePlayerController.cs#L21](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L21), [Entities/CBasePlayerController.cs#L25](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L25)
 
 ### CBasePlayerController.SetPawn() {#setpawn}
 
@@ -118,4 +119,4 @@ Assigns a new pawn to this controller, optionally transferring team and movement
 public void SetPawn(CBasePlayerPawn? pawn, bool retainOldPawnTeam = false, bool copyMovementState = false, bool allowTeamMismatch = false, bool preserveMovementState = false)
 ```
 
-**Source:** [Entities/CBasePlayerController.cs#L66](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L66)
+**Source:** [Entities/CBasePlayerController.cs#L70](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/CBasePlayerController.cs#L70)

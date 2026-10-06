@@ -1,41 +1,17 @@
 ---
-title: "Deadworks API Documentation"
+title: "Deadworks documentation"
 sidebar_label: "Overview"
 slug: "/"
 ---
 
-# Deadworks SDK Documentation
+# Deadworks documentation
 
+Deadworks is a .NET plugin framework for **Deadlock** servers.
 
-Deadworks is a .NET plugin framework for creating server-side mods for **Deadlock** (Valve's Source 2 game). Plugins are compiled as .NET DLLs and loaded at runtime, with full access to the game's entity system, networking, damage pipeline, and more.
+## Write plugins
 
-## Quick Start
+[Get started with plugin development →](getting-started/developers/setup)
 
-- [Project Setup](getting-started/setup) — Create a Visual Studio project, reference the API DLL, and configure auto-deploy
-- [Your First Plugin](getting-started/first-plugin) — Build a minimal plugin with a command
+## Run a server
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+[Get started with hosting a server →](getting-started/server-admins/run-a-server)

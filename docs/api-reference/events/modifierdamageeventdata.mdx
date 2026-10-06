@@ -16,7 +16,7 @@ public readonly struct ModifierDamageEventData
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Events/ModifierEvent.cs#L47](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L47)
+**Source:** [Events/ModifierEvent.cs#L47](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L47)
 
 ## Properties
 
@@ -30,7 +30,7 @@ The entity taking damage or receiving health.
 public CBaseEntity? Victim { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L63](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L63)
+**Source:** [Events/ModifierEvent.cs#L63](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L63)
 
 ### ModifierDamageEventData.Attacker {#attacker}
 
@@ -42,7 +42,7 @@ The attacker. `DamageTaken` only.
 public CBaseEntity? Attacker { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L66](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L66)
+**Source:** [Events/ModifierEvent.cs#L66](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L66)
 
 ### ModifierDamageEventData.Info {#info}
 
@@ -54,7 +54,7 @@ The damage info. `PreDamageTaken` and `DamageTaken` only; valid inside the callb
 public CTakeDamageInfo? Info { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L69](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L69)
+**Source:** [Events/ModifierEvent.cs#L69](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L69)
 
 ### ModifierDamageEventData.DamageDealt {#damagedealt}
 
@@ -66,7 +66,7 @@ Damage dealt after mitigation. `DamageTaken` only.
 public int DamageDealt { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L85](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L85)
+**Source:** [Events/ModifierEvent.cs#L85](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L85)
 
 ### ModifierDamageEventData.HealthLost {#healthlost}
 
@@ -78,7 +78,7 @@ Health the victim actually lost. `DamageTaken` only.
 public int HealthLost { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L88](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L88)
+**Source:** [Events/ModifierEvent.cs#L88](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L88)
 
 ### ModifierDamageEventData.HealthBefore {#healthbefore}
 
@@ -90,7 +90,7 @@ Victim's health before the damage was applied. `DamageTaken` only.
 public int HealthBefore { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L91](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L91)
+**Source:** [Events/ModifierEvent.cs#L91](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L91)
 
 ### ModifierDamageEventData.PreModifiedDamage {#premodifieddamage}
 
@@ -102,7 +102,7 @@ Damage before modifiers were applied. `DamageTaken` only.
 public float PreModifiedDamage { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L94](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L94)
+**Source:** [Events/ModifierEvent.cs#L94](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L94)
 
 ### ModifierDamageEventData.DamageType {#damagetype}
 
@@ -114,7 +114,7 @@ Damage type bits. `DamageTaken` only.
 public int DamageType { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L97](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L97)
+**Source:** [Events/ModifierEvent.cs#L97](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L97)
 
 ### ModifierDamageEventData.HealthRequested {#healthrequested}
 
@@ -126,7 +126,7 @@ Health requested. `HealthTaken` only.
 public float HealthRequested { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L100](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L100)
+**Source:** [Events/ModifierEvent.cs#L100](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L100)
 
 ### ModifierDamageEventData.HealthApplied {#healthapplied}
 
@@ -138,4 +138,4 @@ Health actually applied after clamping to max health. `HealthTaken` only.
 public int HealthApplied { get; }
 ```
 
-**Source:** [Events/ModifierEvent.cs#L103](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L103)
+**Source:** [Events/ModifierEvent.cs#L103](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ModifierEvent.cs#L103)

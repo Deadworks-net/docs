@@ -17,7 +17,7 @@ public abstract class DeadworksPluginBase : IDeadworksPlugin
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** `IDeadworksPlugin`  
-**Source:** [DeadworksPluginBase.cs#L7](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L7)
+**Source:** [DeadworksPluginBase.cs#L7](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L7)
 
 ## Properties
 
@@ -31,7 +31,7 @@ Display name of the plugin.
 public abstract string Name { get; }
 ```
 
-**Source:** [DeadworksPluginBase.cs#L8](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L8)
+**Source:** [DeadworksPluginBase.cs#L9](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L9)
 
 ### DeadworksPluginBase.Timer {#timer}
 
@@ -43,7 +43,7 @@ Per-plugin timer service.
 protected ITimer Timer { get; }
 ```
 
-**Source:** [DeadworksPluginBase.cs#L17](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L17)
+**Source:** [DeadworksPluginBase.cs#L20](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L20)
 
 ### DeadworksPluginBase.ContentAddons {#contentaddons}
 
@@ -55,7 +55,7 @@ Content addons this plugin needs connecting clients to download.
 public virtual IReadOnlyList<string> ContentAddons { get; }
 ```
 
-**Source:** [DeadworksPluginBase.cs#L20](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L20)
+**Source:** [DeadworksPluginBase.cs#L23](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L23)
 
 ## Methods
 
@@ -69,7 +69,7 @@ Called when the plugin is loaded or hot-reloaded.
 public virtual void OnLoad(bool isReload)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L13](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L13)
+**Source:** [DeadworksPluginBase.cs#L15](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L15)
 
 ### DeadworksPluginBase.OnUnload() {#onunload}
 
@@ -81,7 +81,7 @@ Called when the plugin is unloaded. Clean up hooks and timers here.
 public virtual void OnUnload()
 ```
 
-**Source:** [DeadworksPluginBase.cs#L14](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L14)
+**Source:** [DeadworksPluginBase.cs#L17](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L17)
 
 ### DeadworksPluginBase.OnPrecacheResources() {#onprecacheresources}
 
@@ -93,7 +93,7 @@ Called during map load to precache resources (particles, models, etc). Use [`Pre
 public virtual void OnPrecacheResources()
 ```
 
-**Source:** [DeadworksPluginBase.cs#L22](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L22)
+**Source:** [DeadworksPluginBase.cs#L26](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L26)
 
 ### DeadworksPluginBase.OnStartupServer() {#onstartupserver}
 
@@ -105,7 +105,7 @@ Called when the server starts up (new map load).
 public virtual void OnStartupServer()
 ```
 
-**Source:** [DeadworksPluginBase.cs#L23](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L23)
+**Source:** [DeadworksPluginBase.cs#L28](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L28)
 
 ### DeadworksPluginBase.OnGameFrame() {#ongameframe}
 
@@ -117,7 +117,7 @@ Called every server frame.
 public virtual void OnGameFrame(bool simulating, bool firstTick, bool lastTick)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L24](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L24)
+**Source:** [DeadworksPluginBase.cs#L30](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L30)
 
 ### DeadworksPluginBase.OnTakeDamage() {#ontakedamage}
 
@@ -129,7 +129,7 @@ Called when an entity takes damage. Return Stop to block the damage from being a
 public virtual HookResult OnTakeDamage(TakeDamageEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L25](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L25)
+**Source:** [DeadworksPluginBase.cs#L32](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L32)
 
 ### DeadworksPluginBase.OnModifyCurrency() {#onmodifycurrency}
 
@@ -141,7 +141,7 @@ Called when a player's currency is about to be modified. Return Stop to block th
 public virtual HookResult OnModifyCurrency(ModifyCurrencyEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L26](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L26)
+**Source:** [DeadworksPluginBase.cs#L34](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L34)
 
 ### DeadworksPluginBase.OnChatMessage() {#onchatmessage}
 
@@ -153,7 +153,7 @@ Called when a player sends a chat message. Return Stop to block the message from
 public virtual HookResult OnChatMessage(ChatMessage message)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L27](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L27)
+**Source:** [DeadworksPluginBase.cs#L36](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L36)
 
 ### DeadworksPluginBase.OnClientConCommand() {#onclientconcommand}
 
@@ -165,7 +165,7 @@ Called when a client sends a console command (e.g. selecthero, changeteam, respa
 public virtual HookResult OnClientConCommand(ClientConCommandEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L28](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L28)
+**Source:** [DeadworksPluginBase.cs#L38](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L38)
 
 ### DeadworksPluginBase.OnClientConnect() {#onclientconnect}
 
@@ -177,7 +177,7 @@ Called when a client is connecting. Return false to reject the connection. All p
 public virtual bool OnClientConnect(ClientConnectEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L29](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L29)
+**Source:** [DeadworksPluginBase.cs#L40](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L40)
 
 ### DeadworksPluginBase.OnClientPutInServer() {#onclientputinserver}
 
@@ -189,7 +189,7 @@ Called when a client is put into the server (initial connection).
 public virtual void OnClientPutInServer(ClientPutInServerEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L30](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L30)
+**Source:** [DeadworksPluginBase.cs#L42](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L42)
 
 ### DeadworksPluginBase.OnClientFullConnect() {#onclientfullconnect}
 
@@ -201,7 +201,7 @@ Called when a client is fully in game: when they join, and again each time they 
 public virtual void OnClientFullConnect(ClientFullConnectEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L31](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L31)
+**Source:** [DeadworksPluginBase.cs#L44](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L44)
 
 ### DeadworksPluginBase.OnClientDisconnecting() {#onclientdisconnecting}
 
@@ -213,7 +213,7 @@ Called as a client starts disconnecting, while their controller and hero are sti
 public virtual void OnClientDisconnecting(ClientDisconnectedEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L32](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L32)
+**Source:** [DeadworksPluginBase.cs#L46](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L46)
 
 ### DeadworksPluginBase.OnClientDisconnect() {#onclientdisconnect}
 
@@ -225,7 +225,7 @@ Called after a client has disconnected. A player's controller and hero stay on t
 public virtual void OnClientDisconnect(ClientDisconnectedEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L33](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L33)
+**Source:** [DeadworksPluginBase.cs#L48](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L48)
 
 ### DeadworksPluginBase.OnEntityCreated() {#onentitycreated}
 
@@ -237,7 +237,7 @@ Called when an entity is created.
 public virtual void OnEntityCreated(EntityCreatedEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L34](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L34)
+**Source:** [DeadworksPluginBase.cs#L50](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L50)
 
 ### DeadworksPluginBase.OnEntitySpawned() {#onentityspawned}
 
@@ -249,7 +249,7 @@ Called when an entity has been fully spawned.
 public virtual void OnEntitySpawned(EntitySpawnedEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L35](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L35)
+**Source:** [DeadworksPluginBase.cs#L52](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L52)
 
 ### DeadworksPluginBase.OnEntityDeleted() {#onentitydeleted}
 
@@ -261,7 +261,7 @@ Called when an entity is deleted.
 public virtual void OnEntityDeleted(EntityDeletedEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L36](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L36)
+**Source:** [DeadworksPluginBase.cs#L54](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L54)
 
 ### DeadworksPluginBase.OnEntityStartTouch() {#onentitystarttouch}
 
@@ -273,7 +273,7 @@ Called when an entity starts touching another entity (trigger zone entry, collis
 public virtual void OnEntityStartTouch(EntityTouchEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L37](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L37)
+**Source:** [DeadworksPluginBase.cs#L56](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L56)
 
 ### DeadworksPluginBase.OnEntityEndTouch() {#onentityendtouch}
 
@@ -285,7 +285,7 @@ Called when an entity stops touching another entity.
 public virtual void OnEntityEndTouch(EntityTouchEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L38](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L38)
+**Source:** [DeadworksPluginBase.cs#L58](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L58)
 
 ### DeadworksPluginBase.OnModifierEvent() {#onmodifierevent}
 
@@ -297,7 +297,7 @@ Called when a modifier event fires (damage taken, ability cast, modifier gained/
 public virtual void OnModifierEvent(ModifierEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L39](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L39)
+**Source:** [DeadworksPluginBase.cs#L60](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L60)
 
 ### DeadworksPluginBase.OnAbilityAttempt() {#onabilityattempt}
 
@@ -309,7 +309,7 @@ Called each think tick before ability execution. Set [`AbilityAttemptEvent.Block
 public virtual void OnAbilityAttempt(AbilityAttemptEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L40](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L40)
+**Source:** [DeadworksPluginBase.cs#L62](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L62)
 
 ### DeadworksPluginBase.OnProcessUsercmds() {#onprocessusercmds}
 
@@ -321,7 +321,7 @@ Called when a player's usercmds are being processed.
 public virtual void OnProcessUsercmds(ProcessUsercmdsEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L41](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L41)
+**Source:** [DeadworksPluginBase.cs#L64](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L64)
 
 ### DeadworksPluginBase.OnAddModifier() {#onaddmodifier}
 
@@ -333,7 +333,7 @@ Called when a modifier is about to be applied to an entity. Return Stop to block
 public virtual HookResult OnAddModifier(AddModifierEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L42](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L42)
+**Source:** [DeadworksPluginBase.cs#L66](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L66)
 
 ### DeadworksPluginBase.OnConfigReloaded() {#onconfigreloaded}
 
@@ -345,7 +345,7 @@ Called after the plugin's config has been reloaded via `dw_reloadconfig`.
 public virtual void OnConfigReloaded()
 ```
 
-**Source:** [DeadworksPluginBase.cs#L43](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L43)
+**Source:** [DeadworksPluginBase.cs#L68](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L68)
 
 ### DeadworksPluginBase.OnCheckTransmit() {#onchecktransmit}
 
@@ -357,7 +357,7 @@ Called per-player each tick after the engine builds the default transmit list. U
 public virtual void OnCheckTransmit(CheckTransmitEvent args)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L44](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L44)
+**Source:** [DeadworksPluginBase.cs#L70](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L70)
 
 ### DeadworksPluginBase.OnPawnHeroInitialized() {#onpawnheroinitialized}
 
@@ -369,7 +369,7 @@ Called whenever a pawn's hero abilities and modifiers have just been (re)populat
 public virtual void OnPawnHeroInitialized(CCitadelPlayerPawn pawn)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L45](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L45)
+**Source:** [DeadworksPluginBase.cs#L72](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L72)
 
 ### DeadworksPluginBase.OnGameStateChanged() {#ongamestatechanged}
 
@@ -381,7 +381,7 @@ Called after a CCitadelGameRules::ChangeGameState transition completes, whether 
 public virtual void OnGameStateChanged(EGameState newState)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L46](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L46)
+**Source:** [DeadworksPluginBase.cs#L74](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L74)
 
 ### DeadworksPluginBase.OnGameStateChanging() {#ongamestatechanging}
 
@@ -393,4 +393,64 @@ Called before an engine-driven CCitadelGameRules::ChangeGameState transition is 
 public virtual bool OnGameStateChanging(EGameState currentState, EGameState newState)
 ```
 
-**Source:** [DeadworksPluginBase.cs#L47](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L47)
+**Source:** [DeadworksPluginBase.cs#L76](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L76)
+
+### DeadworksPluginBase.OnClientAuthorized() {#onclientauthorized}
+
+Called once per connection when Steam confirms who a player is, usually a few seconds after they connect. Until then they only have the `default` role. Not called for a player who turns out to be banned: they are kicked instead.
+
+**Signature**
+
+```csharp
+public virtual void OnClientAuthorized(ClientAuthorizedEvent args)
+```
+
+**Source:** [DeadworksPluginBase.cs#L78](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L78)
+
+### DeadworksPluginBase.OnPermissionsChanged() {#onpermissionschanged}
+
+Called after permissions change: a reload (`steamId64` is null, meaning everyone), a grant or revoke for one player, or Steam validating a player, when their own roles replace `default`. Use it to refresh anything that depends on who can do what, such as admin menus.
+
+**Signature**
+
+```csharp
+public virtual void OnPermissionsChanged(ulong? steamId64)
+```
+
+**Source:** [DeadworksPluginBase.cs#L80](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L80)
+
+### DeadworksPluginBase.OnPenaltyAdded() {#onpenaltyadded}
+
+Called after a ban, gag or mute is added, by any plugin, or found when penalties are reloaded (added by hand, or by another server sharing the store).
+
+**Signature**
+
+```csharp
+public virtual void OnPenaltyAdded(Penalty penalty)
+```
+
+**Source:** [DeadworksPluginBase.cs#L82](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L82)
+
+### DeadworksPluginBase.OnPenaltyRemoved() {#onpenaltyremoved}
+
+Called after a penalty ends: lifted, replaced by a newer one, or run out. The penalty passed is the ended one. When a reload finds a penalty lifted elsewhere, [`Penalty.RemovedUtc`](/api-reference/admin/penalty#removedutc) is set, but who lifted it may be unknown.
+
+**Signature**
+
+```csharp
+public virtual void OnPenaltyRemoved(Penalty penalty)
+```
+
+**Source:** [DeadworksPluginBase.cs#L84](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L84)
+
+### DeadworksPluginBase.OnAdminAction() {#onadminaction}
+
+Called for every action written to the admin log, e.g. to forward it to Discord.
+
+**Signature**
+
+```csharp
+public virtual void OnAdminAction(AdminLogEntry entry)
+```
+
+**Source:** [DeadworksPluginBase.cs#L86](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/DeadworksPluginBase.cs#L86)

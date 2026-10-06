@@ -17,7 +17,7 @@ public sealed class Zone : IDisposable
 
 **Namespace:** `DeadworksManaged.Api.Utils`  
 **Inherits / implements:** `IDisposable`  
-**Source:** [Utils/Zone.cs#L39](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L39)
+**Source:** [Utils/Zone.cs#L39](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L39)
 
 ## Notes
 
@@ -50,7 +50,7 @@ Creates a zone between two opposite corners, given in any order.
 public Zone(Vector3 mins, Vector3 maxs)
 ```
 
-**Source:** [Utils/Zone.cs#L74](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L74)
+**Source:** [Utils/Zone.cs#L74](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L74)
 
 ## Properties
 
@@ -64,7 +64,7 @@ Optional label, handy in logs and when one handler serves several zones.
 public string? Name { get; set; }
 ```
 
-**Source:** [Utils/Zone.cs#L46](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L46)
+**Source:** [Utils/Zone.cs#L46](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L46)
 
 ### Zone.Tag {#tag}
 
@@ -76,7 +76,7 @@ Anything you want to attach to the zone, such as a checkpoint number.
 public object? Tag { get; set; }
 ```
 
-**Source:** [Utils/Zone.cs#L49](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L49)
+**Source:** [Utils/Zone.cs#L49](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L49)
 
 ### Zone.Enabled {#enabled}
 
@@ -88,7 +88,7 @@ Turns the zone on and off. While off, everyone counts as outside: players inside
 public bool Enabled { get; set; } = true;
 ```
 
-**Source:** [Utils/Zone.cs#L55](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L55)
+**Source:** [Utils/Zone.cs#L55](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L55)
 
 ### Zone.Mins {#mins}
 
@@ -100,7 +100,7 @@ The corner with the lowest coordinates. Setting it beyond `Maxs` on an axis swap
 public Vector3 Mins { get; set; }
 ```
 
-**Source:** [Utils/Zone.cs#L97](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L97)
+**Source:** [Utils/Zone.cs#L97](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L97)
 
 ### Zone.Maxs {#maxs}
 
@@ -112,7 +112,7 @@ The corner with the highest coordinates. Setting it below `Mins` on an axis swap
 public Vector3 Maxs { get; set; }
 ```
 
-**Source:** [Utils/Zone.cs#L103](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L103)
+**Source:** [Utils/Zone.cs#L103](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L103)
 
 ### Zone.Center {#center}
 
@@ -124,7 +124,7 @@ The middle of the zone.
 public Vector3 Center { get; }
 ```
 
-**Source:** [Utils/Zone.cs#L109](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L109)
+**Source:** [Utils/Zone.cs#L109](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L109)
 
 ### Zone.Size {#size}
 
@@ -136,7 +136,7 @@ How big the zone is along each axis.
 public Vector3 Size { get; }
 ```
 
-**Source:** [Utils/Zone.cs#L112](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L112)
+**Source:** [Utils/Zone.cs#L112](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L112)
 
 ### Zone.Occupants {#occupants}
 
@@ -148,7 +148,7 @@ The players inside right now.
 public IReadOnlyList<CCitadelPlayerController> Occupants { get; }
 ```
 
-**Source:** [Utils/Zone.cs#L139](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L139)
+**Source:** [Utils/Zone.cs#L139](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L139)
 
 ### Zone.OccupantCount {#occupantcount}
 
@@ -160,7 +160,7 @@ How many players are inside right now.
 public int OccupantCount { get; }
 ```
 
-**Source:** [Utils/Zone.cs#L150](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L150)
+**Source:** [Utils/Zone.cs#L150](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L150)
 
 ## Methods
 
@@ -174,7 +174,7 @@ Creates a zone of the given `size` with its middle at `center`.
 public static Zone FromCenter(Vector3 center, Vector3 size)
 ```
 
-**Source:** [Utils/Zone.cs#L84](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L84)
+**Source:** [Utils/Zone.cs#L84](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L84)
 
 ### Zone.FromOrigin() {#fromorigin}
 
@@ -186,7 +186,7 @@ Creates a zone from a point and corners relative to it, the way map triggers are
 public static Zone FromOrigin(Vector3 origin, Vector3 minsOffset, Vector3 maxsOffset)
 ```
 
-**Source:** [Utils/Zone.cs#L93](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L93)
+**Source:** [Utils/Zone.cs#L93](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L93)
 
 ### Zone.SetBounds() {#setbounds}
 
@@ -198,7 +198,7 @@ Moves both corners at once. They can be given in any order. On the next tick, pl
 public void SetBounds(Vector3 a, Vector3 b)
 ```
 
-**Source:** [Utils/Zone.cs#L118](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L118)
+**Source:** [Utils/Zone.cs#L118](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L118)
 
 ### Zone.MoveTo() {#moveto}
 
@@ -210,7 +210,7 @@ Moves the zone so its middle is at `center`, keeping its size. Enter and leave e
 public void MoveTo(Vector3 center)
 ```
 
-**Source:** [Utils/Zone.cs#L124](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L124)
+**Source:** [Utils/Zone.cs#L124](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L124)
 
 ### Zone.Contains() {#contains}
 
@@ -222,7 +222,7 @@ True if `point` is inside the zone. Points exactly on the edge count as inside.
 public bool Contains(Vector3 point)
 ```
 
-**Source:** [Utils/Zone.cs#L130](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L130)
+**Source:** [Utils/Zone.cs#L130](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L130)
 
 ### Zone.IsInside() {#isinside}
 
@@ -235,7 +235,7 @@ public bool IsInside(int slot)
 public bool IsInside(CBasePlayerController player)
 ```
 
-**Source:** [Utils/Zone.cs#L133](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L133), [Utils/Zone.cs#L136](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L136)
+**Source:** [Utils/Zone.cs#L133](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L133), [Utils/Zone.cs#L136](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L136)
 
 ### Zone.ResetOccupants() {#resetoccupants}
 
@@ -247,7 +247,7 @@ Forgets who is inside, without firing `Left`. Players still inside get `Entered`
 public void ResetOccupants()
 ```
 
-**Source:** [Utils/Zone.cs#L159](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L159)
+**Source:** [Utils/Zone.cs#L159](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L159)
 
 ### Zone.Dispose() {#dispose}
 
@@ -259,7 +259,7 @@ Stops the zone for good. No more events fire, not even `Left` for players still 
 public void Dispose()
 ```
 
-**Source:** [Utils/Zone.cs#L185](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L185)
+**Source:** [Utils/Zone.cs#L185](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L185)
 
 ### Zone.ToString() {#tostring}
 
@@ -269,7 +269,7 @@ public void Dispose()
 public override string ToString()
 ```
 
-**Source:** [Utils/Zone.cs#L194](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L194)
+**Source:** [Utils/Zone.cs#L194](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L194)
 
 ## Events
 
@@ -283,7 +283,7 @@ Fires when a player gets inside the zone, whether they walked, teleported or res
 public event Action<Zone, CCitadelPlayerController, CCitadelPlayerPawn>? Entered;
 ```
 
-**Source:** [Utils/Zone.cs#L61](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L61)
+**Source:** [Utils/Zone.cs#L61](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L61)
 
 ### Zone.Left {#left}
 
@@ -295,4 +295,4 @@ Fires when a player who was inside leaves, dies or loses their hero. Moving the 
 public event Action<Zone, CCitadelPlayerController, CCitadelPlayerPawn?>? Left;
 ```
 
-**Source:** [Utils/Zone.cs#L67](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Utils/Zone.cs#L67)
+**Source:** [Utils/Zone.cs#L67](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Utils/Zone.cs#L67)

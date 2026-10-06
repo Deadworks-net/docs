@@ -36,7 +36,7 @@ prop.Spawn(ekv);
 
 The database shows which `Set...` method to use for each keyvalue.
 
-A model has to be loaded before you can use it. List it in `OnPrecacheResources`, and use the `.vmdl` path, not `.vmdl_c`:
+A model must be [precached](precaching) before you use it. List it in `OnPrecacheResources` by its `.vmdl` path, not `.vmdl_c`.
 
 ```csharp
 public override void OnPrecacheResources()
@@ -88,7 +88,7 @@ entity.Teleport(
     velocity: null);
 ```
 
-Pass `null` for anything you want to leave alone. `entity.Position` is where it is now.
+Pass `null` for any value to leave unchanged. `entity.Position` is the current position.
 
 ## Remove an entity
 
@@ -145,7 +145,7 @@ Timer.Once(5.Seconds(), () =>
 
 ## Store a value for each entity
 
-Use `EntityData<T>`. Entries are removed for you when the entity is removed.
+Use `EntityData<T>`. It removes an entity's entry when the entity is removed.
 
 ```csharp
 private readonly EntityData<int> _hits = new();

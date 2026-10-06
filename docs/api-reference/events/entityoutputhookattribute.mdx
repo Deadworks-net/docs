@@ -17,7 +17,7 @@ public sealed class EntityOutputHookAttribute : Attribute
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** `Attribute`  
-**Source:** [Events/EntityOutputHookAttribute.cs#L22](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputHookAttribute.cs#L22)
+**Source:** [Events/EntityOutputHookAttribute.cs#L22](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputHookAttribute.cs#L22)
 
 ## Notes
 
@@ -45,7 +45,7 @@ public void OnAnyPickup(EntityOutputEvent e) { /* observer only */ }
 public EntityOutputHookAttribute(string className, string outputName, HookMode mode = HookMode.Pre)
 ```
 
-**Source:** [Events/EntityOutputHookAttribute.cs#L32](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputHookAttribute.cs#L32)
+**Source:** [Events/EntityOutputHookAttribute.cs#L32](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputHookAttribute.cs#L32)
 
 ## Properties
 
@@ -59,7 +59,7 @@ Designer name of the entity firing the output (e.g. `"trigger_multiple"`) or `"*
 public string ClassName { get; }
 ```
 
-**Source:** [Events/EntityOutputHookAttribute.cs#L24](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputHookAttribute.cs#L24)
+**Source:** [Events/EntityOutputHookAttribute.cs#L24](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputHookAttribute.cs#L24)
 
 ### EntityOutputHookAttribute.OutputName {#outputname}
 
@@ -71,7 +71,7 @@ Output name (e.g. `"OnStartTouch"`) or `"*"` for any.
 public string OutputName { get; }
 ```
 
-**Source:** [Events/EntityOutputHookAttribute.cs#L27](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputHookAttribute.cs#L27)
+**Source:** [Events/EntityOutputHookAttribute.cs#L27](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputHookAttribute.cs#L27)
 
 ### EntityOutputHookAttribute.Mode {#mode}
 
@@ -83,4 +83,4 @@ When the handler runs relative to the original output. Defaults to [`HookMode.Pr
 public HookMode Mode { get; }
 ```
 
-**Source:** [Events/EntityOutputHookAttribute.cs#L30](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/EntityOutputHookAttribute.cs#L30)
+**Source:** [Events/EntityOutputHookAttribute.cs#L30](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/EntityOutputHookAttribute.cs#L30)

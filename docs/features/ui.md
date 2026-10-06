@@ -1,9 +1,9 @@
 ---
-title: "UI Panels"
-sidebar_label: "UI Panels"
+title: "UI panels"
+sidebar_label: "UI panels"
 ---
 
-# UI Panels
+# UI panels
 
 > **Namespace:** `DeadworksManaged.Api.UI`
 
@@ -58,7 +58,9 @@ UI.Panel("round").Build()
     .SendTo(RecipientFilter.All);
 ```
 
-Call `Set` after `BuildLayout`, not before. `BuildLayout` wipes the values you set earlier.
+:::warning
+`BuildLayout` wipes values set before it. Call `Set` after `BuildLayout`, not before.
+:::
 
 ## Remove a panel
 
@@ -86,10 +88,10 @@ static UINode Layout() => UI.Vertical()
             .WithStyle("color", "#5FE69E"));
 ```
 
-Panorama looks like web CSS but isn't. A few things that differ:
+Panorama styles look like web CSS but aren't. The differences:
 
 - Place a box with `horizontal-align` and `vertical-align`, then nudge it with margins.
-- Colours can end in two extra digits for how see-through they are: `#0a0c08e6`.
+- A color can end in two extra digits that set its opacity: `#0a0c08e6`.
 - To fill the space that is left, use `width: fill-parent-flow(1.0)`.
 
 ## Add a button
@@ -133,7 +135,9 @@ UI.Panel("lobby").RequestCursor(controller.Recipients);
 UI.Panel("lobby").ReleaseCursor(controller.Recipients);
 ```
 
-While the cursor is free, the player can't move, aim or use abilities. `DestroyLayout` gives it back too.
+:::note
+While the cursor is free, the player can't move, aim or use abilities. Call `ReleaseCursor` or `DestroyLayout` to give it back.
+:::
 
 ## Style a button
 
@@ -160,11 +164,11 @@ var portrait = Heroes.Atlas.GetHeroData()?.IconImageSmall ?? "";
 UI.Image("portrait", portrait);
 ```
 
-Your own images have to reach players first. See [Uploading Content](../guides/uploading-content).
+Your own images must reach players first. See [Uploading content](../guides/uploading-content).
 
 ## Change a style later
 
-Use `SetStyle` with the name of the thing to change. The panel isn't rebuilt.
+Use `SetStyle` with the name of the thing to change. `SetStyle` doesn't rebuild the panel.
 
 ```csharp
 UI.Panel("round").SetStyle(controller.Recipients, "score", "color", "#fb6c34");
@@ -178,7 +182,7 @@ UI.Panel("round").SetStyle(controller.Recipients, "score", "color", "#fb6c34");
 UI.Panel("round").Animate(controller.Recipients, "bar", "width", "0%", "30s");
 ```
 
-The player's game does the animating, so you only send this once.
+The player's game runs the animation, so send it once.
 
 ## Add or remove a row
 
@@ -193,7 +197,7 @@ UI.Panel("scores").AppendChild(controller.Recipients, "list",
 UI.Panel("scores").RemoveChild(controller.Recipients, "row5");
 ```
 
-If a player's connection hiccups, their panel comes back as it was when you last called `BuildLayout`, without the rows you added. Put them back in `UI.ClientResync`:
+If a player's connection drops briefly, their panel returns to its state at your last `BuildLayout` call. Rows you added are lost. Add them back in `UI.ClientResync`:
 
 ```csharp
 public override void OnLoad(bool isReload)
@@ -209,7 +213,7 @@ public override void OnLoad(bool isReload)
 
 ## Update a panel many times a second
 
-Use `SetUnreliable` for values that change constantly. An update can be dropped, but the next one replaces it anyway.
+Use `SetUnreliable` for values that change constantly. An unreliable update can be dropped. The next update replaces it.
 
 ```csharp
 public override void OnGameFrame(bool simulating, bool firstTick, bool lastTick)
@@ -260,7 +264,7 @@ After that it works like any other panel. `Set` changes the label with that name
 UI.Panel("killfeed").Set(RecipientFilter.All, "headline", "Abrams killed Haze");
 ```
 
-The addon has to reach players before they join. See [Uploading Content](../guides/uploading-content).
+The addon must reach players before they join. See [Uploading content](../guides/uploading-content).
 
 ## Run your own script in a panel
 
@@ -280,7 +284,7 @@ DW.registerPanel({
 });
 ```
 
-`render` runs whenever your plugin calls `Set`. `panel.int("total")` reads the value you set, and `panel.send("clear")` reaches the `On("clear", ...)` in your plugin.
+`render` runs whenever your plugin calls `Set`. `panel.int("total")` reads the value you set. `panel.send("clear")` reaches the `On("clear", ...)` in your plugin.
 
 ```csharp
 UI.Panel("killfeed").Set(RecipientFilter.All, "total", 7);
@@ -316,3 +320,7 @@ While you work on an addon's files, `Reload` sends each player their panel again
 ```csharp
 UI.Panel("killfeed").Reload(RecipientFilter.All);
 ```
+
+## See also
+
+- [Uploading content](../guides/uploading-content): get addons and images to players.

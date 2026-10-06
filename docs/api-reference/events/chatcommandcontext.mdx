@@ -16,7 +16,7 @@ public sealed class ChatCommandContext
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Events/ChatCommandContext.cs#L4](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L4)
+**Source:** [Events/ChatCommandContext.cs#L4](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L4)
 
 ## Properties
 
@@ -30,7 +30,7 @@ The raw chat message that triggered this command.
 public ChatMessage Message { get; }
 ```
 
-**Source:** [Events/ChatCommandContext.cs#L7](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L7)
+**Source:** [Events/ChatCommandContext.cs#L7](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L7)
 
 ### ChatCommandContext.Command {#command}
 
@@ -42,7 +42,7 @@ The matched command string (e.g. `"!mycommand"`).
 public string Command { get; }
 ```
 
-**Source:** [Events/ChatCommandContext.cs#L10](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L10)
+**Source:** [Events/ChatCommandContext.cs#L10](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L10)
 
 ### ChatCommandContext.Args {#args}
 
@@ -54,7 +54,7 @@ Arguments following the command, split on whitespace. A double-quoted run is a s
 public string[] Args { get; }
 ```
 
-**Source:** [Events/ChatCommandContext.cs#L13](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L13)
+**Source:** [Events/ChatCommandContext.cs#L13](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L13)
 
 ### ChatCommandContext.Prefix {#prefix}
 
@@ -66,7 +66,7 @@ The prefix character that introduced this command (`'/'` or `'!'`).
 public char Prefix { get; }
 ```
 
-**Source:** [Events/ChatCommandContext.cs#L16](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L16)
+**Source:** [Events/ChatCommandContext.cs#L16](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L16)
 
 ### ChatCommandContext.Controller {#controller}
 
@@ -78,4 +78,4 @@ The player controller who sent the command, or `null` if unavailable.
 public CCitadelPlayerController? Controller { get; }
 ```
 
-**Source:** [Events/ChatCommandContext.cs#L19](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L19)
+**Source:** [Events/ChatCommandContext.cs#L19](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Events/ChatCommandContext.cs#L19)

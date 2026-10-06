@@ -7,7 +7,7 @@ sidebar_label: "Precaching"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Precaching tells the game to load a file while the map is loading, so it is ready when your plugin uses it. Models and particle effects need it.
+Precaching loads a file while the map loads, so it's ready when your plugin uses it. Models and particle effects must be precached.
 
 ## Precache a model or particle effect
 
@@ -21,7 +21,9 @@ public override void OnPrecacheResources()
 }
 ```
 
-This is the only place it works. Calling `Precache.AddResource` anywhere else does nothing.
+:::warning
+`Precache.AddResource` only works inside `OnPrecacheResources`. Calls anywhere else do nothing.
+:::
 
 ## Write the path the right way
 
@@ -51,4 +53,4 @@ public override void OnPrecacheResources()
 
 ## Use your own models, sounds or maps
 
-Precaching only loads files the player already has. To get your own files onto players' computers, see [Uploading Content](../guides/uploading-content).
+Precaching only loads files the player already has. To get your own files onto players' computers, see [Uploading content](../guides/uploading-content).

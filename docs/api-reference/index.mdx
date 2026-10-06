@@ -8,7 +8,7 @@ slug: "/api-reference"
 
 # API Reference
 
-Every public type in `DeadworksManaged.Api`, generated from the Deadworks source at commit [`76f73b5`](https://github.com/Deadworks-net/deadworks/tree/76f73b504d7b811b678d092a1e762a8e08b5d2d9). Each member lists its signature and a link to its source. If you're new to Deadworks, start with the [Features](/features/commands) pages instead; they show how to do common things.
+Every public type in `DeadworksManaged.Api`, generated from the Deadworks source at commit [`2ed5cbf`](https://github.com/Deadworks-net/deadworks/tree/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61). Each member lists its signature and a link to its source. If you're new to Deadworks, start with the [Features](/features/commands) pages instead; they show how to do common things.
 
 ## Plugin
 
@@ -78,6 +78,7 @@ Every public type in `DeadworksManaged.Api`, generated from the Deadworks source
 | [`ChatCommandContext`](/api-reference/events/chatcommandcontext) | Provides context for an invoked chat command, including the originating message, parsed command name, and arguments. |
 | [`ChatMessage`](/api-reference/events/chatmessage) | Incoming chat message from a player. Passed to `IDeadworksPlugin.OnChatMessage`. |
 | [`CheckTransmitEvent`](/api-reference/events/checktransmitevent) | Fired per-player during CheckTransmit. Use `Hide` to prevent entities from being networked to this player for the current tick. |
+| [`ClientAuthorizedEvent`](/api-reference/events/clientauthorizedevent) | Fired once per connection when Steam confirms who a player is, usually a few seconds after they connect. Passed to `IDeadworksPlugin.OnClientAuthorized`. |
 | [`ClientConCommandEvent`](/api-reference/events/clientconcommandevent) | Event data passed to `IDeadworksPlugin.OnClientConCommand`. Contains the controller pointer, command name, and parsed argument array. |
 | [`ClientConnectEvent`](/api-reference/events/clientconnectevent) | Fired when a client is connecting to the server. Passed to `IDeadworksPlugin.OnClientConnect`. |
 | [`ClientDisconnectedEvent`](/api-reference/events/clientdisconnectedevent) | Passed to `IDeadworksPlugin.OnClientDisconnecting` and `IDeadworksPlugin.OnClientDisconnect`. |
@@ -110,9 +111,12 @@ Every public type in `DeadworksManaged.Api`, generated from the Deadworks source
 
 | Type | Description |
 |------|-------------|
+| [`Caller`](/api-reference/commands/caller) | Who ran a command: a player, or the server console (which includes rcon). Take it as the first parameter of a [`CommandAttribute`](/api-reference/commands/commandattribute) method. Unlike a nullable controller, the console is explicit here, so a failed player lookup can never be mistaken for it. |
 | [`CommandAttribute`](/api-reference/commands/commandattribute) | Registers a method as `/name`, `!name`, and `dw_name` with typed parameter binding. |
-| [`CommandConverters`](/api-reference/commands/commandconverters) | Per-type string parsers for [`CommandAttribute`](/api-reference/commands/commandattribute). Register from `OnLoad`. |
-| [`CommandException`](/api-reference/commands/commandexception) | Thrown from a [`CommandAttribute`](/api-reference/commands/commandattribute) handler to send `Exception.Message` to the caller. |
+| [`CommandConverters`](/api-reference/commands/commandconverters) | Per-type string parsers for [`CommandAttribute`](/api-reference/commands/commandattribute) parameters, for types Deadworks doesn't parse itself. Register from `OnLoad`; a plugin's converters are dropped automatically when it unloads. A parser may throw [`CommandException`](/api-reference/commands/commandexception) to tell the caller what's wrong with their input; anything else shows the usage line. A converter applies to every plugin's commands, so prefer registering one for your own types; one for a shared type such as `TimeSpan` replaces any other plugin's. |
+| [`CommandException`](/api-reference/commands/commandexception) | Thrown from a [`CommandAttribute`](/api-reference/commands/commandattribute) handler, or a [`CommandConverters`](/api-reference/commands/commandconverters) parser, to stop the command and send `Exception.Message` to the caller. Nothing is logged: it's an answer, not an error. Any other exception is logged with its stack trace, and the caller only hears that the command failed. |
+| [`Target`](/api-reference/commands/target) | Players picked by a [`CommandAttribute`](/api-reference/commands/commandattribute) argument. Accepts `@me`, `@all`, `@team`, `@enemy`, `#slot`, a SteamID (64, Steam2 or Steam3), or part of a player's name. Players the caller can't target are left out according to [`CommandAttribute.TargetImmunity`](/api-reference/commands/commandattribute#targetimmunity). Never empty: a pattern that matches nobody is a usage error before the command runs. |
+| [`TargetImmunity`](/api-reference/commands/targetimmunity) | Whether a command's [`Target`](/api-reference/commands/target) parameters skip players the caller can't target. |
 
 ## ConVars
 
@@ -210,6 +214,31 @@ Every public type in `DeadworksManaged.Api`, generated from the Deadworks source
 |------|-------------|
 | [`PawnExtensions`](/api-reference/utils/pawnextensions) | Common things to do to a player's hero: hold them in place and kill them. With `using DeadworksManaged.Api.Utils;` they're available on every [`CCitadelPlayerPawn`](/api-reference/entities/ccitadelplayerpawn). |
 | [`Zone`](/api-reference/utils/zone) | A box in the world that tells you when players walk into it and out of it, through `Entered` and `Left`. Use it for checkpoints, start and finish lines, reset areas, safe areas, or anything else you'd otherwise check by hand every frame. |
+
+## Permissions
+
+| Type | Description |
+|------|-------------|
+| [`DeclarePermissionAttribute`](/api-reference/permissions/declarepermissionattribute) | Lists a permission that is only checked in code (with [`PermissionExtensions.HasPermission`](/api-reference/permissions/permissionextensions#haspermission)) in the plugin's generated permissions file, so server owners can find it. Permissions on [`CommandAttribute`](/api-reference/commands/commandattribute) are listed automatically. |
+| [`IPermissionStore`](/api-reference/permissions/ipermissionstore) | Where roles and player entries come from. The built-in store reads `configs/permissions/*.jsonc`; register another with [`Permissions.RegisterStore`](/api-reference/permissions/permissions#registerstore) to keep them in a database or web panel. Wildcards, immunity and every other rule are evaluated by Deadworks, so they behave the same on every store. |
+| [`PermissionExplanation`](/api-reference/permissions/permissionexplanation) | Why [`Permissions.Has`](/api-reference/permissions/permissions#has) answered the way it did. |
+| [`PermissionExtensions`](/api-reference/permissions/permissionextensions) | Permission checks on a player controller. |
+| [`Permissions`](/api-reference/permissions/permissions) | Checks against the server's roles and players. Most plugins only need [`CommandAttribute.Permission`](/api-reference/commands/commandattribute#permission) and [`Caller.HasPermission`](/api-reference/commands/caller#haspermission); this class covers offline players and custom stores. A null controller has no permissions: use [`Caller`](/api-reference/commands/caller) for code that runs for the console or a player. |
+| [`PlayerEntry`](/api-reference/permissions/playerentry) | A player's entry in `players.jsonc` (or a custom [`IPermissionStore`](/api-reference/permissions/ipermissionstore)). |
+| [`RoleDefinition`](/api-reference/permissions/roledefinition) | A role from `roles.jsonc` (or a custom [`IPermissionStore`](/api-reference/permissions/ipermissionstore)). |
+| [`SteamIds`](/api-reference/permissions/steamids) | Helpers for parsing and formatting Steam2, Steam3, and SteamID64 identifiers. |
+
+## Admin
+
+| Type | Description |
+|------|-------------|
+| [`AdminActivity`](/api-reference/admin/adminactivity) | Announces admin actions to players and records them in the admin log, so every admin plugin behaves the same. Players see "ADMIN: kicked lapka"; holders of `deadworks.admin.notify` see who did it. Both are configurable under `admin.show_activity` in `configs/deadworks.jsonc`. Every entry also reaches `IDeadworksPlugin.OnAdminAction`. |
+| [`AdminLogEntry`](/api-reference/admin/adminlogentry) | One line of the admin action log. |
+| [`IPenaltyStore`](/api-reference/admin/ipenaltystore) | Where penalties are kept. The built-in store is `configs/penalties/penalties.jsonc`; register another with [`Penalties.RegisterStore`](/api-reference/admin/penalties#registerstore) to share bans between servers or with a web panel. |
+| [`Penalties`](/api-reference/admin/penalties) | Bans, gags and mutes. Deadworks stores and enforces all three: banned players can't join, gagged players' chat never reaches chat or any plugin, and muted players' voice is dropped before anyone hears it or any plugin sees it. Plugins only decide when to add or remove them, and hear about changes through `IDeadworksPlugin.OnPenaltyAdded` and `IDeadworksPlugin.OnPenaltyRemoved`. Immunity is not checked here; check [`Caller.CanTarget`](/api-reference/commands/caller#cantarget) or [`Permissions.CanTarget`](/api-reference/permissions/permissions#cantarget) before penalizing someone on another player's behalf. |
+| [`Penalty`](/api-reference/admin/penalty) | A ban, gag or mute on one SteamID. Removed and expired penalties are kept as history. |
+| [`PenaltyEnd`](/api-reference/admin/penaltyend) | How a penalty stopped applying. |
+| [`PenaltyType`](/api-reference/admin/penaltytype) | What a [`Penalty`](/api-reference/admin/penalty) stops a player doing. |
 
 ## Enums
 

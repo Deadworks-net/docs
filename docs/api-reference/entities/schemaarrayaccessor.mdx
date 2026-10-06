@@ -16,7 +16,7 @@ public sealed class SchemaArrayAccessor<T> where T : unmanaged
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Entities/SchemaArrayAccessor.cs#L4](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/SchemaArrayAccessor.cs#L4)
+**Source:** [Entities/SchemaArrayAccessor.cs#L4](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/SchemaArrayAccessor.cs#L4)
 
 ## Constructors
 
@@ -28,7 +28,7 @@ public sealed class SchemaArrayAccessor<T> where T : unmanaged
 public SchemaArrayAccessor(ReadOnlySpan<byte> className, ReadOnlySpan<byte> fieldName, int networkStateChangedOffset = 0)
 ```
 
-**Source:** [Entities/SchemaArrayAccessor.cs#L12](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/SchemaArrayAccessor.cs#L12)
+**Source:** [Entities/SchemaArrayAccessor.cs#L12](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/SchemaArrayAccessor.cs#L12)
 
 ## Methods
 
@@ -42,7 +42,7 @@ Reads element `index` from the array field on `entity`.
 public T Get(nint entity, int index)
 ```
 
-**Source:** [Entities/SchemaArrayAccessor.cs#L31](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/SchemaArrayAccessor.cs#L31)
+**Source:** [Entities/SchemaArrayAccessor.cs#L31](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/SchemaArrayAccessor.cs#L31)
 
 ### SchemaArrayAccessor.Set() {#set}
 
@@ -54,4 +54,4 @@ Writes element `index` in the array field on `entity`, notifying network state i
 public void Set(nint entity, int index, T value)
 ```
 
-**Source:** [Entities/SchemaArrayAccessor.cs#L37](https://github.com/Deadworks-net/deadworks/blob/76f73b504d7b811b678d092a1e762a8e08b5d2d9/managed/DeadworksManaged.Api/Entities/SchemaArrayAccessor.cs#L37)
+**Source:** [Entities/SchemaArrayAccessor.cs#L37](https://github.com/Deadworks-net/deadworks/blob/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61/managed/DeadworksManaged.Api/Entities/SchemaArrayAccessor.cs#L37)

@@ -1,13 +1,13 @@
 ---
-title: "Abilities & Items"
-sidebar_label: "Abilities & Items"
+title: "Abilities & items"
+sidebar_label: "Abilities & items"
 ---
 
-# Abilities & Items
+# Abilities & items
 
 > **Namespace:** `DeadworksManaged.Api`
 
-A hero's abilities and the items a player buys are the same kind of thing in code. Both live on the player's pawn, and both have an internal name. Item names start with `upgrade_`.
+A hero's abilities and the items a player buys are the same kind of thing in code. Both live on the player's pawn. Both have an internal name. Item names start with `upgrade_`.
 
 ## Find the name of an ability or item
 
@@ -25,7 +25,7 @@ To give the enhanced version:
 pawn.AddItem("upgrade_sprint_booster", enhanced: true);
 ```
 
-`AddItem` returns `null` if the item couldn't be given.
+`AddItem` returns `null` if it can't give the item.
 
 ## Take an item away
 
@@ -33,7 +33,7 @@ pawn.AddItem("upgrade_sprint_booster", enhanced: true);
 pawn.RemoveItem("upgrade_sprint_booster");
 ```
 
-The player gets no souls back. To sell it for them, so they get souls back:
+`RemoveItem` gives the player no souls back. To sell the item so they get souls back, use `SellItem`:
 
 ```csharp
 pawn.SellItem("upgrade_sprint_booster");
@@ -74,7 +74,7 @@ if (result != ImbueResult.Success)
     Console.WriteLine($"Couldn't give the item: {result}");
 ```
 
-If it fails, the player isn't given the item.
+If it fails, the player doesn't get the item.
 
 ## Get one of a player's abilities
 
@@ -114,9 +114,9 @@ foreach (var ability in pawn.AbilityComponent.Abilities)
 pawn.ResetAllAbilityCooldowns();
 ```
 
-This makes every ability and item ready to use again, and refills their charges.
+`ResetAllAbilityCooldowns()` makes every ability and item ready to use again. It also refills their charges.
 
-To reset just one:
+To reset one ability:
 
 ```csharp
 pawn.ResetAbilityCooldown(EAbilitySlot.Signature4);
@@ -134,7 +134,7 @@ if (ultimate.IsOnCooldown)
 }
 ```
 
-An ability that uses charges can also be out of charges. `RemainingCharges` is how many it has left, and `MaxCharges` is how many it can hold.
+An ability that uses charges can also be out of charges. `RemainingCharges` is how many it has left. `MaxCharges` is how many it can hold.
 
 ## Put an ability on cooldown
 
@@ -178,7 +178,7 @@ public override void OnAbilityAttempt(AbilityAttemptEvent args)
 }
 ```
 
-There is a `BlockAllAbilities()` and a `BlockAllItems()` too.
+To block only abilities or only items, use `BlockAllAbilities()` or `BlockAllItems()`.
 
 ## Run code when a player uses an ability
 
@@ -205,4 +205,10 @@ var max = pawn.AbilityComponent.ResourceStamina.MaxValue;
 pawn.SetStamina(max);
 ```
 
-`pawn.GetStamina()` is how much they have now.
+`pawn.GetStamina()` returns how much they have now.
+
+## See also
+
+- [Players](players): get a player's pawn
+- [Heroes](heroes): pick and reset heroes
+- [Game events](game-events): react to what players do
