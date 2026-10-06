@@ -16,7 +16,7 @@ Before you start, complete [Set up admins](../getting-started/server-admins/set-
 | Kick, gag, mute, `who` | ✅ | ✅ | ✅ | ✅ |
 | Bans (including permanent and offline), unban, slay | | ✅ | ✅ | ✅ |
 | Change map, run configs | | | ✅ | ✅ |
-| Add and remove staff | | | ✅ (trial mods and moderators, see [Step 3](#step-3-let-admins-manage-staff)) | ✅ (up to Admin) |
+| Add and remove staff | | | ✅ | ✅ |
 | Cvars (including `sv_cheats` and passwords), `rcon`, everything else | | | | ✅ |
 | Immunity | 10 | 50 | 90 | 100 |
 
