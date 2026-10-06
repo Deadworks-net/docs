@@ -85,7 +85,7 @@ dw_role_list
 - **`admin.moderation.ban`** covers permanent bans and banning players who've left by SteamID, so moderators can do both. Give `ban` only to people you trust with that.
 - **The seniormod role** gets the whole server group except `rcon` and `cvar`, which leaves changing map and running configs. The denies (`-`) take those two out of the `admin.server.*` wildcard, because an exact entry beats a wildcard in the same role.
 - **`cvar`** is left to admins because it also covers `sv_cheats` and passwords like `sv_password`.
-- **`deadworks.permissions.manage`** lets senior mods add and remove staff. See [Step 3](#step-3-let-admins-manage-staff).
+- **`deadworks.permissions.manage`** lets senior mods add and remove staff. See [Step 3](#step-3-let-senior-mods-manage-staff).
 - **The `admin` role** has `*`: everything, including permissions that plugins add later.
 
 ## Step 2: Add your staff

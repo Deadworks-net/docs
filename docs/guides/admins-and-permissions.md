@@ -187,7 +187,7 @@ Players using the grant and revoke commands:
 - can only give out roles and permissions they hold themselves, and only roles with lower immunity than theirs,
 - can't change their own roles or permissions.
 
-Removing a `-deny` from someone counts as giving them the permission. See [Let admins manage staff](staff-roles#step-3-let-admins-manage-staff).
+Removing a `-deny` from someone counts as giving them the permission. See [Let senior mods manage staff](staff-roles#step-3-let-senior-mods-manage-staff).
 
 ## Next
 
