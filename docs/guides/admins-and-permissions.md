@@ -152,10 +152,6 @@ Deadworks locks things down rather than guess, so a broken file can stop people 
 | `overrides.jsonc` | When the server starts: players can't run any command, even public ones. On a reload: the previous overrides are kept. | Fix it and run `dw_perm_reload` |
 | `penalties.jsonc` | When the server starts: new players can't join, because bans can't be checked. Later: existing penalties stay enforced, but changes are refused. | Fix it and run `dw_penalties_reload` |
 
-:::warning
-Deadworks ignores a setting it doesn't know, such as a misspelled `immunty`, and prints a warning in the console. The setting has no effect. Check the console after editing.
-:::
-
 ## Console commands
 
 These work in the server console, and in a player's game console if they have the permission. They don't work in chat.
