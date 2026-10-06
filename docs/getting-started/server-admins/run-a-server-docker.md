@@ -18,10 +18,6 @@ Deadlock has no Linux dedicated server. The image runs the Windows server under 
 - A Steam account that owns Deadlock, used to download the game
 - UDP port `27015` open
 
-:::tip
-For security, create a separate Steam account used only by your servers.
-:::
-
 ## Installing the server
 
 1. Create a folder and download the compose file and the example settings:
