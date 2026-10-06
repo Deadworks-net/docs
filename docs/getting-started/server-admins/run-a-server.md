@@ -23,7 +23,7 @@ On Linux, run the server in Docker instead: see [Linux & Docker](../../guides/li
 [SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD) is the command-line version of Steam. A server installed with it is separate from your own copy of the game.
 
 :::tip
-You can also run Deadworks from your own Deadlock install, at `C:\Program Files (x86)\Steam\steamapps\common\Deadlock`. A separate install is recommended: Steam updates your own copy whenever Deadlock patches, which can stop the server until Deadworks catches up.
+You can also run Deadworks from your own Deadlock install, at `C:\Program Files (x86)\Steam\steamapps\common\Deadlock`, but a separate install is recommended.
 :::
 
 1. Download [SteamCMD for Windows](https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip) and extract it to a folder, for example `D:\steamcmd`.
