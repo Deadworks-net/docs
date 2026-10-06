@@ -5,8 +5,6 @@ sidebar_label: "3. Set up admins"
 
 # Set up admins
 
-**Step 3 of 4** in [Getting started for server admins](/getting-started/server-admins). Admins are players with the `admin` role, which lets them use every command on the server.
-
 The server console can always run every command. Nobody else can use admin commands until you give them a role.
 
 ## Make yourself admin

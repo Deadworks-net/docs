@@ -5,8 +5,6 @@ sidebar_label: "4. Use admin tools"
 
 # Use admin tools
 
-**Step 4 of 4** in [Getting started for server admins](/getting-started/server-admins). The Admin plugin ships with Deadworks and adds commands to kick, ban, gag and mute players, and to run the server.
-
 ## Type a command
 
 Every admin command works three ways:

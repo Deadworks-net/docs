@@ -5,8 +5,6 @@ sidebar_label: "2. Install plugins"
 
 # Install plugins
 
-**Step 2 of 4** in [Getting started for server admins](/getting-started/server-admins). A plugin is a `.dll` file that adds commands or game modes to your server.
-
 Find plugins on the [Deadworks Discord](https://discord.gg/d3JHnVGA26).
 
 ## Add a plugin
