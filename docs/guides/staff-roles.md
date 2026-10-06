@@ -22,8 +22,6 @@ Before you start, complete [Making yourself admin](making-yourself-admin). For h
 | Cvars (including `sv_cheats` and passwords), `rcon`, everything else | | | | ✅ |
 | Immunity | 10 | 50 | 90 | 100 |
 
-Immunity decides who can act on whom. Everyone can kick, ban or slay players with the same or lower immunity. Nobody can act on anyone higher. So moderators can't kick admins, but two admins can kick each other. If you're the only owner at `100`, only the server console can act on you. Changing someone's roles is stricter: see [Step 3](#step-3-let-admins-manage-staff).
-
 ## Step 1: Write the roles
 
 Replace the contents of `configs/permissions/roles.jsonc` with:
