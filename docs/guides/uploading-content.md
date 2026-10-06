@@ -5,6 +5,10 @@ sidebar_label: "Uploading content"
 
 # Uploading content
 
+:::warning Being replaced
+This method will be deprecated soon. A new method is coming that doesn't depend on the central Deadworks backend.
+:::
+
 Custom content (Panorama addons, models, maps) reaches players through the Deadworks launcher. The launcher downloads whatever your server advertises before the game starts. Distributing a file takes two steps: upload it so clients can fetch it, then list it in the config so the server advertises it.
 
 ## Get your server token
