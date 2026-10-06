@@ -134,16 +134,12 @@ A `deadworks.jsonc` from an older version doesn't have these sections. Missing s
 | Field | Description |
 |-------|-------------|
 | `permissions.store` | Sets where roles and players come from. `json` is the files on this page. A plugin can add another, such as a database. |
-| `permissions.require_steam_auth` | Makes a player's roles apply only once Steam confirms their account, a few seconds after they join. Until then they only have `default`, so nobody can fake an admin's SteamID. For LAN servers, see below. |
+| `permissions.require_steam_auth` | Makes a player's roles apply only once Steam confirms their account, a few seconds after they join. Until then they only have `default`, so nobody can fake an admin's SteamID. |
 | `admin.show_activity.players` | Sets what players see when an admin does something: `named` (`wisp: slayed lapka`), `anonymous` (`ADMIN: slayed lapka`) or `none` |
 | `admin.show_activity.notified` | Sets the same, for players with `deadworks.admin.notify` |
 | `admin.log_dir` | Sets the folder for the daily admin log, relative to `game/bin/win64` |
 | `penalties.store` | Sets where bans, gags and mutes are kept. `json` is `configs/penalties/penalties.jsonc`. |
 | `penalties.history_days` | Sets how many days lifted and expired penalties are kept as history. `0` keeps them forever. |
-
-:::danger
-On a LAN server, skip the Steam wait by setting `permissions.require_steam_auth` to `false` and restarting, or by putting `sv_lan 1` in `server.cfg`. `sv_lan` is read when the first player joins, so changing it later needs a restart. Never do either on a server reachable from the internet: anyone can then claim an admin's SteamID.
-:::
 
 ## When a file has a mistake
 
