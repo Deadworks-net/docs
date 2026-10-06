@@ -53,10 +53,6 @@ Deadlock has no Linux dedicated server. The image runs the Windows server under 
    connect <server ip>:27015
    ```
 
-:::tip
-The container saves the Steam login after the first successful start. You can then remove `STEAM_PASSWORD` from `.env`.
-:::
-
 ### Steam Guard
 
 With the mobile authenticator, approve the login on your phone when the container starts.

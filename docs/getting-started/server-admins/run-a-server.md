@@ -1,6 +1,7 @@
 ---
 title: "Run a Deadworks server"
 sidebar_label: "1. Run a server"
+pagination_next: getting-started/server-admins/install-plugins
 ---
 
 # Run a Deadworks server

@@ -1,6 +1,7 @@
 ---
 title: "Install plugins"
 sidebar_label: "2. Install plugins"
+pagination_prev: getting-started/server-admins/run-a-server
 ---
 
 # Install plugins
