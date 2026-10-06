@@ -32,7 +32,7 @@ This release adds [admins and permissions](/permissions): roles, a built-in Admi
    ```
 
 5. **Back up `configs/`.** Your admins are in `configs/permissions/` and your bans in `configs/penalties/`.
-6. **Docker:** add a `./logs:/logs` volume to keep the admin log on the host. Without it, the log stays inside the container's data volume, as before. See [Linux & Docker](linux-docker).
+6. **Docker:** add a `./logs:/logs` volume to keep the admin log on the host. Without it, the log stays inside the container's data volume, as before. See [Run a server (Docker)](../getting-started/server-admins/run-a-server-docker).
 7. **LAN or test server:** admin roles only apply once Steam confirms a player. If your server isn't on the internet, see [`require_steam_auth`](admins-and-permissions#deadworksjsonc).
 
 ## Plugin developers: what to do

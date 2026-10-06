@@ -37,6 +37,7 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'getting-started/server-admins/run-a-server',
+        'getting-started/server-admins/run-a-server-docker',
         'getting-started/server-admins/install-plugins',
         'getting-started/server-admins/set-up-admins',
         'getting-started/server-admins/use-admin-tools',
@@ -85,7 +86,6 @@ const sidebars: SidebarsConfig = {
         'guides/how-deadworks-works',
         'guides/plugin-lifecycle',
         'guides/server-hosting',
-        'guides/linux-docker',
         'guides/uploading-content',
       ],
     },

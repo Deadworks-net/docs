@@ -8,7 +8,7 @@ sidebar_label: "Server hosting"
 Install, launch and open up a Deadworks dedicated server so players outside your network can connect. For a shorter walkthrough, see [Run a server](../getting-started/server-admins/run-a-server).
 
 :::note Windows only
-This guide covers **Windows** hosts: a local machine or a Windows VPS. Valve hasn't published a native Linux server binary for Deadlock. On Linux, run Deadworks in Docker: see [Linux & Docker](linux-docker).
+This guide covers **Windows** hosts: a local machine or a Windows VPS. Valve hasn't published a native Linux server binary for Deadlock. On Linux, run Deadworks in Docker: see [Run a server (Docker)](../getting-started/server-admins/run-a-server-docker).
 :::
 
 A Windows server needs the [.NET 10 Runtime (x64)](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) installed. Deadworks plugins run on it.

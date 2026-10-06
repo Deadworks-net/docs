@@ -9,7 +9,7 @@ sidebar_label: "1. Run a server"
 [Deadworks.net](https://deadworks.net) rents Deadlock servers with Deadworks set up and automatically updated. Plugins, admins, maps and content are managed from its interface, so you can skip the rest of this guide.
 :::
 
-On Linux, run the server in Docker instead: see [Linux & Docker](../../guides/linux-docker), then continue at [2. Install plugins](install-plugins).
+On Linux, run the server in Docker instead: see [1a. Run a server (Docker)](run-a-server-docker).
 
 ## Requirements
 

@@ -1,12 +1,11 @@
 ---
-title: "Hosting on Linux (Docker)"
-sidebar_label: "Hosting on Linux (Docker)"
-unlisted: true
+title: "Run a Deadworks server (Docker)"
+sidebar_label: "1a. Run a server (Docker)"
 ---
 
-# Hosting on Linux (Docker)
+# Run a Deadworks server (Docker)
 
-Run a Deadworks server on Linux in a Docker container.
+Run a Deadworks server on Linux in a Docker container. On Windows, see [1. Run a server](run-a-server) instead.
 
 :::note
 Deadlock has no Linux dedicated server. The image runs the Windows server under Wine.
@@ -119,23 +118,9 @@ Other cvars go in `configs/server.cfg`, one per line. The server runs the file o
 Cheat cvars such as `sv_cheats` are reset on map load and have no effect in `server.cfg`. Set them from the console.
 :::
 
-## Plugins
-
-Copy the plugin `.dll` and its dependencies to `plugins`. Plugins load without a restart. Overwriting a `.dll` reloads the plugin.
-
-```bash
-docker compose exec deadworks console dw_plugin list
-docker compose exec deadworks console dw_plugin disable MyPlugin
-docker compose exec deadworks console dw_plugin enable MyPlugin
-```
-
-To remove a plugin, disable it, delete the `.dll` and restart the server.
-
-Plugins compiled on Windows work without changes.
-
 ## Console
 
-Run a command:
+The next steps run commands in the server console. With Docker, run a command:
 
 ```bash
 docker compose exec deadworks console status
@@ -264,7 +249,6 @@ Set `PUID` and `PGID` in `.env` to the output of `id -u` and `id -g`.
 
 Check that `unlisted` is not `true` under `serverbrowser` in `configs/deadworks.jsonc`.
 
-## See also
+## Next
 
-- [Server hosting](server-hosting): admins, ports and plugins on a Deadworks server.
-- [Uploading content](uploading-content): distribute addons and maps to players.
+**[2. Install plugins](install-plugins)**. Copy plugins into the `plugins` folder.
