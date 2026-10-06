@@ -5,13 +5,13 @@ sidebar_label: "Staff roles"
 
 # Setting up staff roles
 
-A typical staff team for the [Admin plugin](../getting-started/server-admins/use-admin-tools) has trial moderators, moderators, admins and an owner. Each rank can do more than the one below it, and can't act against the ranks above.
+A typical staff team for the [Admin plugin](../getting-started/server-admins/use-admin-tools) has trial moderators, moderators, senior moderators and admins. The built-in `admin` role stays as it is, with every permission. Each rank can do more than the one below it, and can't act against the ranks above.
 
 Before you start, complete [Set up admins](../getting-started/server-admins/set-up-admins). For how roles, wildcards and immunity work in general, see [How permissions work](admins-and-permissions).
 
 ## The plan
 
-| | Trial Mod | Moderator | Admin | Owner |
+| | Trial Mod | Moderator | Senior Mod | Admin |
 |---|:---:|:---:|:---:|:---:|
 | Kick, gag, mute, `who` | ✅ | ✅ | ✅ | ✅ |
 | Bans (including permanent and offline), unban, slay | | ✅ | ✅ | ✅ |
@@ -22,12 +22,17 @@ Before you start, complete [Set up admins](../getting-started/server-admins/set-
 
 ## Step 1: Write the roles
 
-Replace the contents of `configs/permissions/roles.jsonc` with:
+Add three roles to `configs/permissions/roles.jsonc`, next to `default` and `admin`. Leave those two as they are:
 
 ```jsonc
 {
   "default": {
     "permissions": []
+  },
+
+  "admin": {
+    "permissions": ["*"],
+    "immunity": 100
   },
 
   "trialmod": {
@@ -51,7 +56,7 @@ Replace the contents of `configs/permissions/roles.jsonc` with:
     "immunity": 50
   },
 
-  "admin": {
+  "seniormod": {
     "inherits": ["moderator"],
     "permissions": [
       "admin.server.*",
@@ -61,25 +66,9 @@ Replace the contents of `configs/permissions/roles.jsonc` with:
       "deadworks.permissions.manage"
     ],
     "immunity": 90
-  },
-
-  "owner": {
-    "permissions": ["*"],
-    "immunity": 100
   }
 }
 ```
-
-:::caution If you already made yourself admin
-The default `admin` role has `*`. This setup turns `admin` into a smaller role and puts `*` on a new `owner` role. After reloading, move yourself across from the **server console**:
-
-```text
-dw_role_grant <your name> owner
-dw_role_revoke <your name> admin
-```
-
-Run these in the server console, not your game console. Nobody can change their own roles from in game. The server console isn't limited by permissions.
-:::
 
 Then load it:
 
@@ -90,23 +79,23 @@ dw_role_list
 
 ### What each part does
 
-- **`inherits`** passes permissions up the ladder. A moderator gets everything a trial mod has, plus their own. An admin gets everything a moderator has.
+- **`inherits`** passes permissions up the ladder. A moderator gets everything a trial mod has, plus their own. A senior mod gets everything a moderator has.
 - **Immunity** is set on each role here. A role without an `immunity` takes the highest one among the roles it inherits.
 - **`deadworks.admin.notify`** lets staff see *who* did something when the server announces an admin action. By default, players only see `ADMIN: …` (see `admin.show_activity` in [`deadworks.jsonc`](admins-and-permissions#deadworksjsonc)). Every other staff role inherits from `trialmod`, so they all get it.
 - **`admin.moderation.ban`** covers permanent bans and banning players who've left by SteamID, so moderators can do both. Give `ban` only to people you trust with that.
-- **The admin role** gets the whole server group except `rcon` and `cvar`, which leaves changing map and running configs. The denies (`-`) take those two out of the `admin.server.*` wildcard, because an exact entry beats a wildcard in the same role.
-- **`cvar`** is left to the owner because it also covers `sv_cheats` and passwords like `sv_password`.
-- **`deadworks.permissions.manage`** lets admins add and remove staff. See [Step 3](#step-3-let-admins-manage-staff).
-- **The owner** has `*`: everything, including permissions that plugins add later.
+- **The seniormod role** gets the whole server group except `rcon` and `cvar`, which leaves changing map and running configs. The denies (`-`) take those two out of the `admin.server.*` wildcard, because an exact entry beats a wildcard in the same role.
+- **`cvar`** is left to admins because it also covers `sv_cheats` and passwords like `sv_password`.
+- **`deadworks.permissions.manage`** lets senior mods add and remove staff. See [Step 3](#step-3-let-admins-manage-staff).
+- **The `admin` role** has `*`: everything, including permissions that plugins add later.
 
 ## Step 2: Add your staff
 
-From the server console, or from your game console as the owner (these commands don't work in chat):
+From the server console, or from your game console as an admin (these commands don't work in chat):
 
 ```text
 dw_role_grant greeny trialmod
 dw_role_grant lapka moderator
-dw_role_grant mastardy admin
+dw_role_grant mastardy seniormod
 ```
 
 You can use part of their name or `#slot` while they're on the server. For someone who isn't, use their SteamID, or the exact name saved with their entry in `players.jsonc`. Each grant saves to `players.jsonc`, so it lasts across restarts.
@@ -134,17 +123,17 @@ dw_role_revoke <player> moderator
 
 A role that has since been deleted from `roles.jsonc` can still be revoked.
 
-## Step 3: Let admins manage staff
+## Step 3: Let senior mods manage staff
 
-Admins have `deadworks.permissions.manage`, so they can run `dw_role_grant` and `dw_role_revoke` from their own console. These rules limit what they can change:
+Senior mods have `deadworks.permissions.manage`, so they can run `dw_role_grant` and `dw_role_revoke` from their own console. These rules limit what they can change:
 
-- **You can only give out a role if you hold everything it gives,** including what it inherits. A role's denies don't give anything, so you don't need to hold them. An admin holds everything `moderator` and `trialmod` give.
-- **The role's immunity must be lower than yours.** An admin (`90`) can hand out `trialmod` (`10`) and `moderator` (`50`), but not `admin` or `owner`: `You can't give out admin: its immunity (90) isn't lower than yours (90).`
-- **You can only change players whose immunity is lower than yours.** Equal isn't enough. An admin can promote or demote moderators, trial mods and players with no role, but not other admins or the owner. Once someone is an admin, only the owner or the server console can change their roles.
+- **You can only give out a role if you hold everything it gives,** including what it inherits. A role's denies don't give anything, so you don't need to hold them. A senior mod holds everything `moderator` and `trialmod` give.
+- **The role's immunity must be lower than yours.** A senior mod (`90`) can hand out `trialmod` (`10`) and `moderator` (`50`), but not `seniormod` or `admin`: `You can't give out seniormod: its immunity (90) isn't lower than yours (90).`
+- **You can only change players whose immunity is lower than yours.** Equal isn't enough. A senior mod can promote or demote moderators, trial mods and players with no role, but not other senior mods or admins. Once someone is a senior mod, only an admin or the server console can change their roles.
 - **Nobody can change their own roles or permissions.**
-- **The owner (`100`) can only be changed from the server console,** because nobody has higher immunity.
+- **Admins (`100`) can only be changed from the server console,** because nobody has higher immunity.
 
-The same rules apply to single permissions with `dw_perm_grant`. An admin can't hand out `admin.server.rcon`, because they don't have it. Removing a deny from someone counts as giving them the permission, so an admin can't lift `-admin.server.rcon` from a player either:
+The same rules apply to single permissions with `dw_perm_grant`. A senior mod can't hand out `admin.server.rcon`, because they don't have it. Removing a deny from someone counts as giving them the permission, so a senior mod can't lift `-admin.server.rcon` from a player either:
 
 ```text
 Removing -admin.server.rcon would give lapka (76561197960287931) admin.server.rcon, which you don't hold yourself.
@@ -154,7 +143,7 @@ When a rule stops someone, the reply says which one, for example `You can't chan
 
 Grants, revokes and reloads (`dw_role_grant`, `dw_role_revoke`, `dw_perm_grant`, `dw_perm_revoke`, `dw_perm_reload`) are written to the admin log in `logs/admin/`. Each entry records who made the change.
 
-:::tip Senior moderators
+:::tip Staff who only manage trial mods
 To let some staff manage trial mods and nobody else, give them a role that inherits `trialmod`, adds `deadworks.permissions.manage`, and has immunity between trial mods and moderators, such as `30`. They can add and remove trial mods. They can't hand out their own role, because its immunity isn't lower than theirs, and they can't change moderators.
 :::
 
@@ -168,10 +157,10 @@ greeny (76561197960287932): admin.moderation.ban is denied: no grant matches
 lapka (76561197960287931): admin.moderation.ban is allowed by "admin.moderation.ban" from role:moderator
 
 ] dw_perm_check mastardy admin.moderation.ban
-mastardy (76561197960287933): admin.moderation.ban is allowed by "admin.moderation.ban" from role:moderator (via admin)
+mastardy (76561197960287933): admin.moderation.ban is allowed by "admin.moderation.ban" from role:moderator (via seniormod)
 
 ] dw_perm_check mastardy admin.server.rcon
-mastardy (76561197960287933): admin.server.rcon is denied by "-admin.server.rcon" from role:admin
+mastardy (76561197960287933): admin.server.rcon is denied by "-admin.server.rcon" from role:seniormod
 ```
 
 `dw_perm_list <player>` shows everything about one person: their roles, what they inherit, and their immunity.
@@ -180,7 +169,7 @@ Admin plugin actions are written to `logs/admin/`, one file per day. Read it aft
 
 ## One player, one exception
 
-To give or take away a single permission for one person without making a new role, grant it directly. This lets moderator lapka also change map, and stops admin mastardy changing map:
+To give or take away a single permission for one person without making a new role, grant it directly. This lets moderator lapka also change map, and stops senior mod mastardy changing map:
 
 ```text
 dw_perm_grant lapka admin.server.map
