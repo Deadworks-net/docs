@@ -50,6 +50,7 @@ const sidebars: SidebarsConfig = {
       items: [
         // The basics: most plugins use these
         'features/commands',
+        'features/permissions',
         'features/chat',
         'features/players',
         'features/heroes',

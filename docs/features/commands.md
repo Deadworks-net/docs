@@ -180,7 +180,7 @@ Players can still run a `ConsoleOnly` command from their own game console. To ke
 [Command("cvardump", ServerOnly = true)]
 ```
 
-To limit a command to certain players instead, set its [`Permission`](/api-reference/commands/commandattribute#permission).
+To limit a command to certain players instead, see [Permissions](permissions).
 
 ## Hide a command
 
@@ -210,6 +210,6 @@ An exception in an `async void` method can't be caught and would crash the serve
 
 ## See also
 
-- [How permissions work](../guides/admins-and-permissions): roles and permissions
+- [Permissions](permissions): limit who can run a command
 - [Players](players): what you can do with a player
 - [Console commands](console-commands): built-in `dw_` commands

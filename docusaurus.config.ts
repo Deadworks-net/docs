@@ -70,9 +70,9 @@ const config: Config = {
           {from: '/guides/chat-and-hud', to: '/features/chat'},
           {from: '/guides/team-and-hero-management', to: '/features/players'},
           // Plugin permission pages folded into the API reference.
-          {from: ['/features/permissions', '/api-reference/permissions'], to: '/api-reference/permissions/permissions'},
+          {from: '/api-reference/permissions', to: '/api-reference/permissions/permissions'},
           {from: ['/features/admin-api', '/api-reference/admin-api'], to: '/api-reference/admin/penalties'},
-          {from: '/guides/role-only-commands', to: '/api-reference/commands/commandattribute'},
+          {from: '/guides/role-only-commands', to: '/features/permissions'},
           // Getting started split into server admins and developers.
           // Guides removed in favor of Getting started.
           {from: '/guides/server-hosting', to: '/getting-started/server-admins/run-a-server'},
