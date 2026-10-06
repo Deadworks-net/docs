@@ -100,5 +100,3 @@ Back up `configs\`. It holds your admins and bans.
 ## Next
 
 **[2. Install plugins](install-plugins)**
-
-For launch options, firewalls and other hosting details, see [Server hosting](../../guides/server-hosting).

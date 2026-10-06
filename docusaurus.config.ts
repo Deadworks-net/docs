@@ -74,6 +74,11 @@ const config: Config = {
           {from: ['/features/admin-api', '/api-reference/admin-api'], to: '/api-reference/admin/penalties'},
           {from: '/guides/role-only-commands', to: '/api-reference/commands/commandattribute'},
           // Getting started split into server admins and developers.
+          // Guides removed in favor of Getting started.
+          {from: '/guides/server-hosting', to: '/getting-started/server-admins/run-a-server'},
+          {from: '/guides/upgrading-permissions', to: '/permissions'},
+          {from: '/guides/how-deadworks-works', to: '/'},
+          {from: '/guides/plugin-lifecycle', to: '/api-reference/plugin/deadworkspluginbase'},
           {from: '/guides/linux-docker', to: '/getting-started/server-admins/run-a-server-docker'},
           {from: '/getting-started/setup', to: '/getting-started/developers/setup'},
           {from: '/getting-started/first-plugin', to: '/getting-started/developers/first-plugin'},

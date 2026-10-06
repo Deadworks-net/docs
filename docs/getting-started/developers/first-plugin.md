@@ -106,5 +106,4 @@ public class MyFirstPlugin : DeadworksPluginBase
 - [Commands](../../features/commands) to take arguments and limit who can run a command
 - [Players](../../features/players) for more you can do to a player
 - [Chat](../../features/chat) to send messages to everyone
-- [Plugin lifecycle](../../guides/plugin-lifecycle) for when each part of your plugin runs
 - [Example plugins](https://github.com/Deadworks-net/deadworks/tree/main/examples/plugins) in the Deadworks repository

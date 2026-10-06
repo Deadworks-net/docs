@@ -77,4 +77,3 @@ Every admin action is written to `game\bin\win64\logs\admin\`, one file per day.
 
 - [Admin commands](../../guides/admin-commands): every command, its permission and the Admin plugin's settings
 - [Setting up staff roles](../../guides/staff-roles): moderators and trial moderators with fewer commands
-- [Upgrading to permissions](../../guides/upgrading-permissions): coming from an older Deadworks version

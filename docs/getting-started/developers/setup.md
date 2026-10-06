@@ -15,7 +15,7 @@ Install Deadworks and set up a Visual Studio project for plugin development.
 
 ## 0. Install Deadlock
 
-You can use your local Deadlock install. To run a server, follow the [server hosting instructions](../../guides/server-hosting.md) instead.
+You can use your local Deadlock install. To run a server, follow the [server instructions](../server-admins/run-a-server) instead.
 
 ## 1. Install Deadworks
 
@@ -133,4 +133,3 @@ connect localhost:27067
 ## Next steps
 
 - [Your first plugin](first-plugin): build a minimal working plugin
-- [Plugin lifecycle](../../guides/plugin-lifecycle): load, unload and hot-reload behavior

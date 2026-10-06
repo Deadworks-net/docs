@@ -68,4 +68,4 @@ Maps clients download ahead of time. A map can't be mounted at runtime the way a
 ## See also
 
 - [UI panels](../features/ui#use-your-own-layout-file): load a layout from an addon.
-- [Server hosting](server-hosting): launch options and ports.
+- [Run a server](../getting-started/server-admins/run-a-server): install and start a server.

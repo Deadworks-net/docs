@@ -82,10 +82,6 @@ const sidebars: SidebarsConfig = {
       label: 'Guides',
       collapsed: false,
       items: [
-        'guides/upgrading-permissions',
-        'guides/how-deadworks-works',
-        'guides/plugin-lifecycle',
-        'guides/server-hosting',
         'guides/uploading-content',
       ],
     },
