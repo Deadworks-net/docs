@@ -7,6 +7,10 @@ sidebar_label: "1. Run a server"
 
 **Step 1 of 4** in [Getting started for server admins](/getting-started/server-admins). This page installs a Deadlock dedicated server with Deadworks on Windows and gets players connected.
 
+:::tip Rent a server instead
+[Deadworks.net](https://deadworks.net) rents Deadlock servers with Deadworks set up in one click. Plugins, admins and the admin tools are managed from its interface, so you can skip the rest of this guide.
+:::
+
 On Linux, run the server in Docker instead: see [Linux & Docker](../../guides/linux-docker), then continue at [2. Install plugins](install-plugins).
 
 ## Requirements
