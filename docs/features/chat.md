@@ -7,7 +7,7 @@ sidebar_label: "Chat"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Your plugin can send messages to players in chat, and read or block the messages players send.
+A plugin can send messages to players in chat. It can also read or block the messages players send.
 
 ## Send a chat message to one player
 
@@ -23,7 +23,7 @@ Chat.PrintToChatAll("The round starts in 10 seconds.");
 
 ## Reply to a command
 
-In a [command](commands), use `caller.Reply`. It answers in chat when a player ran the command, and in the console when the server console did.
+In a [command](commands), use `caller.Reply`. It answers in chat when a player ran the command. It answers in the server console when the server console ran it.
 
 ```csharp
 [Command("hello")]
@@ -48,7 +48,7 @@ public override HookResult OnChatMessage(ChatMessage message)
 }
 ```
 
-`message.ChatText` is what they typed, and `message.Controller` is who typed it.
+`message.ChatText` is what they typed. `message.Controller` is who typed it.
 
 ## React to something a player says
 
@@ -64,7 +64,7 @@ public override HookResult OnChatMessage(ChatMessage message)
 
 ## Block a chat message
 
-Return `HookResult.Stop`, and nobody sees the message.
+Return `HookResult.Stop`. Nobody sees the message.
 
 ```csharp
 public override HookResult OnChatMessage(ChatMessage message)
@@ -120,3 +120,9 @@ controller.PrintToConsole("Only you can see this.");
 
 CCitadelPlayerController.PrintToConsoleAll("Everyone can see this.");
 ```
+
+## See also
+
+- [Commands](commands): run plugin code from chat
+- [Networking](networking): send messages to some players
+- [Players](players): get the controller to send to

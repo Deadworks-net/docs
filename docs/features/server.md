@@ -7,7 +7,7 @@ sidebar_label: "Server"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-`Server` is for things that affect the whole server: the map, console commands, kicking players and adding bots.
+`Server` controls things that affect the whole server: the map, console commands, kicking players and adding bots.
 
 ## Find out which map is running
 
@@ -22,11 +22,15 @@ if (!Server.ChangeMap(mapName))
     throw new CommandException($"There's no map called {mapName}.");
 ```
 
-Everyone stays connected and loads into the new map. `ChangeMap` checks the name with `Server.IsMapValid` first and returns `false` if the map doesn't exist, so it's safe to pass a name a player typed. `Server.ChangeLevel(map)` changes map without checking.
+Everyone stays connected and loads into the new map. `ChangeMap` checks the name with `Server.IsMapValid` first. It returns `false` if the map doesn't exist, so it's safe to pass a name a player typed. `Server.ChangeLevel(map)` changes map without checking.
 
 `Server.GetMapList()` returns the maps you can change to: the game's own maps, plus any listed under `serverbrowser.extra_maps` in `configs/deadworks.jsonc`, sorted by name.
 
-While the map is changing, `Server.IsChangingLevel` is `true`. Anything you do to players during that time is lost, so check it first.
+While the map is changing, `Server.IsChangingLevel` is `true`.
+
+:::warning
+Changes you make to players while the map is changing are lost. Check `Server.IsChangingLevel` first and return early.
+:::
 
 ```csharp
 if (Server.IsChangingLevel) return;
@@ -49,9 +53,13 @@ public override void OnStartupServer()
 Server.ExecuteCommand("sv_cheats 1");
 ```
 
-This runs the command as if it were typed in the server console. To change a setting, [ConVars](convars) are usually neater.
+`ExecuteCommand` runs the command as if it were typed in the server console.
 
-To see what the command printed, pass a callback. It's called on a later frame, because console commands run on the next frame:
+:::tip
+To change a setting, set a [cvar](convars) instead.
+:::
+
+To read the command's output, pass a callback. The callback runs on a later frame, because console commands run on the next frame.
 
 ```csharp
 Server.ExecuteCommand("status", output => caller.Reply(output));
@@ -65,7 +73,7 @@ Setting a cvar prints nothing, so its output is empty.
 Server.ClientCommand(controller.Slot, "echo Hello from the server!");
 ```
 
-This runs the command in that player's own console.
+`ClientCommand` runs the command in that player's game console.
 
 ## Kick a player
 
@@ -73,7 +81,11 @@ This runs the command in that player's own console.
 controller.Kick("You were kicked for being idle.");
 ```
 
-The message is printed in the player's chat and console, then passed to the engine as the disconnect reason. Deadlock doesn't show the reason on the main menu, so the player only sees the message if they catch it before they're disconnected. To give them time to read it, warn them first:
+`Kick` prints the message in the player's chat and game console. It then passes the message to the engine as the disconnect reason.
+
+:::note
+Deadlock doesn't show the disconnect reason on the main menu. The player only sees the message if they read it before the disconnect. To give them time, warn them first.
+:::
 
 ```csharp
 Chat.PrintToChat(controller, "You'll be kicked in 3 seconds for being idle.");
@@ -81,9 +93,9 @@ Chat.PrintToChat(controller, "You'll be kicked in 3 seconds for being idle.");
 Timer.Once(3.Seconds(), () => controller.Kick("You were kicked for being idle."));
 ```
 
-`Server.Kick(slot, message)` does the same for a slot. `controller.Kick()` with no message kicks without saying anything.
+`Server.Kick(slot, message)` does the same for a slot. `controller.Kick()` with no message kicks the player without a message.
 
-To turn a player away while they're connecting, see [Refusing a Connection With a Reason](admin-api#refusing-a-connection-with-a-reason). To ban them, see [Penalties](admin-api#penalties).
+To turn a player away while they're connecting, see [Refusing a connection with a reason](admin-api#refusing-a-connection-with-a-reason). To ban them, see [Penalties](admin-api#penalties).
 
 ## Add a bot
 
@@ -109,7 +121,7 @@ foreach (var controller in Players.GetAll())
 
 ## Run code every tick
 
-Override `OnGameFrame`. Check `simulating` first, so your code only runs while the game is actually running.
+Override `OnGameFrame`. Check `simulating` first, so your code only runs while the game is running.
 
 ```csharp
 public override void OnGameFrame(bool simulating, bool firstTick, bool lastTick)
@@ -120,7 +132,7 @@ public override void OnGameFrame(bool simulating, bool firstTick, bool lastTick)
 }
 ```
 
-This runs very often, so keep it quick. For anything slower than every tick, use a [timer](timers).
+`OnGameFrame` runs every tick, so keep it fast. For anything slower than every tick, use a [timer](timers).
 
 ## Find out what time it is in the game
 
@@ -133,7 +145,7 @@ float started = GlobalVars.CurTime;
 float seconds = GlobalVars.CurTime - started;
 ```
 
-`GlobalVars.TickCount` is how many ticks the game has run, and `GlobalVars.IntervalPerTick` is how long one tick lasts.
+`GlobalVars.TickCount` is how many ticks the game has run. `GlobalVars.IntervalPerTick` is how long one tick lasts.
 
 ## Read what the server logs
 
@@ -157,4 +169,4 @@ private void OnLog(string message)
 }
 ```
 
-Your method is called with every line the game engine logs.
+The game engine calls your method with every line it logs.

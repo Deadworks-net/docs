@@ -55,12 +55,12 @@ int slot = controller.Slot;
 To go the other way, `Players.FromSlot(slot)` returns the controller in a slot, or `null`.
 
 :::tip Use `Permissions.GetSteamId64(slot)` for anything that matters
-`PlayerSteamId` can be changed by plugins, and a controller can be handed to a different player across reconnects. For bans, rewards or saved data, use `Permissions.GetSteamId64(controller.Slot)` (or `caller.SteamId64` in a command), which is the SteamID the player actually connected with. It's `0` for bots.
+Plugins can change `PlayerSteamId`. A controller can also pass to a different player across reconnects. For bans, rewards or saved data, use `Permissions.GetSteamId64(controller.Slot)`, or `caller.SteamId64` in a command. It returns the SteamID the player connected with. It's `0` for bots.
 :::
 
 ## Know when Steam has confirmed a player
 
-A few seconds after a player joins, Steam confirms their account. Until then, their [roles and permissions](permissions) don't apply. `Players.IsAuthorized(slot)` says whether that has happened, and `OnClientAuthorized` runs when it does:
+A few seconds after a player joins, Steam confirms their account. Until then, their [roles and permissions](permissions) don't apply. `Players.IsAuthorized(slot)` returns whether that has happened. `OnClientAuthorized` runs when it does:
 
 ```csharp
 public override void OnClientAuthorized(ClientAuthorizedEvent args)
@@ -69,7 +69,7 @@ public override void OnClientAuthorized(ClientAuthorizedEvent args)
 }
 ```
 
-See [Steam Verification](admin-api#steam-verification) for details.
+See [Steam verification](admin-api#steam-verification) for details.
 
 ## Heal or damage a player
 
@@ -96,7 +96,7 @@ pawn.AddItem("upgrade_sprint_booster");
 pawn.RemoveItem("upgrade_sprint_booster");
 ```
 
-The [abilities database](https://deadworks.net/db/abilities) lists the name of every item. See [Abilities & Items](abilities) for more you can do with items.
+The [abilities database](https://deadworks.net/db/abilities) lists the name of every item. See [Abilities & items](abilities) for more you can do with items.
 
 ## Change a player's abilities
 
@@ -174,7 +174,7 @@ public override void OnClientFullConnect(ClientFullConnectEvent args)
 pawn.ResetHero();
 ```
 
-This removes their items and puts back their starting abilities.
+`ResetHero()` removes their items and restores their starting abilities.
 
 ## Read a player's stats
 
@@ -205,4 +205,8 @@ public override void OnClientDisconnect(ClientDisconnectedEvent args)
 Chat.PrintToChat(controller, "Welcome to the server!");
 ```
 
-See [Chat](chat) for messaging everyone and reading what players say.
+## See also
+
+- [Chat](chat): message everyone and read what players say
+- [Heroes](heroes): pick heroes and block hero changes
+- [Permissions](permissions): roles, permissions and immunity

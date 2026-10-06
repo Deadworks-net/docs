@@ -1,26 +1,24 @@
 ---
-title: "Making Yourself Admin"
-sidebar_label: "1. Make Yourself Admin"
+title: "Making yourself admin"
+sidebar_label: "1. Make yourself admin"
 ---
 
-# Making Yourself Admin
+# Making yourself admin
 
 **Step 1 of 4** in [Admins & Permissions](/permissions). Start here.
 
-As the server owner you can already run every command from the **server console**. This guide gives your own Steam account the same access, so you can use admin commands from in-game chat and your game console as well.
+The **server console** can already run every command. Giving your Steam account the `admin` role lets you run admin commands from chat and your game console too.
 
-It takes about a minute.
-
-## Make Yourself Admin
+## Make yourself admin
 
 1. Start your server and join it from the game.
-2. In the **server console** window (or over RCON), run:
+2. In the server console window, or over Remote Console (RCON), run:
 
    ```text
    dw_role_grant <your name> admin
    ```
 
-3. The server replies with something like:
+3. Check the reply in the server console:
 
    ```text
    Gave wisp (76561197960287930) the role admin.
@@ -28,15 +26,15 @@ It takes about a minute.
 
 Put quotes around a name with spaces: `dw_role_grant "Big Dave" admin`.
 
-The change is saved to `configs/permissions/players.jsonc`, so it's still there after a restart.
+The change is saved to `configs/permissions/players.jsonc`. It stays after a restart.
 
-Until anyone has a role, the server console reminds you how to do this. When a player joins, it prints the exact command to make them admin by SteamID:
+While nobody has a role, the server console prints a reminder each time a player joins. The reminder includes the exact command to make that player admin by SteamID:
 
 ```text
 [Permissions] No admins yet. To make wisp one, run this in the server console or over RCON: dw_role_grant 76561197960287930 admin
 ```
 
-## Check That It Worked
+## Check that it worked
 
 Run this in the server console:
 
@@ -44,16 +42,18 @@ Run this in the server console:
 dw_perm_list <your name>
 ```
 
-You should see `Roles: admin` and `Immunity: 100`.
+The output includes `Roles: admin` and `Immunity: 100`.
 
-Your roles apply once Steam has confirmed your account, a few seconds after you join. Until then, `dw_perm_list` shows `Not validated by Steam yet`, and admin commands tell you they're waiting for Steam.
+:::note
+Your roles apply once Steam confirms your account, a few seconds after you join. Until then, `dw_perm_list` shows `Not validated by Steam yet`, and admin commands report that they're waiting for Steam. Wait a few seconds and try again.
+:::
 
-In game, open your console and run `dw_help`. It lists every command on the server, including admin-only ones. You can also try an admin command in chat.
+In game, open your game console and run `dw_help`. It lists every command on the server, including admin-only ones. You can also try an admin command in chat.
 
-## Or Edit the Files Yourself
+## Or edit the files yourself
 
-You can also make yourself admin, and set up everyone else, by editing the permission files directly, for example to do it before anyone joins. See [3. How Permissions Work](admins-and-permissions) to learn about the files.
+The permission files can also make you admin and set up everyone else. Editing them works before anyone has joined. See [3. How permissions work](admins-and-permissions) for the files.
 
 ## Next
 
-**[2. Admin Commands](admin-commands)**: every admin command, and how to pick players with `@enemy`, `#slot` and more.
+**[2. Admin commands](admin-commands)**: every admin command, and how to pick players with `@enemy`, `#slot` and more.

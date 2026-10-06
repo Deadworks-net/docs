@@ -1,13 +1,13 @@
 ---
-title: "Zones & Beams"
-sidebar_label: "Zones & Beams"
+title: "Zones & beams"
+sidebar_label: "Zones & beams"
 ---
 
-# Zones & Beams
+# Zones & beams
 
 > **Namespace:** `DeadworksManaged.Api.Utils` for zones, `DeadworksManaged.Api` for beams
 
-A **zone** is an invisible box in the world that tells you when a player walks into it or out of it. Use one for a finish line, a checkpoint or a safe area.
+A **zone** is an invisible box in the world that reports when a player walks into it or out of it. Use one for a finish line, a checkpoint or a safe area.
 
 A **beam** is a glowing line in the world that every player can see. Use beams to show players where a zone is.
 
@@ -48,7 +48,7 @@ finish.Entered += (zone, player, pawn) =>
 };
 ```
 
-`player` is the player's controller and `pawn` is their hero. This also fires when a player teleports or respawns inside the zone.
+`player` is the player's controller. `pawn` is their hero. `Entered` also fires when a player teleports or respawns inside the zone.
 
 ## Run code when a player leaves a zone
 
@@ -59,7 +59,7 @@ finish.Left += (zone, player, pawn) =>
 };
 ```
 
-This also fires when a player inside the zone dies. `pawn` is `null` if they no longer have a hero.
+`Left` also fires when a player inside the zone dies. `pawn` is `null` if they no longer have a hero.
 
 ## Make a zone the right size
 
@@ -73,7 +73,9 @@ var area = Zone.FromOrigin(floor,
     new Vector3(64, 64, 96));   // to about head height
 ```
 
-Make a zone that players run through, like a finish line, at least 100 units deep. A fast player can pass straight through a thinner one without being noticed.
+:::warning
+A fast player can pass straight through a thin zone without triggering it. Make a zone that players run through, like a finish line, at least 100 units deep.
+:::
 
 ## Create a zone around a point
 
@@ -165,7 +167,7 @@ var beam = CBeam.Create(
     end: new Vector3(500, 0, 100));
 ```
 
-`Create` returns `null` if the beam couldn't be made.
+`Create` returns `null` if it can't create the beam.
 
 ## Draw a path
 
@@ -198,7 +200,9 @@ beam.RenderColor = Color.Lime;
 beam.Width = 8f;
 ```
 
-A beam glows, so it always looks a little see-through. A black beam can't be seen at all.
+:::note
+A beam glows, so it always looks partly transparent. A black beam is invisible.
+:::
 
 ## Remove beams
 

@@ -1,11 +1,11 @@
 ---
-title: "Your First Plugin"
-sidebar_label: "First Plugin"
+title: "Your first plugin"
+sidebar_label: "First plugin"
 ---
 
-# Your First Plugin
+# Your first plugin
 
-This page builds a small plugin with two chat commands. It assumes you have already followed [Project Setup](setup).
+Build a small plugin with two chat commands. Before you start, follow [Project setup](setup).
 
 ## The smallest plugin
 
@@ -27,7 +27,7 @@ public class MyFirstPlugin : DeadworksPluginBase
 }
 ```
 
-`OnLoad` runs when Deadworks loads your plugin. Build the project and copy the `.dll` into the `plugins` folder, and you should see the message in the server console. If you set up auto-deploy in [Project Setup](setup), building does the copy for you.
+`OnLoad` runs when Deadworks loads your plugin. Build the project and copy the `.dll` into the `plugins` folder. The message appears in the server console. If you set up auto-deploy in [Project setup](setup), building does the copy for you.
 
 You don't need to restart the server when you change your plugin. Replace the `.dll`, and Deadworks swaps in the new version.
 
@@ -47,7 +47,7 @@ Join your server and type `/hello` in chat. The plugin replies to you.
 
 ## Do something to the player
 
-`caller.Player` is the player who ran the command, and `GetHeroPawn()` is their hero in the world. Most of what you do to a player, you do to their hero.
+`caller.Player` is the player who ran the command. `GetHeroPawn()` returns their hero in the world. Most of what you do to a player, you do to their hero.
 
 ```csharp
 [Command("heal", Description = "Heal yourself to full")]
@@ -103,8 +103,8 @@ public class MyFirstPlugin : DeadworksPluginBase
 
 ## Next steps
 
-- [Commands](../features/commands) to take arguments and limit who can run a command
-- [Players](../features/players) for more you can do to a player
-- [Chat](../features/chat) to send messages to everyone
-- [Plugin Lifecycle](../guides/plugin-lifecycle) for when each part of your plugin runs
+- [Commands](../../features/commands) to take arguments and limit who can run a command
+- [Players](../../features/players) for more you can do to a player
+- [Chat](../../features/chat) to send messages to everyone
+- [Plugin lifecycle](../../guides/plugin-lifecycle) for when each part of your plugin runs
 - [Example plugins](https://github.com/Deadworks-net/deadworks/tree/main/examples/plugins) in the Deadworks repository

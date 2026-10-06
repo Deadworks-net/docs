@@ -62,17 +62,17 @@ public void CmdHeal(Caller caller)
 
 ## Refuse with a message
 
-Throw `CommandException`. The caller sees your message wherever they typed the command, and the rest of your method doesn't run.
+Throw `CommandException`. The caller sees your message wherever they typed the command. The rest of your method doesn't run.
 
 ```csharp
 throw new CommandException("You can't do that right now.");
 ```
 
-Any other exception is a bug in your plugin: the server console gets the full stack trace, and the caller only sees `That command failed. The server console has details.`
+Any other exception is a bug in your plugin. The server console gets the full stack trace. The caller sees only `That command failed. The server console has details.`
 
 ## Take arguments
 
-Add more parameters, and Deadworks fills them in from what the caller typed.
+Add more parameters. Deadworks fills them in from what the caller typed.
 
 ```csharp
 [Command("givesouls", Description = "Give yourself souls")]
@@ -117,7 +117,7 @@ public void CmdHealPlayer(Caller caller, Target target)
 /healplayer @team
 ```
 
-A `Target` accepts part of a name, `#slot`, a SteamID, `@me`, `@team`, `@enemy` and `@all`. If nothing matches, the caller is told and your method doesn't run. Use `target.Single()` when the command only makes sense for one player. See [Targeting Players and Immunity](permissions#targeting-players-and-immunity).
+A `Target` accepts part of a name, `#slot`, a SteamID, `@me`, `@team`, `@enemy` and `@all`. If nothing matches, Deadworks tells the caller and doesn't run your method. Use `target.Single()` when the command only makes sense for one player. See [Targeting players and immunity](permissions#targeting-players-and-immunity).
 
 ## Parse your own types
 
@@ -135,7 +135,7 @@ public override void OnLoad(bool isReload)
 
 Your converters are removed when your plugin unloads. A converter applies to every plugin's commands, so register them for your own types. Registering one for a type Deadworks already parses, such as `int` or `Target`, throws `ArgumentException`.
 
-If a parameter's type can't be parsed at all, the console warns when the plugin loads, and the command only ever shows its usage.
+If a parameter's type can't be parsed at all, the server console warns when the plugin loads, and the command only ever shows its usage.
 
 ## Take a whole sentence
 
@@ -170,7 +170,9 @@ Now `/h`, `!h` and `dw_h` work too.
 [Command("hello", ConsoleOnly = true)] // only dw_hello
 ```
 
-Players can still run a `ConsoleOnly` command from their own game console.
+:::note
+Players can still run a `ConsoleOnly` command from their own game console. To keep a command to the server console, use `ServerOnly` instead.
+:::
 
 ## Only let the server console run a command
 
@@ -203,5 +205,11 @@ public async Task CmdStats(Caller caller)
 If the player has left by then, the reply does nothing. An exception thrown after an `await` is handled the same way as one thrown straight away.
 
 :::warning Don't use `async void`
-An exception in an `async void` method can't be caught and would crash the server, so Deadworks refuses to register such a command and says so in the console. Return `Task` instead.
+An exception in an `async void` method can't be caught and would crash the server. Deadworks refuses to register such a command and says so in the server console. Return `Task` instead.
 :::
+
+## See also
+
+- [Permissions](permissions): limit who can run a command
+- [Players](players): what you can do with a player
+- [Console commands](console-commands): built-in `dw_` commands

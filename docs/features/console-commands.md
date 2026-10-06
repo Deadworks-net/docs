@@ -1,22 +1,20 @@
 ---
-title: "Console Commands"
+title: "Console commands"
 ---
 
-# Console Commands
+# Console commands
 
 > **Namespace:** `DeadworksManaged.Api`
 
-A plugin creates console commands with the [`[Command]`](commands) attribute.
+A console command is a command that starts with `dw_` and runs from the server console or a game console. A plugin creates console commands with the [`[Command]`](commands) attribute.
 
-If you name the command `heal`, Deadworks gives you:
+If you name the command `heal`, Deadworks registers:
 
 - `/heal` in chat
 - `!heal` in chat
 - `dw_heal` in the console
 
-The console version always starts with `dw_`.
-
-If you only want the console version and not the chat commands, set `ConsoleOnly = true`:
+To register only the console version, without the chat commands, set `ConsoleOnly = true`:
 
 ```csharp
 [Command("heal", ConsoleOnly = true)]
@@ -38,16 +36,20 @@ To limit who can run a command, give it a [permission](permissions):
 
 The server console (and RCON) can run every console command, whatever its permission.
 
-For plugin settings, see [ConVars](convars).
-
-## Built-in Commands
+## Built-in commands
 
 | Command | Who can run it | Description |
 |---------|----------------|-------------|
 | `dw_help` | Anyone | Lists the commands you're allowed to run. |
-| `dw_plugin <list\|enable\|disable\|commands> [name]` | Server console or `deadworks.plugins.manage` | Lists, enables, disables or shows the commands of installed plugins. Enabling and disabling are remembered across restarts. `name` must be an installed plugin (from `plugins/` or `builtin/`), otherwise `There's no plugin called '<name>'. Run dw_plugin list to see them.` |
+| `dw_plugin <list\|enable\|disable\|commands> [name]` | Server console or `deadworks.plugins.manage` | Lists, enables, disables or shows the commands of installed plugins. Keeps enabled and disabled plugins across restarts. `name` must be an installed plugin (from `plugins/` or `builtin/`), otherwise `There's no plugin called '<name>'. Run dw_plugin list to see them.` |
 | `dw_reloadconfig [name]` | Server console or `deadworks.config.reload` | Reloads the config of every plugin, or of the named one. |
 | `dw_penalties_reload` | Server console or `deadworks.penalties.reload` | Re-reads bans, gags and mutes after you edit `penalties.jsonc` by hand. |
-| `dw_perm_*`, `dw_role_*` | See [How Permissions Work](../guides/admins-and-permissions#console-commands) | Manages roles and permissions. |
+| `dw_perm_*`, `dw_role_*` | See [How permissions work](../guides/admins-and-permissions#console-commands) | Manages roles and permissions. |
 
 The built-in commands are ordinary commands, so server owners can change who can run them in [`overrides.jsonc`](../guides/admins-and-permissions#overridesjsonc), like any plugin's.
+
+## See also
+
+- [Commands](commands): arguments, aliases and command options
+- [Permissions](permissions): limit who can run a command
+- [ConVars](convars): plugin settings

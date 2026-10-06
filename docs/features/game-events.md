@@ -1,29 +1,29 @@
 ---
-title: "Game Events"
-sidebar_label: "Game Events"
+title: "Game events"
+sidebar_label: "Game events"
 ---
 
-# Game Events
+# Game events
 
 > **Namespace:** `DeadworksManaged.Api`
 
-A game event is a notice the game sends out when something happens: a player dies, picks a hero, or uses an ability. Your plugin can listen for any of them.
+A game event is a notice the game fires when something happens: a player dies, picks a hero, or uses an ability. Plugins can listen for any of them.
 
 ## Find an event
 
 The [event database](https://deadworks.net/db/events) lists every event in the game. Each event has its own page, such as [`player_death`](https://deadworks.net/db/events/player_death), that shows its fields.
 
-Some useful ones:
+Commonly used events:
 
-- `player_death` when a hero dies
-- `player_respawned` when a player respawns
-- `player_hero_changed` when a player picks or changes hero
-- `player_used_ability` when a player uses an ability, shoots or melees
-- `ability_added` when a player gets an ability or an item
+- `player_death`: fires when a hero dies.
+- `player_respawned`: fires when a player respawns.
+- `player_hero_changed`: fires when a player picks or changes hero.
+- `player_used_ability`: fires when a player uses an ability, shoots or melees.
+- `ability_added`: fires when a player gets an ability or an item.
 
 ## Run code when an event happens
 
-Put `[GameEventHandler]` on a method, with the event's name. Every event has a class to go with it.
+Put `[GameEventHandler]` on a method, with the event's name. Every event has a matching class.
 
 ```csharp
 [GameEventHandler("player_hero_changed")]
@@ -37,8 +37,6 @@ public HookResult OnPlayerHeroChanged(PlayerHeroChangedEvent args)
     return HookResult.Continue;
 }
 ```
-
-
 
 ## Run code when a player dies
 
@@ -61,9 +59,7 @@ public HookResult OnPlayerDeath(PlayerDeathEvent args)
 }
 ```
 
-`args.UseridPawn` and `args.AttackerPawn` are their heroes.
-
-
+`args.UseridPawn` is the victim's hero. `args.AttackerPawn` is the killer's hero.
 
 ## Run code when a player spawns
 
@@ -82,7 +78,9 @@ public HookResult OnPlayerRespawned(PlayerRespawnedEvent args)
 }
 ```
 
-Don't use `player_spawn` for this. The first time a player joins, it fires before their hero is ready.
+:::warning
+The first time a player joins, `player_spawn` fires before their hero is ready. Use `player_respawned` instead.
+:::
 
 ## Run code when a player uses an ability
 
@@ -149,9 +147,9 @@ public HookResult OnAbilityAdded(AbilityAddedEvent args)
 
 ## Read an event's fields by name
 
-You don't normally need to do this. The event's class already has a property for each field. Only do it when an event has no class, or its class has a field typed wrong.
+Each event's class already has a property for each field. Read fields by name only when an event has no class, or its class has a field typed wrong.
 
-Take a `GameEvent` and read each field by its name. The names are on the event's database page, and capitals matter.
+Take a `GameEvent` and read each field by its name. The names are on the event's database page. They're case-sensitive.
 
 ```csharp
 [GameEventHandler("player_used_ability")]
@@ -165,7 +163,7 @@ public HookResult OnAbility(GameEvent ev)
 }
 ```
 
-There is a `GetInt`, `GetFloat`, `GetBool`, `GetPlayerPawn`, `GetPlayerController` and `GetEHandle` too.
+`GameEvent` also has `GetInt`, `GetFloat`, `GetBool`, `GetPlayerPawn`, `GetPlayerController` and `GetEHandle`.
 
 ## Fire an event yourself
 
@@ -180,4 +178,6 @@ if (ev != null)
 }
 ```
 
-`Create` returns `null` when the game has no event with that name, so you can't make up new ones. Don't use `ev` again after `Fire()`.
+`Create` returns `null` when the game has no event with that name. You can't create new event types.
+
+Don't use `ev` again after `Fire()`.

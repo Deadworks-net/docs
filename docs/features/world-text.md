@@ -1,13 +1,13 @@
 ---
-title: "World Text"
-sidebar_label: "World Text"
+title: "World text"
+sidebar_label: "World text"
 ---
 
-# World Text
+# World text
 
 > **Namespace:** `DeadworksManaged.Api`
 
-World text is text that sits in the world, like a sign. Players see it when they are near it. To put text on a player's screen instead, see [Chat](chat) or [UI Panels](ui).
+World text is text that sits in the world, like a sign. Players see it when they are near it. To put text on a player's screen instead, see [Chat](chat) or [UI panels](ui).
 
 ## Put text in the world
 
@@ -15,7 +15,7 @@ World text is text that sits in the world, like a sign. Players see it when they
 var text = CPointWorldText.Create("Hello World", new Vector3(100, 200, 300));
 ```
 
-`Create` returns `null` if the text couldn't be made, so check it before you use it.
+`Create` returns `null` if it can't create the text. Check the result before you use it.
 
 ## Change the text
 
@@ -35,7 +35,7 @@ var text = CPointWorldText.Create(
 
 ## Change the colour
 
-Give `Create` a red, green and blue value, each from 0 to 255.
+Give `Create` a red, green and blue value, each from `0` to `255`.
 
 ```csharp
 var text = CPointWorldText.Create("GAME OVER", new Vector3(100, 200, 300),
@@ -77,17 +77,17 @@ text.JustifyVertical = VerticalJustify.Center;
 
 ## Turn the text
 
-Text faces one way and can only be read from the front. Turn it with `Teleport`.
+Text faces one direction. Players can only read it from the front. Turn it with `Teleport`.
 
 ```csharp
 text.Teleport(angles: new Vector3(180, 0, 270));
 ```
 
-Getting the angles right takes some trial and error.
+Find the right angles by testing values in game.
 
 ## Make the text face whoever is looking
 
-Pass `reorientMode: 1`, and the text turns to face each player's camera.
+Pass `reorientMode: 1` to make the text turn to face each player's camera.
 
 ```csharp
 var text = CPointWorldText.Create("Hello World", new Vector3(100, 200, 300),
@@ -116,7 +116,7 @@ public override void OnClientFullConnect(ClientFullConnectEvent args)
 }
 ```
 
-Attached text is removed along with the hero, so you don't need to keep track of it.
+Attached text is removed with the hero. You don't need to track it.
 
 ## Hide and show the text
 

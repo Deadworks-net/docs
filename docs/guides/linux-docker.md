@@ -6,7 +6,7 @@ unlisted: true
 
 # Hosting on Linux (Docker)
 
-This page outlines how to set up and run a Deadworks server on Linux using Docker.
+Run a Deadworks server on Linux in a Docker container.
 
 :::note
 Deadlock has no Linux dedicated server. The image runs the Windows server under Wine.
@@ -17,10 +17,10 @@ Deadlock has no Linux dedicated server. The image runs the Windows server under 
 - 64-bit Linux with [Docker](https://docs.docker.com/engine/install/) and Docker Compose
 - Storage: 40 GB
 - A Steam account that owns Deadlock, used to download the game
-- UDP port 27015 open
+- UDP port `27015` open
 
-:::note
-For security reasons, it is recommended that you create a new Steam account just for your servers.
+:::tip
+For security, create a separate Steam account used only by your servers.
 :::
 
 ## Installing the server
@@ -58,8 +58,8 @@ For security reasons, it is recommended that you create a new Steam account just
    connect <server ip>:27015
    ```
 
-:::note
-After the first successful start, `STEAM_PASSWORD` can be removed from `.env`. The login is saved.
+:::tip
+The container saves the Steam login after the first successful start. You can then remove `STEAM_PASSWORD` from `.env`.
 :::
 
 ### Steam Guard
@@ -76,7 +76,7 @@ If `STEAM_PASSWORD` is empty, this command shows a QR code to scan with the Stea
 
 ## Files
 
-These folders are created next to `compose.yaml`. Back them up: they hold everything that is yours. The Docker volumes only hold the game and the saved Steam login, which can be downloaded and entered again.
+Docker creates these folders next to `compose.yaml`. They hold everything that is yours, so back them up. The Docker volumes hold only the game and the saved Steam login. You can download and enter those again.
 
 | Folder | Contents |
 | --- | --- |
@@ -85,7 +85,7 @@ These folders are created next to `compose.yaml`. Back them up: they hold everyt
 | `maps` | Custom map `.vpk` files |
 | `logs` | The admin action log (`admin/`) |
 
-Paths used elsewhere in this documentation map as follows:
+Windows paths used elsewhere in these docs map to these folders:
 
 | Windows | Docker |
 | --- | --- |
@@ -105,7 +105,7 @@ Settings are read from `.env`. Run `docker compose up -d` to apply changes.
 | `SERVER_PORT` | `27015` | Game port (UDP). |
 | `SERVER_MAP` | `dl_midtown` | Starting map. |
 | `SERVER_PASSWORD` | `secret` | Password required to join. Empty for none. |
-| `RCON_PASSWORD` | `secret` | RCON password. Only needed for [remote RCON](#remote-rcon). |
+| `RCON_PASSWORD` | `secret` | Remote Console (RCON) password. Required only for [remote RCON](#remote-rcon). |
 | `EXTRA_ARGS` | `-ip 1.2.3.4` | Additional command-line parameters. |
 | `AUTO_UPDATE` | `1` | Check for game updates on start. `0` to disable. |
 | `DEADWORKS_VERSION` | `latest` | `latest`, a release such as `v0.4.16`, or `image` to use the version included in the image. |
@@ -113,7 +113,7 @@ Settings are read from `.env`. Run `docker compose up -d` to apply changes.
 
 ### server.cfg
 
-Other cvars go in `configs/server.cfg`, one per line. The file is executed on every start.
+Other cvars go in `configs/server.cfg`, one per line. The server runs the file on every start.
 
 :::note
 Cheat cvars such as `sv_cheats` are reset on map load and have no effect in `server.cfg`. Set them from the console.
@@ -149,7 +149,7 @@ docker compose exec deadworks console
 
 ### Remote RCON
 
-RCON uses TCP on the game port and is not exposed by default. To enable it:
+RCON uses TCP on the game port. `compose.yaml` doesn't expose it by default. To enable it:
 
 1. Set `RCON_PASSWORD` in `.env`.
 2. Uncomment the `tcp` port in `compose.yaml`.
@@ -157,7 +157,7 @@ RCON uses TCP on the game port and is not exposed by default. To enable it:
 
 ## Updating
 
-The game and Deadworks are both updated when the container starts.
+The container updates the game and Deadworks when it starts. Restart it to update:
 
 ```bash
 docker compose restart
@@ -171,7 +171,7 @@ docker compose up -d
 ```
 
 :::note
-A game update can break Deadworks until a new version is released. The log will show `Deadworks <version> does not support Deadlock build <build>`. The container checks for a new release every 10 minutes and restarts the server when one is available.
+A game update can break Deadworks until a new version is released. The log shows `Deadworks <version> does not support Deadlock build <build>`. The container checks for a new release every 10 minutes and restarts the server when one is available.
 :::
 
 ## Multiple servers
@@ -192,7 +192,7 @@ Servers on the same machine share one copy of the game. Each additional server u
 
 The file defines two servers, `one` and `two`. To add another, copy a block, change its name and port, and add the name under `volumes:` at the end of the file.
 
-Each server has its own folders (`one/plugins`, `one/configs`, `one/logs`); `maps` is shared. Use the server name in commands:
+Each server has its own folders (`one/plugins`, `one/configs`, `one/logs`). All servers share `maps`. Use the server name in commands:
 
 ```bash
 docker compose exec two console status
@@ -200,7 +200,7 @@ docker compose logs -f one
 ```
 
 :::note
-The game is only updated while no server is using it. Restart all servers together with `docker compose restart` to update.
+The container updates the game only while no server is using it. Restart all servers together with `docker compose restart` to update.
 :::
 
 ## Using existing game files
@@ -212,6 +212,8 @@ To use a Windows copy of Deadlock already on the machine, leave `STEAM_USERNAME`
 ```
 
 ## Firewall
+
+Open the game port in the machine's firewall. With `ufw`:
 
 ```bash
 sudo ufw allow 27015/udp
@@ -248,11 +250,11 @@ See [Updating](#updating). No action is needed.
 
 ### game files are in use by another server; skipping the update check
 
-Expected when running multiple servers. Restart all of them together to update.
+Occurs when multiple servers share the game files. Restart all of them together to update.
 
 ### Server is healthy but players cannot connect
 
-Check that UDP 27015 is open on the machine and in your hosting provider's firewall.
+Check that UDP port `27015` is open on the machine and in your hosting provider's firewall.
 
 ### Permission denied in plugins or configs
 
@@ -261,3 +263,8 @@ Set `PUID` and `PGID` in `.env` to the output of `id -u` and `id -g`.
 ### Server is not listed in the server browser
 
 Check that `unlisted` is not `true` under `serverbrowser` in `configs/deadworks.jsonc`.
+
+## See also
+
+- [Server hosting](server-hosting): admins, ports and plugins on a Deadworks server.
+- [Uploading content](uploading-content): distribute addons and maps to players.

@@ -1,41 +1,33 @@
 ---
-title: "Project Setup"
-sidebar_label: "Project Setup"
+title: "Project setup"
+sidebar_label: "Project setup"
 ---
 
-# Project Setup
+# Project setup
 
-This guide walks through installing Deadworks and setting up a Visual Studio project for plugin development.
+Install Deadworks and set up a Visual Studio project for plugin development.
 
 ## Prerequisites
 
-- **.NET 10.0 SDK** (or later) - https://dotnet.microsoft.com/en-us/download
-- **Visual Studio** any IDE with .NET support - https://visualstudio.microsoft.com/
+- **.NET 10.0 SDK** or later: [download](https://dotnet.microsoft.com/en-us/download)
+- **Visual Studio** or another IDE with .NET support: [download](https://visualstudio.microsoft.com/)
 - **Deadlock** installed via Steam
-
 
 ## 0. Install Deadlock
 
-You can use your locally installed version of Deadlock, but for running a server, it's recommended to follow the [server hosting instructions](../guides/server-hosting.md).
-
+You can use your local Deadlock install. To run a server, follow the [server hosting instructions](../../guides/server-hosting.md) instead.
 
 ## 1. Install Deadworks
 
 Download the latest release from [https://github.com/Deadworks-net/deadworks/releases](https://github.com/Deadworks-net/deadworks/releases) and extract it into your Deadlock folder (`C:\Program Files (x86)\Steam\steamapps\common\Deadlock`).
 
+## 2. Create a class library project
 
+In Visual Studio, create a new **C# Class Library** project. The project name can be anything.
 
-
-
-
-
-
-## 2. Create a Class Library Project
-
-In Visual Studio, create a new **C# Class Library** project. The project name can be anything, so pick whatever you want.
-
-
-> **Important:** Target **.NET Core** (e.g. `net10.0`), **not** .NET Standard. Deadworks requires a .NET Core runtime.
+:::warning
+Deadworks requires a .NET Core runtime. Target .NET Core, for example `net10.0`, not .NET Standard.
+:::
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -47,7 +39,7 @@ In Visual Studio, create a new **C# Class Library** project. The project name ca
 </Project>
 ```
 
-## 3. Add API References
+## 3. Add API references
 
 Add assembly references to the Deadworks API and Google Protobuf DLLs from your Deadlock installation:
 
@@ -62,11 +54,13 @@ Add assembly references to the Deadworks API and Google Protobuf DLLs from your 
 </ItemGroup>
 ```
 
-> **Note:** Adjust the `HintPath` if your Steam library is in a different location. The DLLs are also available in the `managed/` folder of this repository.
+:::note
+If your Steam library is in a different location, change each `HintPath` to match. The DLLs are also in the `managed/` folder of this repository.
+:::
 
-## 4. Configure Auto-Deploy (Optional)
+## 4. Configure auto-deploy (optional)
 
-Add a post-build target to automatically copy your compiled plugin to the game's plugin directory:
+Add a post-build target that copies your compiled plugin to the game's plugin directory:
 
 ```xml
 <Target Name="DeployToGame" AfterTargets="Build">
@@ -82,9 +76,9 @@ Add a post-build target to automatically copy your compiled plugin to the game's
 </Target>
 ```
 
-Replace `REPLACE_THIS_WITH_YOUR_PLUGIN_OUTPUT_NAME` with the actual file name your plugin project builds, without the `.dll` or `.pdb` extension. For example, if your project builds `CoolPlugin.dll`, use `CoolPlugin.dll` and `CoolPlugin.pdb`.
+Replace `REPLACE_THIS_WITH_YOUR_PLUGIN_OUTPUT_NAME` with the actual file name your plugin project builds, without the `.dll` or `.pdb` extension. For example, if your project builds `CoolPlugin.dll`, the two files are `CoolPlugin.dll` and `CoolPlugin.pdb`.
 
-## 5. Complete .csproj Example
+## 5. Complete .csproj example
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -118,51 +112,40 @@ Replace `REPLACE_THIS_WITH_YOUR_PLUGIN_OUTPUT_NAME` with the actual file name yo
 </Project>
 ```
 
-## Plugin Deployment
+## Plugin deployment
 
-Compiled plugin DLLs are loaded from:
+Deadworks loads compiled plugin DLLs from:
 
 ```
 Deadlock/game/bin/win64/managed/plugins/
 ```
 
+Copy the full build output to the `Deadlock/game/bin/win64/managed/plugins/` folder.
 
-Copy the full build output to the `Deadlock/game/bin/win64/managed/plugins/` folder
-
-
-
-
-Plugins are loaded automatically when the server starts. Editing a plugin DLL while the server is running hot-reloads it.
-
+Deadworks loads plugins when the server starts. Editing a plugin DLL while the server is running hot-reloads it.
 
 ## 6. Run Deadworks
 
 Run `deadworks.exe` from your `Deadlock/game/bin/win64/` folder.
 
-Once Deadworks is running, open Deadlock and connect to your local server from the in-game console:
+Once Deadworks is running, open Deadlock. Connect to your local server from the game console:
 
 ```text
 connect localhost:27067
 ```
 
-
 ## Troubleshooting
 
 | Symptom | Solution |
 |---------|----------|
-| No pink console output at all | Deadworks files not extracted to the correct directory. Verify files exist in `Deadlock/game/bin/win64/` |
-| "Failed to initialize .NET runtime" | Install or repair the .NET 10.0 SDK. |
-| Plugins folder is silently ignored | The .NET SDK isn't installed or is the wrong version. |
-| "Unknown command 'dw_plugin'" | The runtime hasn't loaded, check for errors earlier in the pink console output |
-| No IntelliSense in Visual Studio | Ensure `DeadworksManaged.Api.xml` is in the same folder as the Deadworks DLL |
-| Build targets .NET Standard | Change your project to target `net10.0` (.NET Core), not .NET Standard |
+| No pink console output at all | Extract Deadworks to the correct directory. Check that its files exist in `Deadlock/game/bin/win64/`. |
+| `Failed to initialize .NET runtime` | Install or repair the .NET 10.0 SDK. |
+| Plugins folder is silently ignored | Install the .NET 10.0 SDK. The current SDK is missing or the wrong version. |
+| `Unknown command 'dw_plugin'` | Check for errors earlier in the pink console output. The runtime hasn't loaded. |
+| No IntelliSense in Visual Studio | Put `DeadworksManaged.Api.xml` in the same folder as the Deadworks DLL. |
+| Build targets .NET Standard | Change your project to target `net10.0` (.NET Core), not .NET Standard. |
 
+## Next steps
 
-
-
-
-
-## Next Steps
-
-- [Your First Plugin](first-plugin) — Build a minimal working plugin
-- [Plugin Lifecycle](../guides/plugin-lifecycle) — Understand load/unload/hot-reload behavior
+- [Your first plugin](first-plugin): build a minimal working plugin
+- [Plugin lifecycle](../../guides/plugin-lifecycle): load, unload and hot-reload behavior

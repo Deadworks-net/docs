@@ -1,0 +1,93 @@
+---
+title: "Run a Deadworks server"
+sidebar_label: "1. Run a server"
+---
+
+# Run a Deadworks server
+
+**Step 1 of 4** in [Getting started for server admins](/getting-started/server-admins). This page installs a Deadlock dedicated server with Deadworks on Windows and gets players connected.
+
+On Linux, run the server in Docker instead: see [Linux & Docker](../../guides/linux-docker), then continue at [2. Install plugins](install-plugins).
+
+## Requirements
+
+- A Windows PC or Windows VPS
+- The [.NET 10 Runtime (x64)](https://dotnet.microsoft.com/en-us/download/dotnet/10.0).
+- A Steam account that owns Deadlock. SteamCMD needs it to download the game.
+- About 35 GB of free disk space
+
+## Install Deadlock with SteamCMD
+
+[SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD) is the command-line version of Steam. A server installed with it is separate from your own copy of the game.
+
+1. Download [SteamCMD for Windows](https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip) and extract it to a folder, for example `D:\steamcmd`.
+2. Run `steamcmd.exe`, then install Deadlock. SteamCMD asks for your password and any Steam Guard code:
+
+   ```text
+   force_install_dir D:\deadworks-server
+   login <your Steam username>
+   app_update 1422450 validate
+   quit
+   ```
+
+Run the same commands again to update the server after a Deadlock patch.
+
+## Install Deadworks
+
+1. Download the latest `deadworks-<version>.zip` from [GitHub releases](https://github.com/Deadworks-net/deadworks/releases).
+2. Extract it into the server folder, `D:\deadworks-server`. The zip contains a `game` folder, which merges with the one already there.
+
+`deadworks.exe` is now in `D:\deadworks-server\game\bin\win64\`.
+
+## Start the server
+
+Save this as `run-server.bat` next to `deadworks.exe`, then double-click it:
+
+```batch
+@echo off
+cd /d "%~dp0"
+
+deadworks.exe -dedicated -console -insecure -allow_no_lobby_connect +hostport 27067 +map dl_midtown
+
+pause
+```
+
+`deadworks.exe` takes the same launch options as `deadlock.exe`. `+hostport` sets the port, `27067` by default, and `+map` the starting map, `dl_midtown` by default.
+
+The window that opens is the **server console**. It shows what the server is doing and runs any command you type in it.
+
+## Let players connect
+
+Windows Firewall blocks the port on a new machine. Run this once in PowerShell as Administrator:
+
+```powershell
+New-NetFirewallRule -DisplayName "Deadworks TCP 27067" -Direction Inbound -LocalPort 27067 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Deadworks UDP 27067" -Direction Inbound -LocalPort 27067 -Protocol UDP -Action Allow
+```
+
+On a home network, also forward TCP and UDP `27067` on your router to this PC.
+
+Players connect from the Deadlock console:
+
+```text
+connect your.public.ip:27067
+```
+
+## Where things are
+
+Everything Deadworks uses is under `game\bin\win64\`:
+
+| Folder | Contents |
+|--------|----------|
+| `managed\plugins\` | Plugins you install |
+| `managed\builtin\` | Plugins that ship with Deadworks, such as the Admin plugin |
+| `configs\` | `deadworks.jsonc`, plugin settings, admins and bans |
+| `logs\admin\` | What admins did, one file per day |
+
+Back up `configs\`. It holds your admins and bans.
+
+## Next
+
+**[2. Install plugins](install-plugins)**
+
+For launch options, firewalls and other hosting details, see [Server hosting](../../guides/server-hosting).

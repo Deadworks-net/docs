@@ -9,7 +9,7 @@ sidebar_label: "Heroes"
 
 Every hero is a value of the `Heroes` enum, like `Heroes.Haze`.
 
-The enum uses the game's internal names, which are not always the names players see. Infernus is `Heroes.Inferno`, and Grey Talon is `Heroes.Orion`.
+The enum uses the game's internal names. These aren't always the names players see. Infernus is `Heroes.Inferno`, and Grey Talon is `Heroes.Orion`.
 
 ## Find a hero
 
@@ -68,7 +68,7 @@ if (data?.AvailableInGame == true)
 }
 ```
 
-`GetHeroData()` also tells you more about the hero, such as `Complexity` and `NewPlayerRecommended`.
+`GetHeroData()` also returns other data about the hero, such as `Complexity` and `NewPlayerRecommended`.
 
 ## Run code once a player's new hero is ready
 
@@ -92,7 +92,7 @@ controller.SelectHero(Heroes.Inferno);
 pawn.ResetHero();
 ```
 
-This removes their items, puts back their starting abilities and resets their level.
+`ResetHero()` removes their items, restores their starting abilities and resets their level.
 
 ## Stop players changing hero
 
@@ -118,3 +118,9 @@ if (HeroTypeExtensions.TryParse("hero_inferno", out var hero))
     // hero is Heroes.Inferno
 }
 ```
+
+## See also
+
+- [Players](players): controllers, pawns and teams
+- [Abilities & items](abilities): give items and change abilities
+- [Hero database](https://deadworks.net/db/heroes): every hero and its `Heroes` value

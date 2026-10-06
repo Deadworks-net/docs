@@ -1,40 +1,43 @@
 ---
-title: "Server Hosting"
-sidebar_label: "Server Hosting"
+title: "Server hosting"
+sidebar_label: "Server hosting"
 ---
 
-# Server Hosting
+# Server hosting
 
-:::info Windows only
-This guide covers running a Deadworks dedicated server on **Windows**. Linux is not supported — Valve hasn't published a native Linux server binary for Deadlock, so every path below assumes a Windows host (local machine or Windows VPS).
+Install, launch and open up a Deadworks dedicated server so players outside your network can connect. For a shorter walkthrough, see [Run a server](../getting-started/server-admins/run-a-server).
 
-Docker support is experimental and will be coming soon.
+:::note Windows only
+This guide covers **Windows** hosts: a local machine or a Windows VPS. Valve hasn't published a native Linux server binary for Deadlock. On Linux, run Deadworks in Docker: see [Linux & Docker](linux-docker).
 :::
 
-This guide covers launch options, ports, firewalls, and the operational quirks that surface once real players try to connect.
+A Windows server needs the [.NET 10 Runtime (x64)](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) installed. Deadworks plugins run on it.
 
-## Installing the Server
+## Installing the server
 
-Deadworks can be run using a normal game installation, but when running an actual server, it is recommended to create a separate install using [SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD).
+Deadworks runs from a normal game install. For a dedicated server, create a separate install with [SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD).
 
-1. Download SteamCMD for Windows: https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip
-2. Create a folder for SteamCMD. Example: D:\steamcmd
-3. Extract the contents of the zip to the folder.
+1. Download [SteamCMD for Windows](https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip).
+2. Create a folder for SteamCMD, such as `D:\steamcmd`.
+3. Extract the zip into that folder.
 
-To install Deadlock via SteamCMD:
+To install Deadlock, run these commands in SteamCMD:
 
-```
+```text
 force_install_dir my_deadworks_server
+login <your Steam username>
 app_update 1422450 validate
 ```
 
-The same process is used for updating the server.
+The Steam account must own Deadlock.
 
-## Launching the Server
+Run the same commands to update the server.
 
-`deadworks.exe` replaces `deadlock.exe` for launching. All regular Source launch arguments that `deadlock.exe` accepts also work.
+## Launching the server
 
-When started with no flags, Deadworks uses these defaults:
+Launch `deadworks.exe` in place of `deadlock.exe`. It accepts every Source launch option that `deadlock.exe` accepts.
+
+With no launch options, Deadworks uses these defaults:
 
 ```
 -dedicated -console -dev -insecure -allow_no_lobby_connect
@@ -48,7 +51,7 @@ Override any of them on the command line. `+hostport` is the port the server lis
 
 ### Example: `run-server.bat`
 
-A simple batch file that launches Deadworks on a custom port, map, and tickrate. Save this next to `deadworks.exe` and double-click it:
+This batch file launches Deadworks with a set port and map. Save it next to `deadworks.exe` and double-click it:
 
 ```batch
 @echo off
@@ -63,9 +66,9 @@ pause
 ```
 
 
-## Opening the Firewall (Windows / VPS)
+## Opening the firewall (Windows / VPS)
 
-On a fresh Windows VPS the port you configured is almost certainly blocked by the Windows Firewall, even if the VPS provider's network-level firewall is open. Run this in PowerShell (as Administrator) once:
+On a fresh Windows VPS, Windows Firewall blocks the server's port, even when the VPS provider's network firewall allows it. Run this once in PowerShell as Administrator:
 
 ```powershell
 New-NetFirewallRule -DisplayName "Deadworks TCP 27067" `
@@ -76,9 +79,9 @@ New-NetFirewallRule -DisplayName "Deadworks UDP 27067" `
 ```
 
 
-## Port Forwarding
+## Port forwarding
 
-Forward UDP/TCP `27067` (or your chosen port) on your router or VPS firewall to let players outside your LAN connect. Players then connect with:
+To let players outside your LAN connect, forward UDP and TCP port `27067` (or your chosen port) on your router or VPS firewall. Players then connect with:
 
 ```
 connect your.public.ip:27067
@@ -86,10 +89,21 @@ connect your.public.ip:27067
 
 ## Admins
 
-To use admin commands in-game, give your Steam account the `admin` role. See [Making Yourself Admin](making-yourself-admin). For staff with limited access, see [How Permissions Work](admins-and-permissions).
+To use admin commands in-game, give your Steam account the `admin` role. See [Making yourself admin](making-yourself-admin). For staff with limited access, see [How permissions work](admins-and-permissions).
 
-Admin permissions apply a few seconds after a player joins, once Steam has confirmed who they are. On a LAN-only server, add `+sv_lan 1` to the launch options to skip that wait. Deadworks reads `sv_lan` when the first player joins, so changing it later needs a restart. Never do that on a server reachable from the internet: without the wait, anyone can claim an admin's SteamID. See [Steam Validation](admins-and-permissions#deadworksjsonc).
+Admin permissions apply a few seconds after a player joins, once Steam has confirmed who they are. On a LAN-only server, add `+sv_lan 1` to the launch options to skip that wait. Deadworks reads `sv_lan` when the first player joins, so changing it later needs a restart.
 
-## Finding Plugins
+:::danger
+Without the wait, anyone can claim an admin's SteamID. Never set `+sv_lan 1` on a server reachable from the internet. See [Steam validation](admins-and-permissions#deadworksjsonc).
+:::
 
-The best place to find community-built plugins is the [Deadworks Discord](https://discord.gg/d3JHnVGA26) — share, request, and discuss plugins with other server hosts.
+## Finding plugins
+
+Community-built plugins are shared on the [Deadworks Discord](https://discord.gg/d3JHnVGA26). Server hosts share, request and discuss plugins there.
+
+To install one, see [Install plugins](../getting-started/server-admins/install-plugins).
+
+## See also
+
+- [Making yourself admin](making-yourself-admin): give your Steam account the `admin` role.
+- [Uploading content](uploading-content): distribute addons and maps to players.

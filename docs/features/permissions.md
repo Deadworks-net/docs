@@ -7,11 +7,11 @@ sidebar_label: "Permissions API"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Deadworks has one built-in permission system that every plugin shares. As a plugin developer you only decide **which permission each command needs**. Server owners decide **who has it**, using roles and player lists described in [How Permissions Work](../guides/admins-and-permissions).
+Deadworks has one built-in permission system that every plugin shares. As a plugin developer you only decide **which permission each command needs**. Server owners decide **who has it**, using the roles and player lists described in [How permissions work](../guides/admins-and-permissions).
 
 Permissions are opt-in. A command without a `Permission` can be run by anyone.
 
-## Quick Start
+## Quick start
 
 ```csharp
 using DeadworksManaged.Api;
@@ -45,9 +45,9 @@ With this plugin loaded, on a fresh server:
 - a player can run `!kick` once the server owner gives them `admin.moderation.kick`, or a role that includes it such as the built-in `admin` role (`*`),
 - a player without it sees `You don't have permission to use this command.` The failed `!kick` is not shown in chat.
 
-A player whom Steam hasn't confirmed yet sees `You don't have permission to use this command yet: your roles apply once Steam has confirmed your account, a few seconds after joining.` instead (see [Steam Verification](admin-api#steam-verification)).
+A player whom Steam hasn't confirmed yet sees `You don't have permission to use this command yet: your roles apply once Steam has confirmed your account, a few seconds after joining.` instead (see [Steam verification](admin-api#steam-verification)).
 
-## Naming Permissions
+## Naming permissions
 
 Permissions are dot-separated strings, compared case-insensitively. Use `<plugin>.<area>.<action>`:
 
@@ -61,21 +61,23 @@ itemtest.rcon
 - Start with your plugin's `Name`, lowercased, letters and digits only (`"Item Rotation"` → `itemrotation.`). Deadworks logs a warning when the plugin loads if a permission doesn't, because server owners grant whole plugins with wildcards like `itemrotation.*`.
 - `deadworks.*` is reserved for built-in commands.
 - Group related permissions so wildcards are useful: owners can grant `admin.moderation.*` to moderators.
-- **Never use a permission name as the parent of others.** If you have `medic.heal.others`, don't also have `medic.heal`; name it `medic.heal.self`. That way every name is either a permission or a group, never both, and owners always know what they're granting. Deadworks doesn't enforce this; every plugin should follow it.
+- **Never use a permission name as the parent of others.** If you have `medic.heal.others`, don't also have `medic.heal`; name it `medic.heal.self`. That way every name is either a permission or a group, never both, and owners always know what they're granting. Deadworks doesn't enforce this rule. Follow it in every plugin.
 - The examples on this page come from Deadworks' own **Admin** plugin, which is why they start with `admin.`. Your plugin uses its own name; `admin.*` belongs to the Admin plugin.
 
 Wildcards and denies are for server owners to use in their config. Plugins always ask about one exact permission.
 
-## CommandAttribute Properties
+## CommandAttribute properties
 
 | Property | Type | Description |
 |----------|------|-------------|
 | `Permission` | `string` | Sets the permission a player needs to run the command. Empty means anyone. The server console can always run it, unless it's `ChatOnly`, which creates no `dw_` command. |
-| `TargetImmunity` | `TargetImmunity` | Sets whether [`Target`](#targeting-players-and-immunity) arguments leave out players the caller can't target. Default `Auto`. |
+| `TargetImmunity` | `TargetImmunity` | Sets whether [`Target`](#targeting-players-and-immunity) arguments leave out players the caller can't target. Defaults to `Auto`. |
 
-Server owners can change a command's permission in [`overrides.jsonc`](../guides/admins-and-permissions#overridesjsonc) without touching your plugin, so don't rely on a command being public or private. The check always happens before your method runs, using the current value.
+:::note
+Server owners can change a command's permission in [`overrides.jsonc`](../guides/admins-and-permissions#overridesjsonc) without touching your plugin. A command you wrote as public can become private, and the reverse. Don't rely on either. The check always happens before your method runs, using the current value.
+:::
 
-## The `Caller` Parameter
+## The `Caller` parameter
 
 Make `Caller` the first parameter of your `[Command]` methods. It stands for whoever ran the command: a player, or the server console (which includes RCON).
 
@@ -104,11 +106,11 @@ public void CmdWhoAmI(Caller caller)
 
 Once the player has left, `HasPermission` and `CanTarget` return `false`, and `Reply` and `PrintToConsole` do nothing.
 
-Methods that take `CCitadelPlayerController? caller` instead still work, but new code should use `Caller`.
+Methods that take `CCitadelPlayerController? caller` instead still work. Use `Caller` in new code.
 
 A command typed by a player whose controller can't be found runs nothing, not even a public command, so a `Caller` for a player always has one.
 
-## Checking Permissions in Code
+## Checking permissions in code
 
 For anything finer than "can run this command", check inside the handler. The Admin plugin's `penalties` command is open to everyone, but only staff may look up other players:
 
@@ -123,11 +125,11 @@ public void CmdPenalties(Caller caller, string player = "")
 }
 ```
 
-### Checking a Controller Directly
+### Checking a controller directly
 
 `controller.HasPermission(...)`, `controller.CanTarget(...)` and the `Permissions` methods that take a controller treat a `null` controller as **nobody**: it has no permissions and can't target anyone, and `CanTarget` is also `false` for a `null` target. This way a failed player lookup never acts with the console's powers. When your code runs for "a player or the console", pass a `Caller` around instead, and use `Caller.Console` for the console.
 
-### Declaring Permissions You Check in Code
+### Declaring permissions you check in code
 
 Permissions on `[Command]` are listed for server owners automatically. For a permission that no command requires, and that you only check in code, add `[DeclarePermission]` to your plugin class (once per permission) so it's listed too:
 
@@ -139,9 +141,9 @@ public class MedicPlugin : DeadworksPluginBase
 }
 ```
 
-Undeclared permissions still work, but Deadworks warns about them (see below), and owners won't find them in the `generated` files.
+Undeclared permissions still work, but Deadworks warns about them (see below). Owners also don't find them in the `generated` files.
 
-### Typo Warnings
+### Typo warnings
 
 Deadworks warns in the server console, once per permission, when a plugin checks a permission that no loaded plugin declares. A permission counts as declared if it's on a `[Command]`, in a `[DeclarePermission]`, or set in `overrides.jsonc`. It usually means a typo in your code:
 
@@ -151,9 +153,9 @@ Deadworks warns in the server console, once per permission, when a plugin checks
 
 The warning comes on the tick after the check, so checking your own permissions in `OnLoad`, before your commands have registered, doesn't trigger it.
 
-Server owners get the matching warnings for grants in their own files; the server console prints them after startup and on every `dw_perm_reload`.
+Server owners get the matching warnings for grants in their own files. The server console prints them after startup and on every `dw_perm_reload`.
 
-### The `Permissions` Class
+### The `Permissions` class
 
 `Caller` covers most plugins. The static `Permissions` class adds checks by SteamID, which also work for offline players:
 
@@ -168,7 +170,7 @@ Server owners get the matching warnings for grants in their own files; the serve
 | `GetImmunity(ulong steamId64)` | `int` | Returns the player's immunity, from their saved entry even before Steam confirms them. |
 | `GetRoles(ulong steamId64)` | `IReadOnlyList<string>` | Returns the roles assigned to the player, not counting `default` or inherited roles. For access checks, prefer a permission. |
 | `GetSteamId64(int slot)` | `ulong` | Returns the SteamID64 the player in this slot connected with, or `0` for bots and empty slots. |
-| `RegisterStore(owner, name, store)` | `void` | Registers a permission store. See [Custom Stores](#custom-stores). |
+| `RegisterStore(owner, name, store)` | `void` | Registers a permission store. See [Custom stores](#custom-stores). |
 
 Checks by SteamID wait for Steam like checks by player do. While a SteamID's player is on the server but not yet confirmed by Steam, `Has` and `Explain` answer as `default`, `GetRoles` returns none, and `CanTarget(callerId, targetId)` gives that caller `default`'s immunity. A SteamID that isn't on the server is judged by its saved entry.
 
@@ -182,7 +184,7 @@ To read or print SteamIDs in any format, use `SteamIds`: `SteamIds.TryParse(text
 `CBasePlayerController.PlayerSteamId` can be changed by plugins, and a controller can be handed to a different player across reconnects. These two return the SteamID the player actually connected with.
 :::
 
-### Reacting to Changes
+### Reacting to changes
 
 Override `OnPermissionsChanged` to refresh anything you cache, such as UI. It's called with the affected SteamID64, or `null` when everyone may have changed, after:
 
@@ -200,7 +202,7 @@ public override void OnPermissionsChanged(ulong? steamId64)
 
 As with other plugin overrides, there's nothing to unsubscribe when your plugin unloads.
 
-## Targeting Players and Immunity
+## Targeting players and immunity
 
 Use `Target` as a command parameter type to let callers pick players:
 
@@ -243,7 +245,7 @@ public void CmdGoto(Caller caller, Target target)
 }
 ```
 
-To accept either a player or a SteamID that isn't on the server, take a `string` and resolve it yourself. `Target.Resolve` checks immunity for players on the server; for a SteamID you check it, since nothing else will:
+To accept either a player or a SteamID that isn't on the server, take a `string` and resolve it yourself. `Target.Resolve` checks immunity for players on the server. For a SteamID, check it yourself, since nothing else does:
 
 ```csharp
 [Command("whitelist", Permission = "whitelist.add")]
@@ -270,7 +272,7 @@ public void CmdWhitelist(Caller caller, string player)
 
 ### Immunity
 
-Every player has an **immunity** number set by the server owner (0 by default). A caller can't target a player whose immunity is higher than their own, so a moderator can't kick an admin. Players with equal immunity can target each other, and anyone can target themselves. The server console can target anyone.
+Every player has an **immunity** number set by the server owner (`0` by default). A caller can't target a player whose immunity is higher than their own, so a moderator can't kick an admin. Players with equal immunity can target each other, and anyone can target themselves. The server console can target anyone.
 
 Immunity only applies when a command picks players. It never stops a command from running. Whether `Target` arguments filter by immunity is controlled by `TargetImmunity`:
 
@@ -295,7 +297,7 @@ foreach (var player in Players.GetAll().Where(p => p.TeamNum == team))
 }
 ```
 
-## Custom Stores
+## Custom stores
 
 By default roles and players are read from JSON files. A plugin can supply them from somewhere else, such as a database or a web panel, by implementing `IPermissionStore`:
 
@@ -322,13 +324,13 @@ public override void OnLoad(bool isReload)
 - **Until your plugin registers it, nobody has any permissions.** Only the server console works, and the console logs `permissions.store is 'mysql', but no plugin has registered that store. Nobody has any permissions until one does; the server console still works.` The same happens if your plugin unloads. Deadworks doesn't fall back to the JSON files.
 - Deadworks still evaluates wildcards, denies, inheritance and immunity, so they behave the same on every store. Your store only returns data.
 - `LoadRolesAsync` is called when the store is registered, on `dw_perm_reload`, and when you raise `Changed` with `null`.
-- `SavePlayerAsync` is called when staff use `role_grant`, `role_revoke`, `perm_grant` or `perm_revoke` without `--temp` (see [Console Commands](../guides/admins-and-permissions#console-commands)). The change takes effect once your task completes; if it fails, nothing changes.
+- `SavePlayerAsync` is called when staff use `dw_role_grant`, `dw_role_revoke`, `dw_perm_grant` or `dw_perm_revoke` without `--temp` (see [Console commands](../guides/admins-and-permissions#console-commands)). The change takes effect once your task completes; if it fails, nothing changes.
 - `RoleDefinition` has `Permissions`, `Inherits` and `Immunity` (`int?`). `PlayerEntry` has `Name`, `Roles`, `Permissions`, `Immunity` (`int?`) and `Clone()`.
 - `LoadPlayerAsync` is called when a player connects, each time they reconnect, and when an offline SteamID is checked. Deadworks forgets a player's entry when they leave, so changes made outside Deadworks are picked up. The player has only the `default` role until it completes. If it fails, they keep only `default`, and Deadworks tries again at most every 30 seconds. Until it has loaded, no player can target them and nobody can change their roles.
 - Results are applied on the game thread, so your tasks can run anywhere.
 
-## See Also
+## See also
 
-- [Commands for One Role](../guides/role-only-commands): step by step, a plugin with permissions and a role that can use it
-- [Penalties & Admin Tools API](admin-api): bans, gags, announcements and the admin log
+- [Commands for one role](../guides/role-only-commands): step by step, a plugin with permissions and a role that can use it
+- [Penalties & admin tools API](admin-api): bans, gags, announcements and the admin log
 - [Commands](commands): `[Command]` and argument binding

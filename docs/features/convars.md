@@ -7,11 +7,11 @@ sidebar_label: "ConVars"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-A ConVar is a named setting you can read or change from the console. The game has thousands of them, and changing them is how a plugin changes the rules of the game.
+A console variable (ConVar, or cvar) is a named setting you can read or change from the console. The game has thousands of them. A plugin changes the rules of the game by setting them.
 
 ## Change a game setting
 
-Find the game's ConVar by name and set it. `OnStartupServer` is a good place, because it runs every time a map starts.
+Find the game's ConVar by name and set it. Do this in `OnStartupServer`, because it runs every time a map starts.
 
 ```csharp
 public override void OnStartupServer()
@@ -64,7 +64,7 @@ dw_my_plugin_damage
 dw_my_plugin_damage 1.5
 ```
 
-To only let the server console change it, add `ServerOnly = true`:
+To let only the server console change it, add `ServerOnly = true`:
 
 ```csharp
 [ConVar("dw_my_plugin_damage", Description = "Damage multiplier", ServerOnly = true)]

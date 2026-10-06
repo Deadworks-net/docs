@@ -11,11 +11,35 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Getting Started',
+      label: 'Getting started for server admins',
       collapsed: false,
+      link: {
+        type: 'generated-index',
+        title: 'Getting started for server admins',
+        slug: '/getting-started/server-admins',
+        description:
+          'Run a Deadworks server, install plugins, set up admins and use the admin tools. Read the four pages in order.',
+      },
       items: [
-        'getting-started/setup',
-        'getting-started/first-plugin',
+        'getting-started/server-admins/run-a-server',
+        'getting-started/server-admins/install-plugins',
+        'getting-started/server-admins/set-up-admins',
+        'getting-started/server-admins/use-admin-tools',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Getting started for developers',
+      collapsed: false,
+      link: {
+        type: 'generated-index',
+        title: 'Getting started for developers',
+        slug: '/getting-started/developers',
+        description: 'Set up a plugin project and write your first Deadworks plugin.',
+      },
+      items: [
+        'getting-started/developers/setup',
+        'getting-started/developers/first-plugin',
       ],
     },
     {
@@ -61,6 +85,7 @@ const sidebars: SidebarsConfig = {
         'guides/how-deadworks-works',
         'guides/plugin-lifecycle',
         'guides/server-hosting',
+        'guides/linux-docker',
         'guides/uploading-content',
       ],
     },

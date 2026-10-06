@@ -7,7 +7,7 @@ sidebar_label: "Sound"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-Deadlock plays sounds by name. Each sound the game knows is a **soundevent**, such as `Mystical.Piano.AOE.Explode`. You can play any of them, but you can't play a sound file directly.
+Deadlock plays sounds by name. Each sound the game knows is a **soundevent**, such as `Mystical.Piano.AOE.Explode`. A plugin can play any soundevent. It can't play a sound file directly.
 
 ## Play a sound on a player
 
@@ -15,7 +15,7 @@ Deadlock plays sounds by name. Each sound the game knows is a **soundevent**, su
 pawn.EmitSound("Mystical.Piano.AOE.Warning");
 ```
 
-The sound comes from the player, and everyone nearby hears it. It works on any [entity](entities), not just players.
+The sound comes from the player. Everyone nearby hears it. `EmitSound` works on any [entity](entities), not only players.
 
 To change how it sounds:
 
@@ -23,7 +23,7 @@ To change how it sounds:
 pawn.EmitSound("Damage.Send.Crit", pitch: 100, volume: 0.5f, delay: 0f);
 ```
 
-`pitch` is 100 for normal. `volume` goes from 0 to 1. `delay` is how many seconds to wait before it starts.
+A `pitch` of `100` is normal. `volume` ranges from `0` to `1`. `delay` is the number of seconds before the sound starts.
 
 ## Play a sound to everyone
 
@@ -47,7 +47,11 @@ To make it come from an entity, but still only for that player, use `PlayAt`:
 Sounds.PlayAt("Damage.Send.Crit", pawn.EntityIndex, RecipientFilter.Single(controller.Slot));
 ```
 
-Both take a `volume` and a `pitch` too. Here, 1 is normal for both.
+Both also take `volume` and `pitch`.
+
+:::note
+`Sounds.Play` and `Sounds.PlayAt` treat `1` as normal for both `volume` and `pitch`. A `pitch` of `100` here is not normal pitch, unlike `EmitSound`.
+:::
 
 ```csharp
 Sounds.Play("Damage.Send.Crit", RecipientFilter.All, volume: 0.5f, pitch: 1.2f);
@@ -55,7 +59,7 @@ Sounds.Play("Damage.Send.Crit", RecipientFilter.All, volume: 0.5f, pitch: 1.2f);
 
 ## Stop a sound
 
-`Sounds.Play` and `Sounds.PlayAt` give you back an id. Keep it, and use it to stop the sound.
+`Sounds.Play` and `Sounds.PlayAt` return an id. Keep it to stop the sound later.
 
 ```csharp
 uint guid = Sounds.Play("Mystical.Piano.AOE.Warning", RecipientFilter.All);
@@ -97,4 +101,4 @@ sound.Spawn(ekv);
 ## Find a sound to play
 
 - Browse the game's files with [Source2Viewer](https://s2v.app/). Sounds are listed in the `soundevents_*.vsndevts_c` files.
-- Type `soundinfo <name>` in the server console to check that a name is real.
+- Type `soundinfo <name>` in the server console to check that a name exists.

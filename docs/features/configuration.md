@@ -71,21 +71,23 @@ Edit the file, then type this in the server console:
 dw_reloadconfig
 ```
 
-That reloads every plugin's config. To reload just one, add its name:
+That reloads every plugin's config. To reload one plugin's config, add its name:
 
 ```text
 dw_reloadconfig MyPlugin
 ```
 
-If the file has a mistake in it, the plugin keeps the settings it already had, and the console says where the mistake is:
+If the file has a mistake, the plugin keeps the settings it already had. The server console says where the mistake is:
 
 ```text
 [ConfigManager] Failed to reload MyPlugin.jsonc line 4, column 3: ... My Plugin keeps its previous settings.
 ```
 
-If the file is broken when the server starts, the plugin uses its default settings and the console prints an `ERROR`. Fix the file and run `dw_reloadconfig MyPlugin`.
+:::warning
+If the file is broken when the server starts, the plugin uses its default settings. The server console prints an `ERROR`. Fix the file and run `dw_reloadconfig MyPlugin`.
+:::
 
-A setting your config class doesn't have, such as a misspelled name, is ignored, and the console warns about it when the config loads:
+Deadworks ignores a setting your config class doesn't have, such as a misspelled name. The server console warns about it when the config loads:
 
 ```text
 [ConfigManager] WARNING: MyPlugin.jsonc: 'IntervalSecond' (did you mean 'IntervalSeconds'?) isn't a setting My Plugin knows, so it's ignored.
@@ -107,7 +109,7 @@ public override void OnConfigReloaded()
 
 ## Fix settings that don't make sense
 
-Make your config class an `IConfig` and add a `Validate` method. Deadworks calls it every time the config is loaded.
+Make your config class an `IConfig` and add a `Validate` method. Deadworks calls it every time it loads the config.
 
 ```csharp
 public class MyPluginConfig : IConfig
@@ -155,6 +157,7 @@ public class MyPluginConfig
   ]
 }
 ```
+
 ## Change a setting's name in the file
 
 By default a setting has the same name in the file as in your code. Use `[JsonPropertyName]` to give it a different one.
@@ -181,4 +184,10 @@ public class MyPluginConfig
 bool ok = this.ReloadConfig();
 ```
 
-It returns `false`, and keeps the old settings, if the file has a mistake in it.
+`ReloadConfig()` returns `false` if the file has a mistake. The plugin then keeps its old settings.
+
+## See also
+
+- [Console commands](console-commands): `dw_reloadconfig` and other built-in commands
+- [ConVars](convars): settings you change from the console
+- [Timers](timers): restart a timer in `OnConfigReloaded`

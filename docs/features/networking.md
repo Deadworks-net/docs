@@ -27,7 +27,7 @@ var msg = new CCitadelUserMsg_HudGameAnnouncement
 NetMessages.Send(msg, RecipientFilter.All);
 ```
 
-This one shows a large announcement on the screen.
+`CCitadelUserMsg_HudGameAnnouncement` shows a large announcement on the screen.
 
 ## Send a message to one player
 
@@ -65,7 +65,7 @@ public HookResult OnChatMsg(OutgoingMessageContext<CCitadelUserMsg_ChatMsg> ctx)
 }
 ```
 
-`ctx.Message` is the message, and `ctx.Recipients` is who it is going to.
+`ctx.Message` is the message. `ctx.Recipients` holds the players it is going to.
 
 ## Block a message
 
@@ -79,7 +79,7 @@ public HookResult OnChatMsg(OutgoingMessageContext<CCitadelUserMsg_ChatMsg> ctx)
 }
 ```
 
-To hide it from just one player, take them out of the recipients:
+To hide it from one player, remove them from the recipients:
 
 ```csharp
 var recipients = ctx.Recipients;
@@ -87,7 +87,9 @@ recipients.Remove(controller.Slot);
 ctx.Recipients = recipients;
 ```
 
-Copy `ctx.Recipients` into a variable, change it, and put it back, as above. Changing it in place does nothing.
+:::warning
+Changing `ctx.Recipients` in place has no effect. Copy it into a variable, change the copy, and assign it back, as above.
+:::
 
 ## Read a message a player sends
 
@@ -105,4 +107,11 @@ public HookResult OnChatMsgFromPlayer(IncomingMessageContext<CCitadelUserMsg_Cha
 
 `ctx.SenderSlot` is the slot of the player who sent it.
 
-To read chat, [`OnChatMessage`](chat#read-what-players-say) is simpler.
+:::tip
+To read chat, use [`OnChatMessage`](chat#read-what-players-say) instead.
+:::
+
+## See also
+
+- [Chat](chat): send and read chat messages.
+- [Protobuf database](https://deadworks.net/db/protobufs): every net message and its fields.

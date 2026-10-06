@@ -31,7 +31,7 @@ It keeps running until you stop it or your plugin unloads.
 
 ## Stop a timer
 
-`Timer.Every` gives you back a handle. Keep it, and call `Cancel()` when you want the timer to stop.
+`Timer.Every` returns a handle. Keep it, and call `Cancel()` to stop the timer.
 
 ```csharp
 var timer = Timer.Every(1.Seconds(), () =>
@@ -81,7 +81,7 @@ Timer.NextTick(() =>
 });
 ```
 
-Use this when you have just created something and it isn't ready yet, or when you are back from an `await` and need to touch the game again.
+Use `Timer.NextTick` when something you created isn't ready yet. Also use it after an `await` when you need to touch the game again.
 
 ## Run something a set number of times
 
@@ -99,7 +99,8 @@ Timer.Sequence(step =>
 });
 ```
 
-`step.Run` is how many times it has run so far. This deals damage every 200 milliseconds and stops once `step.Run` passes 10.
+`step.Run` is how many times it has run so far. The example deals damage every 200 milliseconds and stops once `step.Run` passes 10.
+
 ## Give each player their own timer
 
 Keep each player's handle in an [`EntityData`](entities#store-a-value-for-each-entity), so you can stop the right one later.
@@ -120,3 +121,8 @@ if (_timers.TryGet(pawn, out var timer) && timer != null)
     _timers.Remove(pawn);
 }
 ```
+
+## See also
+
+- [Entities](entities): store a value for each entity
+- [Configuration](configuration): restart a timer when settings change

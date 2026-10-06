@@ -1,13 +1,13 @@
 ---
-title: "Upgrading to Permissions"
-sidebar_label: "Upgrading to Permissions"
+title: "Upgrading to permissions"
+sidebar_label: "Upgrading to permissions"
 ---
 
-# Upgrading to Permissions
+# Upgrading to permissions
 
-This release adds [admins and permissions](/permissions): roles, a built-in Admin plugin, and bans, gags and mutes. Most servers and plugins keep working, but a few things changed. This page lists what to do after upgrading, then every breaking change.
+This release adds [admins and permissions](/permissions): roles, a built-in Admin plugin, and bans, gags and mutes. Most servers and plugins keep working, but a few things changed. Below are the steps to take after upgrading, then every breaking change.
 
-## Server Owners: What to Do
+## Server owners: what to do
 
 1. **Update the whole server.** Install the new release over the old one. The native and managed parts change together, so don't mix files from different versions.
 2. **Make yourself admin.** Nobody has admin commands until you give someone a role. Join your server, then run this in the server console:
@@ -16,12 +16,12 @@ This release adds [admins and permissions](/permissions): roles, a built-in Admi
    dw_role_grant <your name> admin
    ```
 
-   See [Make Yourself Admin](making-yourself-admin).
+   See [Making yourself admin](making-yourself-admin).
 3. **Read the server console after the first start.** Look for:
    - `ERROR: ... uses [ChatCommand(...)]` or `[ConCommand(...)]`: that plugin's commands no longer work. Ask its author for a rebuilt version (see [below](#chatcommand-and-concommand-no-longer-work)).
    - `Warning: ... is already registered by another plugin; both will run`: a plugin uses the same command name as another, often one of the new [Admin commands](admin-commands) like `kick`, `ban` or `map`. Remove one, or turn off the Admin plugin with `dw_plugin disable AdminPlugin`.
    - `isn't a setting ... knows, so it's ignored`: a typo in a config file.
-4. **Lock down commands that should be staff only.** Plugins written before this release don't give their commands permissions, so anyone can still run them. Look through `configs/permissions/generated/` to see every command, and require a permission for the ones that need it in [`overrides.jsonc`](admins-and-permissions#overridesjsonc):
+4. **Lock down staff-only commands.** Plugins written before this release don't give their commands permissions, so anyone can still run them. Look through `configs/permissions/generated/` to see every command, and require a permission for the ones that need it in [`overrides.jsonc`](admins-and-permissions#overridesjsonc):
 
    ```jsonc
    {
@@ -32,10 +32,10 @@ This release adds [admins and permissions](/permissions): roles, a built-in Admi
    ```
 
 5. **Back up `configs/`.** Your admins are in `configs/permissions/` and your bans in `configs/penalties/`.
-6. **Docker:** add a `./logs:/logs` volume to keep the admin log on the host. See [Linux & Docker](linux-docker). Without it, the log stays inside the container's data volume, as before.
+6. **Docker:** add a `./logs:/logs` volume to keep the admin log on the host. Without it, the log stays inside the container's data volume, as before. See [Linux & Docker](linux-docker).
 7. **LAN or test server:** admin roles only apply once Steam confirms a player. If your server isn't on the internet, see [`require_steam_auth`](admins-and-permissions#deadworksjsonc).
 
-## Plugin Developers: What to Do
+## Plugin developers: what to do
 
 1. **Replace `[ChatCommand]` and `[ConCommand]` with `[Command]`.** They no longer compile, and old builds of your plugin lose those commands. See [below](#chatcommand-and-concommand-no-longer-work).
 2. **Take a `Caller` instead of `CCitadelPlayerController? caller`.** The old form still works, but `Caller` says whether it's the console and has `Reply`:
@@ -67,13 +67,13 @@ This release adds [admins and permissions](/permissions): roles, a built-in Admi
 4. **Make `async void` commands return `Task`.**
 5. **Rebuild against the new `DeadworksManaged.Api` and test.** The rest of this page lists the smaller changes.
 
-## Breaking Changes
+## Breaking changes
 
-### For Plugin Developers
+### For plugin developers
 
 #### `[ChatCommand]` and `[ConCommand]` no longer work
 
-They were deprecated in favor of `[Command]`. Now they're compile errors, and Deadworks doesn't register them in plugins built against an older version, because those commands skip permission checks. The console prints an `ERROR` for each one it finds.
+They were deprecated in favor of `[Command]`. Now they're compile errors. Deadworks also doesn't register them in plugins built against an older version, because those commands skip permission checks. The console prints an `ERROR` for each one it finds.
 
 Replace them with `[Command]`:
 
@@ -98,7 +98,11 @@ An exception in one would crash the server. Return `Task` or `ValueTask` instead
 
 #### Code after `await` in a command runs on the game thread
 
-Before, it ran on a thread pool thread. Now every continuation comes back to the game thread, so you can touch entities after an `await`. Slow work after an `await` now holds up the server: move it into `Task.Run`.
+Before, it ran on a thread pool thread. Now every continuation comes back to the game thread, so you can touch entities after an `await`.
+
+:::warning
+Slow work after an `await` now runs on the game thread and holds up the server. Move it into `Task.Run`.
+:::
 
 Exceptions are now followed to the end of the command, too: a `CommandException` thrown after an `await` is sent to the caller, and anything else is logged.
 
@@ -132,7 +136,7 @@ Before, the engine also split `dw_` commands on `{ } ( ) ' :`, so `STEAM_0:1:111
 
 #### `Caller.Reply` answers players in chat
 
-If you replace your own reply helper with `caller.Reply`, note that it always answers a player in chat, even when they typed the `dw_` version in their console. Use `caller.PrintToConsole` for long output.
+`caller.Reply` always answers a player in chat, even when they typed the `dw_` version in their console. If you replace your own reply helper with it, use `caller.PrintToConsole` for long output.
 
 #### New names in `DeadworksManaged.Api`
 
@@ -144,7 +148,7 @@ These types are new: `Caller`, `Target`, `TargetImmunity`, `Permissions`, `Permi
 
 The built-in [Admin plugin](admin-commands) adds `kick`, `ban`, `addban`, `unban`, `bans`, `gag`, `ungag`, `gags`, `mute`, `unmute`, `mutes`, `slay`, `who`, `penalties`, `map`, `rcon`, `cvar`, `resetcvar` and `execcfg`, and Deadworks adds `dw_perm_*`, `dw_role_*` and `dw_penalties_reload`. If your plugin uses one of these names, both commands run, and the console warns. Rename yours.
 
-### For Server Owners
+### For server owners
 
 #### Admin commands need a role
 
@@ -152,11 +156,11 @@ The new [Admin plugin](admin-commands) is turned on by default. Its commands nee
 
 #### Bans, gags and mutes are enforced by Deadworks
 
-Banned players are turned away before any plugin sees them, gagged players' chat and muted players' voice are dropped, and penalties are saved in `configs/penalties/penalties.jsonc`. See [Admin Commands](admin-commands#moderation-commands).
+Banned players are turned away before any plugin sees them, gagged players' chat and muted players' voice are dropped, and penalties are saved in `configs/penalties/penalties.jsonc`. See [Admin commands](admin-commands#moderation-commands).
 
 #### Broken config files lock things down
 
-Before, a mistake in `deadworks.jsonc` was logged and the server carried on with the defaults. Now nobody has any permissions, new players can't join and the server isn't listed until you fix the file and restart. Mistakes in the permission and penalty files lock things down too. See [When a File Has a Mistake](admins-and-permissions#when-a-file-has-a-mistake).
+Before, a mistake in `deadworks.jsonc` was logged and the server carried on with the defaults. Now nobody has any permissions, new players can't join and the server isn't listed until you fix the file and restart. Mistakes in the permission and penalty files lock things down too. See [When a file has a mistake](admins-and-permissions#when-a-file-has-a-mistake).
 
 #### Built-in console commands
 
@@ -172,11 +176,19 @@ Before, a mistake in `deadworks.jsonc` was logged and the server carried on with
 | `configs/permissions/roles.jsonc` | [Roles](admins-and-permissions#rolesjsonc) |
 | `configs/permissions/players.jsonc` | [Who has which roles](admins-and-permissions#playersjsonc) |
 | `configs/permissions/overrides.jsonc` | [Changing what a command requires](admins-and-permissions#overridesjsonc) |
-| `configs/permissions/generated/` | Every plugin's commands and permissions, for reference |
-| `configs/penalties/penalties.jsonc` | Bans, gags and mutes |
+| `configs/permissions/generated/` | Lists every plugin's commands and permissions, for reference |
+| `configs/penalties/penalties.jsonc` | Stores bans, gags and mutes |
 | `configs/AdminPlugin/AdminPlugin.jsonc` | [Admin plugin settings](admin-commands#settings) |
-| `logs/admin/admin-YYYY-MM-DD.log` | What admins did |
+| `logs/admin/admin-YYYY-MM-DD.log` | Records what admins did |
 
-All are in `game/bin/win64/`, and are created the first time the server starts. `deadworks.jsonc` has [new settings](admins-and-permissions#deadworksjsonc), which take their defaults if you don't add them.
+All are in `game/bin/win64/`. They're created the first time the server starts. `deadworks.jsonc` has [new settings](admins-and-permissions#deadworksjsonc), which take their defaults if you don't add them.
 
-`dw_role_grant` and the other grant and revoke commands rewrite `players.jsonc`, which removes comments you've added, apart from the header.
+:::warning
+`dw_role_grant` and the other grant and revoke commands rewrite `players.jsonc`. The rewrite removes comments you've added, apart from the header.
+:::
+
+## See also
+
+- [Making yourself admin](making-yourself-admin): give your Steam account the `admin` role
+- [How permissions work](admins-and-permissions): the permission files and commands
+- [Permissions API](../features/permissions): `Caller`, `Permission` and immunity for plugins

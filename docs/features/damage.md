@@ -7,7 +7,7 @@ sidebar_label: "Damage"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-You can deal damage to any [entity](entities), and you can watch, change or block damage as it happens.
+Plugins can deal damage to any [entity](entities). They can also watch, change or block damage as it happens.
 
 ## Damage an entity
 
@@ -15,7 +15,7 @@ You can deal damage to any [entity](entities), and you can watch, change or bloc
 pawn.Hurt(50f);
 ```
 
-This takes 50 health from the player. It can kill them.
+`Hurt` takes 50 health from the player. It can kill them.
 
 ## Give an attacker the credit
 
@@ -27,7 +27,7 @@ If this kills the target, the kill goes to `shooter` and shows in the kill feed.
 
 ## Deal damage over time
 
-Use a [timer](timers#run-something-a-set-number-of-times) to deal a little damage again and again.
+Use a [timer](timers#run-something-a-set-number-of-times) to deal small amounts of damage repeatedly.
 
 ```csharp
 Timer.Sequence(step =>
@@ -41,7 +41,7 @@ Timer.Sequence(step =>
 });
 ```
 
-This deals 10 damage every 200 milliseconds, and stops once `step.Run` passes 10 or the target is gone.
+This deals 10 damage every 200 milliseconds. It stops once `step.Run` passes 10 or the target is gone.
 
 ## Run code when something takes damage
 
@@ -58,15 +58,15 @@ public override HookResult OnTakeDamage(TakeDamageEvent ev)
 
 `ev.Entity` is whoever is being hurt. `ev.Info` describes the hit:
 
-- `ev.Info.Damage` is how much
-- `ev.Info.Attacker` is who did it
-- `ev.Info.Ability` is the ability or item that did it
+- `ev.Info.Damage`: the amount of damage.
+- `ev.Info.Attacker`: the entity that dealt it.
+- `ev.Info.Ability`: the ability or item that dealt it.
 
 Both `Attacker` and `Ability` can be `null`.
 
 ## Block damage
 
-Return `HookResult.Stop` and the hit does nothing.
+Return `HookResult.Stop` to cancel the hit.
 
 ```csharp
 public override HookResult OnTakeDamage(TakeDamageEvent ev)
@@ -111,7 +111,7 @@ public override HookResult OnTakeDamage(TakeDamageEvent ev)
 
 ## Kill an entity
 
-`Hurt` can't promise a kill. Build the hit yourself and add the `ForceDeath` flag.
+`Hurt` can't guarantee a kill. Build the hit yourself and add the `ForceDeath` flag.
 
 ```csharp
 using var info = new CTakeDamageInfo(
@@ -126,7 +126,7 @@ info.DamageFlags = TakeDamageFlags.ForceDeath | TakeDamageFlags.AllowSuicide;
 target.TakeDamage(info);
 ```
 
-Always create a `CTakeDamageInfo` with `using`, as above, so it is cleaned up afterwards.
+Always create a `CTakeDamageInfo` with `using`, as above, so it's disposed after use.
 
 ## Change how a hit behaves
 
@@ -136,11 +136,11 @@ Build the hit the same way, with different flags.
 info.DamageFlags = TakeDamageFlags.PreventDeath;
 ```
 
-Some useful flags:
+Common flags:
 
-- `PreventDeath` leaves the target on 1 health at worst
-- `ForceDeath` always kills
-- `SuppressDamageModification` ignores armor and resistances
-- `SuppressPhysicsForce` deals no knockback
-- `SuppressEffects` shows no visual effects
-- `SuppressKillCredit` gives nobody the kill
+- `PreventDeath`: leaves the target on 1 health at worst.
+- `ForceDeath`: always kills.
+- `SuppressDamageModification`: ignores armor and resistances.
+- `SuppressPhysicsForce`: deals no knockback.
+- `SuppressEffects`: shows no visual effects.
+- `SuppressKillCredit`: gives nobody the kill.

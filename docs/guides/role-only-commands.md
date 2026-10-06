@@ -1,25 +1,24 @@
 ---
-title: "Commands for One Role"
-sidebar_label: "Plugin Commands for a Role"
+title: "Commands for one role"
+sidebar_label: "Plugin commands for a role"
 ---
 
-# Commands for One Role
+# Commands for one role
 
-For plugin developers. It assumes you know [how permissions work](admins-and-permissions).
-
-This guide walks through a small plugin whose commands only some players can use, then sets up a role on the server so that exactly those players can.
-
-We'll build a **Medic** plugin:
+A plugin can limit its commands to the players who hold a permission, and a server role can give that permission to exactly the right players. This guide builds a **Medic** plugin that does both:
 
 - `!heal` heals yourself. Only **medics** can use it.
 - `!heal <player>` heals someone else. Only **head medics** can do that.
 - `!healall` heals everyone. Also head medics only.
 
-You should already have a plugin project set up. If not, start with [Project Setup](../getting-started/setup) and [Your First Plugin](../getting-started/first-plugin).
+Requirements:
 
-## Part 1: The Plugin
+- A plugin project. If you don't have one, start with [Project setup](../getting-started/developers/setup) and [Your first plugin](../getting-started/developers/first-plugin).
+- Knowing [how permissions work](admins-and-permissions).
 
-### Write the Commands
+## Part 1: The plugin
+
+### Write the commands
 
 ```csharp
 using DeadworksManaged.Api;
@@ -65,25 +64,31 @@ public class MedicPlugin : DeadworksPluginBase
 }
 ```
 
-### What Each Part Does
+### What each part does
 
-**`Permission = "medic.heal.self"`** locks the command. Before `CmdHeal` runs, Deadworks checks that the player has `medic.heal.self`. If they don't, they see `You don't have permission to use this command.` and your method never runs, so you don't need an `if` for it.
+**`Permission = "medic.heal.self"`** locks the command. Before `CmdHeal` runs, Deadworks checks that the player has `medic.heal.self`. If they don't, they see `You don't have permission to use this command.` Your method never runs, so it needs no `if` for this.
 
-**Permission names** start with your plugin's name (`medic.`), then get more specific: `medic.heal.self`, `medic.heal.others`, `medic.heal.all`. This lets server owners grant everything at once with `medic.*`, or all healing with `medic.heal.*`. There's no plain `medic.heal`: don't make a permission name also the start of other names, so it's always clear whether something is a permission or a group.
+**Permission names** start with your plugin's name (`medic.`), then get more specific: `medic.heal.self`, `medic.heal.others`, `medic.heal.all`. Server owners can then grant everything at once with `medic.*`, or all healing with `medic.heal.*`. There's no plain `medic.heal`. Don't make a permission name also the start of other names, so every name is clearly either a permission or a group.
 
-**`Caller caller`** is whoever ran the command: a player, or the server console. `caller.Player` is the player's controller (`null` for the console, or once the player has left), `caller.Reply(...)` answers in their chat or the server console, and `caller.HasPermission(...)` is always `true` for the console. So the console can run `dw_heal lapka`, but `dw_heal` on its own tells it to name a player, since the console has no hero.
+**`Caller caller`** is whoever ran the command: a player, or the server console.
 
-**`caller.HasPermission("medic.heal.others")`** is for checks that depend on how the command is used. Anyone with `medic.heal.self` can run `!heal`, but only some of them may heal *other* players, so we check that inside the method. Throwing a `CommandException` sends its message back to whoever ran the command.
+- `caller.Player` is the player's controller. It's `null` for the console, or once the player has left.
+- `caller.Reply(...)` answers in the player's chat or the server console.
+- `caller.HasPermission(...)` is always `true` for the console.
 
-**`[DeclarePermission]`** lists `medic.heal.others` for server owners. Permissions on `[Command]` are listed automatically, but Deadworks can't see checks inside your code without this. Without it, the console would also warn that the plugin checks a permission nothing declares, which is how Deadworks catches typos.
+So the console can run `dw_heal lapka`. `dw_heal` on its own tells it to name a player, since the console has no hero.
 
-**`Target? target = null`** lets the player optionally name someone: `!heal`, `!heal wisp`, `!heal #3`. With nothing typed, `target` is `null` and we heal the caller. `target.Single()` makes sure the name matched exactly one player.
+**`caller.HasPermission("medic.heal.others")`** is for checks that depend on how the command is used. Anyone with `medic.heal.self` can run `!heal`, but only some of them may heal *other* players, so the method checks that itself. Throwing a `CommandException` sends its message back to whoever ran the command.
 
-**`TargetImmunity = TargetImmunity.Ignore`**: by default, commands with a permission can't target players with higher [immunity](../features/permissions#immunity), which is what you want for kick or ban. Healing doesn't hurt anyone, so a medic should be able to heal an admin too.
+**`[DeclarePermission]`** lists `medic.heal.others` for server owners. Permissions on `[Command]` are listed automatically, but Deadworks can't see checks inside your code without this attribute. Without it, the console also warns that the plugin checks a permission nothing declares. That warning is how Deadworks catches typos.
 
-### Build and Install
+**`Target? target = null`** lets the player optionally name someone: `!heal`, `!heal wisp`, `!heal #3`. With nothing typed, `target` is `null` and the method heals the caller. `target.Single()` makes sure the name matched exactly one player.
 
-Build the plugin and copy the DLL into the server's plugins folder as usual. When it loads, Deadworks writes `configs/permissions/generated/MedicPlugin.jsonc` (named after the DLL), which lists the plugin's commands and its permissions (sorted by name):
+**`TargetImmunity = TargetImmunity.Ignore`** turns off the immunity check. By default, commands with a permission can't target players with higher [immunity](../features/permissions#immunity), which suits kick or ban. Healing doesn't hurt anyone, so this lets a medic heal an admin too.
+
+### Build and install
+
+Build the plugin and copy the DLL into the server's plugins folder. When it loads, Deadworks writes `configs/permissions/generated/MedicPlugin.jsonc`, named after the DLL. The file lists the plugin's commands and its permissions, sorted by name:
 
 ```jsonc
 // ============================================================================
@@ -138,15 +143,15 @@ Build the plugin and copy the DLL into the server's plugins folder as usual. Whe
 }
 ```
 
-The comment block at the top (shortened here) explains how to change access without touching the plugin. This is the list a server owner works from in Part 2. If you publish the plugin, it's also worth listing these permissions in your README.
+The comment block at the top (shortened here) explains how to change access without touching the plugin. A server owner works from this list in Part 2. If you publish the plugin, list these permissions in your README too.
 
-Right now nobody but the server console, and anyone with the `admin` role, can use these commands.
+At this point only the server console and players with the `admin` role can use these commands.
 
-## Part 2: Give the Commands to a Role
+## Part 2: Give the commands to a role
 
-This part is done on the server and doesn't touch the plugin.
+This part happens on the server. It doesn't touch the plugin.
 
-### 1. Create the Roles
+### 1. Create the roles
 
 Open `configs/permissions/roles.jsonc` and add two roles next to the existing ones:
 
@@ -188,7 +193,7 @@ headmedic (immunity 0): medic.*
 medic (immunity 0): medic.heal.self
 ```
 
-### 2. Add Players to the Role
+### 2. Add players to the role
 
 With the players on the server, run in the server console:
 
@@ -197,7 +202,7 @@ dw_role_grant lapka medic
 dw_role_grant greeny headmedic
 ```
 
-You can use part of a player's name, their `#slot`, or their SteamID. For players who aren't online, use their SteamID or the exact name saved in `players.jsonc`. The roles are saved to `configs/permissions/players.jsonc`, which now contains:
+You can use part of a player's name, their `#slot`, or their SteamID. For players who aren't online, use their SteamID or the exact name saved in `players.jsonc`. The roles are saved to `configs/permissions/players.jsonc`:
 
 ```jsonc
 // Players and the roles they hold. ...
@@ -217,9 +222,9 @@ You can use part of a player's name, their `#slot`, or their SteamID. For player
 }
 ```
 
-You could also write those entries by hand and run `dw_perm_reload`.
+You can also write those entries by hand and run `dw_perm_reload`.
 
-### 3. Test It
+### 3. Test it
 
 `dw_perm_check` shows whether a player has a permission, and why:
 
@@ -242,7 +247,7 @@ In game:
 | greeny (headmedic) | Heals themselves | Heals wisp | Heals everyone |
 | anyone else | "You don't have permission…" | "You don't have permission…" | "You don't have permission…" |
 
-## Common Changes
+## Common changes
 
 **Let everyone heal themselves.** Give the permission to the `default` role, which every player has:
 
@@ -252,13 +257,13 @@ In game:
 }
 ```
 
-**A head medic who can't heal everyone at once.** Add a deny for that one permission to the player. A player's own entry is checked before their roles, so it beats the role's `medic.*`:
+**Stop one head medic healing everyone at once.** Add a deny for that one permission to the player. A player's own entry is checked before their roles, so it beats the role's `medic.*`:
 
 ```text
 dw_perm_grant greeny -medic.heal.all
 ```
 
-**Head medics are also medics.** Instead of repeating permissions, a role can include another role's. `dw_perm_check` then shows `from role:medic (via headmedic)` for what comes from `medic`:
+**Make head medics inherit from medics.** Instead of repeating permissions, a role can include another role's. `dw_perm_check` then shows `from role:medic (via headmedic)` for what comes from `medic`:
 
 ```jsonc
 "headmedic": {
@@ -280,4 +285,4 @@ dw_perm_grant greeny -medic.heal.all
 ## Next
 
 - [Permissions API](../features/permissions): everything a plugin can do with permissions and targeting
-- [Penalties & Admin Tools API](../features/admin-api): bans, gags, announcements and the admin log
+- [Penalties & admin tools API](../features/admin-api): bans, gags, announcements and the admin log

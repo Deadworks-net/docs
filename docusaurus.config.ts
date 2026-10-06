@@ -69,6 +69,9 @@ const config: Config = {
           // Guides that were folded into Features pages.
           {from: '/guides/chat-and-hud', to: '/features/chat'},
           {from: '/guides/team-and-hero-management', to: '/features/players'},
+          // Getting started split into server admins and developers.
+          {from: '/getting-started/setup', to: '/getting-started/developers/setup'},
+          {from: '/getting-started/first-plugin', to: '/getting-started/developers/first-plugin'},
         ],
       },
     ],
