@@ -75,4 +75,6 @@ Every admin action is written to `game\bin\win64\logs\admin\`, one file per day.
 
 ## Next
 
+**[5. Custom maps & content addons](custom-content)** (coming soon)
+
 - [Setting up staff roles](../../guides/staff-roles): moderators and trial moderators with fewer commands

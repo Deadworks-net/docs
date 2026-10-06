@@ -41,6 +41,7 @@ const sidebars: SidebarsConfig = {
         'getting-started/server-admins/install-plugins',
         'getting-started/server-admins/set-up-admins',
         'getting-started/server-admins/use-admin-tools',
+        'getting-started/server-admins/custom-content',
       ],
     },
     {
