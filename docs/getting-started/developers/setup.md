@@ -1,6 +1,6 @@
 ---
 title: "Project setup"
-sidebar_label: "Project setup"
+sidebar_label: "1. Project setup"
 ---
 
 # Project setup

@@ -1,6 +1,6 @@
 ---
 title: "Your first plugin"
-sidebar_label: "First plugin"
+sidebar_label: "2. Your first plugin"
 ---
 
 # Your first plugin

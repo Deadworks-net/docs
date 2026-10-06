@@ -11,6 +11,21 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Getting started for developers',
+      collapsed: false,
+      link: {
+        type: 'generated-index',
+        title: 'Getting started for developers',
+        slug: '/getting-started/developers',
+        description: 'Set up a plugin project and write your first Deadworks plugin.',
+      },
+      items: [
+        'getting-started/developers/setup',
+        'getting-started/developers/first-plugin',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Getting started for server admins',
       collapsed: false,
       link: {
@@ -25,21 +40,6 @@ const sidebars: SidebarsConfig = {
         'getting-started/server-admins/install-plugins',
         'getting-started/server-admins/set-up-admins',
         'getting-started/server-admins/use-admin-tools',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Getting started for developers',
-      collapsed: false,
-      link: {
-        type: 'generated-index',
-        title: 'Getting started for developers',
-        slug: '/getting-started/developers',
-        description: 'Set up a plugin project and write your first Deadworks plugin.',
-      },
-      items: [
-        'getting-started/developers/setup',
-        'getting-started/developers/first-plugin',
       ],
     },
     {
