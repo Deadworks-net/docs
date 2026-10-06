@@ -43,20 +43,36 @@ Run the same commands again to update the server after a Deadlock patch.
 
 ## Start the server
 
-Save this as `run-server.bat` next to `deadworks.exe`, then double-click it:
+Run `deadworks.exe`. The window that opens is the **server console**. It shows what the server is doing and runs any command you type in it.
+
+With no launch options, Deadworks starts with these:
+
+```text
+-dedicated -console -dev -insecure -allow_no_lobby_connect
++tv_citadel_auto_record 0 +spec_replay_enable 0 +tv_enable 0
++citadel_upload_replay_enabled 0
++hostport 27067
++map dl_midtown
+```
+
+`+hostport` is the port players connect to, and `+map` the starting map.
+
+### Change the launch options
+
+`deadworks.exe` takes the same launch options as `deadlock.exe`. Launch options replace all of the defaults, so copy the full list and change what you need. Save it as a batch file such as `run-server.bat` next to `deadworks.exe`, then start the server with it. This one uses port `27070`:
 
 ```batch
 @echo off
 cd /d "%~dp0"
 
-deadworks.exe -dedicated -console -insecure -allow_no_lobby_connect +hostport 27067 +map dl_midtown
+deadworks.exe -dedicated -console -dev -insecure -allow_no_lobby_connect ^
+  +tv_citadel_auto_record 0 +spec_replay_enable 0 +tv_enable 0 ^
+  +citadel_upload_replay_enabled 0 ^
+  +hostport 27070 ^
+  +map dl_midtown
 
 pause
 ```
-
-`deadworks.exe` takes the same launch options as `deadlock.exe`. `+hostport` sets the port, `27067` by default, and `+map` the starting map, `dl_midtown` by default.
-
-The window that opens is the **server console**. It shows what the server is doing and runs any command you type in it.
 
 ## Let players connect
 

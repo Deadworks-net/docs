@@ -28,7 +28,7 @@ public void CmdHeal(Caller caller)
 Players can still type `dw_heal` in their own game console. Without a `Permission`, anyone can run it. To keep a command to the server console and RCON, set `ServerOnly = true`.
 :::
 
-To limit who can run a command, give it a [permission](permissions):
+To limit who can run a command, give it a [permission](/api-reference/commands/commandattribute#permission):
 
 ```csharp
 [Command("heal", ConsoleOnly = true, Permission = "myplugin.heal")]
@@ -51,5 +51,5 @@ The built-in commands are ordinary commands, so server owners can change who can
 ## See also
 
 - [Commands](commands): arguments, aliases and command options
-- [Permissions](permissions): limit who can run a command
+- [How permissions work](../guides/admins-and-permissions): roles and permissions
 - [ConVars](convars): plugin settings

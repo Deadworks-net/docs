@@ -47,7 +47,7 @@ With no launch options, Deadworks uses these defaults:
 +map dl_midtown
 ```
 
-Override any of them on the command line. `+hostport` is the port the server listens on for game traffic (UDP).
+Any launch options you pass replace all of these defaults, so include the ones you still want. `+hostport` is the port the server listens on for game traffic (UDP).
 
 ### Example: `run-server.bat`
 

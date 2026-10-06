@@ -95,7 +95,7 @@ Timer.Once(3.Seconds(), () => controller.Kick("You were kicked for being idle.")
 
 `Server.Kick(slot, message)` does the same for a slot. `controller.Kick()` with no message kicks the player without a message.
 
-To turn a player away while they're connecting, see [Refusing a connection with a reason](admin-api#refusing-a-connection-with-a-reason). To ban them, see [Penalties](admin-api#penalties).
+To turn a player away while they're connecting, see [`ClientConnectEvent`](/api-reference/events/clientconnectevent). To ban them, see [`Penalties`](/api-reference/admin/penalties).
 
 ## Add a bot
 

@@ -63,7 +63,7 @@ This release adds [admins and permissions](/permissions): roles, a built-in Admi
    [Command("givesouls", Permission = "myplugin.cheats")]
    ```
 
-   Start permission names with your plugin's name. See [Permissions](../features/permissions).
+   Start permission names with your plugin's name. See [`CommandAttribute.Permission`](/api-reference/commands/commandattribute#permission).
 4. **Make `async void` commands return `Task`.**
 5. **Rebuild against the new `DeadworksManaged.Api` and test.** The rest of this page lists the smaller changes.
 
@@ -191,4 +191,4 @@ All are in `game/bin/win64/`. They're created the first time the server starts. 
 
 - [Making yourself admin](making-yourself-admin): give your Steam account the `admin` role
 - [How permissions work](admins-and-permissions): the permission files and commands
-- [Permissions API](../features/permissions): `Caller`, `Permission` and immunity for plugins
+- [`Caller`](/api-reference/commands/caller) and [`Permissions`](/api-reference/permissions/permissions): the API for plugins

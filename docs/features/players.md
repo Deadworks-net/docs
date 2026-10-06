@@ -60,7 +60,7 @@ Plugins can change `PlayerSteamId`. A controller can also pass to a different pl
 
 ## Know when Steam has confirmed a player
 
-A few seconds after a player joins, Steam confirms their account. Until then, their [roles and permissions](permissions) don't apply. `Players.IsAuthorized(slot)` returns whether that has happened. `OnClientAuthorized` runs when it does:
+A few seconds after a player joins, Steam confirms their account. Until then, their [roles and permissions](../guides/admins-and-permissions) don't apply. `Players.IsAuthorized(slot)` returns whether that has happened. `OnClientAuthorized` runs when it does:
 
 ```csharp
 public override void OnClientAuthorized(ClientAuthorizedEvent args)
@@ -69,7 +69,7 @@ public override void OnClientAuthorized(ClientAuthorizedEvent args)
 }
 ```
 
-See [Steam verification](admin-api#steam-verification) for details.
+See [`ClientAuthorizedEvent`](/api-reference/events/clientauthorizedevent) for details.
 
 ## Heal or damage a player
 
@@ -209,4 +209,4 @@ Chat.PrintToChat(controller, "Welcome to the server!");
 
 - [Chat](chat): message everyone and read what players say
 - [Heroes](heroes): pick heroes and block hero changes
-- [Permissions](permissions): roles, permissions and immunity
+- [How permissions work](../guides/admins-and-permissions): roles, permissions and immunity

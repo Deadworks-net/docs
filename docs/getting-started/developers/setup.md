@@ -25,10 +25,6 @@ Download the latest release from [https://github.com/Deadworks-net/deadworks/rel
 
 In Visual Studio, create a new **C# Class Library** project. The project name can be anything.
 
-:::warning
-Deadworks requires a .NET Core runtime. Target .NET Core, for example `net10.0`, not .NET Standard.
-:::
-
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
@@ -133,17 +129,6 @@ Once Deadworks is running, open Deadlock. Connect to your local server from the 
 ```text
 connect localhost:27067
 ```
-
-## Troubleshooting
-
-| Symptom | Solution |
-|---------|----------|
-| No pink console output at all | Extract Deadworks to the correct directory. Check that its files exist in `Deadlock/game/bin/win64/`. |
-| `Failed to initialize .NET runtime` | Install or repair the .NET 10.0 SDK. |
-| Plugins folder is silently ignored | Install the .NET 10.0 SDK. The current SDK is missing or the wrong version. |
-| `Unknown command 'dw_plugin'` | Check for errors earlier in the pink console output. The runtime hasn't loaded. |
-| No IntelliSense in Visual Studio | Put `DeadworksManaged.Api.xml` in the same folder as the Deadworks DLL. |
-| Build targets .NET Standard | Change your project to target `net10.0` (.NET Core), not .NET Standard. |
 
 ## Next steps
 

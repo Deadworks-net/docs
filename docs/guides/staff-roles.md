@@ -193,6 +193,3 @@ dw_perm_grant mastardy -admin.server.map
 
 A player's own entry is checked before any of their roles, so anything you put there always wins.
 
-## Next
-
-- [Commands for one role](role-only-commands): give a plugin's commands permissions

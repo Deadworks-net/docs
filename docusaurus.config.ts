@@ -8,9 +8,9 @@ const isDev = process.env.NODE_ENV === 'development';
 
 // Pages that used to live under /api-reference/ and are now under /features/.
 const movedToFeatures = [
-  'admin-api', 'chat-commands', 'commands', 'configuration', 'console-commands', 'convars',
+  'chat-commands', 'commands', 'configuration', 'console-commands', 'convars',
   'damage', 'entities', 'entity-io', 'game-events', 'heroes', 'modifiers', 'networking',
-  'particles', 'permissions', 'players', 'precaching', 'sound', 'timers', 'tracing', 'ui',
+  'particles', 'players', 'precaching', 'sound', 'timers', 'tracing', 'ui',
   'world-text',
 ];
 
@@ -69,6 +69,10 @@ const config: Config = {
           // Guides that were folded into Features pages.
           {from: '/guides/chat-and-hud', to: '/features/chat'},
           {from: '/guides/team-and-hero-management', to: '/features/players'},
+          // Plugin permission pages folded into the API reference.
+          {from: ['/features/permissions', '/api-reference/permissions'], to: '/api-reference/permissions/permissions'},
+          {from: ['/features/admin-api', '/api-reference/admin-api'], to: '/api-reference/admin/penalties'},
+          {from: '/guides/role-only-commands', to: '/api-reference/commands/commandattribute'},
           // Getting started split into server admins and developers.
           {from: '/getting-started/setup', to: '/getting-started/developers/setup'},
           {from: '/getting-started/first-plugin', to: '/getting-started/developers/first-plugin'},

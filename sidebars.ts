@@ -98,16 +98,13 @@ const sidebars: SidebarsConfig = {
         title: 'Admins & Permissions',
         slug: '/permissions',
         description:
-          'Who can use which commands on your server. Server owners: read the four numbered guides in order. Plugin developers: see Plugin Commands for a Role and the API pages.',
+          'Who can use which commands on your server. Server owners: read the four numbered guides in order.',
       },
       items: [
         'guides/making-yourself-admin',
         'guides/admin-commands',
         'guides/admins-and-permissions',
         'guides/staff-roles',
-        'guides/role-only-commands',
-        'features/permissions',
-        'features/admin-api',
       ],
     },
     {
