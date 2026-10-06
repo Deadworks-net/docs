@@ -51,16 +51,6 @@ dw_plugin enable <Plugin>
 
 The setting is remembered across restarts. To remove a plugin for good, delete its `.dll`.
 
-## Check the console after installing
-
-Plugins written for older Deadworks versions can lose commands. Look for these lines in the server console:
-
-| Line | Meaning | What to do |
-|------|---------|------------|
-| `ERROR: ... uses [ChatCommand(...)]` | The plugin was built for an older Deadworks, and that command doesn't load | Ask the author for an updated version |
-| `Warning: ... is already registered by another plugin; both will run` | Two plugins use the same command name | Remove or disable one |
-| `... isn't a setting ... knows, so it's ignored` | A typo in a settings file | Fix the name in the file |
-
 ## Limit who can use a plugin's commands
 
 A plugin's commands work for everyone unless the plugin gives them a permission. To require one yourself, see [Set up admins](set-up-admins#lock-down-a-plugins-commands).
