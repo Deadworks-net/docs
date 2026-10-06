@@ -47,7 +47,7 @@ Run `deadworks.exe`. The window that opens is the **server console**. It shows w
 
 ### Change the launch options
 
-`deadworks.exe` takes the same launch options as `deadlock.exe`. Launch options replace all of Deadworks' defaults, so pass the full list with your changes. Save it as a batch file such as `run-server.bat` next to `deadworks.exe`, then start the server with it. The batch file below has the defaults, except that `+hostport`, the port players connect to, is `27070` instead of `27067`:
+`deadworks.exe` takes the same launch options as `deadlock.exe`. Launch options replace all of Deadworks' defaults, so pass the full list with your changes. Save it as a batch file such as `run-server.bat` next to `deadworks.exe`, then start the server with it. The batch file below has the defaults. Change any of them, such as `+hostport`, the port players connect to, or `+map`, the starting map:
 
 ```batch
 @echo off
@@ -56,7 +56,7 @@ cd /d "%~dp0"
 deadworks.exe -dedicated -console -dev -insecure -allow_no_lobby_connect ^
   +tv_citadel_auto_record 0 +spec_replay_enable 0 +tv_enable 0 ^
   +citadel_upload_replay_enabled 0 ^
-  +hostport 27070 ^
+  +hostport 27067 ^
   +map dl_midtown
 
 pause
