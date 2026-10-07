@@ -137,6 +137,12 @@ This host keeps one file per name and ignores the hash in the requested path. Up
 | Map list | 300 characters | Entries are dropped from the end. Launchers do not learn about them. |
 | `fastdl_url` | 128 characters | The URL is not advertised. |
 | Server tags, including `sv_tags` | 63 characters | The engine cuts tags from the end. |
+| One file | 4 GiB, compressed and decompressed | The Deadworks launcher does not install it. |
+| All downloads for one join | 16 GiB | The Deadworks launcher refuses the join. |
+
+The addon and map list limits count bytes of UTF-8, so a name outside ASCII costs more than one per character.
+
+The Deadworks launcher downloads only from public hosts. A `fastdl_url` on `localhost` or a private address such as `192.168.1.10` works only for players on the same network as the game server, and a public host must not redirect to one.
 
 A list entry is the name, the hash and the file size in bytes. For example, `turbo:9330149c74886724:11965` takes 28 characters, plus 1 for the comma between entries.
 
@@ -360,6 +366,8 @@ https://dl.example.com/deadworks/maps/dl_midtown_faf73184b902d52d.vpk.bz2
 
 - Skip the download when the installed file already matches: its length equals `size` and its SHA-256 starts with `hash`.
 - Follow HTTP redirects. `https://api.deadworks.net/fastdl/u/<id>` answers with a `302`.
+- Treat `dw_fastdl` as untrusted input. Refuse a loopback, private or link-local address, as the URL, as a redirect target and as the address the host resolves to, unless the game server is itself on the player's network. Otherwise any listed server can make the launcher send requests inside the player's network.
+- Set connect and read timeouts, and cap the total size of one join.
 - Decode every bzip2 stream in the file. Parallel compressors such as `pbzip2` write several.
 - A server with no `dw_fastdl` names no download host.
 
