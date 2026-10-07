@@ -6,49 +6,276 @@ unlisted: true
 
 # Content Discovery
 
-A Deadworks server describes the addons and maps it runs in its **A2S_RULES** reply, over the game port, so a launcher can find out what to download straight from the server, with no intermediary. This page specifies that format for anyone writing a launcher or server browser. Server operators want [Uploading Content](./uploading-content.md) instead.
+A Deadworks server advertises the addons and maps it runs through Steam: two server tags and a set of A2S_RULES keys. A launcher reads them to list servers and to download their content before the game connects.
 
-## Finding servers
+| You | Read |
+|---|---|
+| Host a server | [For server hosts](#for-server-hosts) |
+| Write a launcher or server browser | [For launcher developers](#for-launcher-developers) |
 
-Deadworks servers are listed in Steam's master server list for Deadlock (app 1422450) and carry the `dw1` tag. Steam's list needs a Web API key, so Deadworks proxies it:
+## For server hosts
+
+### What the server advertises
+
+| Channel | Value | Description |
+|---|---|---|
+| Steam tag | `dw1` | Marks the server as a Deadworks server. Always set. |
+| Steam tag | `dwa<digest>` | Identifies the addon set. Set when the server has at least one addon. |
+| A2S_RULES | `dw_*` keys | Lists the name, hash and size of every addon and map, plus the download URL. See [Rules reference](#rules-reference). |
+
+The server publishes all three by itself at startup, on every map load, and when a plugin loads or unloads.
+
+:::note
+The server writes its tags at the front of `sv_tags` and keeps yours after them. It removes any tag of yours that starts with `dw`.
+:::
+
+### Configuration
+
+Content is configured under `serverbrowser` in `game/bin/win64/configs/deadworks.jsonc`:
+
+```jsonc
+{
+  "serverbrowser": {
+    "content_addons": ["turbo"],
+    "extra_maps": ["dl_express"],
+    "fastdl_url": "https://dl.example.com/deadworks"
+  }
+}
+```
+
+| Key | Description |
+|---|---|
+| `content_addons` | Lists the addons the server mounts and players download, without the `.vpk` extension. Each file is read from `game/bin/win64/deadworks_mods/vpks/<name>.vpk`. |
+| `extra_maps` | Lists the maps to advertise besides the current map, without the `.vpk` extension. Each file is read from `game/citadel/maps/<name>.vpk`. |
+| `fastdl_url` | Sets the base URL players download content from. Must be an absolute `http://` or `https://` URL of at most 128 characters, with no credentials, query string or fragment. |
+
+The current map is always advertised. Addons declared by a loaded plugin are advertised together with `content_addons`.
+
+Use names of 1 to 64 characters from `a-z`, `0-9` and `_`. Launchers skip every other name.
+
+:::note
+The server reads the config once at startup. Restart the server after editing it.
+:::
+
+### Hosting the files
+
+Players download each file from `fastdl_url`. Any static HTTP server works. Without `fastdl_url` the server advertises names and hashes, but no download location.
+
+The host has to serve each file as a bzip2-compressed `.vpk` at:
+
+```
+<fastdl_url>/addons/<name>_<hash>.vpk.bz2
+<fastdl_url>/maps/<name>_<hash>.vpk.bz2
+```
+
+`<hash>` is the first 16 lowercase hex digits of the SHA-256 of the uncompressed `.vpk`.
+
+1. Copy each `.vpk` to the server and list it in the config.
+2. Set `fastdl_url` and start the server. The console prints the files to serve:
+
+   ```
+   [ContentAddons] fastDL: clients will fetch these from https://dl.example.com/deadworks/ (stock maps can be skipped - players already have them):
+     addons/turbo_9330149c74886724.vpk.bz2  (bzip2 of turbo.vpk)
+     maps/dl_midtown_faf73184b902d52d.vpk.bz2  (bzip2 of dl_midtown.vpk)
+     maps/dl_express_5d0c1e7a94b3f268.vpk.bz2  (bzip2 of dl_express.vpk)
+   ```
+
+3. Compress each `.vpk` with bzip2:
+
+   ```
+   bzip2 -k turbo.vpk
+   ```
+
+4. Upload each `.vpk.bz2` under the printed path. Here `turbo.vpk.bz2` goes to `https://dl.example.com/deadworks/addons/turbo_9330149c74886724.vpk.bz2`.
+
+Maps that ship with Deadlock, such as `dl_midtown`, need no upload.
+
+:::warning
+A changed `.vpk` has a new hash, so its file name on the host changes. The server advertises the new hash from the next map load or restart. Upload the new build before then, or players cannot download it.
+:::
+
+:::tip
+To get a hash without starting the server:
+
+```
+sha256sum turbo.vpk | cut -c1-16
+```
+
+In PowerShell:
+
+```powershell
+(Get-FileHash turbo.vpk -Algorithm SHA256).Hash.Substring(0, 16).ToLower()
+```
+:::
+
+### Free hosting
+
+Hosts with no web host can use Deadworks' hosting:
+
+1. Sign in at [deadworks.net/content](https://deadworks.net/content).
+2. Upload each `.vpk.bz2`.
+3. Set `fastdl_url` to your personal base URL, of the form `https://api.deadworks.net/fastdl/u/<id>`.
+
+| Limit | Value |
+|---|---|
+| Addon | 300 MB compressed |
+| Map | 1 GB compressed |
+| Account | 3 GB compressed |
+
+Maps that ship with Deadlock are refused.
+
+:::warning
+This host keeps one file per name and ignores the hash in the requested path. Upload again after every change to a `.vpk`. Until then, players are warned that the download does not match the server.
+:::
+
+### Limits
+
+| Limit | Value | When exceeded |
+|---|---|---|
+| Addon list | 320 characters | Entries are dropped from the end. Launchers do not learn about them. |
+| Map list | 192 characters | Entries are dropped from the end. Launchers do not learn about them. |
+| `fastdl_url` | 128 characters | The URL is not advertised. |
+| Server tags, including `sv_tags` | 63 characters | The engine cuts tags from the end. |
+
+A list entry is the name, the hash and the file size in bytes. For example, `turbo:9330149c74886724:11965` takes 28 characters, plus 1 for the comma between entries.
+
+### Running with -nomaster
+
+:::warning
+A server started with `-nomaster` is left out of Steam's server list and answers no A2S queries, neither A2S_INFO nor A2S_RULES. It cannot advertise content, and launchers cannot find it.
+:::
+
+### Console messages
+
+Every line starts with `[ContentAddons]`.
+
+| Message | Meaning |
+|---|---|
+| `Published 1 addon(s) and 2 map(s) to A2S_RULES.` | The rules are published. |
+| `Steam gameserver not up - rules not published.` | Steam has not logged the server on yet. The server tries again on the next map load or plugin load. |
+| `'<name>' has no file at deadworks_mods\vpks\<name>.vpk; it is advertised without a version hash, so clients cannot verify it or fetch it over fastDL.` | The addon file is missing. Copy it to that path. |
+| `Map '<name>' has no loose file at citadel/maps/<name>.vpk; it is advertised without a version hash.` | The map file is missing. Copy it to that path. |
+| `serverbrowser.fastdl_url <reason>; not advertised.` | `fastdl_url` is invalid. Fix it and restart the server. |
+| `A2S_RULES lists 9 of 12 addons and 2 of 2 maps; the rest do not fit under its size cap.` | A list is over its [limit](#limits). Shorten names or remove entries. |
+| `'<name>' from <source> uses characters outside a-z, 0-9 and '_'; third-party launchers may refuse to install it.` | Rename the file and its config entry. |
+
+## For launcher developers
+
+### Discovering servers
+
+Request the Deadworks servers in Steam's master server list for Deadlock (app 1422450):
 
 ```
 GET https://api.deadworks.net/api/steam/servers?deadworks=1
 ```
 
-Each server's `gametype` field is its tag string. Besides `dw1`, a server with content addons carries `dwa<digest>`, the same value as its `dw_digest` rule (below). Servers with identical addons share a digest.
+| Parameter | Description |
+|---|---|
+| `deadworks=1` | Returns only servers that carry the `dw1` tag. Without it, every Deadlock server is returned. |
 
-A server started with `-nomaster` is not listed and answers no A2S queries at all, so nothing on this page applies to it.
+Each entry is Steam's own record of the server:
 
-The list at `GET /api/servers` predates all of this and is deprecated. See [The older server registry](#the-older-server-registry) for how the two fit together while both exist.
+```json
+{
+  "servers": [
+    {
+      "addr": "203.0.113.10:27015",
+      "gameport": 27015,
+      "steamid": "90071992547409920",
+      "name": "Example Deadworks server",
+      "appid": 1422450,
+      "gamedir": "citadel",
+      "version": "48",
+      "product": "citadel",
+      "region": -1,
+      "players": 6,
+      "max_players": 12,
+      "bots": 0,
+      "map": "dl_midtown",
+      "secure": false,
+      "dedicated": true,
+      "os": "w",
+      "gametype": "dw1,dwa8a1b839d,insecure"
+    }
+  ],
+  "total": 1
+}
+```
 
-## Querying the rules
+`gametype` is the server's tag string. Split it on `,` and match whole tags:
 
-Send a standard A2S_RULES request to the server's game port:
+| Tag | Description |
+|---|---|
+| `dw1` | Marks a Deadworks server. |
+| `dwa<digest>` | Identifies the addon set. `<digest>` equals the server's `dw_digest` rule. Absent when the server has no addons. |
+
+Responses are cached for 60 seconds. The endpoint answers `503` when the list is not configured and `502` when Steam fails, both with `{ "error": "..." }`.
+
+:::note
+A server started with `-nomaster` is not in the list and answers no A2S queries.
+:::
+
+### Querying the rules
+
+Send an A2S_RULES request over UDP to the server's `addr`. Deadworks servers answer queries on the game port.
+
+Request format:
+
+| Data | Type | Value |
+|---|---|---|
+| Prefix | 4 bytes | `FF FF FF FF` |
+| Header | byte | `V` (`0x56`) |
+| Challenge | 4 bytes | Challenge number, or `FF FF FF FF` to receive one. |
+
+Example first request:
 
 ```
 FF FF FF FF 56 FF FF FF FF
 ```
 
-A server may answer with a challenge (`FF FF FF FF 41` followed by 4 bytes); send the request again with those 4 bytes in place of the final `FF FF FF FF`. The reply is `FF FF FF FF 45`, a little-endian `uint16` rule count, then that many null-terminated key/value pairs. A Deadworks server keeps its reply inside a single datagram.
+The server answers with the rules or with a challenge. Example challenge response:
 
-The rules are served by Steam, not by the game. A server that has not published any rules answers nothing at all, which looks exactly like a timeout: treat no reply as "does not advertise".
+```
+FF FF FF FF 41 4B A1 D5 22
+```
 
-## The rules
+Repeat the request with the 4 challenge bytes:
+
+```
+FF FF FF FF 56 4B A1 D5 22
+```
+
+:::warning
+Steam answers directly on loopback but sends a challenge first on a LAN or public address. A client tested only against `127.0.0.1` never sees the challenge.
+:::
+
+Response format:
+
+| Data | Type | Value |
+|---|---|---|
+| Prefix | 4 bytes | `FF FF FF FF` |
+| Header | byte | `E` (`0x45`) |
+| Rules | 16-bit unsigned, little endian | Number of rules in the response. |
+| Name | string | Name of the rule, terminated by `0x00`. Repeated for every rule. |
+| Value | string | Value of the rule, terminated by `0x00`. Repeated for every rule. |
+
+- A Deadworks server keeps its reply in one packet. A split reply, with prefix `FE FF FF FF`, needs no support.
+- Treat no reply as "does not advertise". The Deadworks launcher waits 1.5 seconds.
+- Do not depend on the order of the rules.
+
+### Rules reference
 
 | Key | Value |
 |---|---|
-| `dw_ver` | `1`. Ignore everything else if this is missing or different. |
-| `dw_addons` | Content addons as `name[:hash:size]` entries, comma-separated, in mount order. |
-| `dw_addons_n` | How many addons the server really has. |
-| `dw_maps` | Maps as `name[:hash:size]` entries: the current map first, then the rest of the rotation. |
-| `dw_maps_n` | How many maps the server really has. |
-| `dw_digest` | 8 hex digits identifying the addon set. Empty when there are no addons. |
-| `dw_fastdl` | Optional. Base URL to download content from. |
+| `dw_ver` | `1`. Ignore every other key when this is missing or different. |
+| `dw_addons` | Lists the content addons as comma-separated [entries](#entries), in mount order. |
+| `dw_addons_n` | Number of addons the server has. |
+| `dw_maps` | Lists the maps as comma-separated [entries](#entries): the current map first, then the host's extra maps. |
+| `dw_maps_n` | Number of maps the server has. |
+| `dw_digest` | 8 hex digits that identify the addon set. Empty when the server has no addons. |
+| `dw_fastdl` | Base URL to download content from. Absent when the host set no valid URL. |
 
-The key order in the reply means nothing.
-
-For example:
+Example reply:
 
 ```
 dw_ver       1
@@ -60,108 +287,152 @@ dw_digest    8a1b839d
 dw_fastdl    https://dl.example.com/deadworks
 ```
 
-### Entries and hashes
+#### Entries
 
-`hash` is the first 16 lowercase hex digits of the SHA-256 of the **uncompressed** `.vpk`, computed by the server from the file it actually loads. It is the content's version: a new build is a new hash.
+An entry has the form `name[:hash[:size]]`.
 
-`size` is that file's length in bytes, also uncompressed: the server never sees the compressed copy on the fastDL host. It lets a client weight download progress before anything arrives, and reject a file that decompresses to any other length.
+| Part | Description |
+|---|---|
+| `name` | File name without the `.vpk` extension. |
+| `hash` | First 16 lowercase hex digits of the SHA-256 of the uncompressed `.vpk` the server loads. |
+| `size` | Length of that uncompressed `.vpk` in bytes, in decimal. |
 
-An entry with neither means the server could not read that file itself, so there is nothing to check a download against. Do not download it from fastDL.
+An entry with no `hash` is a file the server could not read. It cannot be downloaded or verified. Skip it.
 
-A list can be shorter than its `_n` key says. Steam answers A2S_RULES without a challenge handshake, which makes every reply a reflection amplifier, so servers cap these lists and drop whole entries from the end. When that happens, the missing entries have to come from somewhere else.
+#### Validating the rules
 
-### The digest
+Every value is untrusted input. Check each part before using it in a path or a URL:
 
-`dw_digest` is the first 8 hex digits of the SHA-256 of the addon entries exactly as listed, each lowercased, sorted by ordinal comparison, and joined with `,`:
+| Part | Accept only |
+|---|---|
+| `name` | 1 to 64 characters from `a-z`, `0-9` and `_`. Not a Windows device name: `con`, `prn`, `aux`, `nul`, `com1` to `com9`, `lpt1` to `lpt9`. |
+| `hash` | Exactly 16 characters from `0-9` and `a-f`. |
+| `size` | Decimal digits only, within 64 bits. |
+| `dw_fastdl` | An absolute `http://` or `https://` URL with a host and no credentials, query string or fragment. Remove surrounding whitespace and trailing `/`. |
+
+Skip an entry that fails any check. Treat an invalid `dw_fastdl` as absent.
+
+#### Incomplete lists
+
+`dw_addons` holds at most 320 characters and `dw_maps` at most 192. A server with more content drops whole entries from the end. A list with fewer entries than its `_n` key is incomplete, and the missing entries cannot be learned from the server. The Deadworks launcher installs the entries that are listed.
+
+#### Digest
+
+`dw_digest` is the first 8 hex digits of the SHA-256 of the server's addon entries, each lowercased, sorted by byte value and joined with `,`:
 
 ```
 dw_addons  ware,turbo:9330149c74886724:11965
 canonical  turbo:9330149c74886724:11965,ware
-dw_digest  cce084bf, the first 8 hex digits of its SHA-256
+dw_digest  cce084bf
 ```
 
-It covers content, not just names, so two servers share a digest only when their addon files are identical.
+Two servers have the same digest only when their addon files are identical.
 
-## Downloading
+:::note
+The digest covers every addon the server has, including entries dropped from an incomplete `dw_addons`. It cannot be recomputed from an incomplete list.
+:::
 
-Everything is a bzip2-compressed `.vpk`, fetched from:
+### Downloading
+
+Every file is a bzip2-compressed `.vpk`:
 
 ```
 {dw_fastdl}/addons/{name}_{hash}.vpk.bz2
 {dw_fastdl}/maps/{name}_{hash}.vpk.bz2
 ```
 
-When a server sets no `dw_fastdl`, its content is on Deadworks' hosting. If [the older registry](#the-older-server-registry) has a record of the server, install from that record. Otherwise use `https://api.deadworks.net/fastdl` as the base URL. That host keeps only the latest upload of each name, so it can serve a different build than the server runs; the hash check below is what tells you when that has happened.
+For the example reply above:
 
-Files may contain several bzip2 streams, as parallel compressors like `pbzip2` produce, so decode all of them.
+```
+https://dl.example.com/deadworks/addons/turbo_9330149c74886724.vpk.bz2
+https://dl.example.com/deadworks/maps/dl_midtown_faf73184b902d52d.vpk.bz2
+```
 
-### What a client must check
+- Skip the download when the installed file already matches: its length equals `size` and its SHA-256 starts with `hash`.
+- Follow HTTP redirects. `https://api.deadworks.net/fastdl/u/<id>` answers with a `302`.
+- Decode every bzip2 stream in the file. Parallel compressors such as `pbzip2` write several.
+- A server with no `dw_fastdl` names no download host.
 
-- **Names.** Only accept names of 1 to 64 characters from `a-z`, `0-9` and `_`, and never a Windows device name such as `con`, `nul`, `com1` or `lpt1`. Skip anything else rather than building a path from it.
-- **Hashes.** After decompressing, check that the SHA-256 starts with the advertised hash and that the length equals the advertised size. A file failing either is not the build the server runs; see [When a download does not match](#when-a-download-does-not-match).
-- **Size.** Cap both the download and the decompressed size, since bzip2 can expand enormously. Your own hard cap always applies. An advertised size is a tighter one only while you are holding the file to the advertised hash, so drop it if you stop, or "larger than advertised" becomes a rejection you never meant to make.
-- **What you replace.** Never overwrite a file you did not install yourself. A stock map with a different hash only means the server runs another build of it.
+### Verifying a download
 
-### When a download does not match
+Run every check. The Deadworks launcher uses a hard cap of 4 GiB for both the compressed and the decompressed file.
 
-The hash says **which build**, not **whom to trust**. One operator chooses both the hash their server advertises and the host it points at, so an operator serving something they should not simply advertises a hash that matches it, and the check passes. Treat it as a version check, never as authentication.
+| Check | Rule | On failure |
+|---|---|---|
+| Compressed size | Count the bytes received and stop at the hard cap. `Content-Length` is only a claim. | Discard the file. |
+| Decompressed size | Stop decompressing at the hard cap. | Discard the file. |
+| VPK signature | The decompressed file starts with `34 12 AA 55`. | Discard the file. |
+| Advertised size | The decompressed length equals `size`, when the entry has one. Stop decompressing once the output exceeds it. | [Mismatch](#handling-a-mismatch). |
+| Advertised hash | The SHA-256 of the decompressed file starts with `hash`. | [Mismatch](#handling-a-mismatch). |
 
-What a mismatch does tell you is that the host is out of sync with the server, nearly always a `dw_fastdl` upload that was never refreshed. The file is still what that operator published. It is just an older build than the one the server loaded, so models, textures or geometry can differ from what everyone else in the match sees.
+### Handling a mismatch
 
-A client may install a mismatched file, but not silently:
+The hash identifies which build a file is. It is not authentication: one operator chooses both the advertised hash and the download host. A mismatch means the download host is out of date, not that someone is attacking.
 
-- **Try another source first**, where you have one that covers the same content, such as [the older registry's record](#the-older-server-registry), before putting anything to the player.
-- **Ask, and let them decline.** Say that the server's content and its download host disagree, that some custom content may be missing or broken, and that the server operator is the one who can fix it.
-- **Keep the checks that were never about trust.** A decompression bomb, or a payload that is not a VPK at all, stays a hard failure whatever the player chose.
-- **Do not record it as the advertised build.** Check again on the next join. That costs a re-download for as long as the host stays stale, and it is what lets the client pick the right file up by itself the moment the operator fixes it.
+1. Fail the install. Tell the player that the download host serves a different build than the server runs, that some custom content may be missing or broken, and that only the server's host can fix it.
+2. Let the player cancel or install the host's copy anyway.
+3. When the player accepts, install without the advertised size and hash checks. Keep the hard caps and the VPK signature check.
+4. Do not record the file as the advertised build. Check again on the next join, so the client picks up the right file once the host is updated.
 
-## The older server registry
+### Installing
 
-Before servers advertised their own content, the Deadworks API was the only source. Servers registered with it and sent heartbeats, launchers listed them from `GET /api/servers`, and read what to download from `GET /api/servers/{id}/content`. That registry is **deprecated**. It still works, and servers still register with it by default, so existing launchers and servers carry on unchanged. It will be removed in a later release.
-
-A client that supports both decides per server:
-
-| The server advertises | The registry has a record | Install from |
-| --- | --- | --- |
-| a `dw_fastdl` of its own | either | the advertisement |
-| content, but no `dw_fastdl` | yes | the registry's record |
-| content, but no `dw_fastdl` | no | the advertisement, fetched from `https://api.deadworks.net/fastdl` |
-| nothing | yes | the registry's record |
-
-Setting `dw_fastdl` is how a server takes over from the registry. A server that sets none still keeps its content on Deadworks' hosting, and the registry's record is the list that matches what is stored there. Fetching the same file by its advertised hash would only reject it whenever the upload is older than the build the server runs.
-
-Registry items are versioned by an upload counter, not a hash, so they cannot be checked against the server.
-
-If installing from an advertisement fails, the registry's record can stand in only when it names everything the server advertised, apart from maps the player already has. A server that hosts its own content usually has nothing uploaded, and falling back to an empty record would let the player join with no content and no explanation.
-
-## Where content goes
+Paths are relative to Deadlock's `game` directory.
 
 | Kind | Install path |
 |---|---|
 | Addon | `citadel/deadworks_addons/vpks/<name>.vpk` |
 | Map | `citadel/maps/<name>.vpk` |
 
-The game is told which addons to mount when it connects, by name, so an addon has to be installed under exactly that name.
+- Install each addon under its advertised name. The server names its addons to the connecting game, which mounts them by that name.
+- Never replace a map file the launcher did not install. Keep a map that ships with the game, or one the player placed there, even when its hash differs from the advertised one.
+- Write to a temporary file and rename it into place. The rename fails while the game has the old file open.
 
-### The UI bootstrap
+#### UI bootstrap
 
-Deadworks' Panorama UI needs one more addon that no server advertises: a bootstrap VPK, installed once at `citadel/deadworks_mods/pak01_dir.vpk`. Panorama starts before anything can be mounted at runtime, so the bootstrap has to be on a search path before the game launches, and it can only be replaced while the game is closed. Its manifest gives the download URL and the SHA-256 of the decompressed VPK to check it against:
+The Deadworks in-game UI needs one VPK that no server advertises. Get its manifest:
 
 ```
 GET https://api.deadworks.net/api/bootstrap
 ```
 
-### gameinfo.gi
+```json
+{
+  "version": 7,
+  "compressed_size": 269545,
+  "sha256": "f7fee4a45081423923a1414704da8bb96bb1b4a511f8ce23ce16fd81f30b72ac",
+  "download_url": "https://api.deadworks.net/api/bootstrap/v/7.vpk.bz2",
+  "min_version": 0
+}
+```
 
-Both locations have to be declared in the `FileSystem` → `SearchPaths` block of `citadel/gameinfo.gi`, above the first `Game` entry:
+| Field | Description |
+|---|---|
+| `version` | Version number of the published bootstrap. |
+| `compressed_size` | Size of the download in bytes. |
+| `sha256` | Full SHA-256 of the decompressed `.vpk`. Discard a download that does not match. |
+| `download_url` | URL of the bzip2-compressed `.vpk`. |
+| `min_version` | Oldest version allowed to join servers. The Deadworks launcher refuses to connect with an older one installed. `0` allows every version. |
+
+The endpoint answers `404` when no bootstrap is published.
+
+Install the file as `citadel/deadworks_mods/pak01_dir.vpk` before launching the game. Keep no other file ending in `.vpk` in that directory.
+
+:::note
+The running game keeps the bootstrap open. Replace it only while the game is closed.
+:::
+
+#### gameinfo.gi
+
+Declare both locations in the `SearchPaths` block inside `FileSystem` in `citadel/gameinfo.gi`, above the first `Game` entry:
 
 ```
 Game        citadel/deadworks_mods
 addonroot   citadel/deadworks_addons
 ```
 
-A `Game` path placed ahead of vanilla's also moves `MOD` and `DEFAULT_WRITE_PATH`, so add `Mod citadel` and `Write citadel` too when the file does not already declare them.
+Add `Mod citadel` and `Write citadel` when the block has no `Mod` or `Write` entry. Without them, the game uses `citadel/deadworks_mods` as its mod and write directory.
 
-- A `gameinfo.gi` holds only one `addonroot`, so every launcher must use this value or they will undo each other.
-- Deadlock Mod Manager rewrites the whole `SearchPaths` block each time it launches the game, and Steam's file verification restores the original, so check the entries before every launch rather than once.
-- Keep your paths away from `citadel/addons`: Deadlock Mod Manager treats any path starting with it as one of its own profiles.
+- Use exactly this `addonroot` value. The Deadworks launcher replaces any other `addonroot` entry with it.
+- Check the entries before every launch. Deadlock Mod Manager rewrites the whole `SearchPaths` block each time it launches the game, and Steam's file verification restores the original file.
+- The game reads `gameinfo.gi` at startup. Restart the game after adding the entries.
+- Keep your paths away from `citadel/addons`. Deadlock Mod Manager treats any path that starts with it as one of its own profiles.
