@@ -1,7 +1,6 @@
 ---
 title: "Content Discovery"
 sidebar_label: "Content Discovery"
-unlisted: true
 ---
 
 # Content Discovery
@@ -123,7 +122,7 @@ Hosts with no web host can use Deadworks' hosting:
 | Map | 1 GB compressed |
 | Account | 3 GB compressed |
 
-Maps that ship with Deadlock are refused.
+Maps that ship with Deadlock are refused. See [Custom Content](./uploading-content.md) for the steps.
 
 :::warning
 This host keeps one file per name and ignores the hash in the requested path. Upload again after every change to a `.vpk`. Until then, players are warned that the download does not match the server.
