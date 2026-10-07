@@ -21,6 +21,7 @@ A Deadworks server advertises the addons and maps it runs through Steam: two ser
 |---|---|---|
 | Steam tag | `dw1` | Marks the server as a Deadworks server. Always set. |
 | Steam tag | `dwa<digest>` | Identifies the addon set. Set when the server has at least one addon. |
+| Steam tag | `dwu` | Asks server browsers not to list the server. Set when `unlisted` is `true`. |
 | A2S_RULES | `dw_*` keys | Lists the name, hash and size of every addon and map, plus the download URL. See [Rules reference](#rules-reference). |
 
 The server publishes all three by itself at startup, on every map load, and when a plugin loads or unloads.
@@ -132,14 +133,22 @@ This host keeps one file per name and ignores the hash in the requested path. Up
 
 | Limit | Value | When exceeded |
 |---|---|---|
-| Addon list | 320 characters | Entries are dropped from the end. Launchers do not learn about them. |
-| Map list | 192 characters | Entries are dropped from the end. Launchers do not learn about them. |
+| Addon list | 640 characters | Entries are dropped from the end. Launchers do not learn about them. |
+| Map list | 300 characters | Entries are dropped from the end. Launchers do not learn about them. |
 | `fastdl_url` | 128 characters | The URL is not advertised. |
 | Server tags, including `sv_tags` | 63 characters | The engine cuts tags from the end. |
 
 A list entry is the name, the hash and the file size in bytes. For example, `turbo:9330149c74886724:11965` takes 28 characters, plus 1 for the comma between entries.
 
-### Running with -nomaster
+### Unlisted servers
+
+| Setting | Listed by Steam | Shown in server browsers | Advertises content |
+|---|---|---|---|
+| Default | Yes | Yes | Yes |
+| `"unlisted": true` under `serverbrowser` | Yes | No | Yes |
+| `-nomaster` on the command line | No | No | No |
+
+Use `unlisted` for a private server whose players still need its content. They join by address, and the launcher downloads what the server advertises.
 
 :::warning
 A server started with `-nomaster` is left out of Steam's server list and answers no A2S queries, neither A2S_INFO nor A2S_RULES. It cannot advertise content, and launchers cannot find it.
@@ -171,7 +180,7 @@ GET https://api.deadworks.net/api/steam/servers?deadworks=1
 
 | Parameter | Description |
 |---|---|
-| `deadworks=1` | Returns only servers that carry the `dw1` tag. Without it, every Deadlock server is returned. |
+| `deadworks=1` | Returns only servers that carry the `dw1` tag and not the `dwu` tag. Without it, every Deadlock server is returned. |
 
 Each entry is Steam's own record of the server:
 
@@ -208,6 +217,7 @@ Each entry is Steam's own record of the server:
 |---|---|
 | `dw1` | Marks a Deadworks server. |
 | `dwa<digest>` | Identifies the addon set. `<digest>` equals the server's `dw_digest` rule. Absent when the server has no addons. |
+| `dwu` | Marks a server that asked not to be listed. Do not show it in a server list. Joining it by address works as usual. |
 
 Responses are cached for 60 seconds. The endpoint answers `503` when the list is not configured and `502` when Steam fails, both with `{ "error": "..." }`.
 
@@ -314,7 +324,7 @@ Skip an entry that fails any check. Treat an invalid `dw_fastdl` as absent.
 
 #### Incomplete lists
 
-`dw_addons` holds at most 320 characters and `dw_maps` at most 192. A server with more content drops whole entries from the end. A list with fewer entries than its `_n` key is incomplete, and the missing entries cannot be learned from the server. The Deadworks launcher installs the entries that are listed.
+`dw_addons` holds at most 640 characters and `dw_maps` at most 300. The whole reply has to fit one datagram, because Steam sends nothing for a larger one. A server with more content drops whole entries from the end. A list with fewer entries than its `_n` key is incomplete, and the missing entries cannot be learned from the server. The Deadworks launcher installs the entries that are listed.
 
 #### Digest
 
