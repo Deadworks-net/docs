@@ -265,6 +265,8 @@ FF FF FF FF 56 4B A1 D5 22
 Steam answers directly on loopback but sends a challenge first on a LAN or public address. A client tested only against `127.0.0.1` never sees the challenge.
 :::
 
+Discard a rules response that arrives before the client has echoed a challenge, unless the server is on loopback. UDP source addresses can be forged, and the challenge is the only proof that the sender saw the request. Without this check, anyone who knows a server's address can answer for it and name their own download host. Send each request again if no response arrives; one lost datagram otherwise reads as a server that advertises nothing.
+
 Response format:
 
 | Data | Type | Value |
@@ -367,7 +369,9 @@ https://dl.example.com/deadworks/maps/dl_midtown_faf73184b902d52d.vpk.bz2
 - Skip the download when the installed file already matches: its length equals `size` and its SHA-256 starts with `hash`.
 - Follow HTTP redirects. `https://api.deadworks.net/fastdl/u/<id>` answers with a `302`.
 - Treat `dw_fastdl` as untrusted input. Refuse a loopback, private or link-local address, as the URL, as a redirect target and as the address the host resolves to, unless the game server is itself on the player's network. Otherwise any listed server can make the launcher send requests inside the player's network.
-- Set connect and read timeouts, and cap the total size of one join.
+- Check the resolved address before connecting, not after the response. A `GET` has already done its work by the time the response arrives. A resolver that drops local addresses covers the first request and every redirect.
+- Set connect and read timeouts and a minimum transfer rate, and cap what one join writes to disk. Count the bytes written, not the advertised sizes: an entry may give no size.
+- If the launcher accepts commands over a local port, check the `Host` header. A web page can reach `127.0.0.1` through any DNS name that resolves to it.
 - Decode every bzip2 stream in the file. Parallel compressors such as `pbzip2` write several.
 - A server with no `dw_fastdl` names no download host.
 
