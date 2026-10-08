@@ -168,7 +168,7 @@ Every line starts with `[ContentAddons]`.
 |---|---|
 | `Published 1 addon(s) and 2 map(s) to A2S_RULES.` | The rules are published. |
 | `Steam gameserver not up - rules not published.` | Steam has not logged the server on yet. The server tries again on the next map load or plugin load. |
-| `'<name>' has no file at deadworks_mods\vpks\<name>.vpk; it is advertised without a version hash, so clients cannot verify it or fetch it over fastDL.` | The addon file is missing. Copy it to that path. |
+| `'<name>' has no file at <path>; it is advertised without a version hash, so clients cannot verify it or fetch it over fastDL.` | The addon file is missing. Copy it to the path in the message. |
 | `Map '<name>' has no loose file at citadel/maps/<name>.vpk; it is advertised without a version hash.` | The map file is missing. Copy it to that path. |
 | `serverbrowser.fastdl_url <reason>; not advertised.` | `fastdl_url` is invalid. Fix it and restart the server. |
 | `A2S_RULES lists 9 of 12 addons and 2 of 2 maps; the rest do not fit under its size cap.` | A list is over its [limit](#limits). Shorten names or remove entries. |
