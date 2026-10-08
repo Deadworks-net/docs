@@ -45,7 +45,7 @@ Content is configured under `serverbrowser` in `game/bin/win64/configs/deadworks
 
 | Key | Description |
 |---|---|
-| `content_addons` | Lists the addons the server mounts and players download, without the `.vpk` extension. Each file is read from `game/bin/win64/deadworks_mods/vpks/<name>.vpk`. |
+| `content_addons` | Lists the addons the server mounts and players download, without the `.vpk` extension. Each file is read from `game/citadel/deadworks_mods/vpks/<name>.vpk`. Releases before the folder moved read `game/bin/win64/deadworks_mods/vpks`, which is no longer looked in: move the files across when updating. |
 | `extra_maps` | Lists the maps to advertise besides the current map, without the `.vpk` extension. Each file is read from `game/citadel/maps/<name>.vpk`. |
 | `fastdl_url` | Sets the base URL players download content from. Must be an absolute `http://` or `https://` URL of at most 128 characters, with no credentials, query string or fragment. |
 

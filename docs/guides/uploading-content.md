@@ -24,7 +24,7 @@ The config is read once at startup, so restart the server after editing it.
 
 ### `content_addons`
 
-VPKs the server mounts and clients download. On startup the server advertises the list to connecting clients and mounts each entry from `deadworks_mods/vpks/<name>.vpk`. The launcher puts the client's copy in `citadel/deadworks_addons/vpks/`.
+VPKs the server mounts and clients download. On startup the server advertises the list to connecting clients and mounts each entry from `game/citadel/deadworks_mods/vpks/<name>.vpk`. The launcher puts the client's copy in `citadel/deadworks_addons/vpks/`.
 
 ### `extra_maps`
 
