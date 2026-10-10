@@ -1,46 +1,15 @@
 ---
-title: "Uploading content"
-sidebar_label: "Uploading content"
+title: "Custom Content"
+sidebar_label: "Custom Content"
 ---
 
-# Uploading content
+# Custom Content
 
-:::warning Being replaced
-This method will be deprecated soon. A new method is coming that doesn't depend on the central Deadworks backend.
-:::
-
-Custom content (Panorama addons, models, maps) reaches players through the Deadworks launcher. The launcher downloads whatever your server advertises before the game starts. Distributing a file takes two steps: upload it so clients can fetch it, then list it in the config so the server advertises it.
-
-## Get your server token
-
-Your server gets its credentials the first time it registers with the server browser. It saves them to:
-
-```
-game/bin/win64/configs/ServerBrowser/credentials.json
-```
-
-```json
-{
-  "server_id": "…",
-  "server_token": "…"
-}
-```
-
-:::note
-The file doesn't exist until the server registers. Start the server once and let it register before you look for the file.
-:::
-
-## Upload
-
-Go to `https://deadworks.net/server/<server_id>/content`, paste your `server_token`, and upload your assets.
-
-:::warning Names are globally unique
-Addon and map names are claimed across all of Deadworks, not per server. Once someone uploads content under a name, nobody else can reuse it. Pick a name specific to your server or project.
-:::
+Custom content (Panorama addons, models, maps) reaches players through the launcher, which downloads whatever your server advertises before the game starts. There are three steps: put the file on the server, list it in the config, and put a compressed copy somewhere players can download it from. That can be your own web host or Deadworks' free one.
 
 ## List it in the config
 
-Add each name under `serverbrowser` in `game/bin/win64/configs/deadworks.jsonc`, without the `.vpk` extension:
+`game/bin/win64/configs/deadworks.jsonc`, under `serverbrowser`. Names go in without the `.vpk` extension:
 
 ```jsonc
 {
@@ -51,25 +20,64 @@ Add each name under `serverbrowser` in `game/bin/win64/configs/deadworks.jsonc`,
 }
 ```
 
-:::note
-The server reads the config once at startup. Restart the server after editing it.
-:::
+The config is read once at startup, so restart the server after editing it.
 
 ### `content_addons`
 
-VPKs the server mounts and clients download. On startup, the server advertises the list to connecting clients. It mounts each entry from `deadworks_mods/vpks/<name>.vpk`, so the VPK must be on the server as well as uploaded. The launcher puts the client's copy in `citadel/deadworks_addons/vpks/`.
+VPKs the server mounts and clients download. On startup the server advertises the list to connecting clients and mounts each entry from `game/citadel/deadworks_mods/vpks/<name>.vpk`. The launcher puts the client's copy in `citadel/deadworks_addons/vpks/`.
 
 ### `extra_maps`
 
-Maps clients download ahead of time. A map can't be mounted at runtime the way an addon can, so maps have their own list. The launcher downloads them into `citadel/maps/` before the game launches. List the name only, without an extension.
+Maps cannot be mounted at runtime the way an addon can, so they are listed separately and fetched ahead of time. The server reads each one from `citadel/maps/<name>.vpk`, and the launcher downloads it to the same place under the same name before the game launches. Name only, no extension. The map the server is currently running is advertised too, so it does not have to be listed.
 
-## Gotchas
+## Rented servers
 
-- **An unlisted server distributes nothing.** With `"unlisted": true` in the config, or `-nomaster` on the command line, the server never registers or sends heartbeats. It never mounts content addons, and it never gets credentials.
-- **Upload and config are separate steps.** Uploading a file doesn't advertise it. Listing a name that was never uploaded gives clients nothing to download.
-- **Names must match everywhere.** The string in `content_addons` is the VPK's filename without `.vpk`, on the server and in the upload alike.
+On a server rented from Deadworks there is nothing to host or configure. Put the file on the server and list it; the files are hosted for you and `fastdl_url` is already set. Leave `fastdl_url` as it is unless you want to use a host of your own.
 
-## See also
+## Free hosting
 
-- [UI panels](../features/ui#use-your-own-layout-file): load a layout from an addon.
-- [Run a server](../getting-started/server-admins/run-a-server): install and start a server.
+If you have no web host of your own, Deadworks will host your files:
+
+1. Go to `https://deadworks.net/content` and sign in.
+2. Copy the URL the page shows into your config as `fastdl_url`. It is the same for every server you run.
+3. Compress each `.vpk` with bzip2 (`bzip2 -k myaddon.vpk`) and upload the `.vpk.bz2`.
+
+```jsonc
+{
+  "serverbrowser": {
+    "content_addons": ["myaddon"],
+    "fastdl_url": "https://api.deadworks.net/fastdl/u/444595d9f5ac…"
+  }
+}
+```
+
+Your uploads are your own. Nobody claims a name: someone else can host a `dl_harbor` of their own, and your players still get yours, saved as `dl_harbor.vpk`. Uploading a name again replaces your previous file.
+
+- Upload again whenever the file on your server changes. Launchers check each download against the build your server runs, and warn players when the two differ.
+- A compressed addon can be up to 300 MB, a compressed map up to 1 GB, and an account 3 GB in total.
+- Maps that ship with the game cannot be uploaded. Players already have them.
+
+## Hosting content yourself (fastDL)
+
+You can serve your content from any web host instead, much like `sv_downloadurl` in Source 1, by setting `fastdl_url` to it:
+
+```jsonc
+{
+  "serverbrowser": {
+    "fastdl_url": "https://dl.example.com/deadworks"
+  }
+}
+```
+
+Each file is a bzip2 of the `.vpk`, named after its version, which is the first 16 hex digits of the file's SHA-256:
+
+```
+https://dl.example.com/deadworks/addons/myaddon_9330149c74886724.vpk.bz2
+https://dl.example.com/deadworks/maps/my_map_731883278598f7be.vpk.bz2
+```
+
+You don't need to work these names out. When `fastdl_url` is set, the server logs the exact files it expects at startup and whenever the list changes. Any bzip2 tool works, including parallel ones like `pbzip2`.
+
+A new build of an addon gets a new file name, so old and new builds can sit side by side and a file never changes once published, which makes them safe to cache indefinitely. Launchers check every download against the version the server advertises, so a stale upload is caught rather than installed quietly: players are told your download host disagrees with your server, and may be offered the choice to install it anyway.
+
+The format servers advertise, and its limits, are specified in [Content Discovery](./content-discovery.md).

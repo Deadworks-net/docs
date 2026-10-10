@@ -1,7 +1,6 @@
 ---
 title: "Content Discovery"
 sidebar_label: "Content Discovery"
-unlisted: true
 ---
 
 # Content Discovery
@@ -46,7 +45,7 @@ Content is configured under `serverbrowser` in `game/bin/win64/configs/deadworks
 
 | Key | Description |
 |---|---|
-| `content_addons` | Lists the addons the server mounts and players download, without the `.vpk` extension. Each file is read from `game/bin/win64/deadworks_mods/vpks/<name>.vpk`. |
+| `content_addons` | Lists the addons the server mounts and players download, without the `.vpk` extension. Each file is read from `game/citadel/deadworks_mods/vpks/<name>.vpk`. Releases before the folder moved read `game/bin/win64/deadworks_mods/vpks`, which is no longer looked in: move the files across when updating. |
 | `extra_maps` | Lists the maps to advertise besides the current map, without the `.vpk` extension. Each file is read from `game/citadel/maps/<name>.vpk`. |
 | `fastdl_url` | Sets the base URL players download content from. Must be an absolute `http://` or `https://` URL of at most 128 characters, with no credentials, query string or fragment. |
 
@@ -123,7 +122,7 @@ Hosts with no web host can use Deadworks' hosting:
 | Map | 1 GB compressed |
 | Account | 3 GB compressed |
 
-Maps that ship with Deadlock are refused.
+Maps that ship with Deadlock are refused. See [Custom Content](./uploading-content.md) for the steps.
 
 :::warning
 This host keeps one file per name and ignores the hash in the requested path. Upload again after every change to a `.vpk`. Until then, players are warned that the download does not match the server.
