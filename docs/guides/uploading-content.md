@@ -81,10 +81,3 @@ You don't need to work these names out. When `fastdl_url` is set, the server log
 A new build of an addon gets a new file name, so old and new builds can sit side by side and a file never changes once published, which makes them safe to cache indefinitely. Launchers check every download against the version the server advertises, so a stale upload is caught rather than installed quietly: players are told your download host disagrees with your server, and may be offered the choice to install it anyway.
 
 The format servers advertise, and its limits, are specified in [Content Discovery](./content-discovery.md).
-
-## Gotchas
-
-- **`unlisted` and `-nomaster` are not the same.** `"unlisted": true` keeps the server out of the Deadworks server browser. It still appears in Steam's server list and still advertises its content, so players who have its address get its content as usual. `-nomaster` goes further: the server is left out of Steam's list and answers no server queries at all, so launchers cannot discover its content and players need it installed already.
-- **Listing and hosting are separate steps.** Listing a name that is not on your download host gives players nothing to fetch, and a file nobody lists is never downloaded.
-- **Names are lowercase.** Use only `a-z`, `0-9` and `_`. Launchers refuse anything else rather than build a file path from it.
-- **Names must match.** The string in the config is the VPK's filename without `.vpk`.
