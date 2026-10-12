@@ -58,6 +58,14 @@ type Notes = {
 };
 
 const ROOT = path.resolve(__dirname, '..');
+
+// The part of a summary that fits on one line: what comes before its first code sample, less
+// the sentence that introduced the sample. An index row and a page description cannot hold a
+// code block.
+const lead = (text: string) => {
+  const [before, ...rest] = text.split('```');
+  return (rest.length ? before.trim().replace(/(^|[.!?]\s+)[^.!?]*:$/, '$1') : before).trim();
+};
 const api: {commit: string; types: Type[]} = JSON.parse(
   fs.readFileSync(path.join(ROOT, 'api/api.json'), 'utf8'),
 );
@@ -310,7 +318,7 @@ function renderType(t: Type): string {
   const typeNotes = notes.sections['Type'] ?? {};
   const name = baseName(t.name);
   const out: string[] = [];
-  const description = (md(t.doc?.summary) || `The \`${t.name}\` ${t.kind}.`).replace(/\n+/g, ' ');
+  const description = (lead(md(t.doc?.summary)) || `The \`${t.name}\` ${t.kind}.`).replace(/\n+/g, ' ');
   out.push('---');
   out.push(`title: "${name}"`);
   out.push(`sidebar_label: "${name}"`);
@@ -393,7 +401,7 @@ for (const c of CATEGORIES) {
   index.push('| Type | Description |');
   index.push('|------|-------------|');
   for (const t of inCat) {
-    const d = md(t.doc?.summary).replace(/\n+/g, ' ').replace(/\|/g, '\\|');
+    const d = lead(md(t.doc?.summary)).replace(/\n+/g, ' ').replace(/\|/g, '\\|');
     index.push(`| [\`${t.name.replace(/</g, '&lt;')}\`](${pageUrl(t)}) | ${d} |`);
   }
   index.push('');

@@ -1,5 +1,5 @@
 {
-  "commit": "2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61",
+  "commit": "2751dc99337352295e6b662a9dbdc8621f560ed8",
   "types": [
     {
       "namespace": "DeadworksManaged.Api",
@@ -4587,6 +4587,43 @@
     },
     {
       "namespace": "DeadworksManaged.Api",
+      "name": "CCitadelZiplinePath",
+      "kind": "class",
+      "folder": "Entities",
+      "declaration": "public sealed unsafe class CCitadelZiplinePath : CBaseEntity",
+      "file": "managed/DeadworksManaged.Api/Entities/CCitadelZiplinePath.cs",
+      "line": 14,
+      "doc": {
+        "summary": "A lane\u0027s zipline rope (\u0060citadel_zipline_path\u0060). A map\u0027s ropes tell you which lanes it has:\n\n\u0060\u0060\u0060csharp\nvar lanes = Entities.ByClass\u003CCCitadelZiplinePath\u003E()\n    .Select(rope =\u003E rope.Lane)\n    .Where(lane =\u003E lane != LaneColor.Invalid)\n    .ToHashSet();\n\u0060\u0060\u0060\n\nMap entities don\u0027t exist yet during {@cref IDeadworksPlugin.OnStartupServer}.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [
+        "CBaseEntity"
+      ],
+      "members": [
+        {
+          "kind": "property",
+          "name": "Lane",
+          "signature": "public LaneColor Lane { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Entities/CCitadelZiplinePath.cs",
+          "line": 19,
+          "doc": {
+            "summary": "The rope\u0027s lane, or {@cref LaneColor.Invalid} if it isn\u0027t part of one.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
       "name": "CCollisionProperty",
       "kind": "class",
       "folder": "Entities",
@@ -6199,21 +6236,35 @@
         },
         {
           "kind": "property",
+          "name": "DevelopmentState",
+          "signature": "public EHeroDevelopmentState DevelopmentState { get; }",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/HeroData.cs",
+          "line": 72,
+          "doc": {
+            "summary": "How far along the hero is. The game stopped using separate flags for this in build 6711.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "property",
           "name": "InDevelopment",
           "signature": "public bool InDevelopment { get; }",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 71
-        },
-        {
-          "kind": "property",
-          "name": "AssignedPlayersOnly",
-          "signature": "public bool AssignedPlayersOnly { get; }",
-          "isStatic": false,
-          "isExtension": false,
-          "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 74
+          "line": 76,
+          "doc": {
+            "summary": "Still being worked on. A released hero can have this set, as Baba did on release.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "property",
@@ -6222,7 +6273,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 77
+          "line": 79
         },
         {
           "kind": "property",
@@ -6231,7 +6282,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 80
+          "line": 82
         },
         {
           "kind": "property",
@@ -6240,7 +6291,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 83
+          "line": 85
         },
         {
           "kind": "property",
@@ -6249,7 +6300,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 86
+          "line": 88
         },
         {
           "kind": "property",
@@ -6258,25 +6309,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 89
-        },
-        {
-          "kind": "property",
-          "name": "PlayerSelectable",
-          "signature": "public bool PlayerSelectable { get; }",
-          "isStatic": false,
-          "isExtension": false,
-          "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 92
-        },
-        {
-          "kind": "property",
-          "name": "PrereleaseOnly",
-          "signature": "public bool PrereleaseOnly { get; }",
-          "isStatic": false,
-          "isExtension": false,
-          "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 95
+          "line": 91
         },
         {
           "kind": "property",
@@ -6285,7 +6318,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 98
+          "line": 94
         },
         {
           "kind": "property",
@@ -6294,7 +6327,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 101
+          "line": 97
         },
         {
           "kind": "property",
@@ -6303,7 +6336,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 104
+          "line": 100
         },
         {
           "kind": "property",
@@ -6312,7 +6345,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 107
+          "line": 103
         },
         {
           "kind": "property",
@@ -6321,7 +6354,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 110
+          "line": 106
         },
         {
           "kind": "property",
@@ -6330,7 +6363,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 113
+          "line": 109
         },
         {
           "kind": "property",
@@ -6339,7 +6372,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 116
+          "line": 112
         },
         {
           "kind": "property",
@@ -6348,7 +6381,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 119
+          "line": 115
         },
         {
           "kind": "property",
@@ -6357,7 +6390,14 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 121
+          "line": 118,
+          "doc": {
+            "summary": "The hero is one the game offers in public matches.",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         },
         {
           "kind": "method",
@@ -6369,7 +6409,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/HeroData.cs",
-          "line": 124,
+          "line": 121,
           "doc": {
             "summary": "Read any schema field by name at runtime.",
             "params": {},
@@ -9220,7 +9260,7 @@
         {
           "kind": "field",
           "name": "Version",
-          "signature": "public const string Version = \u0022v0.5.0\u0022;",
+          "signature": "public const string Version = \u0022v0.6.0\u0022;",
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Deadworks.cs",
@@ -11286,6 +11326,90 @@
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EGameState.cs",
           "line": 15
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "EHeroDevelopmentState",
+      "kind": "enum",
+      "folder": "Enums",
+      "declaration": "public enum EHeroDevelopmentState : byte",
+      "file": "managed/DeadworksManaged.Api/Enums/EHeroDevelopmentState.cs",
+      "line": 4,
+      "doc": {
+        "summary": "How far along a hero is, from {@cref CitadelHeroData.DevelopmentState}. Only {@cref Release} heroes are in public matches.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [
+        "byte"
+      ],
+      "members": [
+        {
+          "kind": "enumValue",
+          "name": "InDevelopment",
+          "signature": "InDevelopment = 0x0",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/EHeroDevelopmentState.cs",
+          "line": 5
+        },
+        {
+          "kind": "enumValue",
+          "name": "DebugOnly",
+          "signature": "DebugOnly = 0x1",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/EHeroDevelopmentState.cs",
+          "line": 6
+        },
+        {
+          "kind": "enumValue",
+          "name": "RunInBotTests",
+          "signature": "RunInBotTests = 0x2",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/EHeroDevelopmentState.cs",
+          "line": 7
+        },
+        {
+          "kind": "enumValue",
+          "name": "InternalPlayable",
+          "signature": "InternalPlayable = 0x3",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/EHeroDevelopmentState.cs",
+          "line": 8
+        },
+        {
+          "kind": "enumValue",
+          "name": "ExperimentalPlayable",
+          "signature": "ExperimentalPlayable = 0x4",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/EHeroDevelopmentState.cs",
+          "line": 9
+        },
+        {
+          "kind": "enumValue",
+          "name": "PreRelease",
+          "signature": "PreRelease = 0x5",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/EHeroDevelopmentState.cs",
+          "line": 10
+        },
+        {
+          "kind": "enumValue",
+          "name": "Release",
+          "signature": "Release = 0x6",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/EHeroDevelopmentState.cs",
+          "line": 11
         }
       ]
     },
@@ -15249,12 +15373,21 @@
         },
         {
           "kind": "enumValue",
+          "name": "ChessmasterRookImmune",
+          "signature": "ChessmasterRookImmune = 0x13c",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
+          "line": 321
+        },
+        {
+          "kind": "enumValue",
           "name": "ChessmasterCheck",
           "signature": "ChessmasterCheck = 0x13c",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 321
+          "line": 322
         },
         {
           "kind": "enumValue",
@@ -15263,7 +15396,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 322
+          "line": 323
         },
         {
           "kind": "enumValue",
@@ -15272,7 +15405,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 323
+          "line": 324
         },
         {
           "kind": "enumValue",
@@ -15281,7 +15414,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 324
+          "line": 325
         },
         {
           "kind": "enumValue",
@@ -15290,7 +15423,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 325
+          "line": 326
         },
         {
           "kind": "enumValue",
@@ -15299,7 +15432,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 326
+          "line": 327
         },
         {
           "kind": "enumValue",
@@ -15308,7 +15441,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 327
+          "line": 328
         },
         {
           "kind": "enumValue",
@@ -15317,7 +15450,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 328
+          "line": 329
         },
         {
           "kind": "enumValue",
@@ -15326,7 +15459,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 329
+          "line": 330
         },
         {
           "kind": "enumValue",
@@ -15335,7 +15468,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 330
+          "line": 331
         },
         {
           "kind": "enumValue",
@@ -15344,21 +15477,12 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 331
-        },
-        {
-          "kind": "enumValue",
-          "name": "KothTrooper",
-          "signature": "KothTrooper = 0x147",
-          "isStatic": false,
-          "isExtension": false,
-          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
           "line": 332
         },
         {
           "kind": "enumValue",
-          "name": "HideoutEditMode",
-          "signature": "HideoutEditMode = 0x148",
+          "name": "ArtistPermanentBuff",
+          "signature": "ArtistPermanentBuff = 0x147",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -15366,8 +15490,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ItemsIgnoreImmobilize",
-          "signature": "ItemsIgnoreImmobilize = 0x149",
+          "name": "KothTrooper",
+          "signature": "KothTrooper = 0x148",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -15375,8 +15499,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ItemsIgnoreCombatAbilitiesDisabled",
-          "signature": "ItemsIgnoreCombatAbilitiesDisabled = 0x14a",
+          "name": "HideoutEditMode",
+          "signature": "HideoutEditMode = 0x149",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -15384,8 +15508,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "RatkingHoldingBanner",
-          "signature": "RatkingHoldingBanner = 0x14b",
+          "name": "ItemsIgnoreImmobilize",
+          "signature": "ItemsIgnoreImmobilize = 0x14a",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -15393,8 +15517,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "DoormanLuggageDragged",
-          "signature": "DoormanLuggageDragged = 0x14c",
+          "name": "ItemsIgnoreCombatAbilitiesDisabled",
+          "signature": "ItemsIgnoreCombatAbilitiesDisabled = 0x14b",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -15402,8 +15526,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "BabaBenchrun",
-          "signature": "BabaBenchrun = 0x14d",
+          "name": "RatkingHoldingBanner",
+          "signature": "RatkingHoldingBanner = 0x14c",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -15411,8 +15535,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "DisplayDamageBlockText",
-          "signature": "DisplayDamageBlockText = 0x14e",
+          "name": "DoormanLuggageDragged",
+          "signature": "DoormanLuggageDragged = 0x14d",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -15420,8 +15544,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "InCorruptedItemShop",
-          "signature": "InCorruptedItemShop = 0x14f",
+          "name": "BabaBenchrun",
+          "signature": "BabaBenchrun = 0x14e",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -15429,8 +15553,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "HideoutGame",
-          "signature": "HideoutGame = 0x150",
+          "name": "DisplayDamageBlockText",
+          "signature": "DisplayDamageBlockText = 0x14f",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
@@ -15438,12 +15562,48 @@
         },
         {
           "kind": "enumValue",
-          "name": "Count",
-          "signature": "Count = 0x151",
+          "name": "InCorruptedItemShop",
+          "signature": "InCorruptedItemShop = 0x150",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
           "line": 342
+        },
+        {
+          "kind": "enumValue",
+          "name": "HideoutGame",
+          "signature": "HideoutGame = 0x151",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
+          "line": 343
+        },
+        {
+          "kind": "enumValue",
+          "name": "ParryIgnoresMeleeDisabled",
+          "signature": "ParryIgnoresMeleeDisabled = 0x152",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
+          "line": 344
+        },
+        {
+          "kind": "enumValue",
+          "name": "FullSpeedDucking",
+          "signature": "FullSpeedDucking = 0x153",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
+          "line": 345
+        },
+        {
+          "kind": "enumValue",
+          "name": "Count",
+          "signature": "Count = 0x154",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
+          "line": 346
         },
         {
           "kind": "enumValue",
@@ -15452,7 +15612,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 343
+          "line": 347
         }
       ]
     },
@@ -19805,7 +19965,7 @@
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
           "line": 30,
           "doc": {
-            "summary": "Content addons this plugin needs connecting clients to download, so they do not have to be listed in the server config\u0027s \u0060serverbrowser.content_addons\u0060 ahead of time.\n\nMerged with the config list and any other plugin\u0027s, advertised to clients on connect, and the matching \u0060deadworks_mods/vpks/\u003Cname\u003E.vpk\u0060 is mounted server-side. Read whenever the plugin loads or unloads; if the list changes while the plugin is running, call {@cref ContentAddons.Refresh} to re-apply it.",
+            "summary": "Content addons this plugin needs connecting clients to download, so they do not have to be listed in the server config\u0027s \u0060serverbrowser.content_addons\u0060 ahead of time.\n\nMerged with the config list and any other plugin\u0027s, advertised to clients on connect, and the matching \u0060game/citadel/deadworks_server_addons/vpks/\u003Cname\u003E.vpk\u0060 is mounted server-side. Read whenever the plugin loads or unloads; if the list changes while the plugin is running, call {@cref ContentAddons.Refresh} to re-apply it.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -27135,7 +27295,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs",
-          "line": 19,
+          "line": 20,
           "doc": {
             "params": {
               "className": "UTF-8 null-terminated class name (e.g. \u0060\u0022CBaseEntity\u0022u8\u0060).",
@@ -27157,7 +27317,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs",
-          "line": 45,
+          "line": 47,
           "doc": {
             "summary": "Returns the raw pointer to the field on \u0060entity\u0060.",
             "params": {},
@@ -27176,7 +27336,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs",
-          "line": 51,
+          "line": 53,
           "doc": {
             "summary": "Reads the field value from \u0060entity\u0060.",
             "params": {},
@@ -27196,7 +27356,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs",
-          "line": 57,
+          "line": 59,
           "doc": {
             "summary": "Writes the field value to \u0060entity\u0060, notifying the network state if the field is networked.",
             "params": {},

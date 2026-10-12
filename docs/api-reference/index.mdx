@@ -8,7 +8,7 @@ slug: "/api-reference"
 
 # API Reference
 
-Every public type in `DeadworksManaged.Api`, generated from the Deadworks source at commit [`2ed5cbf`](https://github.com/Deadworks-net/deadworks/tree/2ed5cbf2f1af4a372b0c6dd1eb17e64633f09e61). Each member lists its signature and a link to its source. If you're new to Deadworks, start with the [Features](/features/commands) pages instead; they show how to do common things.
+Every public type in `DeadworksManaged.Api`, generated from the Deadworks source at commit [`2751dc9`](https://github.com/Deadworks-net/deadworks/tree/2751dc99337352295e6b662a9dbdc8621f560ed8). Each member lists its signature and a link to its source. If you're new to Deadworks, start with the [Features](/features/commands) pages instead; they show how to do common things.
 
 ## Plugin
 
@@ -45,6 +45,7 @@ Every public type in `DeadworksManaged.Api`, generated from the Deadworks source
 | [`CCitadelModifierVData`](/api-reference/entities/ccitadelmodifiervdata) | Wraps a native CCitadelModifierVData instance - Citadel-specific modifier VData with extended properties. |
 | [`CCitadelPlayerController`](/api-reference/entities/ccitadelplayercontroller) | Deadlock-specific player controller. Provides access to player data, hero selection, team changes, and console messaging. |
 | [`CCitadelPlayerPawn`](/api-reference/entities/ccitadelplayerpawn) | Deadlock hero pawn. The in-game physical representation of a player. Provides currency, abilities, movement state, stamina, and eye angles. |
+| [`CCitadelZiplinePath`](/api-reference/entities/ccitadelziplinepath) | A lane's zipline rope (`citadel_zipline_path`). |
 | [`CCollisionProperty`](/api-reference/entities/ccollisionproperty) | An entity's bounds and collision settings: what it collides with, what traces hit it, and its physics shape. Get it with [`CBaseEntity.Collision`](/api-reference/entities/cbaseentity#collision). |
 | [`CEntityKeyValues`](/api-reference/entities/centitykeyvalues) | Wraps a native CEntityKeyValues handle. Create with `new CEntityKeyValues()`, set typed members, pass to [`CBaseEntity.Spawn`](/api-reference/entities/cbaseentity#spawn). The engine takes ownership of the underlying allocation - do not dispose manually. |
 | [`CEntitySubclassVDataBase`](/api-reference/entities/centitysubclassvdatabase) | Wraps CEntitySubclassVDataBase - the VData subclass pointer stored on an entity, providing its design-time name. |
@@ -252,6 +253,7 @@ Every public type in `DeadworksManaged.Api`, generated from the Deadworks source
 | [`ECurrencySource`](/api-reference/enums/ecurrencysource) | Reason a currency modification occurred (kill, orb, purchase, etc.). |
 | [`ECurrencyType`](/api-reference/enums/ecurrencytype) | Types of in-game currency (gold, ability points, etc.). |
 | [`EGameState`](/api-reference/enums/egamestate) |  |
+| [`EHeroDevelopmentState`](/api-reference/enums/eherodevelopmentstate) | How far along a hero is, from [`CitadelHeroData.DevelopmentState`](/api-reference/entities/citadelherodata#developmentstate). Only `Release` heroes are in public matches. |
 | [`EKnockDownTypes`](/api-reference/enums/eknockdowntypes) | Knockdown animation type applied to a hero. |
 | [`EModifierEvent`](/api-reference/enums/emodifierevent) | Modifier event types. `*Broadcast` values are not delivered to `IDeadworksPlugin.OnModifierEvent`. |
 | [`EModifierState`](/api-reference/enums/emodifierstate) | All modifier state flags that can be toggled on an entity via [`CModifierProperty`](/api-reference/entities/cmodifierproperty). Contains 308 values covering movement, visibility, combat, and hero-specific states. |
