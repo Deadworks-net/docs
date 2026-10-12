@@ -40,7 +40,7 @@ If you have no web host of your own, Deadworks will host your files:
 
 1. Go to `https://deadworks.net/content` and sign in.
 2. Copy the URL the page shows into your config as `fastdl_url`. It is the same for every server you run.
-3. Compress each `.vpk` with bzip2 (`bzip2 -k myaddon.vpk`) and upload the `.vpk.bz2`.
+3. Compress each `.vpk` with zstd (`zstd -19 -T0 myaddon.vpk`) and upload the `.vpk.zst`. A `.vpk.bz2` made with bzip2 is accepted too.
 
 ```jsonc
 {
@@ -69,14 +69,18 @@ You can serve your content from any web host instead, much like `sv_downloadurl`
 }
 ```
 
-Each file is a bzip2 of the `.vpk`, named after its version, which is the first 16 hex digits of the file's SHA-256:
+Each file is a zstd of the `.vpk`, named after its version, which is the first 16 hex digits of the file's SHA-256:
 
 ```
-https://dl.example.com/deadworks/addons/myaddon_9330149c74886724.vpk.bz2
-https://dl.example.com/deadworks/maps/my_map_731883278598f7be.vpk.bz2
+https://dl.example.com/deadworks/addons/myaddon_9330149c74886724.vpk.zst
+https://dl.example.com/deadworks/maps/my_map_731883278598f7be.vpk.zst
 ```
 
-You don't need to work these names out. When `fastdl_url` is set, the server logs the exact files it expects at startup and whenever the list changes. Any bzip2 tool works, including parallel ones like `pbzip2`.
+You don't need to work these names out. When `fastdl_url` is set, the server logs the exact files it expects at startup and whenever the list changes.
+
+Compress with `zstd -19 -T0 myaddon.vpk`. Players unpack zstd tens of times faster than bzip2, and at level 19 the file is smaller as well. Do not raise the window above 128 MiB (`--long=28` or more): launchers refuse to unpack it.
+
+A host that already serves `.vpk.bz2` files keeps working. Launchers ask for the `.vpk.zst` first and, when the host has no such file, for the same name ending in `.vpk.bz2`.
 
 A new build of an addon gets a new file name, so old and new builds can sit side by side and a file never changes once published, which makes them safe to cache indefinitely. Launchers check every download against the version the server advertises, so a stale upload is caught rather than installed quietly: players are told your download host disagrees with your server, and may be offered the choice to install it anyway.
 
