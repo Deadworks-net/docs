@@ -87,6 +87,7 @@ const sidebars: SidebarsConfig = {
         'guides/admins-and-permissions',
         'guides/staff-roles',
         'guides/uploading-content',
+        'guides/content-discovery',
       ],
     },
     {

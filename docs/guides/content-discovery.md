@@ -1,7 +1,6 @@
 ---
 title: "Content Discovery"
 sidebar_label: "Content Discovery"
-unlisted: true
 ---
 
 # Content Discovery
@@ -46,7 +45,7 @@ Content is configured under `serverbrowser` in `game/bin/win64/configs/deadworks
 
 | Key | Description |
 |---|---|
-| `content_addons` | Lists the addons the server mounts and players download, without the `.vpk` extension. Each file is read from `game/bin/win64/deadworks_mods/vpks/<name>.vpk`. |
+| `content_addons` | Lists the addons the server mounts and players download, without the `.vpk` extension. Each file is read from `game/citadel/deadworks_server_addons/vpks/<name>.vpk`. |
 | `extra_maps` | Lists the maps to advertise besides the current map, without the `.vpk` extension. Each file is read from `game/citadel/maps/<name>.vpk`. |
 | `fastdl_url` | Sets the base URL players download content from. Must be an absolute `http://` or `https://` URL of at most 128 characters, with no credentials, query string or fragment. |
 
@@ -58,15 +57,19 @@ Use names of 1 to 64 characters from `a-z`, `0-9` and `_`. Launchers skip every 
 The server reads the config once at startup. Restart the server after editing it.
 :::
 
+:::warning
+Releases up to v0.5.6 read addons from `game/bin/win64/deadworks_mods/vpks`. Move the files when updating.
+:::
+
 ### Hosting the files
 
 Players download each file from `fastdl_url`. Any static HTTP server works. Without `fastdl_url` the server advertises names and hashes, but no download location.
 
-The host has to serve each file as a bzip2-compressed `.vpk` at:
+The host serves each file as a zstd-compressed `.vpk`:
 
 ```
-<fastdl_url>/addons/<name>_<hash>.vpk.bz2
-<fastdl_url>/maps/<name>_<hash>.vpk.bz2
+<fastdl_url>/addons/<name>_<hash>.vpk.zst
+<fastdl_url>/maps/<name>_<hash>.vpk.zst
 ```
 
 `<hash>` is the first 16 lowercase hex digits of the SHA-256 of the uncompressed `.vpk`.
@@ -76,18 +79,24 @@ The host has to serve each file as a bzip2-compressed `.vpk` at:
 
    ```
    [ContentAddons] fastDL: clients will fetch these from https://dl.example.com/deadworks/ (stock maps can be skipped - players already have them):
-     addons/turbo_9330149c74886724.vpk.bz2  (bzip2 of turbo.vpk)
-     maps/dl_midtown_faf73184b902d52d.vpk.bz2  (bzip2 of dl_midtown.vpk)
-     maps/dl_express_5d0c1e7a94b3f268.vpk.bz2  (bzip2 of dl_express.vpk)
+     addons/turbo_9330149c74886724.vpk.zst  (zstd of turbo.vpk; a bzip2 named .vpk.bz2 also works)
+     maps/dl_midtown_faf73184b902d52d.vpk.zst  (zstd of dl_midtown.vpk; a bzip2 named .vpk.bz2 also works)
+     maps/dl_express_5d0c1e7a94b3f268.vpk.zst  (zstd of dl_express.vpk; a bzip2 named .vpk.bz2 also works)
    ```
 
-3. Compress each `.vpk` with bzip2:
+3. Compress each `.vpk` with zstd:
 
    ```
-   bzip2 -k turbo.vpk
+   zstd -19 -T0 turbo.vpk
    ```
 
-4. Upload each `.vpk.bz2` under the printed path. Here `turbo.vpk.bz2` goes to `https://dl.example.com/deadworks/addons/turbo_9330149c74886724.vpk.bz2`.
+4. Upload each `.vpk.zst` under the printed path. Here `turbo.vpk.zst` goes to `https://dl.example.com/deadworks/addons/turbo_9330149c74886724.vpk.zst`.
+
+A host can serve a file as bzip2 instead, at the same path ending in `.vpk.bz2`. Launchers request the `.vpk.zst` first.
+
+:::warning
+Do not use a zstd window above 128 MiB (`--long=28` or higher). Launchers refuse the file.
+:::
 
 Maps that ship with Deadlock, such as `dl_midtown`, need no upload.
 
@@ -114,16 +123,16 @@ In PowerShell:
 Hosts with no web host can use Deadworks' hosting:
 
 1. Sign in at [deadworks.net/content](https://deadworks.net/content).
-2. Upload each `.vpk.bz2`.
+2. Upload each `.vpk`. The page compresses it in the browser. A `.vpk.zst` or `.vpk.bz2` is uploaded as it is.
 3. Set `fastdl_url` to your personal base URL, of the form `https://api.deadworks.net/fastdl/u/<id>`.
 
 | Limit | Value |
 |---|---|
 | Addon | 300 MB compressed |
 | Map | 1 GB compressed |
-| Account | 3 GB compressed |
+| Account | 3 GB compressed, 200 files |
 
-Maps that ship with Deadlock are refused.
+Maps that ship with Deadlock are refused. See [Custom Content](./uploading-content.md) for the steps.
 
 :::warning
 This host keeps one file per name and ignores the hash in the requested path. Upload again after every change to a `.vpk`. Until then, players are warned that the download does not match the server.
@@ -352,18 +361,26 @@ The digest covers every addon the server has, including entries dropped from an 
 
 ### Downloading
 
-Every file is a bzip2-compressed `.vpk`:
+Every file is a zstd-compressed `.vpk`:
 
 ```
-{dw_fastdl}/addons/{name}_{hash}.vpk.bz2
-{dw_fastdl}/maps/{name}_{hash}.vpk.bz2
+{dw_fastdl}/addons/{name}_{hash}.vpk.zst
+{dw_fastdl}/maps/{name}_{hash}.vpk.zst
 ```
+
+A host can serve a file as bzip2 instead, at the same path ending in `.vpk.bz2`.
+
+| Format | Extension | First bytes |
+|---|---|---|
+| zstd | `.vpk.zst` | `28 B5 2F FD` |
+| zstd, skippable frame first | `.vpk.zst` | `50`-`5F`, then `2A 4D 18` |
+| bzip2 | `.vpk.bz2` | `42 5A 68` |
 
 For the example reply above:
 
 ```
-https://dl.example.com/deadworks/addons/turbo_9330149c74886724.vpk.bz2
-https://dl.example.com/deadworks/maps/dl_midtown_faf73184b902d52d.vpk.bz2
+https://dl.example.com/deadworks/addons/turbo_9330149c74886724.vpk.zst
+https://dl.example.com/deadworks/maps/dl_midtown_faf73184b902d52d.vpk.zst
 ```
 
 - Skip the download when the installed file already matches: its length equals `size` and its SHA-256 starts with `hash`.
@@ -372,7 +389,10 @@ https://dl.example.com/deadworks/maps/dl_midtown_faf73184b902d52d.vpk.bz2
 - Check the resolved address before connecting, not after the response. A `GET` has already done its work by the time the response arrives. A resolver that drops local addresses covers the first request and every redirect.
 - Set connect and read timeouts and a minimum transfer rate, and cap what one join writes to disk. Count the bytes written, not the advertised sizes: an entry may give no size.
 - If the launcher accepts commands over a local port, check the `Host` header. A web page can reach `127.0.0.1` through any DNS name that resolves to it.
-- Decode every bzip2 stream in the file. Parallel compressors such as `pbzip2` write several.
+- Request the `.vpk.zst`. On `403`, `404` or `410`, request the `.vpk.bz2`. Treat any other answer as a failed download.
+- Identify the format by the file's first bytes, not by its URL.
+- Decode every zstd frame and every bzip2 stream in the file. Parallel compressors such as `pzstd` and `pbzip2` write several.
+- Refuse a zstd window above 128 MiB (window log 27). The file sets the window, and the decoder has to hold it in memory.
 - A server with no `dw_fastdl` names no download host.
 
 ### Verifying a download
