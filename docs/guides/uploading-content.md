@@ -5,83 +5,125 @@ sidebar_label: "Custom Content"
 
 # Custom Content
 
-Custom content (Panorama addons, models, maps) reaches players through the launcher, which downloads whatever your server advertises before the game starts. There are three steps: put the file on the server, list it in the config, and put a compressed copy somewhere players can download it from. That can be your own web host or Deadworks' free one.
+Custom content is any `.vpk` a server needs its players to have: Panorama addons, models and maps. The launcher downloads what a server advertises before the game starts.
 
-## List it in the config
+To serve custom content:
 
-`game/bin/win64/configs/deadworks.jsonc`, under `serverbrowser`. Names go in without the `.vpk` extension:
+1. Copy the `.vpk` to the server.
+2. List it in the config.
+3. Host a compressed copy for players to download.
 
-```jsonc
-{
-  "serverbrowser": {
-    "content_addons": ["myaddon"],
-    "extra_maps": ["dl_express"]
-  }
-}
-```
+## Configuration
 
-The config is read once at startup, so restart the server after editing it.
-
-### `content_addons`
-
-VPKs the server mounts and clients download. On startup the server advertises the list to connecting clients and mounts each entry from `game/citadel/deadworks_server_addons/vpks/<name>.vpk`. The launcher puts the client's copy in `citadel/deadworks_addons/vpks/`.
-
-### `extra_maps`
-
-Maps cannot be mounted at runtime the way an addon can, so they are listed separately and fetched ahead of time. The server reads each one from `citadel/maps/<name>.vpk`, and the launcher downloads it to the same place under the same name before the game launches. Name only, no extension. The map the server is currently running is advertised too, so it does not have to be listed.
-
-## Rented servers
-
-On a server rented from Deadworks there is nothing to host or configure. Put the file on the server and list it; the files are hosted for you and `fastdl_url` is already set. Leave `fastdl_url` as it is unless you want to use a host of your own.
-
-## Free hosting
-
-If you have no web host of your own, Deadworks will host your files:
-
-1. Go to `https://deadworks.net/content` and sign in.
-2. Copy the URL the page shows into your config as `fastdl_url`. It is the same for every server you run.
-3. Compress each `.vpk` with zstd (`zstd -19 -T0 myaddon.vpk`) and upload the `.vpk.zst`. A `.vpk.bz2` made with bzip2 is accepted too.
+Content is listed under `serverbrowser` in `game/bin/win64/configs/deadworks.jsonc`:
 
 ```jsonc
 {
   "serverbrowser": {
     "content_addons": ["myaddon"],
-    "fastdl_url": "https://api.deadworks.net/fastdl/u/444595d9f5ac…"
-  }
-}
-```
-
-Your uploads are your own. Nobody claims a name: someone else can host a `dl_harbor` of their own, and your players still get yours, saved as `dl_harbor.vpk`. Uploading a name again replaces your previous file.
-
-- Upload again whenever the file on your server changes. Launchers check each download against the build your server runs, and warn players when the two differ.
-- A compressed addon can be up to 300 MB, a compressed map up to 1 GB, and an account 3 GB in total.
-- Maps that ship with the game cannot be uploaded. Players already have them.
-
-## Hosting content yourself (fastDL)
-
-You can serve your content from any web host instead, much like `sv_downloadurl` in Source 1, by setting `fastdl_url` to it:
-
-```jsonc
-{
-  "serverbrowser": {
+    "extra_maps": ["dl_express"],
     "fastdl_url": "https://dl.example.com/deadworks"
   }
 }
 ```
 
-Each file is a zstd of the `.vpk`, named after its version, which is the first 16 hex digits of the file's SHA-256:
+| Key | Description |
+|---|---|
+| `content_addons` | Lists the addons the server mounts and players download. Each file is read from `game/citadel/deadworks_server_addons/vpks/<name>.vpk`. |
+| `extra_maps` | Lists the maps players download besides the current map. Each file is read from `game/citadel/maps/<name>.vpk`. |
+| `fastdl_url` | Sets the base URL players download from. See [Hosting the files](#hosting-the-files). |
 
-```
-https://dl.example.com/deadworks/addons/myaddon_9330149c74886724.vpk.zst
-https://dl.example.com/deadworks/maps/my_map_731883278598f7be.vpk.zst
-```
+Names are given without the `.vpk` extension. The current map is always advertised and needs no entry.
 
-You don't need to work these names out. When `fastdl_url` is set, the server logs the exact files it expects at startup and whenever the list changes.
+Use names of 1 to 64 characters from `a-z`, `0-9` and `_`. Launchers skip every other name.
 
-Compress with `zstd -19 -T0 myaddon.vpk`. Players unpack zstd tens of times faster than bzip2, and at level 19 the file is smaller as well. Do not raise the window above 128 MiB (`--long=28` or more): launchers refuse to unpack it.
+:::note
+The server reads the config once at startup. Restart the server after editing it.
+:::
 
-A host that already serves `.vpk.bz2` files keeps working. Launchers ask for the `.vpk.zst` first and, when the host has no such file, for the same name ending in `.vpk.bz2`.
+## Hosting the files
 
-A new build of an addon gets a new file name, so old and new builds can sit side by side and a file never changes once published, which makes them safe to cache indefinitely. Launchers check every download against the version the server advertises, so a stale upload is caught rather than installed quietly: players are told your download host disagrees with your server, and may be offered the choice to install it anyway.
+Players download each file from `fastdl_url`. There are three ways to host:
 
-The format servers advertise, and its limits, are specified in [Content Discovery](./content-discovery.md).
+| Host | Setup |
+|---|---|
+| [Rented server](#rented-servers) | None. |
+| [Free hosting](#free-hosting) | Upload each file to your Deadworks account. |
+| [Your own host](#your-own-host) | Upload each file to any HTTP server. |
+
+### Rented servers
+
+A server rented from Deadworks hosts its own content, and `fastdl_url` is already set. Copy the file to the server and list it in the config.
+
+### Free hosting
+
+1. Sign in at [deadworks.net/content](https://deadworks.net/content).
+2. Set `fastdl_url` to the URL the page shows. It is the same for every server on the account.
+3. Compress each `.vpk`:
+
+   ```
+   zstd -19 -T0 myaddon.vpk
+   ```
+
+4. Upload each `.vpk.zst`.
+
+| Limit | Value |
+|---|---|
+| Addon | 300 MB compressed |
+| Map | 1 GB compressed |
+| Account | 3 GB compressed, 200 files |
+
+- Uploading a name again replaces the file.
+- Names belong to the account. Another account's `dl_harbor` does not affect yours.
+- Maps that ship with Deadlock are refused. Players already have them.
+
+:::warning
+Upload again after every change to a `.vpk`. Until then, players are warned that the download does not match the server.
+:::
+
+### Your own host
+
+1. Set `fastdl_url` to a directory on the host and start the server. The console prints the files to serve, at startup and whenever the list changes:
+
+   ```
+   [ContentAddons] fastDL: clients will fetch these from https://dl.example.com/deadworks/ (stock maps can be skipped - players already have them):
+     addons/myaddon_9330149c74886724.vpk.zst  (zstd of myaddon.vpk; a bzip2 named .vpk.bz2 also works)
+     maps/dl_express_5d0c1e7a94b3f268.vpk.zst  (zstd of dl_express.vpk; a bzip2 named .vpk.bz2 also works)
+   ```
+
+2. Compress each `.vpk`:
+
+   ```
+   zstd -19 -T0 myaddon.vpk
+   ```
+
+3. Upload each `.vpk.zst` under the printed path.
+
+The 16 hex digits in a file name are the start of the `.vpk`'s SHA-256. A changed `.vpk` gets a new name, so a published file never changes and can be cached indefinitely.
+
+:::warning
+Upload the new build before restarting the server or changing map. The server advertises the new name from then on.
+:::
+
+## Compression
+
+Files are compressed with zstd. bzip2 is also accepted.
+
+| Format | Extension | Command |
+|---|---|---|
+| zstd | `.vpk.zst` | `zstd -19 -T0 myaddon.vpk` |
+| bzip2 | `.vpk.bz2` | `bzip2 -k myaddon.vpk` |
+
+Launchers request the `.vpk.zst` first, then the `.vpk.bz2` if the host has no such file. zstd unpacks far faster than bzip2 and, at level 19, is smaller.
+
+:::warning
+Do not use a zstd window above 128 MiB (`--long=28` or higher). Launchers refuse the file.
+:::
+
+## Verification
+
+Launchers check every download against the hash the server advertises. On a mismatch the player is told the download host does not match the server, and can choose to install the file anyway.
+
+## See also
+
+- [Content Discovery](./content-discovery.md): the format servers advertise, and its limits.

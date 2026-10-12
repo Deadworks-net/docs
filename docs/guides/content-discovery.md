@@ -45,7 +45,7 @@ Content is configured under `serverbrowser` in `game/bin/win64/configs/deadworks
 
 | Key | Description |
 |---|---|
-| `content_addons` | Lists the addons the server mounts and players download, without the `.vpk` extension. Each file is read from `game/citadel/deadworks_server_addons/vpks/<name>.vpk`. Releases before the folder moved read `game/bin/win64/deadworks_mods/vpks`, which is no longer looked in: move the files across when updating. |
+| `content_addons` | Lists the addons the server mounts and players download, without the `.vpk` extension. Each file is read from `game/citadel/deadworks_server_addons/vpks/<name>.vpk`. |
 | `extra_maps` | Lists the maps to advertise besides the current map, without the `.vpk` extension. Each file is read from `game/citadel/maps/<name>.vpk`. |
 | `fastdl_url` | Sets the base URL players download content from. Must be an absolute `http://` or `https://` URL of at most 128 characters, with no credentials, query string or fragment. |
 
@@ -57,11 +57,15 @@ Use names of 1 to 64 characters from `a-z`, `0-9` and `_`. Launchers skip every 
 The server reads the config once at startup. Restart the server after editing it.
 :::
 
+:::warning
+Releases up to v0.5.6 read addons from `game/bin/win64/deadworks_mods/vpks`. Move the files when updating.
+:::
+
 ### Hosting the files
 
 Players download each file from `fastdl_url`. Any static HTTP server works. Without `fastdl_url` the server advertises names and hashes, but no download location.
 
-The host has to serve each file as a zstd-compressed `.vpk` at:
+The host serves each file as a zstd-compressed `.vpk`:
 
 ```
 <fastdl_url>/addons/<name>_<hash>.vpk.zst
@@ -88,10 +92,10 @@ The host has to serve each file as a zstd-compressed `.vpk` at:
 
 4. Upload each `.vpk.zst` under the printed path. Here `turbo.vpk.zst` goes to `https://dl.example.com/deadworks/addons/turbo_9330149c74886724.vpk.zst`.
 
-A file may be served as bzip2 instead, at the same path ending in `.vpk.bz2`. Launchers ask for the `.vpk.zst` first and fall back to it. zstd unpacks tens of times faster, and at level 19 is the smaller of the two.
+A host can serve a file as bzip2 instead, at the same path ending in `.vpk.bz2`. Launchers request the `.vpk.zst` first.
 
 :::warning
-Keep the zstd window at 128 MiB or less. `zstd -19` uses 8 MiB. A file made with `--long=28` or more is refused by launchers.
+Do not use a zstd window above 128 MiB (`--long=28` or higher). Launchers refuse the file.
 :::
 
 Maps that ship with Deadlock, such as `dl_midtown`, need no upload.
@@ -119,14 +123,14 @@ In PowerShell:
 Hosts with no web host can use Deadworks' hosting:
 
 1. Sign in at [deadworks.net/content](https://deadworks.net/content).
-2. Upload each `.vpk.zst`. A `.vpk.bz2` is accepted too.
+2. Upload each `.vpk.zst` or `.vpk.bz2`.
 3. Set `fastdl_url` to your personal base URL, of the form `https://api.deadworks.net/fastdl/u/<id>`.
 
 | Limit | Value |
 |---|---|
 | Addon | 300 MB compressed |
 | Map | 1 GB compressed |
-| Account | 3 GB compressed |
+| Account | 3 GB compressed, 200 files |
 
 Maps that ship with Deadlock are refused. See [Custom Content](./uploading-content.md) for the steps.
 
@@ -364,7 +368,13 @@ Every file is a zstd-compressed `.vpk`:
 {dw_fastdl}/maps/{name}_{hash}.vpk.zst
 ```
 
-A host may hold a file as bzip2 instead, at the same path ending in `.vpk.bz2`. Request the `.vpk.zst` first. If the host answers `403`, `404` or `410`, request the `.vpk.bz2`. Any other failure is a failed download.
+A host can serve a file as bzip2 instead, at the same path ending in `.vpk.bz2`.
+
+| Format | Extension | First bytes |
+|---|---|---|
+| zstd | `.vpk.zst` | `28 B5 2F FD` |
+| zstd, skippable frame first | `.vpk.zst` | `50`-`5F`, then `2A 4D 18` |
+| bzip2 | `.vpk.bz2` | `42 5A 68` |
 
 For the example reply above:
 
@@ -379,9 +389,10 @@ https://dl.example.com/deadworks/maps/dl_midtown_faf73184b902d52d.vpk.zst
 - Check the resolved address before connecting, not after the response. A `GET` has already done its work by the time the response arrives. A resolver that drops local addresses covers the first request and every redirect.
 - Set connect and read timeouts and a minimum transfer rate, and cap what one join writes to disk. Count the bytes written, not the advertised sizes: an entry may give no size.
 - If the launcher accepts commands over a local port, check the `Host` header. A web page can reach `127.0.0.1` through any DNS name that resolves to it.
-- Tell the format from the file's first bytes, not from its URL: `28 B5 2F FD` is zstd, `BZh` is bzip2. A file from `pzstd` starts with a skippable frame, `50`-`5F` then `2A 4D 18`.
-- Decode every zstd frame or bzip2 stream in the file. Parallel compressors such as `pzstd` and `pbzip2` write several.
-- Limit the zstd window to 128 MiB (window log 27). The window is memory the decoder has to hold, and the file names its size.
+- Request the `.vpk.zst`. On `403`, `404` or `410`, request the `.vpk.bz2`. Treat any other answer as a failed download.
+- Identify the format by the file's first bytes, not by its URL.
+- Decode every zstd frame and every bzip2 stream in the file. Parallel compressors such as `pzstd` and `pbzip2` write several.
+- Refuse a zstd window above 128 MiB (window log 27). The file sets the window, and the decoder has to hold it in memory.
 - A server with no `dw_fastdl` names no download host.
 
 ### Verifying a download
