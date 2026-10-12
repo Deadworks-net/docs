@@ -48,8 +48,8 @@ Players download each file from `fastdl_url`. There are three ways to host:
 | Host | Setup |
 |---|---|
 | [Rented server](#rented-servers) | None. |
-| [Free hosting](#free-hosting) | Upload each file to your Deadworks account. |
-| [Your own host](#your-own-host) | Upload each file to any HTTP server. |
+| [Free hosting](#free-hosting) | Upload each `.vpk` to your Deadworks account. |
+| [Your own host](#your-own-host) | Compress each `.vpk` and upload it to any HTTP server. |
 
 ### Rented servers
 
@@ -59,13 +59,9 @@ A server rented from Deadworks hosts its own content, and `fastdl_url` is alread
 
 1. Sign in at [deadworks.net/content](https://deadworks.net/content).
 2. Set `fastdl_url` to the URL the page shows. It is the same for every server on the account.
-3. Compress each `.vpk`:
+3. Upload each `.vpk`. The page compresses it in the browser before uploading.
 
-   ```
-   zstd -19 -T0 myaddon.vpk
-   ```
-
-4. Upload each `.vpk.zst`.
+A `.vpk.zst` or `.vpk.bz2` is uploaded as it is. See [Compression](#compression).
 
 | Limit | Value |
 |---|---|
@@ -107,7 +103,7 @@ Upload the new build before restarting the server or changing map. The server ad
 
 ## Compression
 
-Files are compressed with zstd. bzip2 is also accepted.
+Files are served compressed with zstd. bzip2 is also accepted. Free hosting compresses a `.vpk` for you; on your own host, compress each file yourself.
 
 | Format | Extension | Command |
 |---|---|---|

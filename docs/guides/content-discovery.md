@@ -123,7 +123,7 @@ In PowerShell:
 Hosts with no web host can use Deadworks' hosting:
 
 1. Sign in at [deadworks.net/content](https://deadworks.net/content).
-2. Upload each `.vpk.zst` or `.vpk.bz2`.
+2. Upload each `.vpk`. The page compresses it in the browser. A `.vpk.zst` or `.vpk.bz2` is uploaded as it is.
 3. Set `fastdl_url` to your personal base URL, of the form `https://api.deadworks.net/fastdl/u/<id>`.
 
 | Limit | Value |
