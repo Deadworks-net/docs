@@ -17,7 +17,7 @@ public sealed class CNPC_Trooper : CAI_CitadelNPC
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`CAI_CitadelNPC`](/api-reference/entities/cai_citadelnpc)  
-**Source:** [Entities/CNPC_Trooper.cs#L15](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L15)
+**Source:** [Entities/CNPC_Trooper.cs#L15](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L15)
 
 ## Notes
 
@@ -35,7 +35,7 @@ The lane the trooper walks. 0 means any lane.
 public int Lane { get; }
 ```
 
-**Source:** [Entities/CNPC_Trooper.cs#L25](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L25)
+**Source:** [Entities/CNPC_Trooper.cs#L25](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L25)
 
 ### CNPC_Trooper.UsingBossWeapon {#usingbossweapon}
 
@@ -47,7 +47,7 @@ True while the trooper uses its anti-boss weapon, because it's fighting a guardi
 public bool UsingBossWeapon { get; }
 ```
 
-**Source:** [Entities/CNPC_Trooper.cs#L28](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L28)
+**Source:** [Entities/CNPC_Trooper.cs#L28](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L28)
 
 ## Methods
 
@@ -72,4 +72,4 @@ public static CNPC_Trooper? Create(Vector3 position, int team, TrooperType type 
 **Notes**
 The trooper joins the lane nearest to `position` and walks it like a wave trooper. A dormant pooled trooper of the same type is reused when one is free, so the returned entity can be one that existed before.
 
-**Source:** [Entities/CNPC_Trooper.cs#L44](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L44)
+**Source:** [Entities/CNPC_Trooper.cs#L44](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L44)

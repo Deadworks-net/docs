@@ -16,7 +16,7 @@ public sealed class NavPathFollower
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Nav.cs#L51](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L51)
+**Source:** [Nav.cs#L51](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Nav.cs#L51)
 
 ## Notes
 
@@ -37,7 +37,7 @@ public NavPathFollower(NavPath path, float arriveRadius = 40f)
 - `path`: The path to follow, usually a simplified one from [`Nav.FindPath`](/api-reference/navigation/nav#findpath).
 - `arriveRadius`: How close counts as reaching a waypoint, in units.
 
-**Source:** [Nav.cs#L54](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L54)
+**Source:** [Nav.cs#L54](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Nav.cs#L54)
 
 ## Properties
 
@@ -51,7 +51,7 @@ The path being followed.
 public NavPath Path { get; }
 ```
 
-**Source:** [Nav.cs#L61](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L61)
+**Source:** [Nav.cs#L61](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Nav.cs#L61)
 
 ### NavPathFollower.ArriveRadius {#arriveradius}
 
@@ -63,7 +63,7 @@ How close counts as reaching a waypoint, in units.
 public float ArriveRadius { get; set; }
 ```
 
-**Source:** [Nav.cs#L64](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L64)
+**Source:** [Nav.cs#L64](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Nav.cs#L64)
 
 ### NavPathFollower.Index {#index}
 
@@ -75,7 +75,7 @@ The index in [`NavPath.Waypoints`](/api-reference/navigation/navpath#waypoints) 
 public int Index { get; }
 ```
 
-**Source:** [Nav.cs#L67](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L67)
+**Source:** [Nav.cs#L67](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Nav.cs#L67)
 
 ### NavPathFollower.IsFinished {#isfinished}
 
@@ -87,7 +87,7 @@ Whether the last waypoint has been reached.
 public bool IsFinished { get; }
 ```
 
-**Source:** [Nav.cs#L70](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L70)
+**Source:** [Nav.cs#L70](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Nav.cs#L70)
 
 ### NavPathFollower.Target {#target}
 
@@ -99,7 +99,7 @@ The waypoint being headed for, or null once finished.
 public NavWaypoint? Target { get; }
 ```
 
-**Source:** [Nav.cs#L73](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L73)
+**Source:** [Nav.cs#L73](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Nav.cs#L73)
 
 ## Methods
 
@@ -113,7 +113,7 @@ Moves on past every waypoint `position` has reached and returns where to head ne
 public Vector3? Update(Vector3 position)
 ```
 
-**Source:** [Nav.cs#L79](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L79)
+**Source:** [Nav.cs#L79](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Nav.cs#L79)
 
 ### NavPathFollower.ShouldJump() {#shouldjump}
 
@@ -125,7 +125,7 @@ Whether to jump now: the waypoint ahead is reached by jumping or climbing, is mo
 public bool ShouldJump(Vector3 position, float within = 160f)
 ```
 
-**Source:** [Nav.cs#L104](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L104)
+**Source:** [Nav.cs#L104](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Nav.cs#L104)
 
 ### NavPathFollower.DistanceFromPath() {#distancefrompath}
 
@@ -137,4 +137,4 @@ How far `position` is from the leg being walked, on the ground plane.
 public float DistanceFromPath(Vector3 position)
 ```
 
-**Source:** [Nav.cs#L111](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L111)
+**Source:** [Nav.cs#L111](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Nav.cs#L111)

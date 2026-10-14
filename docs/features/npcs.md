@@ -37,7 +37,9 @@ var creep = CAI_BaseNPC.Create("neutral_trooper_strong", position);
 var guardian = CAI_BaseNPC.Create("npc_boss_tier1", position, team: 3);
 ```
 
-It returns null for a name that isn't an NPC subclass, such as the class name `npc_trooper_neutral`.
+It returns null for a name that isn't an NPC subclass, such as the class name `npc_trooper_neutral`. `SubclassNames` in `DeadworksManaged.Game` lists every subclass name.
+
+`DeadworksManaged.Game` also has a function per subclass, such as `Spawn.trooper_normal`, which takes spawn key values. A trooper spawned that way has no lane (`Lane` is 0); `CNPC_Trooper.Create` puts it in the nearest one.
 
 :::warning
 A trooper placed near the enemy base dies within seconds. Spawn it on its own side of the map.
