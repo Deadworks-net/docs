@@ -16,7 +16,7 @@ public interface IPermissionStore
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Permissions/IPermissionStore.cs#L8](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs#L8)
+**Source:** [Permissions/IPermissionStore.cs#L8](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs#L8)
 
 ## Methods
 
@@ -30,7 +30,7 @@ Every role by name. Called at startup and on `dw_perm_reload`.
 Task<IReadOnlyDictionary<string, RoleDefinition>> LoadRolesAsync(CancellationToken ct)
 ```
 
-**Source:** [Permissions/IPermissionStore.cs#L11](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs#L11)
+**Source:** [Permissions/IPermissionStore.cs#L11](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs#L11)
 
 ### IPermissionStore.LoadPlayerAsync() {#loadplayerasync}
 
@@ -42,7 +42,7 @@ Called when a player connects, and on demand for offline checks. Null means no e
 Task<PlayerEntry?> LoadPlayerAsync(ulong steamId64, CancellationToken ct)
 ```
 
-**Source:** [Permissions/IPermissionStore.cs#L14](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs#L14)
+**Source:** [Permissions/IPermissionStore.cs#L14](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs#L14)
 
 ### IPermissionStore.SavePlayerAsync() {#saveplayerasync}
 
@@ -54,7 +54,7 @@ Persists a change made with the `dw_role_*`/`dw_perm_*` commands. A null entry d
 Task SavePlayerAsync(ulong steamId64, PlayerEntry? entry, CancellationToken ct)
 ```
 
-**Source:** [Permissions/IPermissionStore.cs#L17](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs#L17)
+**Source:** [Permissions/IPermissionStore.cs#L17](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs#L17)
 
 ## Events
 
@@ -68,4 +68,4 @@ Raise when data changed outside Deadworks. Pass the affected SteamID64, or null 
 event Action<ulong?>? Changed;
 ```
 
-**Source:** [Permissions/IPermissionStore.cs#L20](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs#L20)
+**Source:** [Permissions/IPermissionStore.cs#L20](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Permissions/IPermissionStore.cs#L20)

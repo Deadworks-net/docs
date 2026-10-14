@@ -16,7 +16,7 @@ public sealed class Caller
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Commands/Caller.cs#L13](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L13)
+**Source:** [Commands/Caller.cs#L13](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L13)
 
 ## Notes
 
@@ -34,7 +34,7 @@ The server console. It holds every permission and can target anyone.
 public static Caller Console { get; }
 ```
 
-**Source:** [Commands/Caller.cs#L16](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L16)
+**Source:** [Commands/Caller.cs#L16](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L16)
 
 ### Caller.IsConsole {#isconsole}
 
@@ -46,7 +46,7 @@ True for the server console (and rcon).
 public bool IsConsole { get; }
 ```
 
-**Source:** [Commands/Caller.cs#L34](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L34)
+**Source:** [Commands/Caller.cs#L34](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L34)
 
 ### Caller.IsConnected {#isconnected}
 
@@ -58,7 +58,7 @@ Whether the player who ran the command is still on the server. Always true for t
 public bool IsConnected { get; }
 ```
 
-**Source:** [Commands/Caller.cs#L40](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L40)
+**Source:** [Commands/Caller.cs#L40](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L40)
 
 ### Caller.Player {#player}
 
@@ -70,7 +70,7 @@ The player who ran the command, or null for the console, or once they've left th
 public CCitadelPlayerController? Player { get; }
 ```
 
-**Source:** [Commands/Caller.cs#L44](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L44)
+**Source:** [Commands/Caller.cs#L44](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L44)
 
 ### Caller.Name {#name}
 
@@ -82,7 +82,7 @@ The player's name when they ran the command, or "Console".
 public string Name { get; }
 ```
 
-**Source:** [Commands/Caller.cs#L47](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L47)
+**Source:** [Commands/Caller.cs#L47](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L47)
 
 ### Caller.SteamId64 {#steamid64}
 
@@ -94,7 +94,7 @@ The SteamID the player connected with (see [`Permissions.GetSteamId64`](/api-ref
 public ulong SteamId64 { get; }
 ```
 
-**Source:** [Commands/Caller.cs#L50](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L50)
+**Source:** [Commands/Caller.cs#L50](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L50)
 
 ## Methods
 
@@ -108,7 +108,7 @@ A player caller.
 public static Caller Of(CCitadelPlayerController player)
 ```
 
-**Source:** [Commands/Caller.cs#L19](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L19)
+**Source:** [Commands/Caller.cs#L19](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L19)
 
 ### Caller.HasPermission() {#haspermission}
 
@@ -120,7 +120,7 @@ Whether the caller holds `permission`. The console holds everything; a player wh
 public bool HasPermission(string permission)
 ```
 
-**Source:** [Commands/Caller.cs#L53](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L53)
+**Source:** [Commands/Caller.cs#L53](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L53)
 
 ### Caller.CanTarget() {#cantarget}
 
@@ -133,7 +133,7 @@ public bool CanTarget(CCitadelPlayerController target)
 public bool CanTarget(ulong steamId64)
 ```
 
-**Source:** [Commands/Caller.cs#L56](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L56), [Commands/Caller.cs#L62](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L62)
+**Source:** [Commands/Caller.cs#L56](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L56), [Commands/Caller.cs#L62](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L62)
 
 ### Caller.Reply() {#reply}
 
@@ -145,7 +145,7 @@ A short reply: the player's chat, or the server console. Nothing if the player h
 public void Reply(string message)
 ```
 
-**Source:** [Commands/Caller.cs#L65](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L65)
+**Source:** [Commands/Caller.cs#L65](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L65)
 
 ### Caller.PrintToConsole() {#printtoconsole}
 
@@ -157,7 +157,7 @@ Output that doesn't fit in chat: the player's console, or the server console. No
 public void PrintToConsole(string message)
 ```
 
-**Source:** [Commands/Caller.cs#L74](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L74)
+**Source:** [Commands/Caller.cs#L74](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L74)
 
 ### Caller.ToString() {#tostring}
 
@@ -167,4 +167,4 @@ public void PrintToConsole(string message)
 public override string ToString()
 ```
 
-**Source:** [Commands/Caller.cs#L83](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Commands/Caller.cs#L83)
+**Source:** [Commands/Caller.cs#L83](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/Caller.cs#L83)

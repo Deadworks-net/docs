@@ -93,6 +93,7 @@ const CATEGORIES: {label: string; slug: string; folders?: string[]; types?: stri
   {label: 'Sound', slug: 'sound', folders: ['Sounds']},
   {label: 'UI', slug: 'ui', folders: ['UI']},
   {label: 'Tracing', slug: 'tracing', folders: ['Trace', 'Math']},
+  {label: 'Navigation and Bots', slug: 'navigation', types: ['Nav', 'NavPath', 'NavPathFollower', 'NavWaypoint', 'NavTraverse', 'NavArea', 'NavAreaAttributes', 'NavAreaFlags', 'Bots', 'BotDifficulty']},
   {label: 'Zones and Helpers', slug: 'utils', folders: ['Utils']},
   {label: 'Permissions', slug: 'permissions', folders: ['Permissions']},
   {label: 'Admin', slug: 'admin', folders: ['Admin']},
