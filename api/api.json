@@ -1,5 +1,5 @@
 {
-  "commit": "22d1dd11",
+  "commit": "efd6ab44",
   "types": [
     {
       "namespace": "DeadworksManaged.Api",
@@ -881,13 +881,41 @@
       ],
       "members": [
         {
+          "kind": "method",
+          "name": "Create",
+          "signature": "public static CAI_BaseNPC? Create(string designerName, Vector3 position, int team = 0, Vector3? angles = null)",
+          "parameters": [
+            "designerName",
+            "position",
+            "team",
+            "angles"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
+          "line": 40,
+          "doc": {
+            "summary": "Creates and spawns an NPC by its VData subclass name, such as \u0060neutral_trooper_strong\u0060 or \u0060npc_boss_tier1\u0060. Returns null if the name is not an NPC subclass.",
+            "remarks": "Deadlock\u0027s NPCs take their stats from VData, so a class name without one (\u0060npc_trooper_neutral\u0060) returns null: such an NPC crashes the server when it spawns. For lane troopers use {@cref CNPC_Trooper.Create}, which also gives them a lane.",
+            "params": {
+              "designerName": "The subclass name.",
+              "position": "Where the NPC appears.",
+              "team": "The team number. 0 leaves the NPC\u0027s default.",
+              "angles": "The way it faces (pitch, yaw, roll). Null faces along \u002BX."
+            },
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
           "kind": "property",
           "name": "State",
           "signature": "public NpcState State { get; }",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 28,
+          "line": 69,
           "doc": {
             "summary": "The NPC\u0027s current AI state.",
             "params": {},
@@ -903,7 +931,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 31,
+          "line": 72,
           "doc": {
             "summary": "The state the AI is moving towards. It becomes {@cref State} on the NPC\u0027s next think.",
             "params": {},
@@ -919,7 +947,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 37,
+          "line": 78,
           "doc": {
             "summary": "True while the NPC is switched off ({@cref NpcState.Inert}). The game keeps a pool of hidden, inert troopers and brings them back as new spawns, so skip these when giving orders.",
             "params": {},
@@ -935,7 +963,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 43,
+          "line": 84,
           "doc": {
             "summary": "Name of the schedule the NPC is running, such as \u0060SCHED_TROOPER_RUN_DOWN_LANE\u0060 or \u0060SCHED_FORCED_GO\u0060, or null between schedules.",
             "params": {},
@@ -951,7 +979,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 52,
+          "line": 93,
           "doc": {
             "summary": "The entity the NPC is currently fighting, or null.",
             "params": {},
@@ -972,7 +1000,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 72,
+          "line": 113,
           "doc": {
             "summary": "Sends the NPC to \u0060goal\u0060, the same order as the \u0060npc_go\u0060 console command, but with no cheats or NPC selection needed.",
             "remarks": "The move can\u0027t be interrupted: the NPC ignores enemies and damage until it arrives or the path fails, unless the \u0060npc_go_allow_interrupt_by_ai_conditions\u0060 convar is on. It then goes back to its own behaviour, which for a lane trooper means walking back to its lane. To keep an NPC following a moving target, call this again every half second or so. The goal doesn\u0027t need to be on the navmesh.",
@@ -996,7 +1024,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 82,
+          "line": 123,
           "doc": {
             "summary": "Drops the NPC\u0027s current movement goal, like \u0060npc_stop_moving\u0060. The AI picks a new schedule on its next think, so a lane trooper sets off down its lane again.",
             "params": {
@@ -1017,7 +1045,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 91,
+          "line": 132,
           "doc": {
             "summary": "Makes \u0060enemy\u0060 the NPC\u0027s enemy, or clears it with null.",
             "remarks": "The AI still chooses its own enemy every time it thinks, so it can replace this one straight away, for example with a closer target. It never keeps an entity on its own team as an enemy.",
@@ -1037,7 +1065,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 103,
+          "line": 144,
           "doc": {
             "summary": "Switches the NPC to the named schedule now, such as \u0060SCHED_IDLE_STAND\u0060, the way the game\u0027s own \u0022set schedule\u0022 task does. Returns false if the NPC refuses it.",
             "remarks": "The schedule runs until it finishes or something interrupts it (a new enemy, damage...), and then the NPC picks its next one as usual; {@cref IDeadworksPlugin.OnNpcSelectSchedule} can steer that choice. A name the NPC\u0027s class has no schedule for runs \u0060SCHED_IDLE_STAND\u0060, and the game logs \u0022No CASE for Schedule Type\u0022.",
@@ -1057,7 +1085,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 113,
+          "line": 154,
           "doc": {
             "summary": "Changes the NPC\u0027s AI state. {@cref NpcState.Idle} also clears the enemy. In some conditions the game turns a request for {@cref NpcState.Idle} into {@cref NpcState.Alert}.",
             "params": {},
@@ -7721,7 +7749,7 @@
       "folder": "Entities",
       "declaration": "public sealed unsafe class CNPC_Trooper : CAI_CitadelNPC",
       "file": "managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs",
-      "line": 13,
+      "line": 15,
       "doc": {
         "summary": "A lane trooper (\u0060npc_trooper\u0060): the creeps that spawn in waves and walk down a lane. Guardians and walkers are separate classes.",
         "remarks": "The game recycles troopers. Before the first wave it spawns hidden ones and keeps them dormant (see {@cref CAI_BaseNPC.IsDormant}), and new spawns reuse them, so a trooper you stored earlier can come back as a different spawn, possibly on another team or lane.",
@@ -7741,7 +7769,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs",
-          "line": 23,
+          "line": 25,
           "doc": {
             "summary": "The lane the trooper walks. 0 means any lane.",
             "params": {},
@@ -7757,10 +7785,40 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs",
-          "line": 26,
+          "line": 28,
           "doc": {
             "summary": "True while the trooper uses its anti-boss weapon, because it\u0027s fighting a guardian or walker.",
             "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "method",
+          "name": "Create",
+          "signature": "public static CNPC_Trooper? Create(Vector3 position, int team, TrooperType type = TrooperType.Normal, Vector3? angles = null, bool snapToGround = true)",
+          "parameters": [
+            "position",
+            "team",
+            "type",
+            "angles",
+            "snapToGround"
+          ],
+          "isStatic": true,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs",
+          "line": 44,
+          "doc": {
+            "summary": "Spawns a trooper the way \u0060citadel_spawn_trooper\u0060 does, with no cheats needed. Returns it, or null if it could not be spawned.",
+            "remarks": "The trooper joins the lane nearest to \u0060position\u0060 and walks it like a wave trooper. A dormant pooled trooper of the same type is reused when one is free, so the returned entity can be one that existed before.",
+            "params": {
+              "position": "Where the trooper appears.",
+              "team": "The team number (2 Amber, 3 Sapphire).",
+              "type": "Which kind of trooper.",
+              "angles": "The way it faces (pitch, yaw, roll). Null faces along \u002BX.",
+              "snapToGround": "Drop it onto the ground below \u0060position\u0060."
+            },
             "typeParams": {},
             "exceptions": [],
             "seeAlso": []
@@ -31181,6 +31239,73 @@
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Trace/TraceResult.cs",
           "line": 10
+        }
+      ]
+    },
+    {
+      "namespace": "DeadworksManaged.Api",
+      "name": "TrooperType",
+      "kind": "enum",
+      "folder": "Enums",
+      "declaration": "public enum TrooperType",
+      "file": "managed/DeadworksManaged.Api/Enums/TrooperType.cs",
+      "line": 4,
+      "doc": {
+        "summary": "A kind of lane trooper, for {@cref CNPC_Trooper.Create}.",
+        "params": {},
+        "typeParams": {},
+        "exceptions": [],
+        "seeAlso": []
+      },
+      "bases": [],
+      "members": [
+        {
+          "kind": "enumValue",
+          "name": "Normal",
+          "signature": "Normal = 1",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/TrooperType.cs",
+          "line": 6,
+          "doc": {
+            "summary": "The ranged trooper (\u0060trooper_normal\u0060).",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "enumValue",
+          "name": "Medic",
+          "signature": "Medic = 2",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/TrooperType.cs",
+          "line": 8,
+          "doc": {
+            "summary": "The trooper that heals other troopers (\u0060trooper_medic\u0060).",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
+        },
+        {
+          "kind": "enumValue",
+          "name": "Melee",
+          "signature": "Melee = 3",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/TrooperType.cs",
+          "line": 10,
+          "doc": {
+            "summary": "The melee trooper (\u0060trooper_melee\u0060).",
+            "params": {},
+            "typeParams": {},
+            "exceptions": [],
+            "seeAlso": []
+          }
         }
       ]
     },

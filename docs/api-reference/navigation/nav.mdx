@@ -16,7 +16,7 @@ public static class Nav
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Nav.cs#L184](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L184)
+**Source:** [Nav.cs#L184](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L184)
 
 ## Notes
 
@@ -34,7 +34,7 @@ The most waypoints a path can have.
 public const int MaxPathPoints = 256;
 ```
 
-**Source:** [Nav.cs#L188](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L188)
+**Source:** [Nav.cs#L188](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L188)
 
 ## Methods
 
@@ -58,7 +58,7 @@ public static Vector3? GetNearestPoint(Vector3 position, CBaseEntity walker, flo
 **Notes**
 Use it before [`CAI_BaseNPC.MoveTo`](/api-reference/entities/cai_basenpc#moveto) or `FindPath` when a point might not be walkable, for example one offset from a player, which can land inside a wall or off a ledge. A query costs a few microseconds.
 
-**Source:** [Nav.cs#L215](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L215), [Nav.cs#L227](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L227)
+**Source:** [Nav.cs#L215](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L215), [Nav.cs#L227](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L227)
 
 ### Nav.GetArea() {#getarea}
 
@@ -70,7 +70,7 @@ The nav area nearest to `position`: what it allows (jumping, crouch height...), 
 public static NavArea? GetArea(Vector3 position, float maxDistance = 200f, int hull = 0)
 ```
 
-**Source:** [Nav.cs#L234](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L234)
+**Source:** [Nav.cs#L234](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L234)
 
 ### Nav.GetGroundHeight() {#getgroundheight}
 
@@ -85,7 +85,7 @@ public static float? GetGroundHeight(Vector3 position, float maxDistance = 1000f
 **Notes**
 "Nearest" is measured in 3D, so pass a position close to the floor you mean: under a bridge, a point at bridge height gives the bridge.
 
-**Source:** [Nav.cs#L251](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L251)
+**Source:** [Nav.cs#L251](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L251)
 
 ### Nav.Raycast() {#raycast}
 
@@ -107,7 +107,7 @@ public static bool Raycast(Vector3 start, Vector3 end, out Vector3 stoppedAt, in
 **Notes**
 It follows the mesh, not the air above it, and steps or drops of more than 20 units stop it; it does not see nav blockers. A start more than 200 units from the navmesh fails. Cheaper than `FindPath`, so it is the way to check whether a path is needed at all.
 
-**Source:** [Nav.cs#L272](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L272)
+**Source:** [Nav.cs#L272](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L272)
 
 ### Nav.GetRandomPoint() {#getrandompoint}
 
@@ -122,7 +122,7 @@ public static Vector3? GetRandomPoint(Vector3 origin, float minDistance, float m
 **Notes**
 The search floods the navmesh out to `maxDistance`, so its cost grows with it; values above 6000 are treated as 6000.
 
-**Source:** [Nav.cs#L291](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L291)
+**Source:** [Nav.cs#L291](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L291)
 
 ### Nav.FindPath() {#findpath}
 
@@ -150,7 +150,7 @@ A query takes about a millisecond for a path across half the map and about three
 
 The path uses the default path cost for the hull, so it ignores things only a particular NPC cares about, such as a trooper's lane. Use it to steer something yourself or to measure walking distance; to move an NPC or a bot, [`CAI_BaseNPC.MoveTo`](/api-reference/entities/cai_basenpc#moveto) already paths for it.
 
-**Source:** [Nav.cs#L331](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L331), [Nav.cs#L356](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L356)
+**Source:** [Nav.cs#L331](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L331), [Nav.cs#L356](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L356)
 
 ### Nav.CreateBlocker() {#createblocker}
 
@@ -172,7 +172,7 @@ public static CBaseEntity? CreateBlocker(Vector3 center, Vector3 halfExtents, Ve
 **Notes**
 The navmesh updates a moment after the spawn, not within the same call.
 
-**Source:** [Nav.cs#L371](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L371)
+**Source:** [Nav.cs#L371](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L371)
 
 ### Nav.GetHull() {#gethull}
 
@@ -184,4 +184,4 @@ The navmesh hull an NPC or hero paths with (`m_nNavHullIdx`), or 0 for other ent
 public static int GetHull(CBaseEntity entity)
 ```
 
-**Source:** [Nav.cs#L389](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Nav.cs#L389)
+**Source:** [Nav.cs#L389](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Nav.cs#L389)

@@ -17,7 +17,7 @@ public sealed class CNPC_Trooper : CAI_CitadelNPC
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`CAI_CitadelNPC`](/api-reference/entities/cai_citadelnpc)  
-**Source:** [Entities/CNPC_Trooper.cs#L13](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L13)
+**Source:** [Entities/CNPC_Trooper.cs#L15](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L15)
 
 ## Notes
 
@@ -35,7 +35,7 @@ The lane the trooper walks. 0 means any lane.
 public int Lane { get; }
 ```
 
-**Source:** [Entities/CNPC_Trooper.cs#L23](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L23)
+**Source:** [Entities/CNPC_Trooper.cs#L25](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L25)
 
 ### CNPC_Trooper.UsingBossWeapon {#usingbossweapon}
 
@@ -47,4 +47,29 @@ True while the trooper uses its anti-boss weapon, because it's fighting a guardi
 public bool UsingBossWeapon { get; }
 ```
 
-**Source:** [Entities/CNPC_Trooper.cs#L26](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L26)
+**Source:** [Entities/CNPC_Trooper.cs#L28](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L28)
+
+## Methods
+
+### CNPC_Trooper.Create() {#create}
+
+Spawns a trooper the way `citadel_spawn_trooper` does, with no cheats needed. Returns it, or null if it could not be spawned.
+
+**Signature**
+
+```csharp
+public static CNPC_Trooper? Create(Vector3 position, int team, TrooperType type = TrooperType.Normal, Vector3? angles = null, bool snapToGround = true)
+```
+
+**Parameters**
+
+- `position`: Where the trooper appears.
+- `team`: The team number (2 Amber, 3 Sapphire).
+- `type`: Which kind of trooper.
+- `angles`: The way it faces (pitch, yaw, roll). Null faces along +X.
+- `snapToGround`: Drop it onto the ground below `position`.
+
+**Notes**
+The trooper joins the lane nearest to `position` and walks it like a wave trooper. A dormant pooled trooper of the same type is reused when one is free, so the returned entity can be one that existed before.
+
+**Source:** [Entities/CNPC_Trooper.cs#L44](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs#L44)

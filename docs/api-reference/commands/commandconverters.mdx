@@ -16,7 +16,7 @@ public static class CommandConverters
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Commands/CommandConverters.cs#L13](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/CommandConverters.cs#L13)
+**Source:** [Commands/CommandConverters.cs#L13](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Commands/CommandConverters.cs#L13)
 
 ## Methods
 
@@ -34,7 +34,7 @@ public static void Register<T>(Func<string, T> parser)
 
 - `ArgumentException`: Deadworks parses `T` itself: numbers, `bool`, `string`, enums, [`Caller`](/api-reference/commands/caller), [`Target`](/api-reference/commands/target) and [`CCitadelPlayerController`](/api-reference/entities/ccitadelplayercontroller). Take a `string` parameter and parse it in the command instead.
 
-**Source:** [Commands/CommandConverters.cs#L25](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/CommandConverters.cs#L25)
+**Source:** [Commands/CommandConverters.cs#L25](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Commands/CommandConverters.cs#L25)
 
 ### CommandConverters.Unregister() {#unregister}
 
@@ -46,4 +46,4 @@ Removes the parser for `T`. Returns false if there wasn't one.
 public static bool Unregister<T>()
 ```
 
-**Source:** [Commands/CommandConverters.cs#L38](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Commands/CommandConverters.cs#L38)
+**Source:** [Commands/CommandConverters.cs#L38](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Commands/CommandConverters.cs#L38)

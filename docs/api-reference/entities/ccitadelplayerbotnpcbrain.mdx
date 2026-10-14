@@ -17,7 +17,7 @@ public sealed class CCitadelPlayerBotNPCBrain : CAI_CitadelNPC
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`CAI_CitadelNPC`](/api-reference/entities/cai_citadelnpc)  
-**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L26](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L26)
+**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L26](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L26)
 
 ## Notes
 
@@ -37,7 +37,7 @@ The hero this brain drives.
 public CCitadelPlayerPawn? Pawn { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L40](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L40)
+**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L40](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L40)
 
 ## Methods
 
@@ -59,4 +59,4 @@ public bool ApplyMovement(CCitadelUserCmdPB usercmd, Vector3? lookAt = null)
 **Notes**
 Give the brain somewhere to go first with [`CAI_BaseNPC.MoveTo`](/api-reference/entities/cai_basenpc#moveto); once it arrives this returns false again. The bot runs towards each waypoint. Don't call it while [`Bots.AiEnabled`](/api-reference/navigation/bots#aienabled) is on: the brain already sends its own input then.
 
-**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L63](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L63)
+**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L63](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L63)

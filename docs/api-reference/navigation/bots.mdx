@@ -16,7 +16,7 @@ public static class Bots
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Bots.cs#L13](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Bots.cs#L13)
+**Source:** [Bots.cs#L13](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Bots.cs#L13)
 
 ## Notes
 
@@ -37,7 +37,7 @@ public static bool AiEnabled { get; }
 **Notes**
 This is the game rules' "bot match" flag, the same thing the `citadel_solo_bot_match` convar turns on, without touching a replicated convar.
 
-**Source:** [Bots.cs#L118](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Bots.cs#L118)
+**Source:** [Bots.cs#L118](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Bots.cs#L118)
 
 ### Bots.Brains {#brains}
 
@@ -49,7 +49,7 @@ Every bot hero's brain on the map.
 public static IEnumerable<CCitadelPlayerBotNPCBrain> Brains { get; }
 ```
 
-**Source:** [Bots.cs#L138](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Bots.cs#L138)
+**Source:** [Bots.cs#L138](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Bots.cs#L138)
 
 ## Methods
 
@@ -76,7 +76,7 @@ The bot is a fake client named `BotN`. It joins `team` at `position`; the hero f
 
 Whether it then plays on its own depends on `AiEnabled`, off by default on a community server.
 
-**Source:** [Bots.cs#L37](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Bots.cs#L37)
+**Source:** [Bots.cs#L37](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Bots.cs#L37)
 
 ### Bots.SetMoveInput() {#setmoveinput}
 
@@ -96,7 +96,7 @@ public static void SetMoveInput(CCitadelUserCmdPB usercmd, CCitadelPlayerPawn pa
 - `lookAt`: A point to keep looking at while moving (it strafes or backpedals). Null looks where it is going.
 - `jump`: Press jump this command, for example when [`NavPathFollower.ShouldJump`](/api-reference/navigation/navpathfollower#shouldjump).
 
-**Source:** [Bots.cs#L72](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Bots.cs#L72)
+**Source:** [Bots.cs#L72](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Bots.cs#L72)
 
 ### Bots.SetAiEnabled() {#setaienabled}
 
@@ -108,4 +108,4 @@ Turns `AiEnabled` on or off for every bot. Returns false when there are no game 
 public static bool SetAiEnabled(bool enabled)
 ```
 
-**Source:** [Bots.cs#L129](https://github.com/Deadworks-net/deadworks/blob/22d1dd11/managed/DeadworksManaged.Api/Bots.cs#L129)
+**Source:** [Bots.cs#L129](https://github.com/Deadworks-net/deadworks/blob/efd6ab44/managed/DeadworksManaged.Api/Bots.cs#L129)

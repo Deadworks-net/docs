@@ -20,6 +20,29 @@ var troopers = Entities.ByClass<CNPC_Trooper>()
 
 The game keeps a pool of hidden troopers to reuse as new spawns. `IsDormant` is `true` for those. Skip them when giving orders.
 
+## Spawn an NPC
+
+`CNPC_Trooper.Create` spawns a lane trooper, the way `citadel_spawn_trooper` does:
+
+```csharp
+var trooper = CNPC_Trooper.Create(position, team: 3, TrooperType.Melee);
+```
+
+The trooper drops onto the ground, joins the lane nearest to it and walks that lane. The game reuses a hidden pooled trooper when one is free, so the entity can be one that existed before.
+
+`CAI_BaseNPC.Create` spawns any other NPC by its VData subclass name:
+
+```csharp
+var creep = CAI_BaseNPC.Create("neutral_trooper_strong", position);
+var guardian = CAI_BaseNPC.Create("npc_boss_tier1", position, team: 3);
+```
+
+It returns null for a name that isn't an NPC subclass, such as the class name `npc_trooper_neutral`.
+
+:::warning
+A trooper placed near the enemy base dies within seconds. Spawn it on its own side of the map.
+:::
+
 ## Send an NPC somewhere
 
 `MoveTo` sends the NPC to a point with the game's own pathfinding, like the `npc_go` console command:
