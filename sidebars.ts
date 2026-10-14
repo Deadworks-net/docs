@@ -74,6 +74,9 @@ const sidebars: SidebarsConfig = {
         'features/zones',
         // Advanced
         'features/tracing',
+        'features/npcs',
+        'features/navigation',
+        'features/bots',
         'features/entity-io',
         'features/networking',
         'features/ui',
