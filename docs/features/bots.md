@@ -7,38 +7,34 @@ sidebar_label: "Bots"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-A bot is a hero played by the game's AI instead of a player. Each bot hero has a brain, a hidden [NPC](npcs) that plans what it does. [`Bots`](/api-reference/navigation/bots) adds bots, turns their AI on and off and fills in their input.
+A bot is a hero played by the game's AI. Each bot hero has a brain, a hidden [NPC](npcs) that plans its actions. [`Bots`](/api-reference/navigation/bots) adds bots, toggles their AI and fills in their input.
 
-## Add a bot
+## Adding a bot
 
 ```csharp
 var spawn = Nav.GetNearestPoint(position) ?? position;
 CCitadelPlayerPawn? bot = Bots.Add(Heroes.Inferno, team: 2, spawn, BotDifficulty.Hard);
 ```
 
-The bot joins as a player named `BotN`, on the team, at the position. Pass `null` as the hero for a random one. The game also assigns a lane, as it does for practice bots. Pass `assignLane: false` to skip that.
+The bot joins as a player named `BotN`. A `null` hero picks a random one. The game assigns a lane as it does for practice bots; pass `assignLane: false` to skip this. The hero finishes loading a moment after `Add` returns, so wait before reading its abilities.
 
-`Add` returns null when bots can't play the hero, the server is full or no map is loaded.
+`Add` returns null if bots cannot play the hero, the server is full or no map is loaded. To remove a bot, kick it with [`Server.Kick`](/api-reference/plugin/server#kick).
 
 :::warning
-A bot placed in the enemy base dies within seconds. Spawn it on its own side of the map.
+A bot placed in the enemy base dies within seconds.
 :::
 
-The hero finishes loading a moment after `Add` returns. Wait before reading its abilities.
+## Bot AI
 
-To remove a bot, kick its player slot with [`Server.Kick`](/api-reference/plugin/server#kick).
-
-## Turn the bot AI on
-
-On a server without a matchmaking lobby, bots stand still: the game sends them blank input and ignores their brains. Turn their AI on to make them play:
+Without a matchmaking lobby, bots stand still: the game sends them blank input. Turn the AI on to make them play:
 
 ```csharp
 Bots.SetAiEnabled(true);
 ```
 
-Bots then take ziplines, push their lanes and fight. This is the same switch as the `citadel_solo_bot_match` cvar. `Bots.AiEnabled` is its current value.
+Bots then push lanes, take ziplines and fight. This is the `citadel_solo_bot_match` cvar; `Bots.AiEnabled` reads it.
 
-## Choose a bot's lane
+## Lanes and difficulty
 
 ```csharp
 bot.SetBotLane(LaneColor.Blue);
@@ -46,22 +42,15 @@ bot.SetBotLane(LaneColor.Blue);
 
 `BotLane` is the lane the bot follows. `BotDifficulty` is the difficulty it was created with.
 
-## Send a bot somewhere
+## Moving a bot
 
-The brain is a [`CCitadelPlayerBotNPCBrain`](/api-reference/entities/ccitadelplayerbotnpcbrain). Give it the same orders as any NPC:
+The brain is a [`CCitadelPlayerBotNPCBrain`](/api-reference/entities/ccitadelplayerbotnpcbrain) and takes the same orders as any NPC:
 
 ```csharp
 bot.BotBrain?.MoveTo(goal);
 ```
 
-How the hero gets there depends on the AI:
-
-| AI | Result |
-|---|---|
-| On | Heads for the goal, but the brain often drops the order for its own plans, such as taking a zipline. |
-| Off | Nothing moves until you apply the brain's movement to the bot's input, as below. |
-
-With the AI off, call `ApplyMovement` on each of the bot's usercmds. The bot then runs along the brain's path:
+With the AI on, the brain often drops the order for its own plans, such as taking a zipline. With the AI off, nothing moves until the brain's movement is applied to the bot's usercmds:
 
 ```csharp
 public override void OnProcessUsercmds(ProcessUsercmdsEvent e)
@@ -75,11 +64,11 @@ public override void OnProcessUsercmds(ProcessUsercmdsEvent e)
 }
 ```
 
-It stops about `50` units from the goal. Pass `lookAt` to keep the bot aiming at a point while it moves.
+The bot stops about `50` units from the goal. `lookAt` keeps it aiming at a point while it moves.
 
-## Steer a bot yourself
+## Steering a bot
 
-With the AI off, a bot does exactly what its usercmds say. `Bots.SetMoveInput` fills one in to move the bot towards a point. Together with a [path follower](navigation#follow-a-path), it walks a bot along any path:
+With the AI off, a bot does exactly what its usercmds say. `Bots.SetMoveInput` fills one in to move the bot towards a point. With a [path follower](navigation#following-a-path) it walks any path:
 
 ```csharp
 NavPathFollower? follower; // Set from Nav.FindPath when the bot gets a goal
@@ -106,6 +95,6 @@ public override void OnProcessUsercmds(ProcessUsercmdsEvent e)
 
 ## See also
 
-- [NPCs](npcs): orders and schedules the brain shares with every NPC.
-- [Navigation](navigation): paths to give a bot.
+- [NPCs](npcs)
+- [Navigation](navigation)
 - [`Bots`](/api-reference/navigation/bots), [`CCitadelPlayerBotNPCBrain`](/api-reference/entities/ccitadelplayerbotnpcbrain)

@@ -16,7 +16,7 @@ public static class Permissions
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Permissions/Permissions.cs#L8](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L8)
+**Source:** [Permissions/Permissions.cs#L8](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L8)
 
 ## Methods
 
@@ -31,7 +31,7 @@ public static bool Has(ulong steamId64, string permission)
 public static bool Has(CCitadelPlayerController player, string permission)
 ```
 
-**Source:** [Permissions/Permissions.cs#L15](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L15), [Permissions/Permissions.cs#L21](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L21)
+**Source:** [Permissions/Permissions.cs#L15](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L15), [Permissions/Permissions.cs#L21](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L21)
 
 ### Permissions.Explain() {#explain}
 
@@ -43,7 +43,7 @@ Which grant decided `Has`. This is what `dw_perm_check` prints.
 public static PermissionExplanation Explain(ulong steamId64, string permission)
 ```
 
-**Source:** [Permissions/Permissions.cs#L25](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L25)
+**Source:** [Permissions/Permissions.cs#L25](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L25)
 
 ### Permissions.CanTarget() {#cantarget}
 
@@ -56,7 +56,7 @@ public static bool CanTarget(ulong callerSteamId64, ulong targetSteamId64)
 public static bool CanTarget(CCitadelPlayerController caller, CCitadelPlayerController target)
 ```
 
-**Source:** [Permissions/Permissions.cs#L31](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L31), [Permissions/Permissions.cs#L44](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L44)
+**Source:** [Permissions/Permissions.cs#L31](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L31), [Permissions/Permissions.cs#L44](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L44)
 
 ### Permissions.IsLoaded() {#isloaded}
 
@@ -68,7 +68,7 @@ Whether the store's answer for this SteamID has arrived: its entry, or that it h
 public static bool IsLoaded(ulong steamId64)
 ```
 
-**Source:** [Permissions/Permissions.cs#L38](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L38)
+**Source:** [Permissions/Permissions.cs#L38](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L38)
 
 ### Permissions.GetImmunity() {#getimmunity}
 
@@ -80,7 +80,7 @@ The player's immunity: the highest of their roles', or their own if set. Taken f
 public static int GetImmunity(ulong steamId64)
 ```
 
-**Source:** [Permissions/Permissions.cs#L51](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L51)
+**Source:** [Permissions/Permissions.cs#L51](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L51)
 
 ### Permissions.GetRoles() {#getroles}
 
@@ -92,7 +92,7 @@ Roles assigned to the player, not counting `default` or inherited roles. Like `H
 public static IReadOnlyList<string> GetRoles(ulong steamId64)
 ```
 
-**Source:** [Permissions/Permissions.cs#L57](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L57)
+**Source:** [Permissions/Permissions.cs#L57](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L57)
 
 ### Permissions.GetSteamId64() {#getsteamid64}
 
@@ -104,7 +104,7 @@ The SteamID64 the player in `slot` connected with, or 0 for an empty slot or a b
 public static ulong GetSteamId64(int slot)
 ```
 
-**Source:** [Permissions/Permissions.cs#L63](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L63)
+**Source:** [Permissions/Permissions.cs#L63](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L63)
 
 ### Permissions.RegisterStore() {#registerstore}
 
@@ -116,4 +116,4 @@ Offers a store for roles and players. It becomes active when `permissions.store`
 public static void RegisterStore(IDeadworksPlugin owner, string name, IPermissionStore store)
 ```
 
-**Source:** [Permissions/Permissions.cs#L69](https://github.com/Deadworks-net/deadworks/blob/f62cc7cc/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L69)
+**Source:** [Permissions/Permissions.cs#L69](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Permissions/Permissions.cs#L69)
