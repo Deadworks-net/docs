@@ -99,6 +99,7 @@ Minions are removed with the hero's pawn, for example on a hero swap. They survi
 
 ## See also
 
+- [NPC demo plugin](https://github.com/Deadworks-net/deadworks/tree/main/examples/plugins/NpcDemoPlugin): chat commands that try the NPC, navigation and bot API in game.
 - [Navigation](navigation)
 - [Bots](bots)
 - [`CAI_BaseNPC`](/api-reference/entities/cai_basenpc), [`CAI_CitadelNPC`](/api-reference/entities/cai_citadelnpc), [`NpcSelectScheduleEvent`](/api-reference/events/npcselectscheduleevent)
