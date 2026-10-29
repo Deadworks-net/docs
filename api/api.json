@@ -1,5 +1,5 @@
 {
-  "commit": "7da5cd7f",
+  "commit": "bca3f615",
   "types": [
     {
       "namespace": "DeadworksManaged.Api",
@@ -629,9 +629,9 @@
       "folder": "",
       "declaration": "public enum BotDifficulty",
       "file": "managed/DeadworksManaged.Api/Bots.cs",
-      "line": 126,
+      "line": 124,
       "doc": {
-        "summary": "How well a bot hero plays (\u0060scripts/bots/bot_difficulty.vdata\u0060).",
+        "summary": "Bot skill level, from \u0060scripts/bots/bot_difficulty.vdata\u0060.",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -646,9 +646,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Bots.cs",
-          "line": 128,
+          "line": 126,
           "doc": {
-            "summary": "The \u0060easy\u0060 entry in bot_difficulty.vdata.",
+            "summary": "The \u0060easy\u0060 entry.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -662,7 +662,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Bots.cs",
-          "line": 130,
+          "line": 128,
           "doc": {
             "summary": "The \u0060medium\u0060 entry.",
             "params": {},
@@ -678,7 +678,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Bots.cs",
-          "line": 132,
+          "line": 130,
           "doc": {
             "summary": "The \u0060hard\u0060 entry.",
             "params": {},
@@ -696,10 +696,10 @@
       "folder": "",
       "declaration": "public static unsafe class Bots",
       "file": "managed/DeadworksManaged.Api/Bots.cs",
-      "line": 9,
+      "line": 7,
       "doc": {
-        "summary": "Bot heroes: fake clients with a hero and a brain ({@cref CCitadelPlayerBotNPCBrain}).",
-        "remarks": "A fake client from {@cref Server.CreateFakeClient} also gets a brain, but no hero until a plugin gives it one.",
+        "summary": "Adds and controls bot heroes: fake clients with a hero and a {@cref CCitadelPlayerBotNPCBrain}.",
+        "remarks": "A fake client from {@cref Server.CreateFakeClient} also gets a brain, but no hero.",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -721,16 +721,16 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Bots.cs",
-          "line": 24,
+          "line": 22,
           "doc": {
-            "summary": "Adds a bot hero, as \u0060citadel_create_unit\u0060 does. Returns its pawn, or null if bots cannot play the hero, the server is full or no map is loaded.",
-            "remarks": "The bot is a fake client named \u0060BotN\u0060. Its hero finishes loading a moment later; wait before reading its abilities. Remove it with {@cref Server.Kick}. It plays on its own only while {@cref AiEnabled} is on.",
+            "summary": "Adds a bot hero, like \u0060citadel_create_unit\u0060. Returns its pawn, or null if bots can\u0027t play the hero, the server is full or no map is loaded.",
+            "remarks": "The bot joins as a fake client named \u0060BotN\u0060. Its hero finishes loading shortly after; wait before reading its abilities. Remove it with {@cref Server.Kick}. It only plays while {@cref AiEnabled} is on.",
             "params": {
-              "hero": "The hero. Null picks a random one.",
+              "hero": "Hero. Null picks a random one.",
               "team": "2 Amber, 3 Sapphire.",
-              "position": "Where the hero appears. Use a point on the navmesh, not in the enemy base.",
+              "position": "Spawn position. Use a navmesh point outside the enemy base.",
               "difficulty": "Null uses \u0060citadel_default_bot_difficulty\u0060.",
-              "assignLane": "Let the game pick a lane, as for practice bots."
+              "assignLane": "Let the game pick a lane."
             },
             "typeParams": {},
             "exceptions": [],
@@ -751,14 +751,14 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Bots.cs",
-          "line": 55,
+          "line": 53,
           "doc": {
-            "summary": "Fills in a usercmd to move a bot hero towards \u0060moveTo\u0060: move values, view angles and movement keys. Call from {@cref IDeadworksPlugin.OnProcessUsercmds} while {@cref AiEnabled} is off.",
+            "summary": "Fills in a usercmd that moves a bot hero towards a point. Call from {@cref IDeadworksPlugin.OnProcessUsercmds} while {@cref AiEnabled} is off.",
             "params": {
               "usercmd": "The bot\u0027s usercmd.",
               "pawn": "The bot hero.",
-              "moveTo": "The point to move towards. Height is ignored.",
-              "lookAt": "A point to aim at while moving. Null aims where it is going.",
+              "moveTo": "Point to move towards. Height is ignored.",
+              "lookAt": "Point to aim at while moving. Null faces the direction of travel.",
               "jump": "Press jump."
             },
             "typeParams": {},
@@ -773,9 +773,9 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Bots.cs",
-          "line": 97,
+          "line": 95,
           "doc": {
-            "summary": "Whether bot heroes play on their own. Off by default without a matchmaking lobby, where bots get blank input. Same as \u0060citadel_solo_bot_match\u0060.",
+            "summary": "Whether bot heroes play on their own. Off by default on servers without a matchmaking lobby. Same as \u0060citadel_solo_bot_match\u0060.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -792,9 +792,9 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Bots.cs",
-          "line": 105,
+          "line": 103,
           "doc": {
-            "summary": "Sets {@cref AiEnabled} for every bot. Returns false if no map is loaded.",
+            "summary": "Turns the bot AI on or off for every bot. Returns false if no map is loaded.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -808,9 +808,9 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Bots.cs",
-          "line": 114,
+          "line": 112,
           "doc": {
-            "summary": "Every bot hero\u0027s brain on the map.",
+            "summary": "Every bot brain on the map.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -866,9 +866,9 @@
       "folder": "Entities",
       "declaration": "public unsafe class CAI_BaseNPC : CBaseEntity",
       "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-      "line": 14,
+      "line": 13,
       "doc": {
-        "summary": "Base class of every AI-controlled NPC: lane troopers, neutral creeps, the mid boss, guardians, walkers, the Patron, hero summons and bot brains.",
+        "summary": "Base class of every NPC: troopers, neutral creeps, bosses, the Patron, hero summons and bot brains.",
         "remarks": "Hero pawns are not NPCs, even a bot\u0027s. A bot\u0027s AI is its {@cref CCitadelPlayerBotNPCBrain}.",
         "params": {},
         "typeParams": {},
@@ -892,14 +892,14 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 37,
+          "line": 36,
           "doc": {
-            "summary": "Creates and spawns an NPC by its VData subclass name, such as \u0060neutral_trooper_strong\u0060 or \u0060npc_boss_tier1\u0060. Returns null if the name is not an NPC subclass.",
-            "remarks": "A class name such as \u0060npc_trooper_neutral\u0060 returns null: an NPC without VData crashes the server. For lane troopers use {@cref CNPC_Trooper.Create}, which also assigns a lane.",
+            "summary": "Spawns an NPC by VData subclass name, such as \u0060neutral_trooper_strong\u0060 or \u0060npc_boss_tier1\u0060. Returns null if the name is not an NPC subclass.",
+            "remarks": "Class names such as \u0060npc_trooper_neutral\u0060 return null. For lane troopers use {@cref CNPC_Trooper.Create}, which also assigns a lane.",
             "params": {
-              "designerName": "The subclass name. \u0060SubclassNames\u0060 in DeadworksManaged.Game lists them.",
-              "position": "Where the NPC appears.",
-              "team": "0 keeps the NPC\u0027s default team.",
+              "designerName": "Subclass name. \u0060SubclassNames\u0060 in DeadworksManaged.Game lists them.",
+              "position": "Spawn position.",
+              "team": "Team. 0 keeps the NPC\u0027s default.",
               "angles": "Pitch, yaw, roll. Null faces \u002BX."
             },
             "typeParams": {},
@@ -914,9 +914,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 66,
+          "line": 65,
           "doc": {
-            "summary": "The NPC\u0027s current AI state.",
+            "summary": "Current AI state.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -930,9 +930,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 69,
+          "line": 68,
           "doc": {
-            "summary": "The state the AI is moving towards. It becomes {@cref State} on the NPC\u0027s next think.",
+            "summary": "AI state the NPC switches to on its next think.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -946,9 +946,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 75,
+          "line": 71,
           "doc": {
-            "summary": "True while the NPC is {@cref NpcState.Inert}, such as a hidden trooper the game keeps for reuse. Skip these when giving orders.",
+            "summary": "True for a hidden trooper the game keeps for reuse ({@cref NpcState.Inert}). Skip these.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -962,9 +962,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 78,
+          "line": 74,
           "doc": {
-            "summary": "The running schedule, such as \u0060SCHED_TROOPER_RUN_DOWN_LANE\u0060, or null between schedules.",
+            "summary": "Running schedule, such as \u0060SCHED_TROOPER_RUN_DOWN_LANE\u0060. Null between schedules.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -978,9 +978,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 87,
+          "line": 83,
           "doc": {
-            "summary": "The entity the NPC is currently fighting, or null.",
+            "summary": "Entity the NPC is fighting, or null.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -999,14 +999,14 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 106,
+          "line": 100,
           "doc": {
-            "summary": "Sends the NPC to \u0060goal\u0060, as \u0060npc_go\u0060 does, without cheats.",
-            "remarks": "The NPC ignores enemies and damage until it arrives or the path fails, unless \u0060npc_go_allow_interrupt_by_ai_conditions\u0060 is on. It then resumes its own behaviour. Most orders more than 3000 units of path away fail, and nearer ones can fail partway: the NPC stops and runs \u0060SCHED_FAIL\u0060. Order a long trip in legs along {@cref Nav.FindPath}, and order again after a failure. To follow a moving target, call this again every half second. The goal need not be on the navmesh.",
+            "summary": "Sends the NPC to a point, like \u0060npc_go\u0060.",
+            "remarks": "The NPC ignores enemies and damage until it arrives or the path fails, then resumes its own AI. Orders more than 3000 units of path away mostly fail; nearer ones can stop partway in \u0060SCHED_FAIL\u0060. Send long trips in legs along {@cref Nav.FindPath} and re-order after a failure. To follow a moving target, call again every 0.5 s.",
             "params": {
-              "goal": "Where to go.",
+              "goal": "Destination. Need not be on the navmesh.",
               "run": "Run instead of walking.",
-              "tolerance": "How close counts as arrived. 0 matches \u0060npc_go\u0060."
+              "tolerance": "Arrival distance. 0 uses the \u0060npc_go\u0060 default."
             },
             "typeParams": {},
             "exceptions": [],
@@ -1023,9 +1023,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 113,
+          "line": 107,
           "doc": {
-            "summary": "Drops the current movement goal, as \u0060npc_stop_moving\u0060 does. The AI picks a new schedule on its next think.",
+            "summary": "Drops the current move order, like \u0060npc_stop_moving\u0060.",
             "params": {
               "instant": "Stop on the spot instead of slowing down."
             },
@@ -1044,10 +1044,10 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 120,
+          "line": 111,
           "doc": {
-            "summary": "Sets the NPC\u0027s enemy, or clears it with null.",
-            "remarks": "The AI re-chooses its enemy every think and may replace this one, for example with a closer target. It never keeps an enemy on its own team.",
+            "summary": "Sets the NPC\u0027s enemy. Null clears it.",
+            "remarks": "The AI re-picks its enemy every think and may switch to a closer one. An enemy on the NPC\u0027s own team is dropped.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -1064,10 +1064,10 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 128,
+          "line": 119,
           "doc": {
-            "summary": "Starts the named schedule, such as \u0060SCHED_IDLE_STAND\u0060. Returns false if the NPC refuses it.",
-            "remarks": "The schedule runs until it finishes or is interrupted, then the NPC picks its next one; {@cref IDeadworksPlugin.OnNpcSelectSchedule} can replace that choice. A schedule the NPC\u0027s class does not have runs \u0060SCHED_IDLE_STAND\u0060 and logs \u0022No CASE for Schedule Type\u0022.",
+            "summary": "Starts a schedule, such as \u0060SCHED_IDLE_STAND\u0060. Returns false if the NPC refuses it.",
+            "remarks": "Runs until it finishes or is interrupted. A schedule the NPC\u0027s class lacks runs \u0060SCHED_IDLE_STAND\u0060 instead and logs \u0022No CASE for Schedule Type\u0022. To replace the NPC\u0027s next pick, use {@cref IDeadworksPlugin.OnNpcSelectSchedule}.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -1084,9 +1084,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 138,
+          "line": 126,
           "doc": {
-            "summary": "Changes the NPC\u0027s AI state. {@cref NpcState.Idle} also clears the enemy, and the game sometimes turns it into {@cref NpcState.Alert}.",
+            "summary": "Sets the AI state. {@cref NpcState.Idle} also clears the enemy; the game may turn it into {@cref NpcState.Alert}.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -1139,7 +1139,7 @@
           "file": "managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs",
           "line": 20,
           "doc": {
-            "summary": "The ability that spawned a summon. Null for map NPCs.",
+            "summary": "Ability that spawned this summon. Null for map NPCs.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -1155,7 +1155,7 @@
           "file": "managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs",
           "line": 29,
           "doc": {
-            "summary": "True for a hero\u0027s summon. See {@cref SetMinion}.",
+            "summary": "True for a hero\u0027s minion. See {@cref SetMinion}.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -1172,9 +1172,10 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs",
-          "line": 35,
+          "line": 33,
           "doc": {
-            "summary": "Makes the NPC a minion, like Necro\u0027s skeletons, or a regular NPC again. A minion\u0027s damage and kills count for its living {@cref Summoner}, it attacks neutral creeps, and enemy abilities treat it as a minion.",
+            "summary": "Makes the NPC a hero\u0027s minion, like Necro\u0027s skeletons, or a normal NPC again.",
+            "remarks": "A minion\u0027s damage and kills count for its living {@cref Summoner}. Minions also attack neutral creeps.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -1188,9 +1189,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs",
-          "line": 41,
+          "line": 39,
           "doc": {
-            "summary": "Who the NPC works for: the entity set with {@cref SetSummoner}, else the owner of {@cref OwningAbility}. Null for map NPCs.",
+            "summary": "Entity the NPC works for: the one set with {@cref SetSummoner}, else the owner of {@cref OwningAbility}. Null for map NPCs.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -1207,9 +1208,10 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs",
-          "line": 53,
+          "line": 48,
           "doc": {
-            "summary": "Sets who the NPC works for, usually a hero pawn, or clears it with null. With {@cref SetMinion}, the hero gets credit for its damage and kills. Minions are removed with the pawn, such as on a hero swap, but survive the hero\u0027s death.",
+            "summary": "Sets the entity the NPC works for, usually a hero pawn. Null clears it.",
+            "remarks": "Minions are removed with the summoner\u0027s pawn, such as on a hero swap. They survive the hero\u0027s death.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -4181,10 +4183,10 @@
       "folder": "Entities",
       "declaration": "public sealed unsafe class CCitadelPlayerBotNPCBrain : CAI_CitadelNPC",
       "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs",
-      "line": 16,
+      "line": 15,
       "doc": {
-        "summary": "The brain of a bot hero (\u0060npc_player_bot_brain\u0060): a hidden NPC that plans the hero\u0027s movement and schedules. Get it from {@cref CCitadelPlayerPawn.BotBrain}.",
-        "remarks": "While {@cref Bots.AiEnabled} is on, the brain drives the hero itself and may drop a {@cref CAI_BaseNPC.MoveTo} order for its own plans, such as a zipline. While it is off, the brain still plans the path; {@cref ApplyMovement} walks the hero along it.",
+        "summary": "AI of a bot hero (\u0060npc_player_bot_brain\u0060), a hidden NPC. Get it from {@cref CCitadelPlayerPawn.BotBrain}.",
+        "remarks": "With {@cref Bots.AiEnabled} on, the brain moves the hero itself and may drop a {@cref CAI_BaseNPC.MoveTo} order for its own plans, such as a zipline. With it off, call {@cref ApplyMovement} to walk the hero along the brain\u0027s path.",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -4201,9 +4203,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs",
-          "line": 30,
+          "line": 29,
           "doc": {
-            "summary": "The hero this brain drives.",
+            "summary": "Hero this brain drives.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -4221,13 +4223,13 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs",
-          "line": 49,
+          "line": 48,
           "doc": {
-            "summary": "Fills in a usercmd to walk the bot along its brain\u0027s path. Returns false, leaving the usercmd alone, if the brain has nowhere to go.",
-            "remarks": "Call from {@cref IDeadworksPlugin.OnProcessUsercmds} on each of the bot\u0027s usercmds while {@cref Bots.AiEnabled} is off, after {@cref CAI_BaseNPC.MoveTo}. The brain starts moving on its next think, so the first usercmd after the order returns false; only a run of false results means the bot has arrived or given up. The bot stops about 50 units from the goal.",
+            "summary": "Fills in a usercmd that walks the bot along its brain\u0027s path. Returns false, leaving the usercmd alone, if the brain has nowhere to go.",
+            "remarks": "Call on each of the bot\u0027s usercmds in {@cref IDeadworksPlugin.OnProcessUsercmds}, with {@cref Bots.AiEnabled} off, after {@cref CAI_BaseNPC.MoveTo}. The first usercmd after \u0060MoveTo\u0060 also returns false: treat only several false results in a row as arrival. The bot stops about 50 units from the goal.",
             "params": {
-              "usercmd": "The usercmd to fill in.",
-              "lookAt": "A point to aim at while moving. Null aims where it is going."
+              "usercmd": "Usercmd to fill in.",
+              "lookAt": "Point to aim at while moving. Null faces the direction of travel."
             },
             "typeParams": {},
             "exceptions": [],
@@ -4568,7 +4570,7 @@
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
           "line": 23,
           "doc": {
-            "summary": "The brain of a bot\u0027s hero, or null if this is not a bot\u0027s.",
+            "summary": "The bot\u0027s brain, or null if this hero isn\u0027t a bot\u0027s.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -4584,7 +4586,7 @@
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
           "line": 31,
           "doc": {
-            "summary": "The lane a bot\u0027s hero follows, or {@cref LaneColor.Invalid} for none.",
+            "summary": "Lane the bot pushes, or {@cref LaneColor.Invalid} for none.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -4601,10 +4603,10 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 40,
+          "line": 37,
           "doc": {
-            "summary": "Sets the lane a bot\u0027s hero pushes while {@cref Bots.AiEnabled} is on. Returns false if this is not a bot\u0027s hero.",
-            "remarks": "{@cref CCitadelPlayerController.AssignedLane} does not always follow; {@cref BotLane} does.",
+            "summary": "Sets the lane the bot pushes while {@cref Bots.AiEnabled} is on. Returns false if this hero isn\u0027t a bot\u0027s.",
+            "remarks": "{@cref CCitadelPlayerController.AssignedLane} may not update; read {@cref BotLane}.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -4618,9 +4620,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 45,
+          "line": 42,
           "doc": {
-            "summary": "The difficulty a bot\u0027s hero was created with, or null if this is not a bot\u0027s.",
+            "summary": "The bot\u0027s difficulty, or null if this hero isn\u0027t a bot\u0027s.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -4634,7 +4636,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 53
+          "line": 50
         },
         {
           "kind": "property",
@@ -4643,7 +4645,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 56
+          "line": 53
         },
         {
           "kind": "property",
@@ -4652,7 +4654,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 58
+          "line": 55
         },
         {
           "kind": "property",
@@ -4661,7 +4663,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 61
+          "line": 58
         },
         {
           "kind": "property",
@@ -4670,7 +4672,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 65,
+          "line": 62,
           "doc": {
             "summary": "Networked eye angles (quantized to 11 bits, ~0.18 precision). Use ViewAngles for raw precision.",
             "params": {},
@@ -4686,7 +4688,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 69,
+          "line": 66,
           "doc": {
             "summary": "Eye position (AbsOrigin \u002B ViewOffset). This is where the camera sits.",
             "params": {},
@@ -4702,7 +4704,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 84,
+          "line": 81,
           "doc": {
             "summary": "Which way the player\u0027s camera is facing. Save this to restore their view later with {@cref TeleportWithView}.",
             "params": {},
@@ -4718,7 +4720,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 87,
+          "line": 84,
           "doc": {
             "summary": "Raw server-side view angles from CUserCmd (v_angle). Full float precision, no quantization.",
             "params": {},
@@ -4734,7 +4736,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 96
+          "line": 93
         },
         {
           "kind": "property",
@@ -4743,7 +4745,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 99
+          "line": 96
         },
         {
           "kind": "method",
@@ -4755,7 +4757,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 102
+          "line": 99
         },
         {
           "kind": "method",
@@ -4768,7 +4770,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 103
+          "line": 100
         },
         {
           "kind": "method",
@@ -4781,7 +4783,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 118,
+          "line": 115,
           "doc": {
             "summary": "Moves this hero to \u0060position\u0060 and turns the player\u0027s camera to face \u0060angles\u0060. The hero arrives standing still instead of keeping their old speed.",
             "example": "Saving a checkpoint and sending the player back to it later:\n\n\u0060\u0060\u0060csharp\nvar savedPos = pawn.Position;\nvar savedView = pawn.CameraAngles;\n// ...\npawn.TeleportWithView(savedPos, savedView);\n\u0060\u0060\u0060",
@@ -4806,7 +4808,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 124,
+          "line": 121,
           "doc": {
             "summary": "Adds or removes currency from this pawn (e.g. gold, ability points). Use negative \u0060amount\u0060 to spend.",
             "params": {},
@@ -4825,7 +4827,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 134,
+          "line": 131,
           "doc": {
             "summary": "Full pawn-level hero reset: clears loadout, removes items, re-adds starting abilities from VData, resets level.",
             "params": {},
@@ -4845,7 +4847,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 148,
+          "line": 145,
           "doc": {
             "summary": "Ensures this pawn is on \u0060hero\u0060 with a fresh ability loadout. Swaps via {@cref CCitadelPlayerController.SelectHero} if currently on a different hero (queues the async GC swap), or calls {@cref ResetHero} if already on that hero (synchronous teardown \u002B re-init). If \u0060onReady\u0060 is supplied it is registered via {@cref OnceHeroInitialized} and runs once the new ability slots are populated server-side - synchronously inside this call for the same-hero path, or later (when \u0060OnHeroLoaded\u0060 lands) for the async path.",
             "params": {},
@@ -4864,7 +4866,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 172,
+          "line": 169,
           "doc": {
             "summary": "Runs \u0060action\u0060 the next time the server populates this pawn\u0027s abilities \u2014 i.e. after {@cref CCitadelPlayerController.SelectHero} settles, after {@cref ResetHero}, on initial spawn, or after the \u0060resethero\u0060 command. Fires exactly once. Multiple registrations are queued and dispatched in order.",
             "remarks": "The action runs synchronously inside the native InitializeHeroOnPawn return path. For the same-hero \u0060ResetHero\u0060 case this means re-entrantly during the C# call.",
@@ -4884,7 +4886,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 202,
+          "line": 199,
           "doc": {
             "summary": "Makes the ability in \u0060slot\u0060 ready to use again straight away, like {@cref CCitadelBaseAbility.ResetCooldown}. Returns false if the slot is empty.",
             "params": {},
@@ -4901,7 +4903,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 214,
+          "line": 211,
           "doc": {
             "summary": "Makes all of this hero\u0027s abilities ready to use again straight away, like {@cref CCitadelBaseAbility.ResetCooldown}. Unlike the Refresher item, this also covers items, innates and weapons, not just the hero\u0027s abilities and ultimate.",
             "params": {},
@@ -4920,7 +4922,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 222,
+          "line": 219,
           "doc": {
             "summary": "Removes an ability from this pawn by internal ability name. Returns true on success.",
             "params": {},
@@ -4939,7 +4941,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 230,
+          "line": 227,
           "doc": {
             "summary": "Removes an ability from this pawn by ability entity. Returns true on success.",
             "params": {},
@@ -4959,7 +4961,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 235,
+          "line": 232,
           "doc": {
             "summary": "Adds an ability to this pawn by internal ability name into the given slot. Returns the new ability entity, or null on failure.",
             "params": {},
@@ -4980,7 +4982,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 255,
+          "line": 252,
           "doc": {
             "summary": "Gives an item to this pawn by internal item name (e.g. \u0022upgrade_sprint_booster\u0022).\n\nItems that have to be imbued (Echo Shard, Mystic Reverb, ...) are granted unattached by this overload and do nothing until imbued - use {@cref AddItem} for those.",
             "returns": "The new item entity, or null on failure.",
@@ -5005,7 +5007,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 268
+          "line": 265
         },
         {
           "kind": "method",
@@ -5020,7 +5022,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 287,
+          "line": 284,
           "doc": {
             "summary": "Gives an imbuable item to this pawn and imbues it into the ability in\r\n - the managed equivalent of giveitem \u0026lt;item\u0026gt; \u0026lt;slot\u0026gt;.\r\n\r\nNothing is granted unless the whole operation can succeed, so a rejected pairing never\r\nleaves the pawn holding an unattached item. Use\r\n when you\r\nneed to know why it failed.\r\n\r\nInternal item name, e.g. \u0022upgrade_echo_shard\u0022.\r\n\r\nAbility to imbue into. The four imbuable slots are \r\nthrough  (indices 0-3).\r\n\r\nShould the enhanced version of the item be given\r\nShould the corrupted version of the item be given. Items without a corrupted version are unaffected.\r\nThe new item entity, or null on failure.",
             "params": {},
@@ -5041,7 +5043,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 294
+          "line": 291
         },
         {
           "kind": "method",
@@ -5057,7 +5059,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 300,
+          "line": 297,
           "doc": {
             "summary": "{@cref AddItem} with a reason on failure. \u0060item\u0060 is non-null only when the result is {@cref ImbueResult.Success}.",
             "params": {},
@@ -5079,7 +5081,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 327
+          "line": 324
         },
         {
           "kind": "method",
@@ -5092,7 +5094,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 335,
+          "line": 332,
           "doc": {
             "summary": "Imbues an item this pawn already owns into the ability in \u0060slot\u0060. Imbuing into an ability the item is already imbued into is a no-op that reports {@cref ImbueResult.Success}.",
             "params": {},
@@ -5112,7 +5114,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 345,
+          "line": 342,
           "doc": {
             "summary": "Imbues an item entity this pawn already owns into the ability in \u0060slot\u0060.",
             "params": {},
@@ -5132,7 +5134,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 361,
+          "line": 358,
           "doc": {
             "summary": "True when \u0060itemName\u0060 can be imbued into the ability this pawn has in \u0060slot\u0060. False for non-imbuable items, empty slots and pairings the game rejects (an ultimate-restricted item aimed at the ultimate, an active item aimed at a passive).",
             "params": {},
@@ -5151,7 +5153,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 372,
+          "line": 369,
           "doc": {
             "summary": "Removes an item from this pawn by name, using the ability removal path. This bypasses sell checks and does not refund gold - it directly removes the item entity from the ability component, slot table, and network state. Returns true on success.",
             "params": {},
@@ -5172,7 +5174,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 377,
+          "line": 374,
           "doc": {
             "summary": "Executes the ability in the given slot on this pawn\u0027s ability component.",
             "params": {},
@@ -5193,7 +5195,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 382,
+          "line": 379,
           "doc": {
             "summary": "Executes an ability by its runtime ability ID on this pawn\u0027s ability component.",
             "params": {},
@@ -5214,7 +5216,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 387,
+          "line": 384,
           "doc": {
             "summary": "Executes a specific ability entity on this pawn\u0027s ability component.",
             "params": {},
@@ -5233,7 +5235,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 392,
+          "line": 389,
           "doc": {
             "summary": "Gets the ability entity in the given slot from this pawn\u0027s ability component.",
             "params": {},
@@ -5253,7 +5255,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 397,
+          "line": 394,
           "doc": {
             "summary": "Activates or deactivates an ability on this pawn (toggle). This is the actual activation path for most abilities.",
             "params": {},
@@ -5270,7 +5272,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 402,
+          "line": 399,
           "doc": {
             "summary": "Current stamina value (m_flCurrentValue on m_ResourceStamina).",
             "params": {},
@@ -5289,7 +5291,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 405,
+          "line": 402,
           "doc": {
             "summary": "Helper to set stamina properly.",
             "params": {},
@@ -5310,7 +5312,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs",
-          "line": 420,
+          "line": 417,
           "doc": {
             "summary": "Sells an item from this pawn by internal item name. This always refunds gold (at normal or full sell price) and will fail for items that cannot be sold. Internal item name (e.g. \u0022upgrade_sprint_booster\u0022). If true, skips partial sell-back tracking (item treated as fully refunded). If true, forces the item to sell at full sell price even if conditions aren\u0027t met. Returns true on success, false if the item was not found or cannot be sold.",
             "params": {},
@@ -7800,8 +7802,8 @@
       "file": "managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs",
       "line": 11,
       "doc": {
-        "summary": "A lane trooper (\u0060npc_trooper\u0060). Guardians and walkers are separate classes.",
-        "remarks": "The game reuses troopers: hidden ones wait {@cref CAI_BaseNPC.IsDormant} and come back as new spawns. A stored trooper can return as a different spawn, on another team or lane.",
+        "summary": "Lane trooper (\u0060npc_trooper\u0060). Guardians and walkers are separate classes.",
+        "remarks": "The game pools troopers: hidden ones are {@cref CAI_BaseNPC.IsDormant} and come back as new spawns, possibly on another team or lane. A stored reference can become a different trooper.",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -7820,7 +7822,7 @@
           "file": "managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs",
           "line": 19,
           "doc": {
-            "summary": "The lane the trooper walks. 0 means any lane.",
+            "summary": "Lane the trooper walks, or 0 for none.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -7836,7 +7838,7 @@
           "file": "managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs",
           "line": 22,
           "doc": {
-            "summary": "True while the trooper uses its anti-boss weapon against a guardian or walker.",
+            "summary": "True while the trooper fires its anti-boss weapon at a guardian or walker.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -7857,16 +7859,16 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CNPC_Trooper.cs",
-          "line": 37,
+          "line": 34,
           "doc": {
-            "summary": "Spawns a trooper, as \u0060citadel_spawn_trooper\u0060 does, without cheats. Returns null if it could not be spawned.",
-            "remarks": "The trooper joins the lane nearest \u0060position\u0060 and walks it. A free dormant trooper of the same type is reused if there is one.",
+            "summary": "Spawns a lane trooper, like \u0060citadel_spawn_trooper\u0060. Returns null on failure.",
+            "remarks": "The trooper joins the lane nearest \u0060position\u0060. A free pooled trooper of the same type is reused.",
             "params": {
-              "position": "Where the trooper appears.",
+              "position": "Spawn position.",
               "team": "2 Amber, 3 Sapphire.",
-              "type": "The kind of trooper.",
+              "type": "Trooper type.",
               "angles": "Pitch, yaw, roll. Null faces \u002BX.",
-              "snapToGround": "Drop it onto the ground below \u0060position\u0060."
+              "snapToGround": "Drop it to the ground below \u0060position\u0060."
             },
             "typeParams": {},
             "exceptions": [],
@@ -21281,9 +21283,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 135,
+          "line": 133,
           "doc": {
-            "summary": "Called when an NPC picks its next schedule. Set {@cref NpcSelectScheduleEvent.Override} to run another.",
+            "summary": "Called when an NPC picks its next schedule. Set {@cref NpcSelectScheduleEvent.Override} to replace it.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -21300,7 +21302,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 138,
+          "line": 136,
           "doc": {
             "summary": "Called when a player\u0027s usercmds are being processed.",
             "params": {},
@@ -21317,7 +21319,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 141,
+          "line": 139,
           "doc": {
             "summary": "Called after the plugin\u0027s config has been reloaded via \u0060dw_reloadconfig\u0060.",
             "params": {},
@@ -21336,7 +21338,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 147,
+          "line": 145,
           "doc": {
             "summary": "Called when a modifier is about to be applied to an entity. Return Stop to block the modifier from being applied.",
             "params": {},
@@ -21355,7 +21357,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 153,
+          "line": 151,
           "doc": {
             "summary": "Called per-player each tick after the engine builds the default transmit list. Use {@cref CheckTransmitEvent.Hide} to prevent entities from being networked to this player.",
             "params": {},
@@ -21374,7 +21376,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 158,
+          "line": 156,
           "doc": {
             "summary": "Called whenever a pawn\u0027s hero abilities and modifiers have just been (re)populated server-side.",
             "params": {},
@@ -21393,7 +21395,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 164,
+          "line": 162,
           "doc": {
             "summary": "Called after a CCitadelGameRules::ChangeGameState transition completes, whether the engine or a plugin (via {@cref GameRules.ChangeGameState}) started it.",
             "params": {},
@@ -21413,7 +21415,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 172,
+          "line": 170,
           "doc": {
             "summary": "Called before an engine-driven CCitadelGameRules::ChangeGameState transition is allowed to proceed. Return false to veto it. If multiple plugins implement this, any plugin returning false vetoes the transition. Transitions started by a plugin through {@cref GameRules.ChangeGameState} are not vetoable. Default: allow.",
             "params": {},
@@ -21432,7 +21434,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 179,
+          "line": 177,
           "doc": {
             "summary": "Called once per connection when Steam confirms who a player is, usually a few seconds after they connect. Until then they only have the \u0060default\u0060 role. Not called for a player who turns out to be banned: they are kicked instead.",
             "params": {},
@@ -21451,7 +21453,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 186,
+          "line": 184,
           "doc": {
             "summary": "Called after permissions change: a reload (\u0060steamId64\u0060 is null, meaning everyone), a grant or revoke for one player, or Steam validating a player, when their own roles replace \u0060default\u0060. Use it to refresh anything that depends on who can do what, such as admin menus.",
             "params": {},
@@ -21470,7 +21472,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 192,
+          "line": 190,
           "doc": {
             "summary": "Called after a ban, gag or mute is added, by any plugin, or found when penalties are reloaded (added by hand, or by another server sharing the store).",
             "params": {},
@@ -21489,7 +21491,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 199,
+          "line": 197,
           "doc": {
             "summary": "Called after a penalty ends: lifted, replaced by a newer one, or run out. The penalty passed is the ended one. When a reload finds a penalty lifted elsewhere, {@cref Penalty.RemovedUtc} is set, but who lifted it may be unknown.",
             "params": {},
@@ -21508,7 +21510,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/IDeadworksPlugin.cs",
-          "line": 202,
+          "line": 200,
           "doc": {
             "summary": "Called for every action written to the admin log, e.g. to forward it to Discord.",
             "params": {},
@@ -24885,10 +24887,10 @@
       "folder": "",
       "declaration": "public static unsafe class Nav",
       "file": "managed/DeadworksManaged.Api/Nav.cs",
-      "line": 174,
+      "line": 173,
       "doc": {
-        "summary": "Queries on the navmesh, the walkable surface NPCs path over. No NPC is needed.",
-        "remarks": "The navmesh is generated per hull, a body size: an area one hull crosses may not exist for another. Heroes use hull 0, lane troopers hull 1. Out-of-range hulls are treated as hull 0. Without a navmesh every query returns null.",
+        "summary": "Queries the navmesh, the walkable surface NPCs path over. No NPC is needed.",
+        "remarks": "The navmesh is built per hull (body size), so an area one hull can cross may not exist for another. Heroes use hull 0, lane troopers hull 1. Unknown hulls fall back to 0. On a map without a navmesh every query returns null.",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -24903,7 +24905,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Nav.cs",
-          "line": 178,
+          "line": 177,
           "doc": {
             "summary": "The most waypoints a path can have.",
             "params": {},
@@ -24924,13 +24926,13 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Nav.cs",
-          "line": 200,
+          "line": 196,
           "doc": {
-            "summary": "Returns the closest point on the navmesh to \u0060position\u0060, or null if none is in range. NPCs snap their goals the same way.",
+            "summary": "Returns the closest navmesh point to \u0060position\u0060, or null if none is in range.",
             "params": {
-              "position": "The point to snap.",
-              "maxDistance": "How far to search. NPCs use 10000.",
-              "hull": "The navmesh hull to search."
+              "position": "Point to snap.",
+              "maxDistance": "Search radius.",
+              "hull": "Navmesh hull."
             },
             "typeParams": {},
             "exceptions": [],
@@ -24949,7 +24951,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Nav.cs",
-          "line": 209,
+          "line": 205,
           "doc": {
             "summary": "{@cref GetNearestPoint} on \u0060walker\u0060\u0027s hull.",
             "params": {},
@@ -24970,7 +24972,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Nav.cs",
-          "line": 213,
+          "line": 209,
           "doc": {
             "summary": "Returns the nav area nearest \u0060position\u0060, or null if none is in range.",
             "params": {},
@@ -24991,10 +24993,10 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Nav.cs",
-          "line": 227,
+          "line": 220,
           "doc": {
-            "summary": "Returns the navmesh height at \u0060position\u0060\u0027s x and y, on the nearest area, or null if none is in range.",
-            "remarks": "The nearest area is measured in 3D: under a bridge, a point at bridge height gives the bridge.",
+            "summary": "Returns the navmesh height below \u0060position\u0060, or null if no area is in range.",
+            "remarks": "Uses the nearest area in 3D: a point at bridge height gets the bridge, not the ground under it.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25014,15 +25016,15 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Nav.cs",
-          "line": 245,
+          "line": 238,
           "doc": {
-            "summary": "Traces a straight line along the navmesh from \u0060start\u0060 to \u0060end\u0060. Returns true if it stays on the walkable surface.",
-            "remarks": "Steps or drops of more than 20 units stop it. Nav blockers do not. A start more than 200 units from the navmesh fails. Cheaper than {@cref FindPath}.",
+            "summary": "Traces a straight line across the navmesh. Returns true if it reaches \u0060end\u0060 without leaving the walkable surface.",
+            "remarks": "Steps or drops over 20 units stop it; nav blockers don\u0027t. Fails if \u0060start\u0060 is more than 200 units from the navmesh. Cheaper than {@cref FindPath}.",
             "params": {
-              "start": "Where the line starts. Moved onto the navmesh first.",
-              "end": "Where it should reach.",
-              "stoppedAt": "\u0060end\u0060 on the mesh, or the edge the line ran into.",
-              "hull": "The navmesh hull to test."
+              "start": "Start point. Snapped onto the navmesh first.",
+              "end": "End point.",
+              "stoppedAt": "\u0060end\u0060 on the navmesh, or the edge the line ran into.",
+              "hull": "Navmesh hull."
             },
             "typeParams": {},
             "exceptions": [],
@@ -25042,10 +25044,10 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Nav.cs",
-          "line": 260,
+          "line": 253,
           "doc": {
             "summary": "Returns a random point reachable from \u0060origin\u0060, between \u0060minDistance\u0060 and \u0060maxDistance\u0060 away, or null if there is none.",
-            "remarks": "Cost grows with \u0060maxDistance\u0060, which is capped at 6000.",
+            "remarks": "\u0060maxDistance\u0060 is capped at 6000. Larger values cost more.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25066,16 +25068,16 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Nav.cs",
-          "line": 282,
+          "line": 272,
           "doc": {
-            "summary": "Finds a path from \u0060start\u0060 to \u0060goal\u0060 with the game\u0027s pathfinder. Returns null if there is none.",
-            "remarks": "Both ends must be on the navmesh; snap them with {@cref GetNearestPoint}. A path across half the map takes about 1 ms, a failed search of the whole map about 3 ms. The path uses the hull\u0027s default cost, so it ignores NPC-specific rules such as a trooper\u0027s lane.",
+            "summary": "Finds a path with the game\u0027s pathfinder. Returns null if there is none.",
+            "remarks": "Both ends must be on the navmesh; snap them with {@cref GetNearestPoint}. Takes about 1 ms across half the map, 3 ms for a failed search. Uses the hull\u0027s default costs, so it ignores per-NPC rules such as a trooper\u0027s lane.",
             "params": {
-              "start": "Where the path starts.",
-              "goal": "Where it should end.",
-              "hull": "The navmesh hull to path for.",
+              "start": "Start point.",
+              "goal": "Goal point.",
+              "hull": "Navmesh hull.",
               "allowPartial": "Accept a path that stops short of the goal. Compare {@cref NavPath.End} with the goal.",
-              "simplify": "Keep only the corners. Otherwise there is a waypoint per area crossed."
+              "simplify": "Keep only corners. False gives a waypoint per area crossed."
             },
             "typeParams": {},
             "exceptions": [],
@@ -25096,7 +25098,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Nav.cs",
-          "line": 304,
+          "line": 294,
           "doc": {
             "summary": "{@cref FindPath} on \u0060walker\u0060\u0027s hull.",
             "params": {},
@@ -25118,15 +25120,15 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Nav.cs",
-          "line": 317,
+          "line": 307,
           "doc": {
-            "summary": "Blocks a box of the navmesh with a \u0060script_nav_blocker\u0060. NPCs and {@cref FindPath} route around it. Remove the returned entity to unblock. Returns null if it could not be created.",
-            "remarks": "The navmesh updates a moment after the call.",
+            "summary": "Blocks a box of the navmesh with a \u0060script_nav_blocker\u0060. NPCs and {@cref FindPath} route around it. Returns the blocker, or null on failure; remove it to unblock.",
+            "remarks": "Takes effect shortly after the call.",
             "params": {
-              "center": "The middle of the box.",
-              "halfExtents": "Half the box\u0027s size along each axis, before \u0060angles\u0060.",
+              "center": "Box centre.",
+              "halfExtents": "Half the box size on each axis, before \u0060angles\u0060.",
               "angles": "Pitch, yaw, roll. Null is axis-aligned.",
-              "team": "The only team to block, or 0 to block everyone."
+              "team": "Team to block, or 0 for everyone."
             },
             "typeParams": {},
             "exceptions": [],
@@ -25143,7 +25145,7 @@
           "isStatic": true,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Nav.cs",
-          "line": 333,
+          "line": 323,
           "doc": {
             "summary": "Returns the hull an NPC or hero paths with, or 0 for other entities.",
             "params": {},
@@ -25163,15 +25165,15 @@
       "file": "managed/DeadworksManaged.Api/Nav.cs",
       "line": 165,
       "doc": {
-        "summary": "A polygon of the navmesh, from {@cref Nav.GetArea}.",
+        "summary": "Navmesh polygon, from {@cref Nav.GetArea}.",
         "params": {
-          "Id": "The area\u0027s id. Ids change when the map\u0027s navmesh is rebuilt, and split areas get new ones.",
-          "Center": "The area\u0027s centre.",
-          "NearestPoint": "The queried position moved onto the area.",
-          "Attributes": "What the area allows or asks for.",
-          "Flags": "Runtime state.",
-          "Hull": "The hull this area belongs to.",
-          "IsBlocked": "True while something blocks the area for at least one team."
+          "Id": "Area id. Changes when the navmesh is rebuilt or the area is split.",
+          "Center": "Area centre.",
+          "NearestPoint": "The queried position, moved onto the area.",
+          "Attributes": "Area attributes.",
+          "Flags": "Runtime flags.",
+          "Hull": "Hull the area belongs to.",
+          "IsBlocked": "True while the area is blocked for at least one team."
         },
         "typeParams": {},
         "exceptions": [],
@@ -25189,7 +25191,7 @@
       "file": "managed/DeadworksManaged.Api/Nav.cs",
       "line": 120,
       "doc": {
-        "summary": "What a nav area allows or asks of whatever walks it (\u0060NavAttributeEnum\u0060).",
+        "summary": "Nav area attributes (\u0060NavAttributeEnum\u0060).",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -25377,7 +25379,7 @@
       "file": "managed/DeadworksManaged.Api/Nav.cs",
       "line": 144,
       "doc": {
-        "summary": "State the game keeps on a nav area at runtime (\u0060NavDynamicAttributeEnum\u0060).",
+        "summary": "Runtime nav area flags (\u0060NavDynamicAttributeEnum\u0060).",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -25423,7 +25425,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 149,
           "doc": {
-            "summary": "An obstacle, such as a nav blocker, has cut this area up.",
+            "summary": "Cut up by an obstacle, such as a nav blocker.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25486,7 +25488,7 @@
       "file": "managed/DeadworksManaged.Api/Nav.cs",
       "line": 25,
       "doc": {
-        "summary": "A walkable route across the navmesh, from {@cref Nav.FindPath}.",
+        "summary": "Walkable route across the navmesh, from {@cref Nav.FindPath}.",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -25503,7 +25505,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 33,
           "doc": {
-            "summary": "The points to pass through, in order. The first is the start.",
+            "summary": "Points to pass through, in order. The first is the start.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25519,7 +25521,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 36,
           "doc": {
-            "summary": "Walking distance along the path, in units.",
+            "summary": "Walking distance, in units.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25535,7 +25537,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 39,
           "doc": {
-            "summary": "Where the path ends: the goal, or as close as it got for a partial path.",
+            "summary": "Last waypoint: the goal, or as close as a partial path got.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25553,8 +25555,8 @@
       "file": "managed/DeadworksManaged.Api/Nav.cs",
       "line": 50,
       "doc": {
-        "summary": "Tracks progress along a {@cref NavPath}. Call {@cref Update} with the current position each tick and steer towards the result, for a bot hero with {@cref Bots.SetMoveInput}.",
-        "remarks": "A waypoint is reached within {@cref ArriveRadius} on the ground plane, or once passed. The follower does not re-path; find a new path when {@cref DistanceFromPath} grows large.",
+        "summary": "Tracks progress along a {@cref NavPath}. Call {@cref Update} each tick and steer towards the point it returns, such as with {@cref Bots.SetMoveInput}.",
+        "remarks": "A waypoint counts as reached within {@cref ArriveRadius} on the ground plane, or once passed. The follower doesn\u0027t re-path; find a new path when {@cref DistanceFromPath} grows.",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -25576,8 +25578,8 @@
           "line": 53,
           "doc": {
             "params": {
-              "path": "The path to follow.",
-              "arriveRadius": "How close counts as reaching a waypoint, in units."
+              "path": "Path to follow.",
+              "arriveRadius": "Distance that counts as reaching a waypoint."
             },
             "typeParams": {},
             "exceptions": [],
@@ -25593,7 +25595,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 60,
           "doc": {
-            "summary": "The path being followed.",
+            "summary": "Path being followed.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25609,7 +25611,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 63,
           "doc": {
-            "summary": "How close counts as reaching a waypoint, in units.",
+            "summary": "Distance that counts as reaching a waypoint.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25625,7 +25627,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 66,
           "doc": {
-            "summary": "The index in {@cref NavPath.Waypoints} of the waypoint being headed for.",
+            "summary": "Index in {@cref NavPath.Waypoints} of the next waypoint.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25641,7 +25643,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 69,
           "doc": {
-            "summary": "Whether the last waypoint has been reached.",
+            "summary": "True once the last waypoint is reached.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25657,7 +25659,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 72,
           "doc": {
-            "summary": "The waypoint being headed for, or null once finished.",
+            "summary": "Next waypoint, or null once finished.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25676,7 +25678,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 75,
           "doc": {
-            "summary": "Advances past reached waypoints and returns the next one, or null at the end.",
+            "summary": "Skips reached waypoints and returns the next one\u0027s position, or null at the end.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25696,7 +25698,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 97,
           "doc": {
-            "summary": "True when the next waypoint is close, more than a step up, and reached by jumping or climbing.",
+            "summary": "True when the next waypoint is close, more than a step up, and reached by a jump or climb.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25715,7 +25717,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 104,
           "doc": {
-            "summary": "How far \u0060position\u0060 is from the leg being walked, on the ground plane.",
+            "summary": "Ground-plane distance from \u0060position\u0060 to the leg being walked.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25766,7 +25768,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 11,
           "doc": {
-            "summary": "Jump across a gap, or up or down a ledge.",
+            "summary": "Jump a gap, or up or down a ledge.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25782,7 +25784,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 13,
           "doc": {
-            "summary": "Climb up, as the game\u0027s NPCs mantle.",
+            "summary": "Climb up a ledge.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25807,7 +25809,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 16,
           "doc": {
-            "summary": "A nav link: a hand-placed connection such as a jump pad or a drop.",
+            "summary": "Hand-placed nav link, such as a jump pad or a drop.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25827,8 +25829,8 @@
       "doc": {
         "summary": "One point of a {@cref NavPath}.",
         "params": {
-          "Position": "Where to go.",
-          "Traverse": "How the path reaches this point from the one before."
+          "Position": "Point to reach.",
+          "Traverse": "How the path gets here from the previous waypoint."
         },
         "typeParams": {},
         "exceptions": [],
@@ -26138,9 +26140,9 @@
       "folder": "Events",
       "declaration": "public sealed class NpcSelectScheduleEvent",
       "file": "managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs",
-      "line": 7,
+      "line": 4,
       "doc": {
-        "summary": "Passed to {@cref IDeadworksPlugin.OnNpcSelectSchedule} when an NPC picks its next schedule, after the last one finished, failed or was interrupted.",
+        "summary": "Passed to {@cref IDeadworksPlugin.OnNpcSelectSchedule} when an NPC picks its next schedule.",
         "params": {},
         "typeParams": {},
         "exceptions": [],
@@ -26155,9 +26157,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs",
-          "line": 9,
+          "line": 6,
           "doc": {
-            "summary": "The NPC. Use {@cref CBaseEntity.As\u003CT\u003E} for its class, e.g. {@cref CNPC_Trooper}.",
+            "summary": "The NPC. Use {@cref CBaseEntity.As\u003CT\u003E} for its class, such as {@cref CNPC_Trooper}.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -26171,9 +26173,9 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs",
-          "line": 15,
+          "line": 12,
           "doc": {
-            "summary": "The schedule the game chose, such as \u0060SCHED_TROOPER_RUN_DOWN_LANE\u0060, or \u0060SCHED_FAIL\u0060 after a failure. The NPC\u0027s class may translate it, so {@cref CAI_BaseNPC.Schedule} can differ once it runs.",
+            "summary": "Schedule the game picked, such as \u0060SCHED_TROOPER_RUN_DOWN_LANE\u0060, or \u0060SCHED_FAIL\u0060 after a failure. NPC classes rename some schedules, so {@cref CAI_BaseNPC.Schedule} can differ once it runs.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -26187,10 +26189,10 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs",
-          "line": 24,
+          "line": 19,
           "doc": {
-            "summary": "A schedule to run instead, such as \u0060SCHED_IDLE_STAND\u0060. Null keeps the game\u0027s choice. The last plugin to set it wins.",
-            "remarks": "A schedule the NPC\u0027s class does not have runs \u0060SCHED_IDLE_STAND\u0060 and logs \u0022No CASE for Schedule Type\u0022.",
+            "summary": "Schedule to run instead, such as \u0060SCHED_IDLE_STAND\u0060. Null keeps the game\u0027s pick. The last plugin to set it wins.",
+            "remarks": "A schedule the NPC\u0027s class lacks runs \u0060SCHED_IDLE_STAND\u0060 and logs \u0022No CASE for Schedule Type\u0022.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -26236,7 +26238,7 @@
           "file": "managed/DeadworksManaged.Api/Enums/NpcState.cs",
           "line": 7,
           "doc": {
-            "summary": "Just spawned; the AI doesn\u0027t choose enemies yet.",
+            "summary": "Just spawned. The AI doesn\u0027t pick enemies yet.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -26252,7 +26254,7 @@
           "file": "managed/DeadworksManaged.Api/Enums/NpcState.cs",
           "line": 9,
           "doc": {
-            "summary": "No enemy. Setting it clears the current enemy.",
+            "summary": "No enemy. Setting it clears the enemy.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -26304,7 +26306,7 @@
           "file": "managed/DeadworksManaged.Api/Enums/NpcState.cs",
           "line": 15,
           "doc": {
-            "summary": "Switched off. Hidden troopers wait in this state until the game reuses them.",
+            "summary": "Switched off. Pooled troopers wait in this state.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -31449,7 +31451,7 @@
           "file": "managed/DeadworksManaged.Api/Enums/TrooperType.cs",
           "line": 6,
           "doc": {
-            "summary": "The ranged trooper (\u0060trooper_normal\u0060).",
+            "summary": "Ranged trooper (\u0060trooper_normal\u0060).",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -31465,7 +31467,7 @@
           "file": "managed/DeadworksManaged.Api/Enums/TrooperType.cs",
           "line": 8,
           "doc": {
-            "summary": "The trooper that heals other troopers (\u0060trooper_medic\u0060).",
+            "summary": "Heals other troopers (\u0060trooper_medic\u0060).",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -31481,7 +31483,7 @@
           "file": "managed/DeadworksManaged.Api/Enums/TrooperType.cs",
           "line": 10,
           "doc": {
-            "summary": "The melee trooper (\u0060trooper_melee\u0060).",
+            "summary": "Melee trooper (\u0060trooper_melee\u0060).",
             "params": {},
             "typeParams": {},
             "exceptions": [],

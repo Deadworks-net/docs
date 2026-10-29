@@ -16,7 +16,7 @@ public sealed class ClientConnectEvent
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Events/ClientConnectEvent.cs#L4](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L4)
+**Source:** [Events/ClientConnectEvent.cs#L4](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L4)
 
 ## Properties
 
@@ -28,7 +28,7 @@ public sealed class ClientConnectEvent
 public required int Slot { get; init; }
 ```
 
-**Source:** [Events/ClientConnectEvent.cs#L5](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L5)
+**Source:** [Events/ClientConnectEvent.cs#L5](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L5)
 
 ### ClientConnectEvent.Name {#name}
 
@@ -38,7 +38,7 @@ public required int Slot { get; init; }
 public required string Name { get; init; }
 ```
 
-**Source:** [Events/ClientConnectEvent.cs#L6](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L6)
+**Source:** [Events/ClientConnectEvent.cs#L6](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L6)
 
 ### ClientConnectEvent.SteamId {#steamid}
 
@@ -48,7 +48,7 @@ public required string Name { get; init; }
 public required ulong SteamId { get; init; }
 ```
 
-**Source:** [Events/ClientConnectEvent.cs#L7](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L7)
+**Source:** [Events/ClientConnectEvent.cs#L7](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L7)
 
 ### ClientConnectEvent.IpAddress {#ipaddress}
 
@@ -58,7 +58,7 @@ public required ulong SteamId { get; init; }
 public required string IpAddress { get; init; }
 ```
 
-**Source:** [Events/ClientConnectEvent.cs#L8](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L8)
+**Source:** [Events/ClientConnectEvent.cs#L8](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L8)
 
 ### ClientConnectEvent.IsMapChangeReconnect {#ismapchangereconnect}
 
@@ -70,7 +70,7 @@ True for a player who was already in the game and is reloading after a map chang
 public bool IsMapChangeReconnect { get; init; }
 ```
 
-**Source:** [Events/ClientConnectEvent.cs#L16](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L16)
+**Source:** [Events/ClientConnectEvent.cs#L16](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L16)
 
 ### ClientConnectEvent.RejectReason {#rejectreason}
 
@@ -82,4 +82,4 @@ Why the connection is being refused, when a plugin returns false from `IDeadwork
 public string? RejectReason { get; set; }
 ```
 
-**Source:** [Events/ClientConnectEvent.cs#L22](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L22)
+**Source:** [Events/ClientConnectEvent.cs#L22](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Events/ClientConnectEvent.cs#L22)

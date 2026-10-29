@@ -17,7 +17,7 @@ public sealed class CommandAttribute : Attribute
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** `Attribute`  
-**Source:** [Commands/CommandAttribute.cs#L5](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L5)
+**Source:** [Commands/CommandAttribute.cs#L5](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L5)
 
 ## Constructors
 
@@ -34,7 +34,7 @@ public CommandAttribute(string name, params string[] aliases)
 - `name`: The command's name, without a prefix: `"kick"` creates `/kick`, `!kick` and `dw_kick`.
 - `aliases`: Other names for the same command, created the same way.
 
-**Source:** [Commands/CommandAttribute.cs#L42](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L42)
+**Source:** [Commands/CommandAttribute.cs#L42](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L42)
 
 ## Properties
 
@@ -48,7 +48,7 @@ The command's name followed by its aliases, without a prefix.
 public string[] Names { get; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L8](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L8)
+**Source:** [Commands/CommandAttribute.cs#L8](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L8)
 
 ### CommandAttribute.Description {#description}
 
@@ -60,7 +60,7 @@ One line for `dw_help` and the generated permission files, e.g. "Kick a player: 
 public string Description { get; set; } = "";
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L11](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L11)
+**Source:** [Commands/CommandAttribute.cs#L11](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L11)
 
 ### CommandAttribute.Permission {#permission}
 
@@ -72,7 +72,7 @@ Permission a player needs to run this command, e.g. `admin.moderation.ban`. Empt
 public string Permission { get; set; } = "";
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L17](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L17)
+**Source:** [Commands/CommandAttribute.cs#L17](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L17)
 
 ### CommandAttribute.TargetImmunity {#targetimmunity}
 
@@ -84,7 +84,7 @@ Whether [`Target`](/api-reference/commands/target) parameters leave out players 
 public TargetImmunity TargetImmunity { get; set; } = TargetImmunity.Auto;
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L20](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L20)
+**Source:** [Commands/CommandAttribute.cs#L20](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L20)
 
 ### CommandAttribute.ServerOnly {#serveronly}
 
@@ -96,7 +96,7 @@ Lets only the server console (and RCON) run the command, whatever permissions a 
 public bool ServerOnly { get; set; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L23](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L23)
+**Source:** [Commands/CommandAttribute.cs#L23](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L23)
 
 ### CommandAttribute.ChatOnly {#chatonly}
 
@@ -108,7 +108,7 @@ Creates only `/name` and `!name`. Not even the server console can run it then.
 public bool ChatOnly { get; set; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L26](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L26)
+**Source:** [Commands/CommandAttribute.cs#L26](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L26)
 
 ### CommandAttribute.ConsoleOnly {#consoleonly}
 
@@ -120,7 +120,7 @@ Creates only `dw_name`. Players can still run it from their own game console, so
 public bool ConsoleOnly { get; set; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L32](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L32)
+**Source:** [Commands/CommandAttribute.cs#L32](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L32)
 
 ### CommandAttribute.SuppressChat {#suppresschat}
 
@@ -132,7 +132,7 @@ Hides `!name` from chat, like `/name`.
 public bool SuppressChat { get; set; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L35](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L35)
+**Source:** [Commands/CommandAttribute.cs#L35](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L35)
 
 ### CommandAttribute.Hidden {#hidden}
 
@@ -144,4 +144,4 @@ Leaves the command out of `dw_help`.
 public bool Hidden { get; set; }
 ```
 
-**Source:** [Commands/CommandAttribute.cs#L38](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L38)
+**Source:** [Commands/CommandAttribute.cs#L38](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/CommandAttribute.cs#L38)

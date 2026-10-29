@@ -19,18 +19,18 @@ public enum NpcState : int
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** `int`  
-**Source:** [Enums/NpcState.cs#L4](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Enums/NpcState.cs#L4)
+**Source:** [Enums/NpcState.cs#L4](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Enums/NpcState.cs#L4)
 
 ## Values
 
 | Name | Value | Description |
 |------|-------|-------------|
 | <Link id="invalid" />`Invalid` | `-1` |  |
-| <Link id="init" />`Init` | `0` | Just spawned; the AI doesn't choose enemies yet. |
-| <Link id="idle" />`Idle` | `1` | No enemy. Setting it clears the current enemy. |
+| <Link id="init" />`Init` | `0` | Just spawned. The AI doesn't pick enemies yet. |
+| <Link id="idle" />`Idle` | `1` | No enemy. Setting it clears the enemy. |
 | <Link id="alert" />`Alert` | `2` |  |
 | <Link id="combat" />`Combat` | `3` |  |
 | <Link id="script" />`Script` | `4` |  |
 | <Link id="dead" />`Dead` | `5` |  |
-| <Link id="inert" />`Inert` | `6` | Switched off. Hidden troopers wait in this state until the game reuses them. |
+| <Link id="inert" />`Inert` | `6` | Switched off. Pooled troopers wait in this state. |
 | <Link id="synchronizedsecondary" />`SynchronizedSecondary` | `7` |  |

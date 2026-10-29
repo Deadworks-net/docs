@@ -8,7 +8,7 @@ slug: "/api-reference"
 
 # API Reference
 
-Every public type in `DeadworksManaged.Api`, generated from the Deadworks source at commit [`7da5cd7`](https://github.com/Deadworks-net/deadworks/tree/7da5cd7f). Each member lists its signature and a link to its source. If you're new to Deadworks, start with the [Features](/features/commands) pages instead; they show how to do common things.
+Every public type in `DeadworksManaged.Api`, generated from the Deadworks source at commit [`bca3f61`](https://github.com/Deadworks-net/deadworks/tree/bca3f615). Each member lists its signature and a link to its source. If you're new to Deadworks, start with the [Features](/features/commands) pages instead; they show how to do common things.
 
 ## Plugin
 
@@ -30,7 +30,7 @@ Every public type in `DeadworksManaged.Api`, generated from the Deadworks source
 | Type | Description |
 |------|-------------|
 | [`AbilityResource`](/api-reference/entities/abilityresource) |  |
-| [`CAI_BaseNPC`](/api-reference/entities/cai_basenpc) | Base class of every AI-controlled NPC: lane troopers, neutral creeps, the mid boss, guardians, walkers, the Patron, hero summons and bot brains. |
+| [`CAI_BaseNPC`](/api-reference/entities/cai_basenpc) | Base class of every NPC: troopers, neutral creeps, bosses, the Patron, hero summons and bot brains. |
 | [`CAI_CitadelNPC`](/api-reference/entities/cai_citadelnpc) | A Deadlock NPC. Every [`CAI_BaseNPC`](/api-reference/entities/cai_basenpc) the game spawns is one. |
 | [`CallbackHandle`](/api-reference/entities/callbackhandle) | A generic handle that invokes a cancellation callback when cancelled. |
 | [`CBaseEntity`](/api-reference/entities/cbaseentity) | Base managed wrapper for all Source 2 entities. Provides common operations: health, team, lifecycle, modifiers, schema access. |
@@ -45,7 +45,7 @@ Every public type in `DeadworksManaged.Api`, generated from the Deadworks source
 | [`CCitadelBaseAbility`](/api-reference/entities/ccitadelbaseability) | Base class for all Deadlock abilities (hero abilities, items, innates, etc.). |
 | [`CCitadelHeroComponent`](/api-reference/entities/ccitadelherocomponent) | Hero component on a player pawn. Exposes the inline spawn data for the current hero. |
 | [`CCitadelModifierVData`](/api-reference/entities/ccitadelmodifiervdata) | Wraps a native CCitadelModifierVData instance - Citadel-specific modifier VData with extended properties. |
-| [`CCitadelPlayerBotNPCBrain`](/api-reference/entities/ccitadelplayerbotnpcbrain) | The brain of a bot hero (`npc_player_bot_brain`): a hidden NPC that plans the hero's movement and schedules. Get it from [`CCitadelPlayerPawn.BotBrain`](/api-reference/entities/ccitadelplayerpawn#botbrain). |
+| [`CCitadelPlayerBotNPCBrain`](/api-reference/entities/ccitadelplayerbotnpcbrain) | AI of a bot hero (`npc_player_bot_brain`), a hidden NPC. Get it from [`CCitadelPlayerPawn.BotBrain`](/api-reference/entities/ccitadelplayerpawn#botbrain). |
 | [`CCitadelPlayerController`](/api-reference/entities/ccitadelplayercontroller) | Deadlock-specific player controller. Provides access to player data, hero selection, team changes, and console messaging. |
 | [`CCitadelPlayerPawn`](/api-reference/entities/ccitadelplayerpawn) | Deadlock hero pawn. The in-game physical representation of a player. Provides currency, abilities, movement state, stamina, and eye angles. |
 | [`CCitadelZiplinePath`](/api-reference/entities/ccitadelziplinepath) | A lane's zipline rope (`citadel_zipline_path`). |
@@ -57,7 +57,7 @@ Every public type in `DeadworksManaged.Api`, generated from the Deadworks source
 | [`CitadelHeroSpawnData`](/api-reference/entities/citadelherospawndata) | Wraps CitadelHeroSpawnData_t - per-spawn hero state including the resolved hero ID. |
 | [`CModifierProperty`](/api-reference/entities/cmodifierproperty) | Wraps CModifierProperty - manages modifier state bits on an entity. Uses CNetworkVarChainer to chain network notifications to the owning entity. |
 | [`CModifierVData`](/api-reference/entities/cmodifiervdata) | Wraps a native CModifierVData instance - base VData for all modifier types. |
-| [`CNPC_Trooper`](/api-reference/entities/cnpc_trooper) | A lane trooper (`npc_trooper`). Guardians and walkers are separate classes. |
+| [`CNPC_Trooper`](/api-reference/entities/cnpc_trooper) | Lane trooper (`npc_trooper`). Guardians and walkers are separate classes. |
 | [`CParticleSystem`](/api-reference/entities/cparticlesystem) | Represents a live `info_particle_system` entity. Obtain instances via `Builder.Spawn`. |
 | [`CParticleSystem.Builder`](/api-reference/entities/cparticlesystem-builder) | Fluent builder for spawning a [`CParticleSystem`](/api-reference/entities/cparticlesystem) entity. |
 | [`CPlayer_ObserverServices`](/api-reference/entities/cplayer_observerservices) | Observer/spectator state component on a [`CBasePlayerPawn`](/api-reference/entities/cbaseplayerpawn). |
@@ -109,7 +109,7 @@ Every public type in `DeadworksManaged.Api`, generated from the Deadworks source
 | [`ModifierDamageEventData`](/api-reference/events/modifierdamageeventdata) | Payload of the damage events. Properties not carried by the current event return null or 0. |
 | [`ModifierEvent`](/api-reference/events/modifierevent) | A modifier event (damage taken, ability cast, modifier gained/lost, ...) fired by the game. Passed to `IDeadworksPlugin.OnModifierEvent`. Observe-only. |
 | [`ModifyCurrencyEvent`](/api-reference/events/modifycurrencyevent) | Event data passed to `IDeadworksPlugin.OnModifyCurrency`. Contains the pawn, currency type, amount, and source of the change. |
-| [`NpcSelectScheduleEvent`](/api-reference/events/npcselectscheduleevent) | Passed to `IDeadworksPlugin.OnNpcSelectSchedule` when an NPC picks its next schedule, after the last one finished, failed or was interrupted. |
+| [`NpcSelectScheduleEvent`](/api-reference/events/npcselectscheduleevent) | Passed to `IDeadworksPlugin.OnNpcSelectSchedule` when an NPC picks its next schedule. |
 | [`ProcessUsercmdsEvent`](/api-reference/events/processusercmdsevent) | Event data passed to `IDeadworksPlugin.OnProcessUsercmds`. Contains the player slot, parsed usercmd protobuf messages, and timing info. |
 | [`TakeDamageEvent`](/api-reference/events/takedamageevent) | Event data passed to `IDeadworksPlugin.OnTakeDamage`. Contains the target entity and full damage info. |
 
@@ -218,14 +218,14 @@ Every public type in `DeadworksManaged.Api`, generated from the Deadworks source
 
 | Type | Description |
 |------|-------------|
-| [`BotDifficulty`](/api-reference/navigation/botdifficulty) | How well a bot hero plays (`scripts/bots/bot_difficulty.vdata`). |
-| [`Bots`](/api-reference/navigation/bots) | Bot heroes: fake clients with a hero and a brain ([`CCitadelPlayerBotNPCBrain`](/api-reference/entities/ccitadelplayerbotnpcbrain)). |
-| [`Nav`](/api-reference/navigation/nav) | Queries on the navmesh, the walkable surface NPCs path over. No NPC is needed. |
-| [`NavArea`](/api-reference/navigation/navarea) | A polygon of the navmesh, from [`Nav.GetArea`](/api-reference/navigation/nav#getarea). |
-| [`NavAreaAttributes`](/api-reference/navigation/navareaattributes) | What a nav area allows or asks of whatever walks it (`NavAttributeEnum`). |
-| [`NavAreaFlags`](/api-reference/navigation/navareaflags) | State the game keeps on a nav area at runtime (`NavDynamicAttributeEnum`). |
-| [`NavPath`](/api-reference/navigation/navpath) | A walkable route across the navmesh, from [`Nav.FindPath`](/api-reference/navigation/nav#findpath). |
-| [`NavPathFollower`](/api-reference/navigation/navpathfollower) | Tracks progress along a [`NavPath`](/api-reference/navigation/navpath). Call `Update` with the current position each tick and steer towards the result, for a bot hero with [`Bots.SetMoveInput`](/api-reference/navigation/bots#setmoveinput). |
+| [`BotDifficulty`](/api-reference/navigation/botdifficulty) | Bot skill level, from `scripts/bots/bot_difficulty.vdata`. |
+| [`Bots`](/api-reference/navigation/bots) | Adds and controls bot heroes: fake clients with a hero and a [`CCitadelPlayerBotNPCBrain`](/api-reference/entities/ccitadelplayerbotnpcbrain). |
+| [`Nav`](/api-reference/navigation/nav) | Queries the navmesh, the walkable surface NPCs path over. No NPC is needed. |
+| [`NavArea`](/api-reference/navigation/navarea) | Navmesh polygon, from [`Nav.GetArea`](/api-reference/navigation/nav#getarea). |
+| [`NavAreaAttributes`](/api-reference/navigation/navareaattributes) | Nav area attributes (`NavAttributeEnum`). |
+| [`NavAreaFlags`](/api-reference/navigation/navareaflags) | Runtime nav area flags (`NavDynamicAttributeEnum`). |
+| [`NavPath`](/api-reference/navigation/navpath) | Walkable route across the navmesh, from [`Nav.FindPath`](/api-reference/navigation/nav#findpath). |
+| [`NavPathFollower`](/api-reference/navigation/navpathfollower) | Tracks progress along a [`NavPath`](/api-reference/navigation/navpath). Call `Update` each tick and steer towards the point it returns, such as with [`Bots.SetMoveInput`](/api-reference/navigation/bots#setmoveinput). |
 | [`NavTraverse`](/api-reference/navigation/navtraverse) | How a path reaches a waypoint. |
 | [`NavWaypoint`](/api-reference/navigation/navwaypoint) | One point of a [`NavPath`](/api-reference/navigation/navpath). |
 

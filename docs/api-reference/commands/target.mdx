@@ -17,7 +17,7 @@ public sealed class Target : IReadOnlyList<CCitadelPlayerController>
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** `IReadOnlyList<CCitadelPlayerController>`  
-**Source:** [Commands/Target.cs#L11](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/Target.cs#L11)
+**Source:** [Commands/Target.cs#L11](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/Target.cs#L11)
 
 ## Properties
 
@@ -31,7 +31,7 @@ The argument as typed.
 public string Input { get; }
 ```
 
-**Source:** [Commands/Target.cs#L16](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/Target.cs#L16)
+**Source:** [Commands/Target.cs#L16](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/Target.cs#L16)
 
 ### Target.IsGroup {#isgroup}
 
@@ -43,7 +43,7 @@ True for `@all`, `@team` and `@enemy`, which may match several players.
 public bool IsGroup { get; }
 ```
 
-**Source:** [Commands/Target.cs#L19](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/Target.cs#L19)
+**Source:** [Commands/Target.cs#L19](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/Target.cs#L19)
 
 ### Target.Count {#count}
 
@@ -55,7 +55,7 @@ How many players matched; at least one.
 public int Count { get; }
 ```
 
-**Source:** [Commands/Target.cs#L51](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/Target.cs#L51)
+**Source:** [Commands/Target.cs#L51](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/Target.cs#L51)
 
 ### Target[] {#this}
 
@@ -67,7 +67,7 @@ The matched player at `index`.
 public CCitadelPlayerController this[int index] { get; }
 ```
 
-**Source:** [Commands/Target.cs#L53](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/Target.cs#L53)
+**Source:** [Commands/Target.cs#L53](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/Target.cs#L53)
 
 ## Methods
 
@@ -85,7 +85,7 @@ public static Target Resolve(Caller caller, string input, bool enforceImmunity =
 
 - [`CommandException`](/api-reference/commands/commandexception): Nobody matches, or a single-player pattern hits someone the caller can't target.
 
-**Source:** [Commands/Target.cs#L34](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/Target.cs#L34)
+**Source:** [Commands/Target.cs#L34](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/Target.cs#L34)
 
 ### Target.Single() {#single}
 
@@ -97,7 +97,7 @@ The one player matched, or a [`CommandException`](/api-reference/commands/comman
 public CCitadelPlayerController Single()
 ```
 
-**Source:** [Commands/Target.cs#L45](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/Target.cs#L45)
+**Source:** [Commands/Target.cs#L45](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/Target.cs#L45)
 
 ### Target.GetEnumerator() {#getenumerator}
 
@@ -107,4 +107,4 @@ public CCitadelPlayerController Single()
 public IEnumerator<CCitadelPlayerController> GetEnumerator()
 ```
 
-**Source:** [Commands/Target.cs#L55](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Commands/Target.cs#L55)
+**Source:** [Commands/Target.cs#L55](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Commands/Target.cs#L55)
