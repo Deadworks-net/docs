@@ -16,7 +16,7 @@ public static class Penalties
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Admin/Penalties.cs#L93](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L93)
+**Source:** [Admin/Penalties.cs#L93](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L93)
 
 ## Methods
 
@@ -30,7 +30,7 @@ A penalty length worded like an admin announcement, rounded up to the minute: "p
 public static string DescribeDuration(TimeSpan? duration)
 ```
 
-**Source:** [Admin/Penalties.cs#L104](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L104)
+**Source:** [Admin/Penalties.cs#L104](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L104)
 
 ### Penalties.Add() {#add}
 
@@ -50,7 +50,7 @@ public static Penalty Add(PenaltyType type, ulong steamId64, TimeSpan? duration,
 **Notes**
 The penalty applies at once and is saved in the background. If that save fails, it still applies until the server restarts, and the console prints an ERROR; this method has already returned by then.
 
-**Source:** [Admin/Penalties.cs#L131](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L131)
+**Source:** [Admin/Penalties.cs#L131](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L131)
 
 ### Penalties.Remove() {#remove}
 
@@ -62,7 +62,7 @@ Lifts the player's active penalty of this type on behalf of `by`, with an option
 public static bool Remove(PenaltyType type, ulong steamId64, Caller by, string reason = "")
 ```
 
-**Source:** [Admin/Penalties.cs#L138](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L138)
+**Source:** [Admin/Penalties.cs#L138](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L138)
 
 ### Penalties.GetActive() {#getactive}
 
@@ -74,7 +74,7 @@ The player's active penalty of this type, or null.
 public static Penalty? GetActive(PenaltyType type, ulong steamId64)
 ```
 
-**Source:** [Admin/Penalties.cs#L141](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L141)
+**Source:** [Admin/Penalties.cs#L141](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L141)
 
 ### Penalties.WouldShorten() {#wouldshorten}
 
@@ -86,7 +86,7 @@ The active penalty that adding one of `duration` (null = permanent) would cut sh
 public static Penalty? WouldShorten(PenaltyType type, ulong steamId64, TimeSpan? duration)
 ```
 
-**Source:** [Admin/Penalties.cs#L148](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L148)
+**Source:** [Admin/Penalties.cs#L148](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L148)
 
 ### Penalties.GetAllActive() {#getallactive}
 
@@ -98,7 +98,7 @@ Every active penalty, optionally only those of one type, oldest first.
 public static IReadOnlyList<Penalty> GetAllActive(PenaltyType? type = null)
 ```
 
-**Source:** [Admin/Penalties.cs#L151](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L151)
+**Source:** [Admin/Penalties.cs#L151](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L151)
 
 ### Penalties.GetHistoryAsync() {#gethistoryasync}
 
@@ -110,7 +110,7 @@ Every penalty the store still has for this player, newest first, including remov
 public static Task<IReadOnlyList<Penalty>> GetHistoryAsync(ulong steamId64)
 ```
 
-**Source:** [Admin/Penalties.cs#L157](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L157)
+**Source:** [Admin/Penalties.cs#L157](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L157)
 
 ### Penalties.IsBanned() {#isbanned}
 
@@ -122,7 +122,7 @@ Whether the player has an active ban.
 public static bool IsBanned(ulong steamId64)
 ```
 
-**Source:** [Admin/Penalties.cs#L160](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L160)
+**Source:** [Admin/Penalties.cs#L160](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L160)
 
 ### Penalties.IsGagged() {#isgagged}
 
@@ -134,7 +134,7 @@ Whether the player has an active gag.
 public static bool IsGagged(ulong steamId64)
 ```
 
-**Source:** [Admin/Penalties.cs#L162](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L162)
+**Source:** [Admin/Penalties.cs#L162](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L162)
 
 ### Penalties.IsMuted() {#ismuted}
 
@@ -146,7 +146,7 @@ Whether the player has an active mute.
 public static bool IsMuted(ulong steamId64)
 ```
 
-**Source:** [Admin/Penalties.cs#L164](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L164)
+**Source:** [Admin/Penalties.cs#L164](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L164)
 
 ### Penalties.RegisterStore() {#registerstore}
 
@@ -158,4 +158,4 @@ Offers a store for penalties. It becomes active when `penalties.store` in `confi
 public static void RegisterStore(IDeadworksPlugin owner, string name, IPenaltyStore store)
 ```
 
-**Source:** [Admin/Penalties.cs#L170](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Admin/Penalties.cs#L170)
+**Source:** [Admin/Penalties.cs#L170](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Admin/Penalties.cs#L170)

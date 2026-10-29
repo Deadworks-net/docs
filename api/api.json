@@ -1,5 +1,5 @@
 {
-  "commit": "65bce38d",
+  "commit": "ed68d481",
   "types": [
     {
       "namespace": "DeadworksManaged.Api",
@@ -724,7 +724,7 @@
           "line": 22,
           "doc": {
             "summary": "Adds a bot hero, like \u0060citadel_create_unit\u0060. Returns its pawn, or null if bots can\u0027t play the hero, the server is full or no map is loaded.",
-            "remarks": "The bot joins as a fake client named \u0060BotN\u0060. Its hero finishes loading shortly after; wait before reading its abilities. Remove it with {@cref Server.Kick}. It only plays while {@cref AiEnabled} is on.",
+            "remarks": "The bot joins as a fake client named \u0060BotN\u0060. Its hero finishes loading shortly after. Wait before reading its abilities. Remove it with {@cref Server.Kick}. It only plays while {@cref AiEnabled} is on.",
             "params": {
               "hero": "Hero. Null picks a random one.",
               "team": "2 Amber, 3 Sapphire.",
@@ -1002,7 +1002,7 @@
           "line": 100,
           "doc": {
             "summary": "Sends the NPC to a point, like \u0060npc_go\u0060.",
-            "remarks": "The NPC ignores enemies and damage until it arrives or the path fails, then resumes its own AI. Orders more than 3000 units of path away mostly fail; nearer ones can stop partway in \u0060SCHED_FAIL\u0060. Send long trips in legs along {@cref Nav.FindPath} and re-order after a failure. To follow a moving target, call again every 0.5 s.",
+            "remarks": "The NPC ignores enemies and damage until it arrives or the path fails, then resumes its own AI. Most orders over 3000 units of path fail. Shorter ones can stop partway in \u0060SCHED_FAIL\u0060. Send long trips in legs along {@cref Nav.FindPath}, and order again after a failure. To follow a moving target, call again every 0.5 s.",
             "params": {
               "goal": "Destination. Need not be on the navmesh.",
               "run": "Run instead of walking.",
@@ -1084,9 +1084,10 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 126,
+          "line": 127,
           "doc": {
-            "summary": "Sets the AI state. {@cref NpcState.Idle} also clears the enemy; the game may turn it into {@cref NpcState.Alert}.",
+            "summary": "Sets the AI state. {@cref NpcState.Idle} also clears the enemy.",
+            "remarks": "The game may turn {@cref NpcState.Idle} into {@cref NpcState.Alert}.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -1123,7 +1124,7 @@
           "file": "managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs",
           "line": 17,
           "doc": {
-            "summary": "The NPC\u0027s abilities, such as a boss\u0027s attacks or a trooper\u0027s grenade.",
+            "summary": "The NPC\u0027s abilities.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -1211,7 +1212,7 @@
           "line": 48,
           "doc": {
             "summary": "Sets the entity the NPC works for, usually a hero pawn. Null clears it.",
-            "remarks": "Minions are removed with the summoner\u0027s pawn, such as on a hero swap. They survive the hero\u0027s death.",
+            "remarks": "Minions are removed with the summoner\u0027s pawn, for example on a hero swap. They survive the hero\u0027s death.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -4606,7 +4607,7 @@
           "line": 37,
           "doc": {
             "summary": "Sets the lane the bot pushes while {@cref Bots.AiEnabled} is on. Returns false if this hero isn\u0027t a bot\u0027s.",
-            "remarks": "{@cref CCitadelPlayerController.AssignedLane} may not update; read {@cref BotLane}.",
+            "remarks": "{@cref CCitadelPlayerController.AssignedLane} may not update. Read {@cref BotLane} instead.",
             "params": {},
             "typeParams": {},
             "exceptions": [],
@@ -25019,7 +25020,7 @@
           "line": 238,
           "doc": {
             "summary": "Traces a straight line across the navmesh. Returns true if it reaches \u0060end\u0060 without leaving the walkable surface.",
-            "remarks": "Steps or drops over 20 units stop it; nav blockers don\u0027t. Fails if \u0060start\u0060 is more than 200 units from the navmesh. Cheaper than {@cref FindPath}.",
+            "remarks": "Steps or drops over 20 units stop it. Nav blockers don\u0027t. Fails if \u0060start\u0060 is more than 200 units from the navmesh. Cheaper than {@cref FindPath}.",
             "params": {
               "start": "Start point. Snapped onto the navmesh first.",
               "end": "End point.",
@@ -25071,7 +25072,7 @@
           "line": 272,
           "doc": {
             "summary": "Finds a path with the game\u0027s pathfinder. Returns null if there is none.",
-            "remarks": "Both ends must be on the navmesh; snap them with {@cref GetNearestPoint}. Takes about 1 ms across half the map, 3 ms for a failed search. Uses the hull\u0027s default costs, so it ignores per-NPC rules such as a trooper\u0027s lane.",
+            "remarks": "Both ends must be on the navmesh. Snap them with {@cref GetNearestPoint}. Takes about 1 ms across half the map, 3 ms for a failed search. Uses the hull\u0027s default costs, so it ignores per-NPC rules such as a trooper\u0027s lane.",
             "params": {
               "start": "Start point.",
               "goal": "Goal point.",
@@ -25122,7 +25123,7 @@
           "file": "managed/DeadworksManaged.Api/Nav.cs",
           "line": 307,
           "doc": {
-            "summary": "Blocks a box of the navmesh with a \u0060script_nav_blocker\u0060. NPCs and {@cref FindPath} route around it. Returns the blocker, or null on failure; remove it to unblock.",
+            "summary": "Blocks a box of the navmesh with a \u0060script_nav_blocker\u0060. NPCs and {@cref FindPath} route around it. Returns the blocker, or null on failure. Remove the blocker to unblock.",
             "remarks": "Takes effect shortly after the call.",
             "params": {
               "center": "Box centre.",
@@ -25555,8 +25556,8 @@
       "file": "managed/DeadworksManaged.Api/Nav.cs",
       "line": 50,
       "doc": {
-        "summary": "Tracks progress along a {@cref NavPath}. Call {@cref Update} each tick and steer towards the point it returns, such as with {@cref Bots.SetMoveInput}.",
-        "remarks": "A waypoint counts as reached within {@cref ArriveRadius} on the ground plane, or once passed. The follower doesn\u0027t re-path; find a new path when {@cref DistanceFromPath} grows.",
+        "summary": "Tracks progress along a {@cref NavPath}. Call {@cref Update} each tick and steer towards the point it returns with {@cref Bots.SetMoveInput}.",
+        "remarks": "A waypoint counts as reached within {@cref ArriveRadius} on the ground plane, or once passed. The follower doesn\u0027t re-path. Find a new path when {@cref DistanceFromPath} grows.",
         "params": {},
         "typeParams": {},
         "exceptions": [],

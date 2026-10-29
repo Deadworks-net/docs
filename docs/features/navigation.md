@@ -7,22 +7,22 @@ sidebar_label: "Navigation"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-The navmesh is the walkable surface NPCs and bots path over. [`Nav`](/api-reference/navigation/nav) queries it without an NPC.
+The **navmesh** is the walkable surface NPCs and bots path over. [`Nav`](/api-reference/navigation/nav) queries it without an NPC.
 
 ## Hulls
 
-A hull is a body size. Each hull has its own navmesh areas, so a point one hull can reach may be out of reach for another.
+A **hull** is a body size. Each hull has its own navmesh, so a point one hull can reach may be unreachable for another.
 
 | Hull | Used by |
 |---|---|
-| `0` | Heroes, including bot heroes. Default for every query. |
+| `0` | Heroes, including bots. Default for every query. |
 | `1` | Lane troopers. |
 
-`Nav.GetHull(entity)` returns an NPC's or hero's hull. `FindPath` and `GetNearestPoint` also take the entity in place of a hull.
+`Nav.GetHull(entity)` returns an entity's hull. `FindPath` and `GetNearestPoint` also take the entity instead of a hull.
 
 ## Paths
 
-`FindPath` returns a [`NavPath`](/api-reference/navigation/navpath), or null if there is no path or an end is off the navmesh:
+`FindPath` returns a [`NavPath`](/api-reference/navigation/navpath), or null if there is no path:
 
 ```csharp
 NavPath? path = Nav.FindPath(start, goal, pawn);
@@ -33,12 +33,12 @@ foreach (var waypoint in path.Waypoints)
     Console.WriteLine($"{waypoint.Position} by {waypoint.Traverse}");
 ```
 
-- `Waypoints` runs from `start` to the goal, up to `256` points. `Traverse` says how each is reached: `Ground`, `Jump`, `Climb`, `Ladder` or `Link`.
-- `Length` is the walking distance.
-- `simplify: false` adds a waypoint per area crossed, not only the corners.
-- `allowPartial: true` returns a path to the reachable point nearest an unreachable goal.
+- `Waypoints` – points from the start to the goal, at most `256`. `Traverse` is how each is reached: `Ground`, `Jump`, `Climb`, `Ladder` or `Link`.
+- `Length` – walking distance.
+- `simplify: false` – one waypoint per area crossed, not only the corners.
+- `allowPartial: true` – a path to the nearest reachable point when the goal is unreachable.
 
-Snap an end in the air or inside a wall onto the navmesh first:
+Both ends must be on the navmesh. Snap a point in the air or inside a wall with `GetNearestPoint`:
 
 ```csharp
 var goal = Nav.GetNearestPoint(target, pawn);
@@ -50,7 +50,7 @@ A path across the whole map takes about `1` ms. Re-path when the goal moves, not
 
 ## Following a path
 
-[`NavPathFollower`](/api-reference/navigation/navpathfollower) tracks progress along a path. Call `Update` with the current position each tick; it returns the next waypoint, or null at the end:
+[`NavPathFollower`](/api-reference/navigation/navpathfollower) tracks progress along a path. `Update` takes the current position and returns the next waypoint, or null at the end:
 
 ```csharp
 var follower = new NavPathFollower(path);
@@ -60,16 +60,16 @@ Vector3? next = follower.Update(pawn.Position);
 bool jump = follower.ShouldJump(pawn.Position);
 ```
 
-`DistanceFromPath` is how far the walker has strayed; re-path when it grows. To drive a bot hero with a follower, see [Bots](bots#steering-a-bot).
+`DistanceFromPath` is how far the walker has strayed. Find a new path when it grows. See [Bots](bots#steering-a-bot) to drive a bot with a follower.
 
 ## Queries
 
-| Method | Returns |
+| Method | Description |
 |---|---|
-| `Raycast(from, to, out stoppedAt)` | `true` if a straight walk stays on the navmesh. Otherwise `stoppedAt` is where it leaves. |
-| `GetGroundHeight(position)` | Navmesh height under the point. |
-| `GetArea(position)` | The [`NavArea`](/api-reference/navigation/navarea) there: `Id`, `Center`, `Attributes`, `Flags` and whether it is blocked. |
-| `GetRandomPoint(origin, minDistance, maxDistance)` | A random point reachable from the origin. About `1` ms per call; `maxDistance` is capped at `6000`. |
+| `Raycast(from, to, out stoppedAt)` | Returns `true` if a straight walk stays on the navmesh. Otherwise `stoppedAt` is where it leaves. |
+| `GetGroundHeight(position)` | Returns the navmesh height below the point. |
+| `GetArea(position)` | Returns the [`NavArea`](/api-reference/navigation/navarea) at the point. |
+| `GetRandomPoint(origin, minDistance, maxDistance)` | Returns a random reachable point in that distance range. `maxDistance` is capped at `6000`. About `1` ms per call. |
 
 ```csharp
 Vector3? spot = Nav.GetRandomPoint(pawn.Position, minDistance: 300f, maxDistance: 1200f);
@@ -77,16 +77,20 @@ Vector3? spot = Nav.GetRandomPoint(pawn.Position, minDistance: 300f, maxDistance
 
 ## Blocking an area
 
-`CreateBlocker` cuts a box out of the navmesh. NPCs, bots and `FindPath` route around it from shortly after the call:
+`CreateBlocker` blocks a box of the navmesh. NPCs, bots and `FindPath` route around it. Remove the blocker to unblock the area:
 
 ```csharp
 var blocker = Nav.CreateBlocker(center, halfExtents: new Vector3(200, 200, 120));
 
-blocker?.Remove(); // Opens the area again
+blocker?.Remove();
 ```
+
+:::note
+The navmesh updates shortly after `CreateBlocker`, not during the call.
+:::
 
 ## See also
 
 - [NPCs](npcs)
 - [Bots](bots)
-- [Tracing](tracing): lines through world collision rather than the navmesh.
+- [Tracing](tracing) – lines through world collision instead of the navmesh.

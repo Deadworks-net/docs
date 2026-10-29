@@ -16,7 +16,7 @@ public static class Bots
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Bots.cs#L7](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Bots.cs#L7)
+**Source:** [Bots.cs#L7](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Bots.cs#L7)
 
 ## Notes
 
@@ -34,7 +34,7 @@ Whether bot heroes play on their own. Off by default on servers without a matchm
 public static bool AiEnabled { get; }
 ```
 
-**Source:** [Bots.cs#L95](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Bots.cs#L95)
+**Source:** [Bots.cs#L95](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Bots.cs#L95)
 
 ### Bots.Brains {#brains}
 
@@ -46,7 +46,7 @@ Every bot brain on the map.
 public static IEnumerable<CCitadelPlayerBotNPCBrain> Brains { get; }
 ```
 
-**Source:** [Bots.cs#L112](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Bots.cs#L112)
+**Source:** [Bots.cs#L112](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Bots.cs#L112)
 
 ## Methods
 
@@ -69,9 +69,9 @@ public static CCitadelPlayerPawn? Add(Heroes? hero, int team, Vector3 position, 
 - `assignLane`: Let the game pick a lane.
 
 **Notes**
-The bot joins as a fake client named `BotN`. Its hero finishes loading shortly after; wait before reading its abilities. Remove it with [`Server.Kick`](/api-reference/plugin/server#kick). It only plays while `AiEnabled` is on.
+The bot joins as a fake client named `BotN`. Its hero finishes loading shortly after. Wait before reading its abilities. Remove it with [`Server.Kick`](/api-reference/plugin/server#kick). It only plays while `AiEnabled` is on.
 
-**Source:** [Bots.cs#L22](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Bots.cs#L22)
+**Source:** [Bots.cs#L22](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Bots.cs#L22)
 
 ### Bots.SetMoveInput() {#setmoveinput}
 
@@ -91,7 +91,7 @@ public static void SetMoveInput(CCitadelUserCmdPB usercmd, CCitadelPlayerPawn pa
 - `lookAt`: Point to aim at while moving. Null faces the direction of travel.
 - `jump`: Press jump.
 
-**Source:** [Bots.cs#L53](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Bots.cs#L53)
+**Source:** [Bots.cs#L53](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Bots.cs#L53)
 
 ### Bots.SetAiEnabled() {#setaienabled}
 
@@ -103,4 +103,4 @@ Turns the bot AI on or off for every bot. Returns false if no map is loaded.
 public static bool SetAiEnabled(bool enabled)
 ```
 
-**Source:** [Bots.cs#L103](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Bots.cs#L103)
+**Source:** [Bots.cs#L103](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Bots.cs#L103)

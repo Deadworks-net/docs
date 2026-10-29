@@ -7,7 +7,7 @@ sidebar_label: "Bots"
 
 > **Namespace:** `DeadworksManaged.Api`
 
-A bot is a hero played by the game's AI. Its brain, a hidden [NPC](npcs), plans what it does. [`Bots`](/api-reference/navigation/bots) adds bots, toggles their AI and fills in their input.
+A **bot** is a hero played by the game's AI. Each bot has a **brain**, a hidden [NPC](npcs) that plans its moves. [`Bots`](/api-reference/navigation/bots) adds bots and controls their AI.
 
 ## Adding a bot
 
@@ -16,37 +16,43 @@ var spawn = Nav.GetNearestPoint(position) ?? position;
 CCitadelPlayerPawn? bot = Bots.Add(Heroes.Inferno, team: 2, spawn, BotDifficulty.Hard);
 ```
 
-The bot joins as a player named `BotN`. A `null` hero picks one at random. The game assigns a lane, as for practice bots, unless you pass `assignLane: false`. The hero finishes loading shortly after `Add` returns; wait before reading its abilities.
+`Add` returns the bot's pawn, or null if bots can't play the hero, the server is full or no map is loaded. The bot joins as a player named `BotN`. A `null` hero picks a random one. `assignLane: false` skips the game's lane assignment. To remove a bot, kick it with [`Server.Kick`](/api-reference/plugin/server#kick).
 
-`Add` returns null if bots can't play the hero, the server is full or no map is loaded. To remove a bot, kick it with [`Server.Kick`](/api-reference/plugin/server#kick).
+:::note
+The hero finishes loading shortly after `Add` returns. Wait before reading its abilities.
+:::
 
 ## Bot AI
 
-Without a matchmaking lobby, bots stand still. Turn the AI on to make them play:
+Without a matchmaking lobby, bots stand still. `SetAiEnabled` turns their AI on:
 
 ```csharp
 Bots.SetAiEnabled(true);
 ```
 
-This is the `citadel_solo_bot_match` cvar; `Bots.AiEnabled` reads it.
+`Bots.AiEnabled` reads the setting, which is the `citadel_solo_bot_match` cvar.
 
 ## Lanes and difficulty
+
+| Member | Description |
+|---|---|
+| `SetBotLane(lane)` | Sets the lane the bot pushes. |
+| `BotLane` | Lane the bot pushes. |
+| `BotDifficulty` | Difficulty the bot was created with. |
 
 ```csharp
 bot.SetBotLane(LaneColor.Blue);
 ```
 
-`BotLane` is the lane the bot pushes. `BotDifficulty` is the difficulty it was created with.
-
 ## Moving a bot
 
-The brain is a [`CCitadelPlayerBotNPCBrain`](/api-reference/entities/ccitadelplayerbotnpcbrain) and takes the same orders as any NPC:
+`BotBrain` is a [`CCitadelPlayerBotNPCBrain`](/api-reference/entities/ccitadelplayerbotnpcbrain). It takes the same orders as any NPC:
 
 ```csharp
 bot.BotBrain?.MoveTo(goal);
 ```
 
-With the AI on, the brain often drops the order for its own plans, such as a zipline. With the AI off, nothing moves until the brain's movement goes into the bot's usercmds:
+With the AI on, the brain can drop the order for its own plans. With the AI off, `ApplyMovement` turns the brain's path into the bot's input:
 
 ```csharp
 public override void OnProcessUsercmds(ProcessUsercmdsEvent e)
@@ -60,15 +66,15 @@ public override void OnProcessUsercmds(ProcessUsercmdsEvent e)
 }
 ```
 
-The bot stops about `50` units from the goal. `lookAt` keeps it aiming at a point on the way.
+The bot stops about `50` units from the goal. `lookAt` aims it at a point while it moves.
 
 :::note
-`ApplyMovement` returns `false` when the brain has nowhere to go, and also for the first usercmd after `MoveTo`. Treat only a run of `false` results as arrival.
+`ApplyMovement` returns `false` when the brain has nowhere to go, and for the first usercmd after `MoveTo`. Only a run of `false` results means the bot has arrived.
 :::
 
 ## Steering a bot
 
-With the AI off, a bot does exactly what its usercmds say. `Bots.SetMoveInput` fills one in to move towards a point; with a [path follower](navigation#following-a-path) the bot walks any path:
+With the AI off, a bot follows its usercmds exactly. `Bots.SetMoveInput` fills one in to move towards a point. With a [path follower](navigation#following-a-path) the bot walks any path:
 
 ```csharp
 NavPathFollower? follower; // Set from Nav.FindPath when the bot gets a goal
