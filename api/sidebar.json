@@ -27,6 +27,8 @@
     "collapsed": true,
     "items": [
       "api-reference/entities/abilityresource",
+      "api-reference/entities/cai_basenpc",
+      "api-reference/entities/cai_citadelnpc",
       "api-reference/entities/callbackhandle",
       "api-reference/entities/cbaseentity",
       "api-reference/entities/cbasemodifier",
@@ -40,6 +42,7 @@
       "api-reference/entities/ccitadelbaseability",
       "api-reference/entities/ccitadelherocomponent",
       "api-reference/entities/ccitadelmodifiervdata",
+      "api-reference/entities/ccitadelplayerbotnpcbrain",
       "api-reference/entities/ccitadelplayercontroller",
       "api-reference/entities/ccitadelplayerpawn",
       "api-reference/entities/ccitadelziplinepath",
@@ -51,6 +54,7 @@
       "api-reference/entities/citadelherospawndata",
       "api-reference/entities/cmodifierproperty",
       "api-reference/entities/cmodifiervdata",
+      "api-reference/entities/cnpc_trooper",
       "api-reference/entities/cparticlesystem",
       "api-reference/entities/cparticlesystem-builder",
       "api-reference/entities/cplayer_observerservices",
@@ -104,6 +108,7 @@
       "api-reference/events/modifierdamageeventdata",
       "api-reference/events/modifierevent",
       "api-reference/events/modifycurrencyevent",
+      "api-reference/events/npcselectscheduleevent",
       "api-reference/events/processusercmdsevent",
       "api-reference/events/takedamageevent"
     ]
@@ -227,6 +232,23 @@
   },
   {
     "type": "category",
+    "label": "Navigation and Bots",
+    "collapsed": true,
+    "items": [
+      "api-reference/navigation/botdifficulty",
+      "api-reference/navigation/bots",
+      "api-reference/navigation/nav",
+      "api-reference/navigation/navarea",
+      "api-reference/navigation/navareaattributes",
+      "api-reference/navigation/navareaflags",
+      "api-reference/navigation/navpath",
+      "api-reference/navigation/navpathfollower",
+      "api-reference/navigation/navtraverse",
+      "api-reference/navigation/navwaypoint"
+    ]
+  },
+  {
+    "type": "category",
     "label": "Zones and Helpers",
     "collapsed": true,
     "items": [
@@ -292,10 +314,12 @@
       "api-reference/enums/lanecolor",
       "api-reference/enums/lifestate",
       "api-reference/enums/movetype",
+      "api-reference/enums/npcstate",
       "api-reference/enums/observermode_t",
       "api-reference/enums/solidflags",
       "api-reference/enums/solidtype",
       "api-reference/enums/takedamageflags",
+      "api-reference/enums/troopertype",
       "api-reference/enums/upgradeflags",
       "api-reference/enums/verticaljustify"
     ]

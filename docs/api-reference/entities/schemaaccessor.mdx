@@ -16,7 +16,11 @@ public sealed class SchemaAccessor<T> where T : unmanaged
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Entities/SchemaAccessor.cs#L8](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs#L8)
+**Source:** [Entities/SchemaAccessor.cs#L12](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs#L12)
+
+## Notes
+
+DeadworksManaged.Game has a generated, typed member for every schema field of every class, so most plugins do not need to declare one of these: `pawn.Schema.m_flRespawnTime`.
 
 ## Constructors
 
@@ -34,7 +38,7 @@ public SchemaAccessor(ReadOnlySpan<byte> className, ReadOnlySpan<byte> fieldName
 - `fieldName`: UTF-8 null-terminated field name (e.g. `"m_iHealth"u8`).
 - `networkStateChangedOffset`: Optional offset passed to NotifyStateChanged for custom chain offsets.
 
-**Source:** [Entities/SchemaAccessor.cs#L20](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs#L20)
+**Source:** [Entities/SchemaAccessor.cs#L24](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs#L24)
 
 ## Methods
 
@@ -48,7 +52,7 @@ Returns the raw pointer to the field on `entity`.
 public nint GetAddress(nint entity)
 ```
 
-**Source:** [Entities/SchemaAccessor.cs#L47](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs#L47)
+**Source:** [Entities/SchemaAccessor.cs#L51](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs#L51)
 
 ### SchemaAccessor.Get() {#get}
 
@@ -60,7 +64,7 @@ Reads the field value from `entity`.
 public T Get(nint entity)
 ```
 
-**Source:** [Entities/SchemaAccessor.cs#L53](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs#L53)
+**Source:** [Entities/SchemaAccessor.cs#L57](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs#L57)
 
 ### SchemaAccessor.Set() {#set}
 
@@ -72,4 +76,4 @@ Writes the field value to `entity`, notifying the network state if the field is 
 public void Set(nint entity, T value)
 ```
 
-**Source:** [Entities/SchemaAccessor.cs#L59](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs#L59)
+**Source:** [Entities/SchemaAccessor.cs#L63](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/SchemaAccessor.cs#L63)

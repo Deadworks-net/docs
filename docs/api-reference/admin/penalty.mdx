@@ -16,7 +16,7 @@ public sealed record Penalty
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Admin/Penalties.cs#L28](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L28)
+**Source:** [Admin/Penalties.cs#L28](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L28)
 
 ## Properties
 
@@ -30,7 +30,7 @@ Identifies this penalty in its store.
 public Guid Id { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L31](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L31)
+**Source:** [Admin/Penalties.cs#L31](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L31)
 
 ### Penalty.Type {#type}
 
@@ -42,7 +42,7 @@ What it stops the player doing.
 public required PenaltyType Type { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L33](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L33)
+**Source:** [Admin/Penalties.cs#L33](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L33)
 
 ### Penalty.SteamId64 {#steamid64}
 
@@ -54,7 +54,7 @@ The penalized player.
 public required ulong SteamId64 { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L35](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L35)
+**Source:** [Admin/Penalties.cs#L35](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L35)
 
 ### Penalty.PlayerName {#playername}
 
@@ -66,7 +66,7 @@ The player's name when the penalty was added, for display only.
 public string? PlayerName { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L37](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L37)
+**Source:** [Admin/Penalties.cs#L37](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L37)
 
 ### Penalty.CreatedUtc {#createdutc}
 
@@ -78,7 +78,7 @@ When it was added.
 public DateTime CreatedUtc { get; init; } = DateTime.UtcNow;
 ```
 
-**Source:** [Admin/Penalties.cs#L39](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L39)
+**Source:** [Admin/Penalties.cs#L39](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L39)
 
 ### Penalty.ExpiresUtc {#expiresutc}
 
@@ -90,7 +90,7 @@ When it runs out, or null for permanent.
 public DateTime? ExpiresUtc { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L41](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L41)
+**Source:** [Admin/Penalties.cs#L41](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L41)
 
 ### Penalty.Reason {#reason}
 
@@ -102,7 +102,7 @@ Why it was added.
 public string Reason { get; init; } = "";
 ```
 
-**Source:** [Admin/Penalties.cs#L43](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L43)
+**Source:** [Admin/Penalties.cs#L43](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L43)
 
 ### Penalty.AdminSteamId64 {#adminsteamid64}
 
@@ -114,7 +114,7 @@ Who added it, or 0 for the server console.
 public ulong AdminSteamId64 { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L45](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L45)
+**Source:** [Admin/Penalties.cs#L45](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L45)
 
 ### Penalty.AdminName {#adminname}
 
@@ -126,7 +126,7 @@ The admin's name at the time, for display only.
 public string? AdminName { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L47](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L47)
+**Source:** [Admin/Penalties.cs#L47](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L47)
 
 ### Penalty.RemovedUtc {#removedutc}
 
@@ -138,7 +138,7 @@ When it was lifted early (unban, ungag, ...), or replaced by a newer penalty of 
 public DateTime? RemovedUtc { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L49](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L49)
+**Source:** [Admin/Penalties.cs#L49](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L49)
 
 ### Penalty.RemovedBySteamId64 {#removedbysteamid64}
 
@@ -150,7 +150,7 @@ Who lifted or replaced it, or 0 for the server console.
 public ulong RemovedBySteamId64 { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L51](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L51)
+**Source:** [Admin/Penalties.cs#L51](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L51)
 
 ### Penalty.RemovedByName {#removedbyname}
 
@@ -162,7 +162,7 @@ The name of who lifted or replaced it, for display only; null if it hasn't been.
 public string? RemovedByName { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L53](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L53)
+**Source:** [Admin/Penalties.cs#L53](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L53)
 
 ### Penalty.RemovalReason {#removalreason}
 
@@ -174,7 +174,7 @@ Why it was lifted, if the admin said.
 public string? RemovalReason { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L55](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L55)
+**Source:** [Admin/Penalties.cs#L55](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L55)
 
 ### Penalty.ReplacedBy {#replacedby}
 
@@ -186,7 +186,7 @@ The penalty that replaced this one, if it was replaced rather than lifted.
 public Guid? ReplacedBy { get; init; }
 ```
 
-**Source:** [Admin/Penalties.cs#L57](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L57)
+**Source:** [Admin/Penalties.cs#L57](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L57)
 
 ### Penalty.IsPermanent {#ispermanent}
 
@@ -198,7 +198,7 @@ True for a penalty with no end date.
 public bool IsPermanent { get; }
 ```
 
-**Source:** [Admin/Penalties.cs#L61](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L61)
+**Source:** [Admin/Penalties.cs#L61](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L61)
 
 ## Methods
 
@@ -212,7 +212,7 @@ How it stopped applying by `nowUtc`, or null if it still applies.
 public PenaltyEnd? HowEnded(DateTime nowUtc)
 ```
 
-**Source:** [Admin/Penalties.cs#L64](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L64)
+**Source:** [Admin/Penalties.cs#L64](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L64)
 
 ### Penalty.IsActiveAt() {#isactiveat}
 
@@ -224,7 +224,7 @@ Whether it applies at `nowUtc`: not lifted and not expired.
 public bool IsActiveAt(DateTime nowUtc)
 ```
 
-**Source:** [Admin/Penalties.cs#L75](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L75)
+**Source:** [Admin/Penalties.cs#L75](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L75)
 
 ### Penalty.DescribeRemaining() {#describeremaining}
 
@@ -236,4 +236,4 @@ public bool IsActiveAt(DateTime nowUtc)
 public string DescribeRemaining(DateTime nowUtc)
 ```
 
-**Source:** [Admin/Penalties.cs#L81](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Admin/Penalties.cs#L81)
+**Source:** [Admin/Penalties.cs#L81](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Admin/Penalties.cs#L81)

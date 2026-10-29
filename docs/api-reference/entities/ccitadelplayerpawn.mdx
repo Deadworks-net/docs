@@ -17,7 +17,7 @@ public sealed class CCitadelPlayerPawn : CBasePlayerPawn
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`CBasePlayerPawn`](/api-reference/entities/cbaseplayerpawn)  
-**Source:** [Entities/CCitadelPlayerPawn.cs#L7](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L7)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L7](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L7)
 
 ## Properties
 
@@ -29,7 +29,7 @@ public sealed class CCitadelPlayerPawn : CBasePlayerPawn
 public new CCitadelPlayerController? Controller { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L11](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L11)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L11](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L11)
 
 ### CCitadelPlayerPawn.PlayerData {#playerdata}
 
@@ -39,7 +39,43 @@ public new CCitadelPlayerController? Controller { get; }
 public PlayerDataGlobal? PlayerData { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L20](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L20)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L20](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L20)
+
+### CCitadelPlayerPawn.BotBrain {#botbrain}
+
+The bot's brain, or null if this hero isn't a bot's.
+
+**Signature**
+
+```csharp
+public CCitadelPlayerBotNPCBrain? BotBrain { get; }
+```
+
+**Source:** [Entities/CCitadelPlayerPawn.cs#L23](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L23)
+
+### CCitadelPlayerPawn.BotLane {#botlane}
+
+Lane the bot pushes, or [`LaneColor.Invalid`](/api-reference/enums/lanecolor#invalid) for none.
+
+**Signature**
+
+```csharp
+public LaneColor BotLane { get; }
+```
+
+**Source:** [Entities/CCitadelPlayerPawn.cs#L31](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L31)
+
+### CCitadelPlayerPawn.BotDifficulty {#botdifficulty}
+
+The bot's difficulty, or null if this hero isn't a bot's.
+
+**Signature**
+
+```csharp
+public BotDifficulty? BotDifficulty { get; }
+```
+
+**Source:** [Entities/CCitadelPlayerPawn.cs#L42](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L42)
 
 ### CCitadelPlayerPawn.AbilityComponent {#abilitycomponent}
 
@@ -49,7 +85,7 @@ public PlayerDataGlobal? PlayerData { get; }
 public CCitadelAbilityComponent AbilityComponent { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L23](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L23)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L50](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L50)
 
 ### CCitadelPlayerPawn.HeroComponent {#herocomponent}
 
@@ -59,7 +95,7 @@ public CCitadelAbilityComponent AbilityComponent { get; }
 public CCitadelHeroComponent HeroComponent { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L26](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L26)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L53](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L53)
 
 ### CCitadelPlayerPawn.HeroID {#heroid}
 
@@ -69,7 +105,7 @@ public CCitadelHeroComponent HeroComponent { get; }
 public Heroes HeroID { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L28](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L28)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L55](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L55)
 
 ### CCitadelPlayerPawn.InRegenerationZone {#inregenerationzone}
 
@@ -79,7 +115,7 @@ public Heroes HeroID { get; }
 public bool InRegenerationZone { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L31](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L31)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L58](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L58)
 
 ### CCitadelPlayerPawn.EyeAngles {#eyeangles}
 
@@ -91,7 +127,7 @@ Networked eye angles (quantized to 11 bits, ~0.18 precision). Use ViewAngles for
 public Vector3 EyeAngles { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L35](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L35)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L62](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L62)
 
 ### CCitadelPlayerPawn.EyePosition {#eyeposition}
 
@@ -103,7 +139,7 @@ Eye position (AbsOrigin + ViewOffset). This is where the camera sits.
 public unsafe Vector3 EyePosition { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L39](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L39)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L66](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L66)
 
 ### CCitadelPlayerPawn.CameraAngles {#cameraangles}
 
@@ -115,7 +151,7 @@ Which way the player's camera is facing. Save this to restore their view later w
 public Vector3 CameraAngles { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L54](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L54)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L81](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L81)
 
 ### CCitadelPlayerPawn.ViewAngles {#viewangles}
 
@@ -127,7 +163,7 @@ Raw server-side view angles from CUserCmd (v_angle). Full float precision, no qu
 public unsafe Vector3 ViewAngles { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L57](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L57)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L84](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L84)
 
 ### CCitadelPlayerPawn.Level {#level}
 
@@ -137,7 +173,7 @@ public unsafe Vector3 ViewAngles { get; }
 public int Level { get; set; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L66](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L66)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L93](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L93)
 
 ### CCitadelPlayerPawn.RespawnTime {#respawntime}
 
@@ -147,9 +183,24 @@ public int Level { get; set; }
 public float RespawnTime { get; set; }
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L69](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L69)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L96](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L96)
 
 ## Methods
+
+### CCitadelPlayerPawn.SetBotLane() {#setbotlane}
+
+Sets the lane the bot pushes while [`Bots.AiEnabled`](/api-reference/navigation/bots#aienabled) is on. Returns false if this hero isn't a bot's.
+
+**Signature**
+
+```csharp
+public bool SetBotLane(LaneColor lane)
+```
+
+**Notes**
+[`CCitadelPlayerController.AssignedLane`](/api-reference/entities/ccitadelplayercontroller#assignedlane) may not update. Read `BotLane` instead.
+
+**Source:** [Entities/CCitadelPlayerPawn.cs#L37](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L37)
 
 ### CCitadelPlayerPawn.GetCurrency() {#getcurrency}
 
@@ -159,7 +210,7 @@ public float RespawnTime { get; set; }
 public int GetCurrency(ECurrencyType type)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L72](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L72)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L99](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L99)
 
 ### CCitadelPlayerPawn.SetCurrency() {#setcurrency}
 
@@ -169,7 +220,7 @@ public int GetCurrency(ECurrencyType type)
 public void SetCurrency(ECurrencyType type, int value)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L73](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L73)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L100](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L100)
 
 ### CCitadelPlayerPawn.TeleportWithView() {#teleportwithview}
 
@@ -191,7 +242,7 @@ var savedView = pawn.CameraAngles;
 pawn.TeleportWithView(savedPos, savedView);
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L88](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L88)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L115](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L115)
 
 ### CCitadelPlayerPawn.ModifyCurrency() {#modifycurrency}
 
@@ -203,7 +254,7 @@ Adds or removes currency from this pawn (e.g. gold, ability points). Use negativ
 public void ModifyCurrency(ECurrencyType type, int amount, ECurrencySource source, bool silent = false, bool forceGain = false, bool spendOnly = false)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L94](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L94)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L121](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L121)
 
 ### CCitadelPlayerPawn.ResetHero() {#resethero}
 
@@ -215,7 +266,7 @@ Full pawn-level hero reset: clears loadout, removes items, re-adds starting abil
 public void ResetHero(bool resetAbilities = true)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L104](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L104)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L131](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L131)
 
 ### CCitadelPlayerPawn.SwapOrReset() {#swaporreset}
 
@@ -227,7 +278,7 @@ Ensures this pawn is on `hero` with a fresh ability loadout. Swaps via [`CCitade
 public void SwapOrReset(Heroes hero, Action? onReady = null)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L118](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L118)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L145](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L145)
 
 ### CCitadelPlayerPawn.OnceHeroInitialized() {#onceheroinitialized}
 
@@ -242,7 +293,7 @@ public void OnceHeroInitialized(Action action)
 **Notes**
 The action runs synchronously inside the native InitializeHeroOnPawn return path. For the same-hero `ResetHero` case this means re-entrantly during the C# call.
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L142](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L142)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L169](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L169)
 
 ### CCitadelPlayerPawn.ResetAbilityCooldown() {#resetabilitycooldown}
 
@@ -254,7 +305,7 @@ Makes the ability in `slot` ready to use again straight away, like [`CCitadelBas
 public bool ResetAbilityCooldown(EAbilitySlot slot)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L172](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L172)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L199](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L199)
 
 ### CCitadelPlayerPawn.ResetAllAbilityCooldowns() {#resetallabilitycooldowns}
 
@@ -266,7 +317,7 @@ Makes all of this hero's abilities ready to use again straight away, like [`CCit
 public void ResetAllAbilityCooldowns()
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L184](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L184)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L211](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L211)
 
 ### CCitadelPlayerPawn.RemoveAbility() {#removeability}
 
@@ -279,7 +330,7 @@ public bool RemoveAbility(string abilityName)
 public bool RemoveAbility(CCitadelBaseAbility ability)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L192](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L192), [Entities/CCitadelPlayerPawn.cs#L200](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L200)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L219](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L219), [Entities/CCitadelPlayerPawn.cs#L227](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L227)
 
 ### CCitadelPlayerPawn.AddAbility() {#addability}
 
@@ -291,7 +342,7 @@ Adds an ability to this pawn by internal ability name into the given slot. Retur
 public CBaseEntity? AddAbility(string abilityName, ushort slot)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L205](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L205)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L232](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L232)
 
 ### CCitadelPlayerPawn.AddItem() {#additem}
 
@@ -299,16 +350,25 @@ Gives an item to this pawn by internal item name (e.g. "upgrade_sprint_booster")
 
 Items that have to be imbued (Echo Shard, Mystic Reverb, ...) are granted unattached by this overload and do nothing until imbued - use `AddItem` for those.
 
-Internal item name. Should the enhanced version of the item be given Returns the new item entity, or null on failure.
-
 **Signature**
 
 ```csharp
-public CCitadelBaseAbility? AddItem(string itemName, bool enhanced = false)
-public CCitadelBaseAbility? AddItem(string itemName, EAbilitySlot imbueSlot, bool enhanced = false)
+public CCitadelBaseAbility? AddItem(string itemName, bool enhanced = false, bool corrupted = false)
+public CCitadelBaseAbility? AddItem(string itemName, bool enhanced)
+public CCitadelBaseAbility? AddItem(string itemName, EAbilitySlot imbueSlot, bool enhanced = false, bool corrupted = false)
+public CCitadelBaseAbility? AddItem(string itemName, EAbilitySlot imbueSlot, bool enhanced)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L224](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L224), [Entities/CCitadelPlayerPawn.cs#L251](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L251)
+**Parameters**
+
+- `itemName`: Internal item name.
+- `enhanced`: Should the enhanced version of the item be given
+- `corrupted`: Should the corrupted version of the item be given. Items without a corrupted version are unaffected.
+
+**Returns**
+The new item entity, or null on failure.
+
+**Source:** [Entities/CCitadelPlayerPawn.cs#L252](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L252), [Entities/CCitadelPlayerPawn.cs#L265](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L265), [Entities/CCitadelPlayerPawn.cs#L284](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L284), [Entities/CCitadelPlayerPawn.cs#L291](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L291)
 
 ### CCitadelPlayerPawn.TryAddItem() {#tryadditem}
 
@@ -317,10 +377,11 @@ public CCitadelBaseAbility? AddItem(string itemName, EAbilitySlot imbueSlot, boo
 **Signature**
 
 ```csharp
-public ImbueResult TryAddItem(string itemName, EAbilitySlot imbueSlot, out CCitadelBaseAbility? item, bool enhanced = false)
+public ImbueResult TryAddItem(string itemName, EAbilitySlot imbueSlot, out CCitadelBaseAbility? item, bool enhanced = false, bool corrupted = false)
+public ImbueResult TryAddItem(string itemName, EAbilitySlot imbueSlot, out CCitadelBaseAbility? item, bool enhanced)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L260](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L260)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L297](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L297), [Entities/CCitadelPlayerPawn.cs#L324](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L324)
 
 ### CCitadelPlayerPawn.ImbueItem() {#imbueitem}
 
@@ -333,7 +394,7 @@ public ImbueResult ImbueItem(string itemName, EAbilitySlot slot)
 public ImbueResult ImbueItem(CCitadelBaseAbility item, EAbilitySlot slot)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L290](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L290), [Entities/CCitadelPlayerPawn.cs#L300](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L300)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L332](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L332), [Entities/CCitadelPlayerPawn.cs#L342](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L342)
 
 ### CCitadelPlayerPawn.CanImbue() {#canimbue}
 
@@ -345,7 +406,7 @@ True when `itemName` can be imbued into the ability this pawn has in `slot`. Fal
 public bool CanImbue(string itemName, EAbilitySlot slot)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L316](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L316)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L358](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L358)
 
 ### CCitadelPlayerPawn.RemoveItem() {#removeitem}
 
@@ -357,7 +418,7 @@ Removes an item from this pawn by name, using the ability removal path. This byp
 public bool RemoveItem(string itemName)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L327](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L327)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L369](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L369)
 
 ### CCitadelPlayerPawn.ExecuteAbilityBySlot() {#executeabilitybyslot}
 
@@ -369,7 +430,7 @@ Executes the ability in the given slot on this pawn's ability component.
 public int ExecuteAbilityBySlot(EAbilitySlot slot, bool altCast = false, byte flags = 0)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L332](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L332)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L374](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L374)
 
 ### CCitadelPlayerPawn.ExecuteAbilityByID() {#executeabilitybyid}
 
@@ -381,7 +442,7 @@ Executes an ability by its runtime ability ID on this pawn's ability component.
 public int ExecuteAbilityByID(int abilityID, bool altCast = false, byte flags = 0)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L337](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L337)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L379](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L379)
 
 ### CCitadelPlayerPawn.ExecuteAbility() {#executeability}
 
@@ -393,7 +454,7 @@ Executes a specific ability entity on this pawn's ability component.
 public int ExecuteAbility(CBaseEntity ability, bool altCast = false, byte flags = 0)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L342](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L342)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L384](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L384)
 
 ### CCitadelPlayerPawn.GetAbilityBySlot() {#getabilitybyslot}
 
@@ -405,7 +466,7 @@ Gets the ability entity in the given slot from this pawn's ability component.
 public CBaseEntity? GetAbilityBySlot(EAbilitySlot slot)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L347](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L347)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L389](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L389)
 
 ### CCitadelPlayerPawn.ToggleActivate() {#toggleactivate}
 
@@ -417,7 +478,7 @@ Activates or deactivates an ability on this pawn (toggle). This is the actual ac
 public void ToggleActivate(CBaseEntity ability, bool activate = true)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L352](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L352)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L394](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L394)
 
 ### CCitadelPlayerPawn.GetStamina() {#getstamina}
 
@@ -429,7 +490,7 @@ Current stamina value (m_flCurrentValue on m_ResourceStamina).
 public float GetStamina()
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L357](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L357)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L399](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L399)
 
 ### CCitadelPlayerPawn.SetStamina() {#setstamina}
 
@@ -441,7 +502,7 @@ Helper to set stamina properly.
 public void SetStamina(float value)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L360](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L360)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L402](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L402)
 
 ### CCitadelPlayerPawn.SellItem() {#sellitem}
 
@@ -453,4 +514,4 @@ Sells an item from this pawn by internal item name. This always refunds gold (at
 public bool SellItem(string itemName, bool fullRefund = false, bool forceSellPrice = false)
 ```
 
-**Source:** [Entities/CCitadelPlayerPawn.cs#L375](https://github.com/Deadworks-net/deadworks/blob/2751dc99337352295e6b662a9dbdc8621f560ed8/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L375)
+**Source:** [Entities/CCitadelPlayerPawn.cs#L417](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Entities/CCitadelPlayerPawn.cs#L417)
