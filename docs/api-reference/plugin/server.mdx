@@ -16,7 +16,7 @@ public static class Server
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Server.cs#L7](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L7)
+**Source:** [Server.cs#L7](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L7)
 
 ## Properties
 
@@ -30,7 +30,7 @@ The current map name, set when the server starts up.
 public static string MapName { get; internal set; } = "";
 ```
 
-**Source:** [Server.cs#L9](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L9)
+**Source:** [Server.cs#L9](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L9)
 
 ### Server.IsChangingLevel {#ischanginglevel}
 
@@ -42,7 +42,7 @@ True while the map is changing, until the next map's `IDeadworksPlugin.OnStartup
 public static bool IsChangingLevel { get; }
 ```
 
-**Source:** [Server.cs#L18](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L18)
+**Source:** [Server.cs#L18](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L18)
 
 ## Methods
 
@@ -64,7 +64,7 @@ public static void ChangeLevel(string map)
 
 - `ArgumentException`: `map` is empty or isn't a plain map name.
 
-**Source:** [Server.cs#L32](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L32)
+**Source:** [Server.cs#L32](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L32)
 
 ### Server.ClientCommand() {#clientcommand}
 
@@ -76,7 +76,7 @@ Sends a console command to the client in the given slot.
 public static void ClientCommand(int slot, string command)
 ```
 
-**Source:** [Server.cs#L60](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L60)
+**Source:** [Server.cs#L60](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L60)
 
 ### Server.ExecuteCommand() {#executecommand}
 
@@ -89,7 +89,7 @@ public static void ExecuteCommand(string command)
 public static void ExecuteCommand(string command, Action<string> onOutput)
 ```
 
-**Source:** [Server.cs#L68](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L68), [Server.cs#L287](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L287)
+**Source:** [Server.cs#L68](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L68), [Server.cs#L287](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L287)
 
 ### Server.ExecuteCommandAsPlayer() {#executecommandasplayer}
 
@@ -109,7 +109,7 @@ public static bool ExecuteCommandAsPlayer(int slot, string command)
 **Returns**
 False if there is no such command or the slot is invalid.
 
-**Source:** [Server.cs#L82](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L82)
+**Source:** [Server.cs#L82](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L82)
 
 ### Server.SetAddons() {#setaddons}
 
@@ -121,7 +121,7 @@ Sets the server's addons string. Clients receive this in SignonState/connection 
 public static void SetAddons(string addons)
 ```
 
-**Source:** [Server.cs#L90](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L90)
+**Source:** [Server.cs#L90](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L90)
 
 ### Server.AddSearchPath() {#addsearchpath}
 
@@ -139,7 +139,7 @@ public static bool AddSearchPath(string path, string pathID = "GAME", bool addTo
 - `pathID`: Search path group (e.g. "GAME", "MOD").
 - `addToHead`: If true, path is searched first (highest priority).
 
-**Source:** [Server.cs#L101](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L101)
+**Source:** [Server.cs#L101](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L101)
 
 ### Server.EnumerateConVars() {#enumerateconvars}
 
@@ -151,7 +151,7 @@ Enumerates all registered ConVars by index.
 public static List<ConVarEntry> EnumerateConVars()
 ```
 
-**Source:** [Server.cs#L111](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L111)
+**Source:** [Server.cs#L111](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L111)
 
 ### Server.EnumerateConCommands() {#enumerateconcommands}
 
@@ -163,7 +163,7 @@ Enumerates all registered ConCommands by index.
 public static List<ConCommandEntry> EnumerateConCommands()
 ```
 
-**Source:** [Server.cs#L125](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L125)
+**Source:** [Server.cs#L125](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L125)
 
 ### Server.AddEngineLogListener() {#addengineloglistener}
 
@@ -175,7 +175,7 @@ Adds a listener to receive all engine logging output. Multiple listeners are sup
 public static void AddEngineLogListener(EngineLogHandler handler)
 ```
 
-**Source:** [Server.cs#L156](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L156)
+**Source:** [Server.cs#L156](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L156)
 
 ### Server.RemoveEngineLogListener() {#removeengineloglistener}
 
@@ -187,7 +187,7 @@ Removes a previously added engine log listener. The native listener is unregiste
 public static void RemoveEngineLogListener(EngineLogHandler handler)
 ```
 
-**Source:** [Server.cs#L170](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L170)
+**Source:** [Server.cs#L170](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L170)
 
 ### Server.CreateFakeClient() {#createfakeclient}
 
@@ -199,7 +199,7 @@ Connects a fake client ("bot") that occupies a real player slot but has no netch
 public static int CreateFakeClient(string name)
 ```
 
-**Source:** [Server.cs#L186](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L186)
+**Source:** [Server.cs#L186](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L186)
 
 ### Server.Kick() {#kick}
 
@@ -212,7 +212,7 @@ public static void Kick(int slot, ENetworkDisconnectionReason reason = ENetworkD
 public static void Kick(int slot, string message, ENetworkDisconnectionReason reason = ENetworkDisconnectionReason.NetworkDisconnectKicked)
 ```
 
-**Source:** [Server.cs#L198](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L198), [Server.cs#L205](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L205)
+**Source:** [Server.cs#L198](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L198), [Server.cs#L205](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L205)
 
 ### Server.GetMapList() {#getmaplist}
 
@@ -224,7 +224,7 @@ Maps the server can change to: the game's own `.vpk` maps plus `extra_maps` from
 public static IReadOnlyList<string> GetMapList()
 ```
 
-**Source:** [Server.cs#L236](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L236)
+**Source:** [Server.cs#L236](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L236)
 
 ### Server.IsMapValid() {#ismapvalid}
 
@@ -236,7 +236,7 @@ Whether `map` can be loaded: the engine knows it, or it's in `GetMapList`. Names
 public static bool IsMapValid(string map)
 ```
 
-**Source:** [Server.cs#L254](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L254)
+**Source:** [Server.cs#L254](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L254)
 
 ### Server.ChangeMap() {#changemap}
 
@@ -248,7 +248,7 @@ Changes to `map` if `IsMapValid` accepts it. Returns false otherwise.
 public static bool ChangeMap(string map)
 ```
 
-**Source:** [Server.cs#L273](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L273)
+**Source:** [Server.cs#L273](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L273)
 
 ### Server.HasCommandLineParm() {#hascommandlineparm}
 
@@ -260,4 +260,4 @@ Returns true if the given parameter is present on the engine command line (e.g. 
 public static bool HasCommandLineParm(string parm)
 ```
 
-**Source:** [Server.cs#L295](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Server.cs#L295)
+**Source:** [Server.cs#L295](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Server.cs#L295)

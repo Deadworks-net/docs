@@ -1,5 +1,5 @@
 {
-  "commit": "ed68d481",
+  "commit": "65fee60e",
   "types": [
     {
       "namespace": "DeadworksManaged.Api",
@@ -1175,7 +1175,7 @@
           "file": "managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs",
           "line": 33,
           "doc": {
-            "summary": "Makes the NPC a hero\u0027s minion, like Necro\u0027s skeletons, or a normal NPC again.",
+            "summary": "Makes the NPC a hero\u0027s minion, like Graves\u0027s skeletons, or a normal NPC again.",
             "remarks": "A minion\u0027s damage and kills count for its living {@cref Summoner}. Minions also attack neutral creeps.",
             "params": {},
             "typeParams": {},

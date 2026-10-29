@@ -16,7 +16,7 @@ public static class Nav
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Nav.cs#L173](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L173)
+**Source:** [Nav.cs#L173](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L173)
 
 ## Notes
 
@@ -34,7 +34,7 @@ The most waypoints a path can have.
 public const int MaxPathPoints = 256;
 ```
 
-**Source:** [Nav.cs#L177](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L177)
+**Source:** [Nav.cs#L177](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L177)
 
 ## Methods
 
@@ -55,7 +55,7 @@ public static Vector3? GetNearestPoint(Vector3 position, CBaseEntity walker, flo
 - `maxDistance`: Search radius.
 - `hull`: Navmesh hull.
 
-**Source:** [Nav.cs#L196](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L196), [Nav.cs#L205](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L205)
+**Source:** [Nav.cs#L196](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L196), [Nav.cs#L205](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L205)
 
 ### Nav.GetArea() {#getarea}
 
@@ -67,7 +67,7 @@ Returns the nav area nearest `position`, or null if none is in range.
 public static NavArea? GetArea(Vector3 position, float maxDistance = 200f, int hull = 0)
 ```
 
-**Source:** [Nav.cs#L209](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L209)
+**Source:** [Nav.cs#L209](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L209)
 
 ### Nav.GetGroundHeight() {#getgroundheight}
 
@@ -82,7 +82,7 @@ public static float? GetGroundHeight(Vector3 position, float maxDistance = 1000f
 **Notes**
 Uses the nearest area in 3D: a point at bridge height gets the bridge, not the ground under it.
 
-**Source:** [Nav.cs#L220](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L220)
+**Source:** [Nav.cs#L220](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L220)
 
 ### Nav.Raycast() {#raycast}
 
@@ -104,7 +104,7 @@ public static bool Raycast(Vector3 start, Vector3 end, out Vector3 stoppedAt, in
 **Notes**
 Steps or drops over 20 units stop it. Nav blockers don't. Fails if `start` is more than 200 units from the navmesh. Cheaper than `FindPath`.
 
-**Source:** [Nav.cs#L238](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L238)
+**Source:** [Nav.cs#L238](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L238)
 
 ### Nav.GetRandomPoint() {#getrandompoint}
 
@@ -119,7 +119,7 @@ public static Vector3? GetRandomPoint(Vector3 origin, float minDistance, float m
 **Notes**
 `maxDistance` is capped at 6000. Larger values cost more.
 
-**Source:** [Nav.cs#L253](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L253)
+**Source:** [Nav.cs#L253](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L253)
 
 ### Nav.FindPath() {#findpath}
 
@@ -143,7 +143,7 @@ public static NavPath? FindPath(Vector3 start, Vector3 goal, CBaseEntity walker,
 **Notes**
 Both ends must be on the navmesh. Snap them with `GetNearestPoint`. Takes about 1 ms across half the map, 3 ms for a failed search. Uses the hull's default costs, so it ignores per-NPC rules such as a trooper's lane.
 
-**Source:** [Nav.cs#L272](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L272), [Nav.cs#L294](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L294)
+**Source:** [Nav.cs#L272](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L272), [Nav.cs#L294](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L294)
 
 ### Nav.CreateBlocker() {#createblocker}
 
@@ -165,7 +165,7 @@ public static CBaseEntity? CreateBlocker(Vector3 center, Vector3 halfExtents, Ve
 **Notes**
 Takes effect shortly after the call.
 
-**Source:** [Nav.cs#L307](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L307)
+**Source:** [Nav.cs#L307](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L307)
 
 ### Nav.GetHull() {#gethull}
 
@@ -177,4 +177,4 @@ Returns the hull an NPC or hero paths with, or 0 for other entities.
 public static int GetHull(CBaseEntity entity)
 ```
 
-**Source:** [Nav.cs#L323](https://github.com/Deadworks-net/deadworks/blob/ed68d481/managed/DeadworksManaged.Api/Nav.cs#L323)
+**Source:** [Nav.cs#L323](https://github.com/Deadworks-net/deadworks/blob/65fee60e/managed/DeadworksManaged.Api/Nav.cs#L323)

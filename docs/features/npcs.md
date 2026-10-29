@@ -78,7 +78,7 @@ A schedule the NPC's class lacks runs `SCHED_IDLE_STAND` and logs `No CASE for S
 
 ## Minions
 
-A **minion** fights for a hero, like Necro's skeletons. Its damage and kills count for the hero:
+A **minion** fights for a hero, like Graves's skeletons. Its damage and kills count for the hero:
 
 ```csharp
 trooper.SetMinion(true);
