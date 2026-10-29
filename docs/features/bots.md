@@ -20,10 +20,6 @@ The bot joins as a player named `BotN`. A `null` hero picks one at random. The g
 
 `Add` returns null if bots can't play the hero, the server is full or no map is loaded. To remove a bot, kick it with [`Server.Kick`](/api-reference/plugin/server#kick).
 
-:::warning
-A bot placed in the enemy base dies within seconds.
-:::
-
 ## Bot AI
 
 Without a matchmaking lobby, bots stand still. Turn the AI on to make them play:
@@ -32,7 +28,7 @@ Without a matchmaking lobby, bots stand still. Turn the AI on to make them play:
 Bots.SetAiEnabled(true);
 ```
 
-Bots then push lanes, take ziplines and fight. This is the `citadel_solo_bot_match` cvar; `Bots.AiEnabled` reads it.
+This is the `citadel_solo_bot_match` cvar; `Bots.AiEnabled` reads it.
 
 ## Lanes and difficulty
 

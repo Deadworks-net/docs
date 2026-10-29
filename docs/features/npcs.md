@@ -35,10 +35,6 @@ var guardian = CAI_BaseNPC.Create("npc_boss_tier1", position, team: 3);
 
 `SubclassNames` in `DeadworksManaged.Game` lists the names. That assembly also has a `Spawn` function per subclass, such as `Spawn.trooper_normal`, which takes spawn key values. Troopers spawned that way get no lane (`Lane` is 0).
 
-:::warning
-A trooper placed near the enemy base dies within seconds.
-:::
-
 ## Orders
 
 These work on any NPC:

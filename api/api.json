@@ -1,5 +1,5 @@
 {
-  "commit": "bca3f615",
+  "commit": "65bce38d",
   "types": [
     {
       "namespace": "DeadworksManaged.Api",
@@ -728,7 +728,7 @@
             "params": {
               "hero": "Hero. Null picks a random one.",
               "team": "2 Amber, 3 Sapphire.",
-              "position": "Spawn position. Use a navmesh point outside the enemy base.",
+              "position": "Spawn position, on the navmesh.",
               "difficulty": "Null uses \u0060citadel_default_bot_difficulty\u0060.",
               "assignLane": "Let the game pick a lane."
             },

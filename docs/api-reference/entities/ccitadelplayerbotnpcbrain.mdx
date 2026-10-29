@@ -17,7 +17,7 @@ public sealed class CCitadelPlayerBotNPCBrain : CAI_CitadelNPC
 
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`CAI_CitadelNPC`](/api-reference/entities/cai_citadelnpc)  
-**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L15](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L15)
+**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L15](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L15)
 
 ## Notes
 
@@ -35,7 +35,7 @@ Hero this brain drives.
 public CCitadelPlayerPawn? Pawn { get; }
 ```
 
-**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L29](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L29)
+**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L29](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L29)
 
 ## Methods
 
@@ -57,4 +57,4 @@ public bool ApplyMovement(CCitadelUserCmdPB usercmd, Vector3? lookAt = null)
 **Notes**
 Call on each of the bot's usercmds in `IDeadworksPlugin.OnProcessUsercmds`, with [`Bots.AiEnabled`](/api-reference/navigation/bots#aienabled) off, after [`CAI_BaseNPC.MoveTo`](/api-reference/entities/cai_basenpc#moveto). The first usercmd after `MoveTo` also returns false: treat only several false results in a row as arrival. The bot stops about 50 units from the goal.
 
-**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L48](https://github.com/Deadworks-net/deadworks/blob/bca3f615/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L48)
+**Source:** [Entities/CCitadelPlayerBotNPCBrain.cs#L48](https://github.com/Deadworks-net/deadworks/blob/65bce38d/managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs#L48)
