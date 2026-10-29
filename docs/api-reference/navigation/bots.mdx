@@ -16,7 +16,7 @@ public static class Bots
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Bots.cs#L9](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Bots.cs#L9)
+**Source:** [Bots.cs#L9](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Bots.cs#L9)
 
 ## Notes
 
@@ -34,7 +34,7 @@ Whether bot heroes play on their own. Off by default without a matchmaking lobby
 public static bool AiEnabled { get; }
 ```
 
-**Source:** [Bots.cs#L97](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Bots.cs#L97)
+**Source:** [Bots.cs#L97](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Bots.cs#L97)
 
 ### Bots.Brains {#brains}
 
@@ -46,7 +46,7 @@ Every bot hero's brain on the map.
 public static IEnumerable<CCitadelPlayerBotNPCBrain> Brains { get; }
 ```
 
-**Source:** [Bots.cs#L114](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Bots.cs#L114)
+**Source:** [Bots.cs#L114](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Bots.cs#L114)
 
 ## Methods
 
@@ -71,7 +71,7 @@ public static CCitadelPlayerPawn? Add(Heroes? hero, int team, Vector3 position, 
 **Notes**
 The bot is a fake client named `BotN`. Its hero finishes loading a moment later; wait before reading its abilities. Remove it with [`Server.Kick`](/api-reference/plugin/server#kick). It plays on its own only while `AiEnabled` is on.
 
-**Source:** [Bots.cs#L24](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Bots.cs#L24)
+**Source:** [Bots.cs#L24](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Bots.cs#L24)
 
 ### Bots.SetMoveInput() {#setmoveinput}
 
@@ -91,7 +91,7 @@ public static void SetMoveInput(CCitadelUserCmdPB usercmd, CCitadelPlayerPawn pa
 - `lookAt`: A point to aim at while moving. Null aims where it is going.
 - `jump`: Press jump.
 
-**Source:** [Bots.cs#L55](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Bots.cs#L55)
+**Source:** [Bots.cs#L55](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Bots.cs#L55)
 
 ### Bots.SetAiEnabled() {#setaienabled}
 
@@ -103,4 +103,4 @@ Sets `AiEnabled` for every bot. Returns false if no map is loaded.
 public static bool SetAiEnabled(bool enabled)
 ```
 
-**Source:** [Bots.cs#L105](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Bots.cs#L105)
+**Source:** [Bots.cs#L105](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Bots.cs#L105)

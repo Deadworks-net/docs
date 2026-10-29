@@ -1,5 +1,5 @@
 {
-  "commit": "f7f2cba2",
+  "commit": "7da5cd7f",
   "types": [
     {
       "namespace": "DeadworksManaged.Api",
@@ -999,10 +999,10 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 104,
+          "line": 106,
           "doc": {
             "summary": "Sends the NPC to \u0060goal\u0060, as \u0060npc_go\u0060 does, without cheats.",
-            "remarks": "The NPC ignores enemies and damage until it arrives or the path fails, unless \u0060npc_go_allow_interrupt_by_ai_conditions\u0060 is on. It then resumes its own behaviour. Most orders more than 3000 units of path away fail. To follow a moving target, call this again every half second. The goal need not be on the navmesh.",
+            "remarks": "The NPC ignores enemies and damage until it arrives or the path fails, unless \u0060npc_go_allow_interrupt_by_ai_conditions\u0060 is on. It then resumes its own behaviour. Most orders more than 3000 units of path away fail, and nearer ones can fail partway: the NPC stops and runs \u0060SCHED_FAIL\u0060. Order a long trip in legs along {@cref Nav.FindPath}, and order again after a failure. To follow a moving target, call this again every half second. The goal need not be on the navmesh.",
             "params": {
               "goal": "Where to go.",
               "run": "Run instead of walking.",
@@ -1023,7 +1023,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 111,
+          "line": 113,
           "doc": {
             "summary": "Drops the current movement goal, as \u0060npc_stop_moving\u0060 does. The AI picks a new schedule on its next think.",
             "params": {
@@ -1044,7 +1044,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 118,
+          "line": 120,
           "doc": {
             "summary": "Sets the NPC\u0027s enemy, or clears it with null.",
             "remarks": "The AI re-chooses its enemy every think and may replace this one, for example with a closer target. It never keeps an enemy on its own team.",
@@ -1064,7 +1064,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 126,
+          "line": 128,
           "doc": {
             "summary": "Starts the named schedule, such as \u0060SCHED_IDLE_STAND\u0060. Returns false if the NPC refuses it.",
             "remarks": "The schedule runs until it finishes or is interrupted, then the NPC picks its next one; {@cref IDeadworksPlugin.OnNpcSelectSchedule} can replace that choice. A schedule the NPC\u0027s class does not have runs \u0060SCHED_IDLE_STAND\u0060 and logs \u0022No CASE for Schedule Type\u0022.",
@@ -1084,7 +1084,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs",
-          "line": 136,
+          "line": 138,
           "doc": {
             "summary": "Changes the NPC\u0027s AI state. {@cref NpcState.Idle} also clears the enemy, and the game sometimes turns it into {@cref NpcState.Alert}.",
             "params": {},
@@ -4221,10 +4221,10 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Entities/CCitadelPlayerBotNPCBrain.cs",
-          "line": 48,
+          "line": 49,
           "doc": {
             "summary": "Fills in a usercmd to walk the bot along its brain\u0027s path. Returns false, leaving the usercmd alone, if the brain has nowhere to go.",
-            "remarks": "Call from {@cref IDeadworksPlugin.OnProcessUsercmds} on each of the bot\u0027s usercmds while {@cref Bots.AiEnabled} is off, after {@cref CAI_BaseNPC.MoveTo}. The bot stops about 50 units from the goal.",
+            "remarks": "Call from {@cref IDeadworksPlugin.OnProcessUsercmds} on each of the bot\u0027s usercmds while {@cref Bots.AiEnabled} is off, after {@cref CAI_BaseNPC.MoveTo}. The brain starts moving on its next think, so the first usercmd after the order returns false; only a run of false results means the bot has arrived or given up. The bot stops about 50 units from the goal.",
             "params": {
               "usercmd": "The usercmd to fill in.",
               "lookAt": "A point to aim at while moving. Null aims where it is going."
@@ -12530,8 +12530,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "BroadcastEventCount",
-          "signature": "BroadcastEventCount = 0x14",
+          "name": "StreetBrawlResetForNewRoundBroadcast",
+          "signature": "StreetBrawlResetForNewRoundBroadcast = 0x14",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12539,8 +12539,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ModifierGained",
-          "signature": "ModifierGained = 0x14",
+          "name": "BroadcastEventCount",
+          "signature": "BroadcastEventCount = 0x15",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12548,8 +12548,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ModifierLost",
-          "signature": "ModifierLost = 0x15",
+          "name": "ModifierGained",
+          "signature": "ModifierGained = 0x15",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12557,8 +12557,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ScriptedEvent",
-          "signature": "ScriptedEvent = 0x16",
+          "name": "ModifierLost",
+          "signature": "ModifierLost = 0x16",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12566,8 +12566,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PreDamageTaken",
-          "signature": "PreDamageTaken = 0x17",
+          "name": "ScriptedEvent",
+          "signature": "ScriptedEvent = 0x17",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12575,8 +12575,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "DamageTaken",
-          "signature": "DamageTaken = 0x18",
+          "name": "PreDamageTaken",
+          "signature": "PreDamageTaken = 0x18",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12584,8 +12584,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "Killed",
-          "signature": "Killed = 0x19",
+          "name": "DamageTaken",
+          "signature": "DamageTaken = 0x19",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12593,8 +12593,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "HealthTaken",
-          "signature": "HealthTaken = 0x1a",
+          "name": "Killed",
+          "signature": "Killed = 0x1a",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12602,8 +12602,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ParentActivated",
-          "signature": "ParentActivated = 0x1b",
+          "name": "HealthTaken",
+          "signature": "HealthTaken = 0x1b",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12611,8 +12611,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ModelChanged",
-          "signature": "ModelChanged = 0x1c",
+          "name": "ParentActivated",
+          "signature": "ParentActivated = 0x1c",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12620,8 +12620,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "StartTouch",
-          "signature": "StartTouch = 0x1d",
+          "name": "ModelChanged",
+          "signature": "ModelChanged = 0x1d",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12629,8 +12629,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PropBroke",
-          "signature": "PropBroke = 0x1e",
+          "name": "StartTouch",
+          "signature": "StartTouch = 0x1e",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12638,8 +12638,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "FullBodyRagdollCreated",
-          "signature": "FullBodyRagdollCreated = 0x1f",
+          "name": "PropBroke",
+          "signature": "PropBroke = 0x1f",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12647,8 +12647,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "FullBodyRagdollRemoved",
-          "signature": "FullBodyRagdollRemoved = 0x20",
+          "name": "FullBodyRagdollCreated",
+          "signature": "FullBodyRagdollCreated = 0x20",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12656,8 +12656,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "CasterSpawnedEntity",
-          "signature": "CasterSpawnedEntity = 0x21",
+          "name": "FullBodyRagdollRemoved",
+          "signature": "FullBodyRagdollRemoved = 0x21",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12665,8 +12665,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "OnBecomeGroundFor",
-          "signature": "OnBecomeGroundFor = 0x22",
+          "name": "CasterSpawnedEntity",
+          "signature": "CasterSpawnedEntity = 0x22",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12674,8 +12674,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AbilityCastStarted",
-          "signature": "AbilityCastStarted = 0x23",
+          "name": "OnBecomeGroundFor",
+          "signature": "OnBecomeGroundFor = 0x23",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12683,8 +12683,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AbilityPreExecuted",
-          "signature": "AbilityPreExecuted = 0x24",
+          "name": "AbilityCastStarted",
+          "signature": "AbilityCastStarted = 0x24",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12692,8 +12692,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AbilityExecuted",
-          "signature": "AbilityExecuted = 0x25",
+          "name": "AbilityPreExecuted",
+          "signature": "AbilityPreExecuted = 0x25",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12701,8 +12701,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AbilitySelected",
-          "signature": "AbilitySelected = 0x26",
+          "name": "AbilityExecuted",
+          "signature": "AbilityExecuted = 0x26",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12710,8 +12710,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AbilityAdded",
-          "signature": "AbilityAdded = 0x27",
+          "name": "AbilitySelected",
+          "signature": "AbilitySelected = 0x27",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12719,8 +12719,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ItemRemoved",
-          "signature": "ItemRemoved = 0x28",
+          "name": "AbilityAdded",
+          "signature": "AbilityAdded = 0x28",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12728,8 +12728,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ItemPreCast",
-          "signature": "ItemPreCast = 0x29",
+          "name": "ItemRemoved",
+          "signature": "ItemRemoved = 0x29",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12737,8 +12737,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "GunFired",
-          "signature": "GunFired = 0x2a",
+          "name": "ItemPreCast",
+          "signature": "ItemPreCast = 0x2a",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12746,8 +12746,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "BulletCreated",
-          "signature": "BulletCreated = 0x2b",
+          "name": "GunFired",
+          "signature": "GunFired = 0x2b",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12755,8 +12755,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "BulletHit",
-          "signature": "BulletHit = 0x2c",
+          "name": "BulletCreated",
+          "signature": "BulletCreated = 0x2c",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12764,8 +12764,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AbilityAsBulletHit",
-          "signature": "AbilityAsBulletHit = 0x2d",
+          "name": "BulletHit",
+          "signature": "BulletHit = 0x2d",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12773,8 +12773,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ProjectileHit",
-          "signature": "ProjectileHit = 0x2e",
+          "name": "AbilityAsBulletHit",
+          "signature": "AbilityAsBulletHit = 0x2e",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12782,8 +12782,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "FiredLastShotInClip",
-          "signature": "FiredLastShotInClip = 0x2f",
+          "name": "ProjectileHit",
+          "signature": "ProjectileHit = 0x2f",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12791,8 +12791,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "CancelModifiersUnassociatedWithCasterAbilities",
-          "signature": "CancelModifiersUnassociatedWithCasterAbilities = 0x30",
+          "name": "FiredLastShotInClip",
+          "signature": "FiredLastShotInClip = 0x30",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12800,8 +12800,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "OnPreAbilityChannelStarted",
-          "signature": "OnPreAbilityChannelStarted = 0x31",
+          "name": "CancelModifiersUnassociatedWithCasterAbilities",
+          "signature": "CancelModifiersUnassociatedWithCasterAbilities = 0x31",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12809,8 +12809,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "OnAbilityChannelFinished",
-          "signature": "OnAbilityChannelFinished = 0x32",
+          "name": "OnPreAbilityChannelStarted",
+          "signature": "OnPreAbilityChannelStarted = 0x32",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12818,8 +12818,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PlayerKilled",
-          "signature": "PlayerKilled = 0x33",
+          "name": "OnAbilityChannelFinished",
+          "signature": "OnAbilityChannelFinished = 0x33",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12827,8 +12827,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "NpcKilled",
-          "signature": "NpcKilled = 0x34",
+          "name": "PlayerKilled",
+          "signature": "PlayerKilled = 0x34",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12836,8 +12836,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "LandedOnGround",
-          "signature": "LandedOnGround = 0x35",
+          "name": "NpcKilled",
+          "signature": "NpcKilled = 0x35",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12845,8 +12845,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AttachedToZipline",
-          "signature": "AttachedToZipline = 0x36",
+          "name": "LandedOnGround",
+          "signature": "LandedOnGround = 0x36",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12854,8 +12854,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "FiredFirstShotInBurst",
-          "signature": "FiredFirstShotInBurst = 0x37",
+          "name": "AttachedToZipline",
+          "signature": "AttachedToZipline = 0x37",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12863,8 +12863,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "FiredLastShotInBurst",
-          "signature": "FiredLastShotInBurst = 0x38",
+          "name": "FiredFirstShotInBurst",
+          "signature": "FiredFirstShotInBurst = 0x38",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12872,8 +12872,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "BulletRemoved",
-          "signature": "BulletRemoved = 0x39",
+          "name": "FiredLastShotInBurst",
+          "signature": "FiredLastShotInBurst = 0x39",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12881,8 +12881,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AttackReflected",
-          "signature": "AttackReflected = 0x3a",
+          "name": "BulletRemoved",
+          "signature": "BulletRemoved = 0x3a",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12890,8 +12890,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PlayerGroundDashStarted",
-          "signature": "PlayerGroundDashStarted = 0x3b",
+          "name": "AttackReflected",
+          "signature": "AttackReflected = 0x3b",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12899,8 +12899,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PlayerGroundDashFinished",
-          "signature": "PlayerGroundDashFinished = 0x3c",
+          "name": "PlayerGroundDashStarted",
+          "signature": "PlayerGroundDashStarted = 0x3c",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12908,8 +12908,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PlayerReloadStarted",
-          "signature": "PlayerReloadStarted = 0x3d",
+          "name": "PlayerGroundDashFinished",
+          "signature": "PlayerGroundDashFinished = 0x3d",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12917,8 +12917,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PlayerReloadFinished",
-          "signature": "PlayerReloadFinished = 0x3e",
+          "name": "PlayerReloadStarted",
+          "signature": "PlayerReloadStarted = 0x3e",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12926,8 +12926,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PlayerSlideStarted",
-          "signature": "PlayerSlideStarted = 0x3f",
+          "name": "PlayerReloadFinished",
+          "signature": "PlayerReloadFinished = 0x3f",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12935,8 +12935,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "UnitHealed",
-          "signature": "UnitHealed = 0x40",
+          "name": "PlayerSlideStarted",
+          "signature": "PlayerSlideStarted = 0x40",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12944,8 +12944,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PreOwnerTakeAdjustedDamage",
-          "signature": "PreOwnerTakeAdjustedDamage = 0x41",
+          "name": "UnitHealed",
+          "signature": "UnitHealed = 0x41",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12953,8 +12953,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "UnitShieldRemoved",
-          "signature": "UnitShieldRemoved = 0x42",
+          "name": "PreOwnerTakeAdjustedDamage",
+          "signature": "PreOwnerTakeAdjustedDamage = 0x42",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12962,8 +12962,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "UnitShieldAbsorbedDamage",
-          "signature": "UnitShieldAbsorbedDamage = 0x43",
+          "name": "UnitShieldRemoved",
+          "signature": "UnitShieldRemoved = 0x43",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12971,8 +12971,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AddAbilityBonus",
-          "signature": "AddAbilityBonus = 0x44",
+          "name": "UnitShieldAbsorbedDamage",
+          "signature": "UnitShieldAbsorbedDamage = 0x44",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12980,8 +12980,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AbilityInterrupted",
-          "signature": "AbilityInterrupted = 0x45",
+          "name": "AddAbilityBonus",
+          "signature": "AddAbilityBonus = 0x45",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12989,8 +12989,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PlayerEnteredFountain",
-          "signature": "PlayerEnteredFountain = 0x46",
+          "name": "AbilityInterrupted",
+          "signature": "AbilityInterrupted = 0x46",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -12998,8 +12998,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "BouncePadActivated",
-          "signature": "BouncePadActivated = 0x47",
+          "name": "PlayerEnteredFountain",
+          "signature": "PlayerEnteredFountain = 0x47",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13007,8 +13007,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PlayerRespawned",
-          "signature": "PlayerRespawned = 0x48",
+          "name": "BouncePadActivated",
+          "signature": "BouncePadActivated = 0x48",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13016,8 +13016,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "DashJumpExecuted",
-          "signature": "DashJumpExecuted = 0x49",
+          "name": "PlayerRespawned",
+          "signature": "PlayerRespawned = 0x49",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13025,8 +13025,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AirJumpExecuted",
-          "signature": "AirJumpExecuted = 0x4a",
+          "name": "DashJumpExecuted",
+          "signature": "DashJumpExecuted = 0x4a",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13034,8 +13034,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "WallJumpExecuted",
-          "signature": "WallJumpExecuted = 0x4b",
+          "name": "AirJumpExecuted",
+          "signature": "AirJumpExecuted = 0x4b",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13043,8 +13043,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AirDashExecuted",
-          "signature": "AirDashExecuted = 0x4c",
+          "name": "WallJumpExecuted",
+          "signature": "WallJumpExecuted = 0x4c",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13052,8 +13052,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "Catapulted",
-          "signature": "Catapulted = 0x4d",
+          "name": "AirDashExecuted",
+          "signature": "AirDashExecuted = 0x4d",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13061,8 +13061,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "CheckForParry",
-          "signature": "CheckForParry = 0x4e",
+          "name": "Catapulted",
+          "signature": "Catapulted = 0x4e",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13070,8 +13070,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ParrySuccess",
-          "signature": "ParrySuccess = 0x4f",
+          "name": "CheckForParry",
+          "signature": "CheckForParry = 0x4f",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13079,8 +13079,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "HeroLevelChanged",
-          "signature": "HeroLevelChanged = 0x50",
+          "name": "ParrySuccess",
+          "signature": "ParrySuccess = 0x50",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13088,8 +13088,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "OverrideShotParams",
-          "signature": "OverrideShotParams = 0x51",
+          "name": "HeroLevelChanged",
+          "signature": "HeroLevelChanged = 0x51",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13097,8 +13097,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AbilityTriggerActivated",
-          "signature": "AbilityTriggerActivated = 0x52",
+          "name": "OverrideShotParams",
+          "signature": "OverrideShotParams = 0x52",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13106,8 +13106,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ViscousCubeDestroyed",
-          "signature": "ViscousCubeDestroyed = 0x53",
+          "name": "AbilityTriggerActivated",
+          "signature": "AbilityTriggerActivated = 0x53",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13115,8 +13115,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AbilityDashcastHit",
-          "signature": "AbilityDashcastHit = 0x54",
+          "name": "ViscousCubeDestroyed",
+          "signature": "ViscousCubeDestroyed = 0x54",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13124,8 +13124,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "AbilityDashcastMiss",
-          "signature": "AbilityDashcastMiss = 0x55",
+          "name": "AbilityDashcastHit",
+          "signature": "AbilityDashcastHit = 0x55",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13133,8 +13133,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PreBulletFired",
-          "signature": "PreBulletFired = 0x56",
+          "name": "AbilityDashcastMiss",
+          "signature": "AbilityDashcastMiss = 0x56",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13142,8 +13142,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "BulletEvaded",
-          "signature": "BulletEvaded = 0x57",
+          "name": "PreBulletFired",
+          "signature": "PreBulletFired = 0x57",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13151,8 +13151,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "MeleeAttack",
-          "signature": "MeleeAttack = 0x58",
+          "name": "BulletEvaded",
+          "signature": "BulletEvaded = 0x58",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13160,8 +13160,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "MeleeAttackStarted",
-          "signature": "MeleeAttackStarted = 0x59",
+          "name": "MeleeAttack",
+          "signature": "MeleeAttack = 0x59",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13169,8 +13169,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PlayerMoveCollide",
-          "signature": "PlayerMoveCollide = 0x5a",
+          "name": "MeleeAttackStarted",
+          "signature": "MeleeAttackStarted = 0x5a",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13178,8 +13178,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "OrbClaimed",
-          "signature": "OrbClaimed = 0x5b",
+          "name": "PlayerMoveCollide",
+          "signature": "PlayerMoveCollide = 0x5b",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13187,8 +13187,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ModifierRefreshed",
-          "signature": "ModifierRefreshed = 0x5c",
+          "name": "OrbClaimed",
+          "signature": "OrbClaimed = 0x5c",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13196,8 +13196,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ModifierShouldCreate",
-          "signature": "ModifierShouldCreate = 0x5d",
+          "name": "ModifierRefreshed",
+          "signature": "ModifierRefreshed = 0x5d",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13205,8 +13205,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ModifierCreated",
-          "signature": "ModifierCreated = 0x5e",
+          "name": "ModifierShouldCreate",
+          "signature": "ModifierShouldCreate = 0x5e",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13214,8 +13214,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ModifierCreationPrevented",
-          "signature": "ModifierCreationPrevented = 0x5f",
+          "name": "ModifierCreated",
+          "signature": "ModifierCreated = 0x5f",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13223,8 +13223,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "CancelRopeClimb",
-          "signature": "CancelRopeClimb = 0x60",
+          "name": "ModifierCreationPrevented",
+          "signature": "ModifierCreationPrevented = 0x60",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13232,8 +13232,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "Portalled",
-          "signature": "Portalled = 0x61",
+          "name": "CancelRopeClimb",
+          "signature": "CancelRopeClimb = 0x61",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13241,8 +13241,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "Teleported",
-          "signature": "Teleported = 0x62",
+          "name": "Portalled",
+          "signature": "Portalled = 0x62",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13250,8 +13250,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "BarrierAdded",
-          "signature": "BarrierAdded = 0x63",
+          "name": "Teleported",
+          "signature": "Teleported = 0x63",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13259,8 +13259,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "ReplicatedHeal",
-          "signature": "ReplicatedHeal = 0x64",
+          "name": "BarrierAdded",
+          "signature": "BarrierAdded = 0x64",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13268,8 +13268,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "StaminaUsed",
-          "signature": "StaminaUsed = 0x65",
+          "name": "ReplicatedHeal",
+          "signature": "ReplicatedHeal = 0x65",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13277,8 +13277,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "TeleportedIntoPlayspace",
-          "signature": "TeleportedIntoPlayspace = 0x66",
+          "name": "StaminaUsed",
+          "signature": "StaminaUsed = 0x66",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13286,8 +13286,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "BreakablePropBroken",
-          "signature": "BreakablePropBroken = 0x67",
+          "name": "TeleportedIntoPlayspace",
+          "signature": "TeleportedIntoPlayspace = 0x67",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13295,8 +13295,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "Stunned",
-          "signature": "Stunned = 0x68",
+          "name": "BreakablePropBroken",
+          "signature": "BreakablePropBroken = 0x68",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13304,8 +13304,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "PreUnitHealed",
-          "signature": "PreUnitHealed = 0x69",
+          "name": "Stunned",
+          "signature": "Stunned = 0x69",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13313,8 +13313,8 @@
         },
         {
           "kind": "enumValue",
-          "name": "RatkingArmorAdjustment",
-          "signature": "RatkingArmorAdjustment = 0x6a",
+          "name": "PreUnitHealed",
+          "signature": "PreUnitHealed = 0x6a",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
@@ -13322,12 +13322,30 @@
         },
         {
           "kind": "enumValue",
-          "name": "Count",
-          "signature": "Count = 0x6b",
+          "name": "RatkingArmorAdjustment",
+          "signature": "RatkingArmorAdjustment = 0x6b",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
           "line": 113
+        },
+        {
+          "kind": "enumValue",
+          "name": "OverrideCurrencyChange",
+          "signature": "OverrideCurrencyChange = 0x6c",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
+          "line": 114
+        },
+        {
+          "kind": "enumValue",
+          "name": "Count",
+          "signature": "Count = 0x6d",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
+          "line": 115
         },
         {
           "kind": "enumValue",
@@ -13336,7 +13354,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/EModifierEvent.cs",
-          "line": 114
+          "line": 116
         }
       ]
     },
@@ -15998,12 +16016,21 @@
         },
         {
           "kind": "enumValue",
+          "name": "FearImmune",
+          "signature": "FearImmune = 0x125",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
+          "line": 298
+        },
+        {
+          "kind": "enumValue",
           "name": "NecroFearimmune",
           "signature": "NecroFearimmune = 0x125",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 298
+          "line": 299
         },
         {
           "kind": "enumValue",
@@ -16012,7 +16039,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 299
+          "line": 300
         },
         {
           "kind": "enumValue",
@@ -16021,7 +16048,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 300
+          "line": 301
         },
         {
           "kind": "enumValue",
@@ -16030,7 +16057,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 301
+          "line": 302
         },
         {
           "kind": "enumValue",
@@ -16039,7 +16066,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 302
+          "line": 303
         },
         {
           "kind": "enumValue",
@@ -16048,7 +16075,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 303
+          "line": 304
         },
         {
           "kind": "enumValue",
@@ -16057,7 +16084,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 304
+          "line": 305
         },
         {
           "kind": "enumValue",
@@ -16066,7 +16093,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 305
+          "line": 306
         },
         {
           "kind": "enumValue",
@@ -16075,7 +16102,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 306
+          "line": 307
         },
         {
           "kind": "enumValue",
@@ -16084,7 +16111,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 307
+          "line": 308
         },
         {
           "kind": "enumValue",
@@ -16093,7 +16120,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 308
+          "line": 309
         },
         {
           "kind": "enumValue",
@@ -16102,7 +16129,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 309
+          "line": 310
         },
         {
           "kind": "enumValue",
@@ -16111,7 +16138,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 310
+          "line": 311
         },
         {
           "kind": "enumValue",
@@ -16120,7 +16147,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 311
+          "line": 312
         },
         {
           "kind": "enumValue",
@@ -16129,7 +16156,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 312
+          "line": 313
         },
         {
           "kind": "enumValue",
@@ -16138,7 +16165,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 313
+          "line": 314
         },
         {
           "kind": "enumValue",
@@ -16147,7 +16174,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 314
+          "line": 315
         },
         {
           "kind": "enumValue",
@@ -16156,7 +16183,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 315
+          "line": 316
         },
         {
           "kind": "enumValue",
@@ -16165,7 +16192,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 316
+          "line": 317
         },
         {
           "kind": "enumValue",
@@ -16174,7 +16201,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 317
+          "line": 318
         },
         {
           "kind": "enumValue",
@@ -16183,7 +16210,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 318
+          "line": 319
         },
         {
           "kind": "enumValue",
@@ -16192,7 +16219,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 319
+          "line": 320
         },
         {
           "kind": "enumValue",
@@ -16201,7 +16228,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 320
+          "line": 321
         },
         {
           "kind": "enumValue",
@@ -16210,7 +16237,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 321
+          "line": 322
         },
         {
           "kind": "enumValue",
@@ -16219,7 +16246,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 322
+          "line": 323
         },
         {
           "kind": "enumValue",
@@ -16228,7 +16255,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 323
+          "line": 324
         },
         {
           "kind": "enumValue",
@@ -16237,7 +16264,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 324
+          "line": 325
         },
         {
           "kind": "enumValue",
@@ -16246,7 +16273,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 325
+          "line": 326
         },
         {
           "kind": "enumValue",
@@ -16255,7 +16282,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 326
+          "line": 327
         },
         {
           "kind": "enumValue",
@@ -16264,7 +16291,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 327
+          "line": 328
         },
         {
           "kind": "enumValue",
@@ -16273,7 +16300,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 328
+          "line": 329
         },
         {
           "kind": "enumValue",
@@ -16282,7 +16309,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 329
+          "line": 330
         },
         {
           "kind": "enumValue",
@@ -16291,7 +16318,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 330
+          "line": 331
         },
         {
           "kind": "enumValue",
@@ -16300,7 +16327,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 331
+          "line": 332
         },
         {
           "kind": "enumValue",
@@ -16309,7 +16336,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 332
+          "line": 333
         },
         {
           "kind": "enumValue",
@@ -16318,7 +16345,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 333
+          "line": 334
         },
         {
           "kind": "enumValue",
@@ -16327,7 +16354,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 334
+          "line": 335
         },
         {
           "kind": "enumValue",
@@ -16336,7 +16363,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 335
+          "line": 336
         },
         {
           "kind": "enumValue",
@@ -16345,7 +16372,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 336
+          "line": 337
         },
         {
           "kind": "enumValue",
@@ -16354,7 +16381,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 337
+          "line": 338
         },
         {
           "kind": "enumValue",
@@ -16363,7 +16390,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 338
+          "line": 339
         },
         {
           "kind": "enumValue",
@@ -16372,7 +16399,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 339
+          "line": 340
         },
         {
           "kind": "enumValue",
@@ -16381,7 +16408,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 340
+          "line": 341
         },
         {
           "kind": "enumValue",
@@ -16390,7 +16417,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 341
+          "line": 342
         },
         {
           "kind": "enumValue",
@@ -16399,7 +16426,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 342
+          "line": 343
         },
         {
           "kind": "enumValue",
@@ -16408,7 +16435,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 343
+          "line": 344
         },
         {
           "kind": "enumValue",
@@ -16417,7 +16444,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 344
+          "line": 345
         },
         {
           "kind": "enumValue",
@@ -16426,7 +16453,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 345
+          "line": 346
         },
         {
           "kind": "enumValue",
@@ -16435,7 +16462,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 346
+          "line": 347
         },
         {
           "kind": "enumValue",
@@ -16444,7 +16471,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 347
+          "line": 348
         },
         {
           "kind": "enumValue",
@@ -16453,7 +16480,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 348
+          "line": 349
         },
         {
           "kind": "enumValue",
@@ -16462,7 +16489,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 349
+          "line": 350
         },
         {
           "kind": "enumValue",
@@ -16471,7 +16498,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 350
+          "line": 351
         },
         {
           "kind": "enumValue",
@@ -16480,25 +16507,43 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 351
-        },
-        {
-          "kind": "enumValue",
-          "name": "DisableLookTarget",
-          "signature": "DisableLookTarget = 0x15a",
-          "isStatic": false,
-          "isExtension": false,
-          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
           "line": 352
         },
         {
           "kind": "enumValue",
-          "name": "Count",
-          "signature": "Count = 0x15b",
+          "name": "FreeWallJumps",
+          "signature": "FreeWallJumps = 0x15a",
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
           "line": 353
+        },
+        {
+          "kind": "enumValue",
+          "name": "DisableLookTarget",
+          "signature": "DisableLookTarget = 0x15b",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
+          "line": 354
+        },
+        {
+          "kind": "enumValue",
+          "name": "Feared",
+          "signature": "Feared = 0x15c",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
+          "line": 355
+        },
+        {
+          "kind": "enumValue",
+          "name": "Count",
+          "signature": "Count = 0x15d",
+          "isStatic": false,
+          "isExtension": false,
+          "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
+          "line": 356
         },
         {
           "kind": "enumValue",
@@ -16507,7 +16552,7 @@
           "isStatic": false,
           "isExtension": false,
           "file": "managed/DeadworksManaged.Api/Enums/ModifierState.cs",
-          "line": 354
+          "line": 357
         }
       ]
     },

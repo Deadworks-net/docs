@@ -61,7 +61,7 @@ Timer.Every(500.Milliseconds(), () =>
 ```
 
 :::note
-`MoveTo` often fails for distant goals: most orders to a point more than 3000 units of path away fail. Order a chasing NPC from nearby.
+`MoveTo` often fails for distant goals: most orders to a point more than 3000 units of path away fail. Nearer orders can fail partway, leaving the NPC standing in `SCHED_FAIL`. Order a long trip in legs along a [path](navigation#paths), and order again after a failure.
 :::
 
 ## Schedules

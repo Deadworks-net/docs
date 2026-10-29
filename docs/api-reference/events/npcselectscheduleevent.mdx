@@ -16,7 +16,7 @@ public sealed class NpcSelectScheduleEvent
 ```
 
 **Namespace:** `DeadworksManaged.Api`  
-**Source:** [Events/NpcSelectScheduleEvent.cs#L7](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs#L7)
+**Source:** [Events/NpcSelectScheduleEvent.cs#L7](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs#L7)
 
 ## Properties
 
@@ -30,7 +30,7 @@ The NPC. Use `CBaseEntity.As&lt;T&gt;` for its class, e.g. [`CNPC_Trooper`](/api
 public required CAI_BaseNPC Npc { get; init; }
 ```
 
-**Source:** [Events/NpcSelectScheduleEvent.cs#L9](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs#L9)
+**Source:** [Events/NpcSelectScheduleEvent.cs#L9](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs#L9)
 
 ### NpcSelectScheduleEvent.Schedule {#schedule}
 
@@ -42,7 +42,7 @@ The schedule the game chose, such as `SCHED_TROOPER_RUN_DOWN_LANE`, or `SCHED_FA
 public required string Schedule { get; init; }
 ```
 
-**Source:** [Events/NpcSelectScheduleEvent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs#L15)
+**Source:** [Events/NpcSelectScheduleEvent.cs#L15](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs#L15)
 
 ### NpcSelectScheduleEvent.Override {#override}
 
@@ -57,4 +57,4 @@ public string? Override { get; set; }
 **Notes**
 A schedule the NPC's class does not have runs `SCHED_IDLE_STAND` and logs "No CASE for Schedule Type".
 
-**Source:** [Events/NpcSelectScheduleEvent.cs#L24](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs#L24)
+**Source:** [Events/NpcSelectScheduleEvent.cs#L24](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Events/NpcSelectScheduleEvent.cs#L24)

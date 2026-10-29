@@ -18,7 +18,7 @@ public class CAI_CitadelNPC : CAI_BaseNPC
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`CAI_BaseNPC`](/api-reference/entities/cai_basenpc)  
 **Derived types:** [`CCitadelPlayerBotNPCBrain`](/api-reference/entities/ccitadelplayerbotnpcbrain), [`CNPC_Trooper`](/api-reference/entities/cnpc_trooper)  
-**Source:** [Entities/CAI_CitadelNPC.cs#L8](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L8)
+**Source:** [Entities/CAI_CitadelNPC.cs#L8](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L8)
 
 ## Properties
 
@@ -32,7 +32,7 @@ The NPC's abilities, such as a boss's attacks or a trooper's grenade.
 public CCitadelAbilityComponent AbilityComponent { get; }
 ```
 
-**Source:** [Entities/CAI_CitadelNPC.cs#L17](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L17)
+**Source:** [Entities/CAI_CitadelNPC.cs#L17](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L17)
 
 ### CAI_CitadelNPC.OwningAbility {#owningability}
 
@@ -44,7 +44,7 @@ The ability that spawned a summon. Null for map NPCs.
 public CCitadelBaseAbility? OwningAbility { get; }
 ```
 
-**Source:** [Entities/CAI_CitadelNPC.cs#L20](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L20)
+**Source:** [Entities/CAI_CitadelNPC.cs#L20](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L20)
 
 ### CAI_CitadelNPC.IsMinion {#isminion}
 
@@ -56,7 +56,7 @@ True for a hero's summon. See `SetMinion`.
 public bool IsMinion { get; }
 ```
 
-**Source:** [Entities/CAI_CitadelNPC.cs#L29](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L29)
+**Source:** [Entities/CAI_CitadelNPC.cs#L29](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L29)
 
 ### CAI_CitadelNPC.Summoner {#summoner}
 
@@ -68,7 +68,7 @@ Who the NPC works for: the entity set with `SetSummoner`, else the owner of `Own
 public CBaseEntity? Summoner { get; }
 ```
 
-**Source:** [Entities/CAI_CitadelNPC.cs#L41](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L41)
+**Source:** [Entities/CAI_CitadelNPC.cs#L41](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L41)
 
 ## Methods
 
@@ -82,7 +82,7 @@ Makes the NPC a minion, like Necro's skeletons, or a regular NPC again. A minion
 public void SetMinion(bool minion)
 ```
 
-**Source:** [Entities/CAI_CitadelNPC.cs#L35](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L35)
+**Source:** [Entities/CAI_CitadelNPC.cs#L35](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L35)
 
 ### CAI_CitadelNPC.SetSummoner() {#setsummoner}
 
@@ -94,4 +94,4 @@ Sets who the NPC works for, usually a hero pawn, or clears it with null. With `S
 public void SetSummoner(CBaseEntity? summoner)
 ```
 
-**Source:** [Entities/CAI_CitadelNPC.cs#L53](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L53)
+**Source:** [Entities/CAI_CitadelNPC.cs#L53](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_CitadelNPC.cs#L53)

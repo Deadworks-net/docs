@@ -66,6 +66,8 @@ public override void OnProcessUsercmds(ProcessUsercmdsEvent e)
 
 The bot stops about `50` units from the goal. `lookAt` keeps it aiming at a point while it moves.
 
+`ApplyMovement` returns `false` when the brain has nowhere to go. The brain starts moving on its next think, so the first usercmd after `MoveTo` also returns `false`: treat only a run of `false` results as arrival.
+
 ## Steering a bot
 
 With the AI off, a bot does exactly what its usercmds say. `Bots.SetMoveInput` fills one in to move the bot towards a point. With a [path follower](navigation#following-a-path) it walks any path:

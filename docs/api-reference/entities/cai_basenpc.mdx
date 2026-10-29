@@ -18,7 +18,7 @@ public class CAI_BaseNPC : CBaseEntity
 **Namespace:** `DeadworksManaged.Api`  
 **Inherits / implements:** [`CBaseEntity`](/api-reference/entities/cbaseentity)  
 **Derived types:** [`CAI_CitadelNPC`](/api-reference/entities/cai_citadelnpc)  
-**Source:** [Entities/CAI_BaseNPC.cs#L14](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L14)
+**Source:** [Entities/CAI_BaseNPC.cs#L14](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L14)
 
 ## Notes
 
@@ -36,7 +36,7 @@ The NPC's current AI state.
 public NpcState State { get; }
 ```
 
-**Source:** [Entities/CAI_BaseNPC.cs#L66](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L66)
+**Source:** [Entities/CAI_BaseNPC.cs#L66](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L66)
 
 ### CAI_BaseNPC.IdealState {#idealstate}
 
@@ -48,7 +48,7 @@ The state the AI is moving towards. It becomes `State` on the NPC's next think.
 public NpcState IdealState { get; }
 ```
 
-**Source:** [Entities/CAI_BaseNPC.cs#L69](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L69)
+**Source:** [Entities/CAI_BaseNPC.cs#L69](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L69)
 
 ### CAI_BaseNPC.IsDormant {#isdormant}
 
@@ -60,7 +60,7 @@ True while the NPC is [`NpcState.Inert`](/api-reference/enums/npcstate#inert), s
 public bool IsDormant { get; }
 ```
 
-**Source:** [Entities/CAI_BaseNPC.cs#L75](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L75)
+**Source:** [Entities/CAI_BaseNPC.cs#L75](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L75)
 
 ### CAI_BaseNPC.Schedule {#schedule}
 
@@ -72,7 +72,7 @@ The running schedule, such as `SCHED_TROOPER_RUN_DOWN_LANE`, or null between sch
 public string? Schedule { get; }
 ```
 
-**Source:** [Entities/CAI_BaseNPC.cs#L78](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L78)
+**Source:** [Entities/CAI_BaseNPC.cs#L78](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L78)
 
 ### CAI_BaseNPC.Enemy {#enemy}
 
@@ -84,7 +84,7 @@ The entity the NPC is currently fighting, or null.
 public CBaseEntity? Enemy { get; }
 ```
 
-**Source:** [Entities/CAI_BaseNPC.cs#L87](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L87)
+**Source:** [Entities/CAI_BaseNPC.cs#L87](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L87)
 
 ## Methods
 
@@ -108,7 +108,7 @@ public static CAI_BaseNPC? Create(string designerName, Vector3 position, int tea
 **Notes**
 A class name such as `npc_trooper_neutral` returns null: an NPC without VData crashes the server. For lane troopers use [`CNPC_Trooper.Create`](/api-reference/entities/cnpc_trooper#create), which also assigns a lane.
 
-**Source:** [Entities/CAI_BaseNPC.cs#L37](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L37)
+**Source:** [Entities/CAI_BaseNPC.cs#L37](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L37)
 
 ### CAI_BaseNPC.MoveTo() {#moveto}
 
@@ -127,9 +127,9 @@ public void MoveTo(Vector3 goal, bool run = true, float tolerance = 0f)
 - `tolerance`: How close counts as arrived. 0 matches `npc_go`.
 
 **Notes**
-The NPC ignores enemies and damage until it arrives or the path fails, unless `npc_go_allow_interrupt_by_ai_conditions` is on. It then resumes its own behaviour. Most orders more than 3000 units of path away fail. To follow a moving target, call this again every half second. The goal need not be on the navmesh.
+The NPC ignores enemies and damage until it arrives or the path fails, unless `npc_go_allow_interrupt_by_ai_conditions` is on. It then resumes its own behaviour. Most orders more than 3000 units of path away fail, and nearer ones can fail partway: the NPC stops and runs `SCHED_FAIL`. Order a long trip in legs along [`Nav.FindPath`](/api-reference/navigation/nav#findpath), and order again after a failure. To follow a moving target, call this again every half second. The goal need not be on the navmesh.
 
-**Source:** [Entities/CAI_BaseNPC.cs#L104](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L104)
+**Source:** [Entities/CAI_BaseNPC.cs#L106](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L106)
 
 ### CAI_BaseNPC.Stop() {#stop}
 
@@ -145,7 +145,7 @@ public void Stop(bool instant = false)
 
 - `instant`: Stop on the spot instead of slowing down.
 
-**Source:** [Entities/CAI_BaseNPC.cs#L111](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L111)
+**Source:** [Entities/CAI_BaseNPC.cs#L113](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L113)
 
 ### CAI_BaseNPC.SetEnemy() {#setenemy}
 
@@ -160,7 +160,7 @@ public void SetEnemy(CBaseEntity? enemy)
 **Notes**
 The AI re-chooses its enemy every think and may replace this one, for example with a closer target. It never keeps an enemy on its own team.
 
-**Source:** [Entities/CAI_BaseNPC.cs#L118](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L118)
+**Source:** [Entities/CAI_BaseNPC.cs#L120](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L120)
 
 ### CAI_BaseNPC.SetSchedule() {#setschedule}
 
@@ -175,7 +175,7 @@ public bool SetSchedule(string name)
 **Notes**
 The schedule runs until it finishes or is interrupted, then the NPC picks its next one; `IDeadworksPlugin.OnNpcSelectSchedule` can replace that choice. A schedule the NPC's class does not have runs `SCHED_IDLE_STAND` and logs "No CASE for Schedule Type".
 
-**Source:** [Entities/CAI_BaseNPC.cs#L126](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L126)
+**Source:** [Entities/CAI_BaseNPC.cs#L128](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L128)
 
 ### CAI_BaseNPC.SetState() {#setstate}
 
@@ -187,4 +187,4 @@ Changes the NPC's AI state. [`NpcState.Idle`](/api-reference/enums/npcstate#idle
 public void SetState(NpcState state)
 ```
 
-**Source:** [Entities/CAI_BaseNPC.cs#L136](https://github.com/Deadworks-net/deadworks/blob/f7f2cba2/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L136)
+**Source:** [Entities/CAI_BaseNPC.cs#L138](https://github.com/Deadworks-net/deadworks/blob/7da5cd7f/managed/DeadworksManaged.Api/Entities/CAI_BaseNPC.cs#L138)
